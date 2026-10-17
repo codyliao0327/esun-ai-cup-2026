@@ -1,0 +1,24 @@
+# FinLab 資料與輸出(含授權資料,請勿上傳)
+data/
+*.csv
+*.parquet
+*.pkl
+*.feather
+
+# 憑證 / 金鑰
+.env
+*.env
+credentials.json
+.finlab/
+
+# Jupyter / Python
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 系統檔
+.DS_Store
+Thumbs.db
+desktop.ini
