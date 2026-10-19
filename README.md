@@ -18,9 +18,15 @@ python -m finlab login
 ```
 
 ## 內容
-- `finlab_api_test.ipynb`:FinLab API 連線與資料測試
-- `verify_dplan.ipynb`:D-Plan schema 驗證
+- `finlab_api_test.ipynb`: FinLab API 連線與資料測試
+- `finlab_download_limit_test.ipynb`: FinLab API 下載限制機制實測（**備查紀錄**，實測證明無論限制時間或個股，API 皆會全量下載完整資料後才在地端切片）
+- `finlab_incremental_update.ipynb`: 增量更新測試（**備查紀錄**，因 API 無法在伺服器端限制下載範圍，此增量方式已不適用）
+- `verify_dplan.ipynb`: D-Plan schema 驗證
 
-## 注意
-- `data/` 與 CSV/Parquet 檔不會被上傳(見 `.gitignore`),FinLab 資料請在本機自行下載。
+## 重要實測結論與注意事項
+- **FinLab API 無伺服器端篩選 (Server-side Filter)**：
+  - 經 `finlab_download_limit_test.ipynb` 攔截 HTTP 封包實測，無論設定 `start` 日期、`truncate_start` 或 `universe(whitelist)` 限制個股，API 伺服器皆是**將完整資料集（全歷史日數、全市場 2,700+ 檔標的，單檔約 17+ MB）整包下載至本地**，才由 FinLab 本地端 SDK 進行切片遮罩。
+  - **結論**：限制條件**完全無法節省每日 API 下載流量配額**。因此 `finlab_incremental_update.ipynb` 與 `finlab_download_limit_test.ipynb` 僅保留作為機制驗證紀錄，後續日常運作不再使用。
+  - **使用建議**：資料下載一次後請善用本機快取或直接存檔於本地，避免使用 `force_download=True` 造成流量重複浪費。
+- `data/` 與 CSV/Parquet 檔不會被上傳 (見 `.gitignore`)，FinLab 資料請在本機自行下載。
 - 請勿提交任何 token 或憑證。
