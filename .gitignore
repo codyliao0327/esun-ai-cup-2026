@@ -10,6 +10,10 @@ data/
 *.env
 credentials.json
 .finlab/
+*.p12
+*.pfx
+config.ini
+config*.ini
 
 # Jupyter / Python
 .ipynb_checkpoints/

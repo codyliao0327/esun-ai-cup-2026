@@ -1,0 +1,12 @@
+# 專案 Python 相依套件清單
+# Core & APIs
+finlab
+google-genai
+requests
+python-docx
+
+# Data & Validation
+pydantic>=2.0
+pandas
+numpy
+pyarrow
