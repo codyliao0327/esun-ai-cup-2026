@@ -294,10 +294,10 @@ def load_datapack_info(target_date: str) -> Tuple[str, Set[str], int]:
         datapack_text = file_path.read_text(encoding="utf-8")
 
     # 嘗試從 Raw JSON 讀取更精準的 holdings 陣列
-    raw_candidates = [
-        DATAPACK_RAW_DIR / f"DataPack_275_{target_date}.json",
-        DATAPACK_RAW_DIR / f"DataPack_275_{clean_date}.json",
-    ]
+    raw_candidates = []
+    if DATAPACK_RAW_DIR.exists():
+        raw_candidates.extend(list(DATAPACK_RAW_DIR.glob(f"*{target_date}*.json")))
+        raw_candidates.extend(list(DATAPACK_RAW_DIR.glob(f"*{clean_date}*.json")))
     raw_file = None
     for rc in raw_candidates:
         if rc.exists():

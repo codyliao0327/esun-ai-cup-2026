@@ -14,15 +14,58 @@
 """
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
 from pathlib import Path
+from typing import Optional
+
+# 設定 code/ 為匯入路徑
+CODE_DIR = Path(__file__).resolve().parents[1]
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
+
+from configs.date_utils import (  # noqa: E402
+    clean_date_str,
+    format_iso_trade_date,
+    prompt_trade_date,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 RAW_DIR = ROOT / "data" / "Datapack" / "Raw"
 PROCESSED_DIR = ROOT / "data" / "Datapack" / "Processed"
-DEFAULT_RAW = RAW_DIR / "DataPack_275_2026-10-27.json"
+
+
+def find_datapack_raw(target_date: Optional[str] = None) -> Optional[Path]:
+    """在 Raw 資料夾中尋找對應日期或最新的 DataPack JSON 檔案。"""
+    if not RAW_DIR.exists():
+        return None
+
+    raw_files = list(RAW_DIR.glob("*.json"))
+    if not raw_files:
+        return None
+
+    if target_date:
+        c_date = clean_date_str(target_date)
+        iso_date = format_iso_trade_date(target_date)
+        # 1. 優先精準比對檔名包含目標日期的檔案
+        for p in raw_files:
+            if iso_date in p.name or (c_date and c_date in p.name):
+                return p
+
+    # 2. 若無指定日期或找不到精準日期，依檔名中日期與修改時間排序取最新
+    def _extract_date(p: Path) -> str:
+        m = re.findall(r"\d{8}", p.name)
+        if m:
+            return m[-1]
+        m2 = re.findall(r"\d{4}-\d{2}-\d{2}", p.name)
+        if m2:
+            return m2[-1].replace("-", "")
+        return ""
+
+    raw_files.sort(key=lambda p: (_extract_date(p), p.stat().st_mtime), reverse=True)
+    return raw_files[0]
 
 # 固定說明：忠實濃縮自 DataPack_規格書_v4.3，欄位名與原始 JSON 完全一致
 GLOSSARY = """\
@@ -134,28 +177,66 @@ def convert_datapack(dp: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
-def load_datapack(raw_path: Path = DEFAULT_RAW) -> dict:
+def load_datapack(raw_path: Optional[Path] = None, target_date: Optional[str] = None) -> dict:
     """讀取原始 DataPack JSON。"""
-    with open(raw_path, encoding="utf-8") as f:
+    actual_path = raw_path or find_datapack_raw(target_date)
+    if not actual_path or not actual_path.exists():
+        raise FileNotFoundError(f"找不到 DataPack Raw JSON 檔案 (搜尋目錄: {RAW_DIR}, 目標日期: {target_date})")
+    with open(actual_path, encoding="utf-8") as f:
         return json.load(f)
 
 
-def process_datapack(raw_path: Path = DEFAULT_RAW, out_dir: Path = PROCESSED_DIR) -> Path:
-    """讀入 Raw JSON，輸出 DataPack_Processed_YYYYMMDD.md（日期取自原始檔名）。"""
-    raw_path = Path(raw_path)
-    m = re.search(r"(\d{4})-(\d{2})-(\d{2})", raw_path.name)
-    if not m:
-        raise ValueError(f"檔名中找不到日期 (YYYY-MM-DD): {raw_path.name}")
-    date_str = "".join(m.groups())
+def process_datapack(
+    raw_path: Optional[Path] = None,
+    target_date: Optional[str] = None,
+    out_dir: Path = PROCESSED_DIR,
+) -> Path:
+    """讀入 Raw JSON，輸出 DataPack_Processed_YYYYMMDD.md（優先依指定日期，或取自原始檔名）。"""
+    actual_path = raw_path or find_datapack_raw(target_date)
+    if not actual_path or not actual_path.exists():
+        raise FileNotFoundError(f"找不到 DataPack Raw JSON 檔案 (搜尋目錄: {RAW_DIR}, 目標日期: {target_date})")
 
-    text = convert_datapack(load_datapack(raw_path))
+    # 決定輸出日期標籤
+    if target_date:
+        date_str = clean_date_str(target_date)
+    else:
+        m = re.search(r"(\d{4})-(\d{2})-(\d{2})", actual_path.name)
+        if m:
+            date_str = "".join(m.groups())
+        else:
+            m2 = re.findall(r"\d{8}", actual_path.name)
+            date_str = m2[-1] if m2 else ""
+
+    if not date_str or len(date_str) != 8:
+        raise ValueError(f"無法從檔名或參數取得合規日期 (YYYYMMDD): {actual_path.name}")
+
+    raw_data = load_datapack(actual_path)
+    text = convert_datapack(raw_data)
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"DataPack_Processed_{date_str}.md"
     with open(out_path, "w", encoding="utf-8", newline="\n") as f:
         f.write(text)
+
+    print(f"[datapack_loader] 成功轉換 DataPack: {actual_path.name} -> {out_path.name}")
     return out_path
 
 
+def main():
+    parser = argparse.ArgumentParser(description="讀取官方每日 DataPack JSON 並轉換為 Processed Markdown")
+    parser.add_argument("--date", type=str, default=None, help="目標交易日期 (格式如 20261028 或 2026-10-28)")
+    parser.add_argument("--raw-path", type=str, default=None, help="直接指定 DataPack Raw JSON 檔案路徑")
+    args = parser.parse_args()
+
+    custom_raw = Path(args.raw_path) if args.raw_path else None
+    target_date = args.date
+
+    # 若未指定檔案且未傳入日期，詢問交易日期
+    if not custom_raw and not target_date:
+        target_date = prompt_trade_date(prompt_text="DataPack 轉換 - 交易日期")
+
+    out_file = process_datapack(raw_path=custom_raw, target_date=target_date)
+    print(f"已產出 Processed 檔案: {out_file}")
+
+
 if __name__ == "__main__":
-    src = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_RAW
-    print(f"已輸出: {process_datapack(src)}")
+    main()

@@ -1,10 +1,23 @@
+import argparse
 import os
+import sys
 from datetime import datetime
-import pandas as pd
+from pathlib import Path
+from typing import Optional
+
 import finlab
+import pandas as pd
 from finlab import data
 
-def main():
+# 設定 code/ 為匯入路徑
+CODE_DIR = Path(__file__).resolve().parents[1]
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
+
+from configs.date_utils import clean_date_str, prompt_trade_date
+
+
+def main(target_date: Optional[str] = None):
     # 憑證登入
     finlab.login()
 
@@ -37,8 +50,8 @@ def main():
     output_dir = os.path.normpath(os.path.join(script_dir, '..', '..', 'data', 'Active_ETF_Holdings'))
     os.makedirs(output_dir, exist_ok=True)
 
-    # 8. 輸出 parquet（檔名加上今天日期）
-    today = datetime.now().strftime('%Y%m%d')
+    # 8. 輸出 parquet
+    today = clean_date_str(target_date) if target_date else datetime.now().strftime('%Y%m%d')
     output_path = os.path.join(output_dir, f'top_15_constituents_{today}.parquet')
     result.to_parquet(output_path, engine='pyarrow', compression='zstd', index=False)
 
@@ -46,4 +59,9 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description="下載同業主動式 ETF 前 15 大成分股快照")
+    parser.add_argument("--date", type=str, default=None, help="目標日期 (格式 YYYYMMDD 或 YYYY-MM-DD)")
+    args = parser.parse_args()
+
+    t_date = prompt_trade_date(args.date, prompt_text="主動式 ETF 成分股 - 目標日期")
+    main(target_date=t_date)

@@ -147,7 +147,8 @@ code/
 
 | 階層 / 程式模組 | 主要輸入資料來源路徑 (Input) | 主要產出檔案路徑 (Output) | Gemini Usage 統計路徑 |
 | :--- | :--- | :--- | :--- |
-| **L0 Sources** | FinLab API, CMoney API, DataPack, Active ETF | `data/D-Paln_Output/l0_sources/` | *(純資料爬取，無呼叫 LLM)* |
+| **L0 Sources**<br>`datapack_loader.py` | 官方原始 DataPack JSON：<br>`data/Datapack/Raw/DataPack_*_YYYY-MM-DD.json` | 轉換後結構化 Markdown：<br>`data/Datapack/Processed/DataPack_Processed_YYYYMMDD.md` | *(純資料解析，無呼叫 LLM)* |
+| **L0 Sources**<br>`finlab_market_loader.py`<br>`cmoney_sentiment_crawler.py`<br>`finlab_active_etf_loader.py` | FinLab API、CMoney API、主動 ETF 公開資訊 | 行情特徵、輿情與成分股快取：<br>`data/大盤/`, `data/技術面/`, `data/基本面/`, `data/籌碼面/`,<br>`data/CMoney_Sentiment/`, `data/Active_ETF_Holdings/`,<br>`data/D-Paln_Output/l0_sources/sources_finlab_YYYYMMDD.json` | *(純資料爬取，無呼叫 LLM)* |
 | **L1 Observations**<br>`fact_extractor.py` | `data/大盤/`, `data/技術面/`, `data/基本面/`, `data/籌碼面/`, `data/CMoney_Sentiment/`, `data/D-Paln_Output/l0_sources/` | `data/D-Paln_Output/l1_observations/`<br>👉 `l1_observations_YYYYMMDD.json` | `data/D-Paln_Output/l1_observations/usage/`<br>👉 `l1_usage_YYYYMMDD.json` |
 | **L2M Market View**<br>`market_view_agent.py` | `data/D-Paln_Output/l1_observations/` (大盤觀察),<br>`data/Datapack/Processed/` (帳戶快照) | `data/D-Paln_Output/l2m_market_view/`<br>👉 `l2m_market_view_YYYYMMDD.json` | `data/D-Paln_Output/l2m_market_view/usage/`<br>👉 `l2m_usage_YYYYMMDD.json` |
 | **L2 Inferences**<br>`stock_inference_agent.py` | `data/D-Paln_Output/l1_observations/` (個股與大盤),<br>`data/D-Paln_Output/l2m_market_view/`,<br>`data/ETF_Strategy/etf_strategy.md`,<br>`data/Datapack/Processed/` | `data/D-Paln_Output/l2_inferences/`<br>👉 `l2_inferences_YYYYMMDD.json` | `data/D-Paln_Output/l2_inferences/usage/`<br>👉 `l2_usage_YYYYMMDD.json` |
@@ -339,7 +340,7 @@ python -m finlab login
 
 ### 1. 端到端一鍵完整生成
 ```bash
-# 啟動每日自動化產線 (互動式確認交易日，循序執行 Step 1 ~ 5)
+# 啟動每日自動化產線 (互動式確認交易日，循序執行 Step 0 轉 DataPack -> Step 1 L2M -> Step 2 L2 -> Step 3 L3 -> Step 4 L4 -> Step 5 組裝 D-Plan)
 python run_daily_dplan.py
 
 # 明確指定交易日期
@@ -350,24 +351,48 @@ python run_daily_dplan.py --date 20261028 --skip-l2m --skip-l2
 ```
 
 ### 2. 各模組單獨執行除錯
+
+#### 【L0 資料下載與預處理】
+```bash
+# --- DataPack 原始檔解析與轉 Markdown ---
+python L0_sources/datapack_loader.py                           # 互動式輸入日期 (Enter 帶入今日)，動態搜尋 Raw 目錄
+python L0_sources/datapack_loader.py --date 20261028           # 指定轉換特定日期之 DataPack JSON
+python L0_sources/datapack_loader.py --raw-path "path/to.json" # 指定特定 Raw JSON 進行轉換
+
+# --- FinLab 市場資料與寬表下載 ---
+python L0_sources/finlab_market_loader.py                      # 下載最新行情特徵並快取為 Parquet
+python L0_sources/finlab_market_loader.py --date 20261027      # 指定特定日期
+python L0_sources/finlab_market_loader.py --only "收盤價" "ROE" # 僅下載/重算特定關鍵指標
+python L0_sources/finlab_market_loader.py --overwrite          # 強制覆寫本地既有 Parquet 快取
+
+# --- CMoney 輿情討論與情緒爬取 ---
+python L0_sources/cmoney_sentiment_crawler.py                  # 爬取熱門股討論熱度與量化情緒
+python L0_sources/cmoney_sentiment_crawler.py --date 20261027  # 指定爬取基準日
+
+# --- 主動式 ETF 前 15 大成分股快照 ---
+python L0_sources/finlab_active_etf_loader.py                  # 下載主動式 ETF 標竿持股
+python L0_sources/finlab_active_etf_loader.py --date 20261027  # 指定日期快照
+```
+
+#### 【L1 ~ L4 Agent 與 D-Plan 組裝】
 ```bash
 # --- L1 客觀事實擷取 ---
-python L1_observations/fact_extractor.py                       # 互動式輸入日期 + 串流生成
+python L1_observations/fact_extractor.py                       # 互動式輸入日期 + 串流生成 (自動過濾未來資料)
 python L1_observations/fact_extractor.py --date 20261027      # 指定特定日期
 python L1_observations/fact_extractor.py --dry-run            # 僅組裝 Prompt 輸出 txt，不呼叫 API
 
 # --- L2M 市場整體研判 ---
-python L2M_market_view/market_view_agent.py                   # 互動式輸入日期
+python L2M_market_view/market_view_agent.py                   # 互動式輸入日期 (優先精準比對當日 L1 與 DataPack)
 python L2M_market_view/market_view_agent.py --date 20261027   # 指定日期
 python L2M_market_view/market_view_agent.py --dry-run         # 僅輸出 Prompt 供檢查
 
 # --- L2 個股推論 ---
-python L2_inferences/stock_inference_agent.py                 # 互動式輸入日期
+python L2_inferences/stock_inference_agent.py                 # 互動式輸入日期 (結合 ETF 理念與個股多維度分析)
 python L2_inferences/stock_inference_agent.py --date 20261027 # 指定日期
 python L2_inferences/stock_inference_agent.py --no-stream     # 關閉串流印出改為單次等待
 
 # --- L3 投資組合決策 ---
-python L3_decisions/portfolio_decision_agent.py               # 互動式輸入日期
+python L3_decisions/portfolio_decision_agent.py               # 互動式輸入日期 (控管 20~30 檔持股 + 昨日覆蓋)
 python L3_decisions/portfolio_decision_agent.py --date 20261027
 
 # --- L4 委託單計算與審查 ---
@@ -377,7 +402,7 @@ python L4_orders/order_calculator.py --no-gemini              # 僅執行 Python
 python L4_orders/order_calculator.py --dry-run                # 僅產出 Prompt 檢視
 
 # --- D-Plan 總組裝與驗證器 ---
-python build_dplan.py                                         # 自動組裝最新日期產出
+python build_dplan.py                                         # 自動組裝最新日期產出至 final_dplan
 python build_dplan.py --date 20261027                         # 指定組裝日期
 python build_dplan.py --trade-date 2026-10-27                 # 手動覆寫宣告之 trade_date
 ```

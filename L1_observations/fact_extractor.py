@@ -108,17 +108,38 @@ PROMPT_TEMPLATE = """\
 # --------------------------------------------------------------------------- #
 # 讀檔工具
 # --------------------------------------------------------------------------- #
-def _latest_per_dataset(folder: Path, patterns: tuple) -> List[Path]:
-    """資料夾內，同一資料集 (去掉結尾 _YYYYMMDD) 只取日期最新的一個檔案。"""
+def _latest_per_dataset(
+    folder: Path,
+    patterns: tuple,
+    target_date: Optional[str] = None,
+) -> List[Path]:
+    """資料夾內，同一資料集 (去掉結尾 _YYYYMMDD) 取符合日期限制中最新的一個檔案。
+
+    若指定 target_date，則僅採用日期 <= target_date 的檔案 (避免使用未來數據)。
+    """
+    c_target = clean_date_str(target_date) if target_date else None
     latest: dict = {}
+    fallback: dict = {}
+
     for pat in patterns:
         for p in folder.glob(pat):
             m = re.match(r"^(.*)_(\d{8})$", p.stem)
             key = (m.group(1) if m else p.stem, p.suffix)
             stamp = m.group(2) if m else ""
+
+            # 備援：記錄整體最新檔
+            if key not in fallback or stamp > fallback[key][0]:
+                fallback[key] = (stamp, p)
+
+            # 符合目標日期條件 (stamp <= c_target)
+            if c_target and stamp and stamp > c_target:
+                continue
+
             if key not in latest or stamp > latest[key][0]:
                 latest[key] = (stamp, p)
-    return sorted(p for _, p in latest.values())
+
+    chosen = latest if latest else fallback
+    return sorted(p for _, p in chosen.values())
 
 
 STOCK_CODE_RE = re.compile(r"^\d{4}$")
@@ -222,7 +243,10 @@ def _ingest_parquet(path: Path, spec: InputSpec, res: LoadedInputs, other_parts:
         other_parts.append(f"{name}:\n" + df.to_csv(sep="\t", index=False))
 
 
-def load_inputs(inputs: List[InputSpec] = INPUTS) -> LoadedInputs:
+def load_inputs(
+    inputs: List[InputSpec] = INPUTS,
+    target_date: Optional[str] = None,
+) -> LoadedInputs:
     """依 INPUTS 讀入所有資料。
 
     - 大盤資料：存入 market_tables 與 market_values。
@@ -237,7 +261,7 @@ def load_inputs(inputs: List[InputSpec] = INPUTS) -> LoadedInputs:
         if not folder.is_dir():
             print(f"[略過] 找不到資料夾 {folder}")
             continue
-        files = _latest_per_dataset(folder, spec.patterns)
+        files = _latest_per_dataset(folder, spec.patterns, target_date=target_date)
         if not files:
             print(f"[略過] {folder} 內沒有符合 {spec.patterns} 的檔案")
             continue
@@ -269,12 +293,12 @@ def load_inputs(inputs: List[InputSpec] = INPUTS) -> LoadedInputs:
     return res
 
 
-def load_sources() -> List[dict]:
+def load_sources(target_date: Optional[str] = None) -> List[dict]:
     """讀取 L0 輸出的最新來源清單 (每個 s*_*.json 取最新一份)，合併為清單。"""
     sources: List[dict] = []
     if not SOURCES_DIR.is_dir():
         return sources
-    for p in _latest_per_dataset(SOURCES_DIR, ("*.json",)):
+    for p in _latest_per_dataset(SOURCES_DIR, ("*.json",), target_date=target_date):
         try:
             sources.extend(json.loads(p.read_text(encoding="utf-8")))
         except Exception as e:  # noqa: BLE001
@@ -410,8 +434,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     target_date = prompt_trade_date(args.date, prompt_text="L1 事實擷取 - 交易日期")
     clean_date = clean_date_str(target_date)
 
-    sources = load_sources()
-    loaded = load_inputs()
+    sources = load_sources(target_date=clean_date)
+    loaded = load_inputs(target_date=clean_date)
     prompt = build_prompt(loaded.text, sources)
     print(f"交易日期: {clean_date} | 大盤指標數: {len(loaded.market_values)} | 個股數: {len(loaded.stock_values)} | Prompt 字元數: {len(prompt):,}")
 

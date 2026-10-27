@@ -63,7 +63,7 @@ def get_stock_sentiment(stock_id: str = "2330") -> Dict[str, Any]:
     resp.raise_for_status()
     return resp.json()
 
-def main():
+def main(target_date: Optional[str] = None):
     # 3. 批次抓取多檔股票
     stock_list = [
         "1303", "4958", "6505", "8046", "3189", "4938", "1301", "3533", "1802", "6415",
@@ -103,17 +103,13 @@ def main():
         print("\n📊 抓取結果預覽：")
         print(df_sentiment)
 
-        # 5. 設定上上層資料夾與動態檔名 (帶有今天日期)
-        # 假設 py 檔在子資料夾中，Path(__file__).resolve().parent.parent.parent 代表上上層
+        # 5. 設定上上層資料夾與動態檔名
         base_dir = Path(__file__).resolve().parent.parent.parent
         target_dir = base_dir / "data" / "CMoney_Sentiment"
-        
-        # 自動建立目標資料夾（若不存在）
         target_dir.mkdir(parents=True, exist_ok=True)
 
-        # 取得今天日期並組合成檔名 (例如: cmoney_sentiment_20261026.parquet)
-        today_str = datetime.now(TW_TZ).strftime("%Y%m%d")
-        file_name = f"cmoney_sentiment_{today_str}.parquet"
+        target_date_str = target_date or datetime.now(TW_TZ).strftime("%Y%m%d")
+        file_name = f"cmoney_sentiment_{target_date_str}.parquet"
         output_path = target_dir / file_name
 
         # 6. 輸出為 parquet 檔
@@ -121,12 +117,12 @@ def main():
         print(f"\n💾 檔案已成功儲存至: {output_path}")
 
         # 7. 輸出 D-Plan L0 sources JSON
-        write_sources_json(base_dir, today_str)
+        write_sources_json(base_dir, target_date_str)
     else:
         print("⚠️ 沒有成功抓取到任何資料。")
 
 
-def write_sources_json(base_dir: Path, today_str: str) -> Path:
+def write_sources_json(base_dir: Path, target_date_str: str) -> Path:
     """輸出 D-Plan L0 sources JSON(陣列);content_as_of 為程式執行當下時間(+08:00)。"""
     source = {
         "source_id": "S2",
@@ -137,10 +133,24 @@ def write_sources_json(base_dir: Path, today_str: str) -> Path:
     }
     out_dir = base_dir / "data" / "D-Paln_Output" / "l0_sources"
     out_dir.mkdir(parents=True, exist_ok=True)
-    path = out_dir / f"s2_cmoney_sentiment_sources_{today_str}.json"
+    path = out_dir / f"s2_cmoney_sentiment_sources_{target_date_str}.json"
     path.write_text(json.dumps([source], ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"📄 sources JSON 已儲存至: {path}")
     return path
 
+
 if __name__ == "__main__":
-    main()
+    import argparse
+    # 設定 code/ 為匯入路徑
+    CODE_DIR = Path(__file__).resolve().parents[1]
+    if str(CODE_DIR) not in sys.path:
+        sys.path.insert(0, str(CODE_DIR))
+    from configs.date_utils import clean_date_str, prompt_trade_date
+
+    parser = argparse.ArgumentParser(description="CMoney 討論區個股情緒爬蟲")
+    parser.add_argument("--date", type=str, default=None, help="目標日期 (格式 YYYYMMDD 或 YYYY-MM-DD)")
+    args = parser.parse_args()
+
+    t_date = prompt_trade_date(args.date, prompt_text="CMoney 情緒爬蟲 - 目標日期")
+    c_date = clean_date_str(t_date)
+    main(target_date=c_date)

@@ -71,6 +71,13 @@ TechIndicator = StockIndicator
 TECH_INDICATORS = ALL_INDICATORS
 
 
+# 設定 code/ 為匯入路徑
+CODE_DIR = Path(__file__).resolve().parents[1]
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
+
+from configs.date_utils import clean_date_str, prompt_trade_date  # noqa: E402
+
 # --------------------------------------------------------------------------- #
 # 工具函式
 # --------------------------------------------------------------------------- #
@@ -79,10 +86,15 @@ def _safe_filename(name: str) -> str:
     return re.sub(r'[<>:"/\\|?*]', "_", name)
 
 
-def build_path(ind: Union[StockIndicator, MarketIndicator], day: Optional[date] = None) -> Path:
+def build_path(ind: Union[StockIndicator, MarketIndicator], day: Optional[Union[date, str]] = None) -> Path:
     """根據指標所屬資料夾 (大盤 / 基本面 / 技術面 / 籌碼面) 產生存檔路徑。"""
-    day = day or date.today()
-    fname = f"{_safe_filename(ind.name)}_{day:%Y%m%d}.{FILE_FORMAT}"
+    if isinstance(day, str):
+        c_date = clean_date_str(day)
+    elif isinstance(day, date):
+        c_date = f"{day:%Y%m%d}"
+    else:
+        c_date = date.today().strftime("%Y%m%d")
+    fname = f"{_safe_filename(ind.name)}_{c_date}.{FILE_FORMAT}"
     return DATA_ROOT / ind.folder / fname
 
 
@@ -139,9 +151,15 @@ def save_dataset(df: pd.DataFrame, path: Path) -> None:
     df.to_parquet(path, engine="pyarrow", compression=PARQUET_COMPRESSION, index=False)
 
 
-def write_sources_json(day: Optional[date] = None) -> Path:
+def write_sources_json(day: Optional[Union[date, str]] = None) -> Path:
     """輸出 D-Plan L0 sources JSON；content_as_of 為台北時區執行當下時間。"""
-    day = day or date.today()
+    if isinstance(day, str):
+        c_date = clean_date_str(day)
+    elif isinstance(day, date):
+        c_date = f"{day:%Y%m%d}"
+    else:
+        c_date = date.today().strftime("%Y%m%d")
+
     now_tpe = datetime.now(timezone(timedelta(hours=8)))
     source = {
         "source_id": "S1",
@@ -151,7 +169,7 @@ def write_sources_json(day: Optional[date] = None) -> Path:
         "name": "FinLab",
     }
     SOURCES_DIR.mkdir(parents=True, exist_ok=True)
-    path = SOURCES_DIR / f"{SOURCES_PREFIX}_{day:%Y%m%d}.json"
+    path = SOURCES_DIR / f"{SOURCES_PREFIX}_{c_date}.json"
     path.write_text(json.dumps([source], ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"sources JSON -> {path}")
     return path
@@ -160,7 +178,11 @@ def write_sources_json(day: Optional[date] = None) -> Path:
 # --------------------------------------------------------------------------- #
 # 對外 API
 # --------------------------------------------------------------------------- #
-def download_all(only: Optional[list[str]] = None, overwrite: bool = False) -> dict[str, str]:
+def download_all(
+    only: Optional[list[str]] = None,
+    overwrite: bool = False,
+    target_date: Optional[Union[date, str]] = None,
+) -> dict[str, str]:
     """計算所有 (或符合關鍵字的) 指標，回傳 {指標名稱: 狀態}。"""
     import finlab
 
@@ -172,7 +194,7 @@ def download_all(only: Optional[list[str]] = None, overwrite: bool = False) -> d
     ]
     results: dict[str, str] = {}
     for i, ind in enumerate(targets, 1):
-        path = build_path(ind)
+        path = build_path(ind, day=target_date)
         tag = f"[{i}/{len(targets)}] {ind.folder}/{ind.name}"
         if path.exists() and not overwrite:
             print(f"{tag} 已存在，略過")
@@ -248,11 +270,16 @@ def load_dataset(name: str, day: Optional[str] = None, set_index: bool = True) -
 
 def main(argv: Optional[list[str]] = None) -> int:
     parser = argparse.ArgumentParser(description="以 FinLab 資料計算指標 (大盤、基本面、技術面、籌碼面) 並存成 parquet")
+    parser.add_argument("--date", type=str, default=None, help="目標日期 (格式 YYYYMMDD 或 YYYY-MM-DD)")
     parser.add_argument("--only", nargs="*", help="只計算名稱或資料夾包含這些關鍵字的指標 (例如: 大盤、基本面、taiex)")
     parser.add_argument("--overwrite", action="store_true", help="當日檔案已存在時仍重新計算")
     args, _ = parser.parse_known_args(argv)
-    results = download_all(only=args.only, overwrite=args.overwrite)
-    write_sources_json()
+
+    target_date = prompt_trade_date(args.date, prompt_text="FinLab 市場寬表計算 - 目標日期")
+    c_date = clean_date_str(target_date)
+
+    results = download_all(only=args.only, overwrite=args.overwrite, target_date=c_date)
+    write_sources_json(day=c_date)
     return 0 if all(v in ("ok", "skipped") for v in results.values()) else 1
 
 

@@ -56,6 +56,13 @@ def run_pipeline(
     print(f" [D-Plan Pipeline] 啟動每日端到端自動化產線 (日期: {t_date}, 交易日: {final_trade_date}, 隊伍: {team_id})")
     print("=" * 75)
 
+    # 0. DataPack 預處理 (轉換 Raw JSON -> Processed Markdown)
+    print("\n>>> [Step 0/5] 檢查並轉換 DataPack 原始資料...")
+    try:
+        _run_substage("L0_sources/datapack_loader.py", ["--date", t_date])
+    except Exception as exc:
+        print(f"    (DataPack 預處理提示: {exc}，若已有 Processed 檔案將繼續嘗試後續步驟)")
+
     # 1. L2M Market View
     if not skip_l2m:
         print("\n>>> [Step 1/5] 執行 L2M 市場整體判斷 Agent...")
