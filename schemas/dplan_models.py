@@ -22,6 +22,25 @@ InfId = Annotated[str, StringConstraints(pattern=r"^I[0-9]{1,3}$")]
 DecisionId = Annotated[str, StringConstraints(pattern=r"^D[0-9]{1,3}$")]
 TickerStr = Annotated[str, StringConstraints(pattern=r"^[0-9]{4}$")]
 ActionType = Literal["BUY", "ADD", "TRIM", "SELL_ALL"]
+AuthorityType = Literal["twse", "tpex", "taifex", "mops", "fininst", "media", "vendor", "other"]
+
+
+# --------------------------------------------------------------------------- #
+# L0：資料來源層 sources
+# --------------------------------------------------------------------------- #
+class Source(BaseModel):
+    """D-Plan v4.3 資料來源層規格模型 (1 ~ 50 筆)。"""
+
+    model_config = ConfigDict(extra="forbid")
+
+    source_id: SourceId
+    authority: AuthorityType
+    url: str = Field(description="資料來源網址")
+    content_as_of: str = Field(description="資料內容描述時點 (ISO-8601，限 +08:00)")
+    name: Optional[str] = Field(default=None, max_length=300, description="人讀名稱")
+    archive_url: Optional[str] = Field(default=None, description="第三方存檔連結")
+    published_at: Optional[str] = Field(default=None, description="發布時間 (+08:00)")
+    fetched_at: Optional[str] = Field(default=None, description="抓取時間 (+08:00)")
 
 
 # --------------------------------------------------------------------------- #
@@ -595,6 +614,119 @@ def drafts_to_orders(
         orders=final_orders,
         review_notes=resp.review_notes,
     )
+
+
+# --------------------------------------------------------------------------- #
+# 底層元資料：agent_metadata
+# --------------------------------------------------------------------------- #
+ModelProviderType = Literal[
+    "anthropic", "openai", "google", "xai", "deepseek", "alibaba",
+    "meta", "mistral", "cohere", "amazon", "microsoft", "nvidia", "taide", "other"
+]
+
+
+class AgentMetadata(BaseModel):
+    """D-Plan v4.3 執行元資料規格模型。"""
+
+    model_config = ConfigDict(extra="forbid")
+
+    model_provider: ModelProviderType = Field(default="google", description="模型供應商")
+    model_version: str = Field(min_length=3, max_length=60, description="確切模型版本名稱")
+    run_started_at: str = Field(description="執行起始時間戳記 (+08:00)")
+    run_completed_at: str = Field(description="執行完成時間戳記 (+08:00)")
+    code_version: str = Field(
+        min_length=1,
+        max_length=64,
+        pattern=r"^[A-Za-z0-9_.:/\-]{1,64}$",
+        description="程式碼版本識別，如 git:a1b2c3d",
+    )
+    input_tokens: Optional[int] = Field(default=None, ge=0)
+    output_tokens: Optional[int] = Field(default=None, ge=0)
+    tool_use_count: Optional[int] = Field(default=None, ge=0)
+
+
+# --------------------------------------------------------------------------- #
+# D-Plan 完整頂層文件模型：DPlanDocument
+# --------------------------------------------------------------------------- #
+class DPlanDocument(BaseModel):
+    """D-Plan 完整計劃書模型 (嚴格遵循 D-Plan Schema v4.3 及額外欄位禁止原則)。"""
+
+    model_config = ConfigDict(extra="forbid", populate_by_name=True)
+
+    schema_version: Literal["4.3"] = "4.3"
+    doc_type: Literal["D-Plan"] = "D-Plan"
+    team_id: str = Field(pattern=r"^[A-Za-z0-9_-]{1,32}$", description="參賽隊伍 ID")
+    trade_date: str = Field(pattern=r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$", description="交易日 (YYYY-MM-DD)")
+
+    sources: List[Source] = Field(min_length=1, max_length=50)
+    observations: List[Observation] = Field(min_length=1, max_length=100)
+    market_view: MarketView
+    inferences: List[Inference] = Field(min_length=1, max_length=60)
+    decisions: List[Decision] = Field(min_length=0, max_length=60)
+    no_trade_decisions: List[NoTradeDecision] = Field(min_length=0, max_length=30)
+    orders: List[Order] = Field(min_length=0, max_length=60)
+    agent_metadata: AgentMetadata
+
+    note: Optional[str] = Field(default=None, alias="_NOTE", description="選填：備註 (非正式欄位)")
+
+    @model_validator(mode="after")
+    def validate_reference_chains(self) -> "DPlanDocument":
+        """完整交叉檢驗 D-Plan 上下層引用鏈之完整性與互斥性 (嚴禁孤兒引用或斷鏈)。"""
+        # 1. 建立各層可用 ID 集合
+        source_ids = {s.source_id for s in self.sources}
+        obs_ids = {o.obs_id for o in self.observations}
+        inf_ids = {i.inf_id for i in self.inferences}
+        dec_ids = {d.decision_id for d in self.decisions}
+
+        # 2. 檢驗 L1 -> L0: observations[].source_ref 必須存在於 sources
+        for obs in self.observations:
+            bad_s = [s for s in obs.source_ref if s not in source_ids]
+            if bad_s:
+                raise ValueError(f"Observation {obs.obs_id} 引用了未定義的 source_id {bad_s}")
+
+        # 3. 檢驗 L2M -> L1: market_view.basis_refs 必須存在於 observations
+        bad_m = [o for o in self.market_view.basis_refs if o not in obs_ids]
+        if bad_m:
+            raise ValueError(f"market_view.basis_refs 引用了未定義的 obs_id {bad_m}")
+
+        # 4. 檢驗 L2 -> L1: inferences[].premise_refs 必須存在於 observations
+        for inf in self.inferences:
+            bad_p = [o for o in inf.premise_refs if o not in obs_ids]
+            if bad_p:
+                raise ValueError(f"Inference {inf.inf_id} 引用了未定義的 obs_id {bad_p}")
+
+        # 5. 檢驗 L3 -> L2: decisions[].inference_refs 必須存在於 inferences
+        for dec in self.decisions:
+            bad_i = [i for i in dec.inference_refs if i not in inf_ids]
+            if bad_i:
+                raise ValueError(f"Decision {dec.decision_id} ({dec.ticker}) 引用了未定義的 inf_id {bad_i}")
+
+        # 6. 檢驗 L3 -> L2: no_trade_decisions[].reason_refs 必須存在於 inferences
+        for nt in self.no_trade_decisions:
+            bad_r = [i for i in nt.reason_refs if i not in inf_ids]
+            if bad_r:
+                raise ValueError(f"NoTradeDecision ({nt.ticker}) 引用了未定義的 inf_id {bad_r}")
+
+        # 7. 檢驗 L3 互斥原則：decisions 與 no_trade_decisions 個股不得重複
+        dec_tickers = {d.ticker for d in self.decisions}
+        for nt in self.no_trade_decisions:
+            if nt.ticker in dec_tickers:
+                raise ValueError(f"個股 {nt.ticker} 同時存在於 decisions 與 no_trade_decisions，違反互斥原則")
+
+        # 8. 檢驗 L3 funding_for: 必須指向有效的 decision_id
+        for dec in self.decisions:
+            if dec.funding_for:
+                bad_f = [d for d in dec.funding_for if d not in dec_ids]
+                if bad_f:
+                    raise ValueError(f"Decision {dec.decision_id} funding_for 引用了不存在的決策 {bad_f}")
+
+        # 9. 檢驗 L4 -> L3: orders[].decision_ref 必須存在於 decisions
+        for ord_item in self.orders:
+            if ord_item.decision_ref not in dec_ids:
+                raise ValueError(f"Order ({ord_item.ticker}) 引用了未定義的 decision_id {ord_item.decision_ref}")
+
+        return self
+
 
 
 
