@@ -20,7 +20,7 @@
    - run_completed_at: 當前完成時間戳記 (+08:00)
    - code_version: 自動抓取 git commit hash (如 git:fbb03c6)
 4. 透過 Pydantic DPlanDocument 進行全量 Schema 與上下層因果引用鏈嚴格驗證 (extra='forbid')。
-5. 產出正式競賽格式檔案：D-Plan_<team_id>_<trade_date>.json。
+5. 產出正式競賽格式檔案至 data/D-Paln_Output/final_dplan/D-Plan_<team_id>_<trade_date>.json。
 
 用法::
 
@@ -52,6 +52,7 @@ CODE_DIR = Path(__file__).resolve().parent
 if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
+from configs.date_utils import prompt_trade_date  # noqa: E402
 from configs.gemini_client import GeminiClient  # noqa: E402
 from schemas.dplan_models import (  # noqa: E402
     AgentMetadata,
@@ -75,6 +76,7 @@ L2M_DIR = OUTPUT_BASE / "l2m_market_view"
 L2_DIR = OUTPUT_BASE / "l2_inferences"
 L3_DIR = OUTPUT_BASE / "l3_decisions"
 L4_DIR = OUTPUT_BASE / "l4_orders"
+FINAL_DPLAN_DIR = OUTPUT_BASE / "final_dplan"
 
 TW_TZ = timezone(timedelta(hours=8))
 DEFAULT_TEAM_ID = "TEAM_11402"
@@ -297,7 +299,7 @@ def assemble_dplan(
     trade_date = trade_date_override or _format_trade_date(c_date)
     team_id = team_id_override or DEFAULT_TEAM_ID
 
-    out_dir = output_dir or ROOT
+    out_dir = output_dir or FINAL_DPLAN_DIR
     out_dir.mkdir(parents=True, exist_ok=True)
 
     print(f"\n{'='*70}")
@@ -369,17 +371,9 @@ def assemble_dplan(
     with open(primary_out_path, "w", encoding="utf-8") as f:
         f.write(validated_doc.model_dump_json(indent=2, exclude_none=True))
 
-    # 亦在 data/D-Paln_Output 備存一份
-    backup_out_path = OUTPUT_BASE / out_filename
-    if backup_out_path != primary_out_path:
-        with open(backup_out_path, "w", encoding="utf-8") as f:
-            f.write(validated_doc.model_dump_json(indent=2, exclude_none=True))
-
     print(f"{'-'*70}")
     print(f"[Assembler] 成功產出正式 D-Plan 檔案至：")
     print(f" -> {primary_out_path}")
-    if backup_out_path != primary_out_path:
-        print(f" -> {backup_out_path}")
     print(f"{'='*70}\n")
 
     return primary_out_path
@@ -393,11 +387,14 @@ def main():
     parser.add_argument("--date", type=str, default=None, help="輸入資料日期 (例如 20261027 或 2026-10-27)")
     parser.add_argument("--trade-date", type=str, default=None, help="手動指定 D-Plan 交易日 (格式 YYYY-MM-DD)")
     parser.add_argument("--team-id", type=str, default=None, help="指定隊伍代號 (預設 TEAM_11402)")
-    parser.add_argument("--output-dir", type=str, default=None, help="指定輸出目錄")
+    parser.add_argument("--output-dir", type=str, default=None, help="指定輸出目錄 (預設 data/D-Paln_Output/final_dplan)")
     args = parser.parse_args()
 
+    # 取得交易日期 (若無命令列參數則在終端機提示輸入)
+    target_date = prompt_trade_date(args.date, prompt_text="D-Plan 總組裝 - 輸入資料日期")
+
     assemble_dplan(
-        target_date=args.date,
+        target_date=target_date,
         trade_date_override=args.trade_date,
         team_id_override=args.team_id,
         output_dir=Path(args.output_dir) if args.output_dir else None,

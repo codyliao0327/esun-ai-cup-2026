@@ -30,6 +30,7 @@ CODE_DIR = Path(__file__).resolve().parents[1]
 if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
+from configs.date_utils import prompt_trade_date  # noqa: E402
 from configs.gemini_client import GeminiClient  # noqa: E402
 from schemas.dplan_models import (  # noqa: E402
     Inference,
@@ -396,6 +397,7 @@ def build_prompt(
 def generate_inferences(
     prompt: str,
     valid_obs_ids: Optional[Set[str]] = None,
+    target_date: Optional[str] = None,
     stream: bool = True,
 ) -> List[Inference]:
     """呼叫 Gemini Client 進行結構化生成與嚴格檢核。"""
@@ -412,6 +414,14 @@ def generate_inferences(
         response_model=InferencesResponse,
         stream=stream,
     )
+
+    # 輸出 Gemini Usage 統計至 OUTPUT_DIR / "usage" / "l2_usage_YYYYMMDD.json"
+    if target_date:
+        client.save_usage_metadata(
+            output_dir=OUTPUT_DIR,
+            stage_prefix="l2",
+            target_date=target_date,
+        )
 
     if stream:
         print("\n" + "=" * 65)
@@ -452,7 +462,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         "--date",
         type=str,
         default=None,
-        help="目標日期 (預設為今日台北時間，例如 20261027 或 2026-10-27)",
+        help="目標日期 (格式如 20261027 或 2026-10-27)",
     )
     parser.add_argument(
         "--dry-run",
@@ -472,22 +482,22 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    # 決定基準日期
-    today = datetime.now(TW_TZ)
-    target_date = args.date or today.strftime("%Y%m%d")
+    # 取得交易日期 (若無命令列參數則在終端機提示輸入)
+    target_date = prompt_trade_date(args.date, prompt_text="L2 個股推論 - 交易日期")
+    clean_date = _clean_date_str(target_date)
 
     # 1. 讀入資料
     observations, all_obs_ids, l1_path = load_all_observations(
-        target_date=target_date,
+        target_date=clean_date,
         custom_path=args.l1_path,
     )
     etf_strategy_content = load_etf_strategy()
-    market_view_context = load_optional_market_view(target_date)
-    datapack_context = load_optional_datapack(target_date)
+    market_view_context = load_optional_market_view(clean_date)
+    datapack_context = load_optional_datapack(clean_date)
 
     # 2. 組裝 Prompt
     prompt = build_prompt(
-        target_date=target_date,
+        target_date=clean_date,
         observations=observations,
         all_obs_ids=all_obs_ids,
         etf_strategy_content=etf_strategy_content,
@@ -496,7 +506,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
 
     print(
-        f"[StockInferenceAgent] 準備就緒 | "
+        f"[StockInferenceAgent] 準備就緒 | 交易日: {clean_date} | "
         f"L1 觀察事實筆數: {len(observations)} | "
         f"Prompt 長度: {len(prompt):,} 字元"
     )
@@ -504,7 +514,6 @@ def main(argv: Optional[List[str]] = None) -> int:
     # 3. Dry-run 模式：只存 Prompt
     if args.dry_run:
         OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-        clean_date = _clean_date_str(target_date)
         prompt_file = OUTPUT_DIR / f"{OUTPUT_PREFIX}_prompt_{clean_date}.txt"
         prompt_file.write_text(prompt, encoding="utf-8")
         print(f"[StockInferenceAgent] --dry-run 已啟用：Prompt 已輸出至 {prompt_file}")
@@ -514,11 +523,12 @@ def main(argv: Optional[List[str]] = None) -> int:
     inferences = generate_inferences(
         prompt=prompt,
         valid_obs_ids=all_obs_ids,
+        target_date=clean_date,
         stream=not args.no_stream,
     )
 
     # 5. 輸出存檔
-    saved_path = save_inferences(inferences, target_date_str=target_date)
+    saved_path = save_inferences(inferences, target_date_str=clean_date)
     print(f"\n[StockInferenceAgent] 成功產出 {len(inferences)} 筆 L2 inferences：{saved_path}")
     print(f"前 2 筆推論預覽：")
     preview = {"inferences": [inf.model_dump(exclude_none=False) for inf in inferences[:2]]}

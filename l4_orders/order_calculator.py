@@ -44,6 +44,7 @@ CODE_DIR = Path(__file__).resolve().parents[1]
 if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
+from configs.date_utils import prompt_trade_date  # noqa: E402
 from configs.gemini_client import GeminiClient  # noqa: E402
 from schemas.dplan_models import (  # noqa: E402
     Order,
@@ -599,6 +600,12 @@ def run_order_calculator(
             response_model=OrdersResponse,
             stream=stream_enabled,
         )
+        # 輸出 Gemini Usage 統計至 OUTPUT_DIR / "usage" / "l4_usage_YYYYMMDD.json"
+        client.save_usage_metadata(
+            output_dir=OUTPUT_DIR,
+            stage_prefix="l4",
+            target_date=c_date,
+        )
     except Exception as e:
         print(f"[OrderCalculator] Gemini API 呼叫失敗: {e}，切換為以 Python 官方算單結果輸出。")
         response_model = OrdersResponse(
@@ -666,8 +673,11 @@ def main():
     parser.add_argument("--no-stream", action="store_true", help="關閉串流印出，改用一次性等待回傳")
     args = parser.parse_args()
 
+    # 取得交易日期 (若無命令列參數則在終端機提示輸入)
+    target_date = prompt_trade_date(args.date, prompt_text="L4 委託單計算 - 交易日期")
+
     run_order_calculator(
-        target_date=args.date,
+        target_date=target_date,
         dry_run=args.dry_run,
         no_gemini=args.no_gemini,
         no_stream=args.no_stream,

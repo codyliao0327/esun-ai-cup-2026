@@ -32,6 +32,7 @@ CODE_DIR = Path(__file__).resolve().parents[1]
 if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
+from configs.date_utils import clean_date_str, prompt_trade_date  # noqa: E402
 from schemas.dplan_models import (  # noqa: E402
     ObservationDraft,
     ObservationsResponse,
@@ -359,6 +360,7 @@ def extract_observations(
     prompt: str,
     loaded: LoadedInputs,
     valid_source_ids: Optional[set],
+    target_date: str,
     stream: bool = True,
 ) -> list:
     from configs.gemini_client import GeminiClient
@@ -372,6 +374,13 @@ def extract_observations(
 
     resp = client.generate_structured(prompt, ObservationsResponse, stream=stream)
 
+    # 輸出 Gemini Usage 統計
+    client.save_usage_metadata(
+        output_dir=OUTPUT_DIR,
+        stage_prefix="l1",
+        target_date=target_date,
+    )
+
     if stream:
         print("\n" + "=" * 60)
         print(" [Gemini 串流完成] 已接收全部資料，進行結構驗證與覆寫...")
@@ -381,10 +390,10 @@ def extract_observations(
     return drafts_to_observations(resp, valid_source_ids)
 
 
-def save_observations(observations: list, day: Optional[datetime] = None) -> Path:
-    day = day or datetime.now(TW_TZ)
+def save_observations(observations: list, target_date_str: Optional[str] = None) -> Path:
+    clean_date = clean_date_str(target_date_str) if target_date_str else datetime.now(TW_TZ).strftime("%Y%m%d")
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    path = OUTPUT_DIR / f"{OUTPUT_PREFIX}_{day:%Y%m%d}.json"
+    path = OUTPUT_DIR / f"{OUTPUT_PREFIX}_{clean_date}.json"
     payload = [o.model_dump(exclude_none=True) for o in observations]
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     return path
@@ -392,25 +401,30 @@ def save_observations(observations: list, day: Optional[datetime] = None) -> Pat
 
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(description="以 Gemini 擷取 D-Plan L1 observations")
+    parser.add_argument("--date", type=str, default=None, help="指定交易日期 (格式 YYYYMMDD 或 YYYY-MM-DD)")
     parser.add_argument("--dry-run", action="store_true", help="只輸出 prompt 文字檔，不呼叫 Gemini")
     parser.add_argument("--no-stream", action="store_true", help="關閉串流顯示，改用傳統非串流批次等待")
     args = parser.parse_args(argv)
 
+    # 取得交易日期 (若無命令列參數則在終端機提示輸入)
+    target_date = prompt_trade_date(args.date, prompt_text="L1 事實擷取 - 交易日期")
+    clean_date = clean_date_str(target_date)
+
     sources = load_sources()
     loaded = load_inputs()
     prompt = build_prompt(loaded.text, sources)
-    print(f"大盤指標數: {len(loaded.market_values)} | 個股數: {len(loaded.stock_values)} | Prompt 字元數: {len(prompt):,}")
+    print(f"交易日期: {clean_date} | 大盤指標數: {len(loaded.market_values)} | 個股數: {len(loaded.stock_values)} | Prompt 字元數: {len(prompt):,}")
 
     if args.dry_run:
-        out = OUTPUT_DIR / f"{OUTPUT_PREFIX}_prompt_{datetime.now(TW_TZ):%Y%m%d}.txt"
+        out = OUTPUT_DIR / f"{OUTPUT_PREFIX}_prompt_{clean_date}.txt"
         OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
         out.write_text(prompt, encoding="utf-8")
         print(f"dry-run：prompt 已存至 {out}")
         return 0
 
     valid_ids = {s["source_id"] for s in sources} or None
-    observations = extract_observations(prompt, loaded, valid_ids, stream=not args.no_stream)
-    path = save_observations(observations)
+    observations = extract_observations(prompt, loaded, valid_ids, target_date=clean_date, stream=not args.no_stream)
+    path = save_observations(observations, target_date_str=clean_date)
     print(f"完成：{len(observations)} 筆 observations -> {path}")
     return 0
 

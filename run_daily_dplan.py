@@ -22,6 +22,7 @@ if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
 from build_dplan import assemble_dplan  # noqa: E402
+from configs.date_utils import format_iso_trade_date, prompt_trade_date  # noqa: E402
 
 TW_TZ = timezone(timedelta(hours=8))
 PYTHON_EXE = sys.executable
@@ -48,10 +49,11 @@ def run_pipeline(
     skip_l4: bool = False,
 ):
     """一鍵執行每日 D-Plan 端到端完整生成流程。"""
-    t_date = target_date or datetime.now(TW_TZ).strftime("%Y%m%d")
+    t_date = prompt_trade_date(target_date, prompt_text="D-Plan 自動產線 - 交易日期")
+    final_trade_date = trade_date or format_iso_trade_date(t_date)
 
     print("\n" + "=" * 75)
-    print(f" [D-Plan Pipeline] 啟動每日端到端自動化產線 (日期: {t_date}, 隊伍: {team_id})")
+    print(f" [D-Plan Pipeline] 啟動每日端到端自動化產線 (日期: {t_date}, 交易日: {final_trade_date}, 隊伍: {team_id})")
     print("=" * 75)
 
     # 1. L2M Market View
@@ -86,7 +88,7 @@ def run_pipeline(
     print("\n>>> [Step 5/5] 執行 D-Plan 總組裝與全量合規驗證...")
     final_file = assemble_dplan(
         target_date=t_date,
-        trade_date_override=trade_date,
+        trade_date_override=final_trade_date,
         team_id_override=team_id,
     )
 
