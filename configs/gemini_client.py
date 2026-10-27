@@ -1,4 +1,4 @@
-"""Gemini API 包裝器 (支援 Structured Outputs / JSON Schema)。
+"""Gemini API 包裝器 (支援 Structured Outputs / JSON Schema / Streaming)。
 
 依據官方 Google GenAI SDK 與 Interactions API 規範實作：
 - SDK: google-genai (`from google import genai`)
@@ -36,6 +36,34 @@ class GeminiClient:
 
         # 依據 google-genai 規範，將 api_key 明確傳入 Client 進行驗證
         self.client = genai.Client(api_key=self.api_key)
+
+    @staticmethod
+    def _extract_chunk_text(chunk: Any) -> str:
+        """從各種串流事件格式中提取增量文字。"""
+        if isinstance(chunk, str):
+            return chunk
+        # 1. 優先嘗試常用屬性 (output_text / text)
+        for attr in ("text", "output_text"):
+            val = getattr(chunk, attr, None)
+            if isinstance(val, str) and val:
+                return val
+        # 2. 嘗試 delta 物件
+        delta = getattr(chunk, "delta", None)
+        if delta is not None:
+            for attr in ("text", "output_text"):
+                val = getattr(delta, attr, None)
+                if isinstance(val, str) and val:
+                    return val
+        # 3. 嘗試 candidates 物件 (標準 generate_content 格式)
+        candidates = getattr(chunk, "candidates", None)
+        if candidates and len(candidates) > 0:
+            c = candidates[0]
+            content = getattr(c, "content", None)
+            if content:
+                parts = getattr(content, "parts", None)
+                if parts:
+                    return "".join(getattr(p, "text", "") for p in parts)
+        return ""
 
     def test_connection(self, model: Optional[str] = None) -> bool:
         """測試 API 金鑰與連線是否正常。
@@ -112,29 +140,70 @@ class GeminiClient:
         prompt: Union[str, List[Any]],
         response_model: Type[BaseModel],
         model: Optional[str] = None,
+        stream: bool = True,
+        print_stream: bool = True,
     ) -> BaseModel:
         """要求模型依據指定的 Pydantic 模型產生結構化 JSON 輸出。
+
+        支援 Stream 模式：可即時在終端機印出產字過程，便於即時監看內容與在中斷時節省輸出 Token。
 
         Args:
             prompt: 提示詞字串。
             response_model: Pydantic 的 BaseModel 衍生類別。
             model: 模型名稱。
+            stream: 是否使用串流 (Streaming) 方式即時生成。預設為 True。
+            print_stream: 串流模式下是否即時將字元輸出至 stdout。預設為 True。
 
         Returns:
             BaseModel: 依 response_model 解析並驗證後的物件。
         """
         target_model = model or self.default_model
-        interaction = self.client.interactions.create(
-            model=target_model,
-            input=prompt,
-            response_format={
-                "type": "text",
-                "mime_type": "application/json",
-                "schema": response_model.model_json_schema(),
-            },
-        )
-        # 使用 Pydantic 解析模型輸出的 JSON 字串
-        return response_model.model_validate_json(interaction.output_text)
+        response_format = {
+            "type": "text",
+            "mime_type": "application/json",
+            "schema": response_model.model_json_schema(),
+        }
+
+        if not stream:
+            interaction = self.client.interactions.create(
+                model=target_model,
+                input=prompt,
+                response_format=response_format,
+            )
+            return response_model.model_validate_json(interaction.output_text)
+
+        # 串流生成模式
+        try:
+            stream_resp = self.client.interactions.create(
+                model=target_model,
+                input=prompt,
+                response_format=response_format,
+                stream=True,
+            )
+            chunks: List[str] = []
+            for event in stream_resp:
+                piece = self._extract_chunk_text(event)
+                if piece:
+                    chunks.append(piece)
+                    if print_stream:
+                        print(piece, end="", flush=True)
+
+            if print_stream:
+                print()  # 串流結束換行
+
+            full_text = "".join(chunks)
+            return response_model.model_validate_json(full_text)
+        except Exception as e:
+            # 若串流請求在特定環境不支援，自動 fallback 為非串流批次模式
+            if "stream" in str(e).lower() or type(e).__name__ in ("NotImplementedError", "TypeError"):
+                print(f"\n[GeminiClient 提示] 串流模式未就緒 ({e})，自動切換為批次生成...")
+                interaction = self.client.interactions.create(
+                    model=target_model,
+                    input=prompt,
+                    response_format=response_format,
+                )
+                return response_model.model_validate_json(interaction.output_text)
+            raise
 
 
 if __name__ == "__main__":

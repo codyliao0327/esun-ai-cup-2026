@@ -65,17 +65,12 @@ def get_stock_sentiment(stock_id: str = "2330") -> Dict[str, Any]:
 def main():
     # 3. 批次抓取多檔股票
     stock_list = [
-    "2330", "2454", "2308", "2317", "3711", "2881", "2383", "2303", "2882", "3037",
-    "2891", "1303", "2345", "2382", "2408", "7769", "2412", "2327", "6669", "3017",
-    "2885", "2887", "2360", "2886", "2059", "6505", "2884", "2880", "2357", "2890",
-    "8046", "2344", "3231", "2892", "3008", "2356", "2404", "6515", "3533", "2313",
-    "2337", "5871", "3044", "3702", "1101", "2409", "6239", "2609", "2834", "6139",
-    "2883", "3443", "3653", "2395", "2301", "6446", "4958", "2603", "5880", "1216",
-    "3045", "2368", "3665", "4904", "3481", "2379", "1301", "1326", "3189", "3034",
-    "2207", "2002", "2801", "2449", "1590", "3661", "6770", "3036", "2615", "2618",
-    "2912", "4938", "2376", "5876", "1519", "6415", "6919", "2324", "2347", "1504",
-    "7750", "1402", "1605", "2610", "6789", "1802", "8210", "2451", "2812", "2377"
+        "1303", "4958", "6505", "8046", "3189", "4938", "1301", "3533", "1802", "6415",
+        "1326", "2603", "2368", "2891", "3034", "3037", "2409", "3044", "3653", "2379",
+        "2383", "2881", "3231", "2609", "2313", "6446", "2882", "2357", "3443", "3711",
+        "2317", "3008", "2345", "2404", "2330", "2887", "3661", "2376", "2382", "2883"
 ]
+
     rows = []
 
     for sid in stock_list:
@@ -87,14 +82,14 @@ def main():
                 "股票代號": sid,
                 "情緒分數": data.get("sentimentScore"),
                 "樣本數": data.get("sampleCount"),
-                "狀態": data.get("state"),
+                # "狀態": data.get("state"),
                 "極度樂觀": dist.get("strongBull", 0),
                 "樂觀": dist.get("bull", 0),
                 "中立": dist.get("neutral", 0),
                 "謹慎": dist.get("bear", 0),
                 "極度謹慎": dist.get("strongBear", 0),
-                "統計開始時間": ms_to_tw_str(data.get("startTime")),
-                "統計結束時間": ms_to_tw_str(data.get("endTime")),
+                # "統計開始時間": ms_to_tw_str(data.get("startTime")),
+                # "統計結束時間": ms_to_tw_str(data.get("endTime")),
             })
             print(f"✅ 成功抓取 {sid}")
         except Exception as e:
@@ -123,8 +118,28 @@ def main():
         # 6. 輸出為 parquet 檔
         df_sentiment.to_parquet(output_path, engine="pyarrow", compression="zstd", index=False)
         print(f"\n💾 檔案已成功儲存至: {output_path}")
+
+        # 7. 輸出 D-Plan L0 sources JSON
+        write_sources_json(base_dir, today_str)
     else:
         print("⚠️ 沒有成功抓取到任何資料。")
+
+
+def write_sources_json(base_dir: Path, today_str: str) -> Path:
+    """輸出 D-Plan L0 sources JSON(陣列);content_as_of 為程式執行當下時間(+08:00)。"""
+    source = {
+        "source_id": "S2",
+        "authority": "vendor",
+        "url": "https://www.cmoney.tw/forum/stock",
+        "content_as_of": datetime.now(TW_TZ).isoformat(timespec="seconds"),
+        "name": "CMoney",
+    }
+    out_dir = base_dir / "data" / "D-Paln_Output" / "l0_sources"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / f"s2_cmoney_sentiment_sources_{today_str}.json"
+    path.write_text(json.dumps([source], ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"📄 sources JSON 已儲存至: {path}")
+    return path
 
 if __name__ == "__main__":
     main()
