@@ -4,7 +4,11 @@ from pathlib import Path
 import json
 from typing import Dict, Any, List, Optional
 import requests
+import urllib3
 import pandas as pd
+
+# 關閉 SSL 不安全連線警告
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # 1. 設定台灣時區 (UTC+8)，將毫秒時間戳轉為台灣時間
 TW_TZ = timezone(timedelta(hours=8))
@@ -17,6 +21,8 @@ def ms_to_tw_str(ms: Optional[int]) -> str:
 
 # 2. 建立 Session 並帶入驗證成功的 Cookies 與 Headers
 session = requests.Session()
+# 忽略 CMoney 伺服器缺少 Subject Key Identifier 之 SSL 憑證驗證問題
+session.verify = False
 
 session.cookies.update({
     '_ga': 'GA1.1.616575418.1792862649',
