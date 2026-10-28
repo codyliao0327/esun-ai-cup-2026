@@ -221,13 +221,17 @@ def download_all(
     return results
 
 
-def load_dataset(name: str, day: Optional[str] = None, set_index: bool = True) -> pd.DataFrame:
-    """讀取已計算的指標檔。
+def load_dataset(name: str, day: str, set_index: bool = True) -> pd.DataFrame:
+    """讀取已計算的指標檔 (嚴格比對當層目錄下 {name}_{day}.parquet)。
 
     name: 指標名稱 (如 'taiex_close_latest', 'roe_latest', 'foreign_net_buy_5d' 等)。
-    day:  'YYYYMMDD'；None 時讀取該指標最新日期的檔案。
+    day:  'YYYYMMDD' (必填)。
     set_index: True 時把 date 欄位還原為索引。
     """
+    if not day:
+        raise ValueError("load_dataset 必須指定 day (格式 YYYYMMDD)")
+
+    c_day = clean_date_str(day)
     matches = [ind for ind in ALL_INDICATORS if ind.name == name]
     prefix = _safe_filename(name)
 
@@ -246,20 +250,13 @@ def load_dataset(name: str, day: Optional[str] = None, set_index: bool = True) -
     for folder in folders_to_search:
         if not folder.exists():
             continue
-        if day:
-            p = folder / f"{prefix}_{day}.{FILE_FORMAT}"
-            if p.exists():
-                target_path = p
-                break
-        else:
-            pat = re.compile(rf"^{re.escape(prefix)}_(\d{{8}})\.{FILE_FORMAT}$")
-            files = sorted(p for p in folder.glob(f"{prefix}_*.{FILE_FORMAT}") if pat.match(p.name))
-            if files:
-                target_path = files[-1]
-                break
+        p = folder / f"{prefix}_{c_day}.{FILE_FORMAT}"
+        if p.exists():
+            target_path = p
+            break
 
     if target_path is None:
-        raise FileNotFoundError(f"找不到指標 {name} 的資料檔案 (已搜尋: {[str(f) for f in folders_to_search]})")
+        raise FileNotFoundError(f"找不到指標 {name} 日期為 {c_day} 的資料檔案 (已搜尋當層: {[str(f) for f in folders_to_search]})")
 
     df = pd.read_parquet(target_path)
     if set_index:

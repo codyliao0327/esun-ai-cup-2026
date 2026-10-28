@@ -98,27 +98,6 @@ def _format_trade_date(date_str: str) -> str:
     return date_str
 
 
-def find_latest_file(directory: Path, pattern: str) -> Optional[Path]:
-    """在指定目錄尋找符合條件且日期最新的一個檔案。"""
-    if not directory.exists():
-        return None
-    matched = list(directory.glob(pattern))
-    if not matched:
-        return None
-
-    def _extract_date(p: Path) -> str:
-        m = re.findall(r"\d{8}", p.name)
-        if m:
-            return m[-1]
-        m2 = re.findall(r"\d{4}-\d{2}-\d{2}", p.name)
-        if m2:
-            return m2[-1].replace("-", "")
-        return ""
-
-    matched_sorted = sorted(matched, key=lambda p: (_extract_date(p), p.stat().st_mtime))
-    return matched_sorted[-1]
-
-
 def get_git_code_version() -> str:
     """自動取得當前 git 短 commit hash 作為 code_version。"""
     try:
@@ -149,11 +128,14 @@ def get_model_version() -> str:
 
 
 # =============================================================================
-# 各層資料讀取器
+# 各層資料讀取器 (嚴格僅讀取指定日期結尾 _YYYYMMDD 之檔案，找不到即報錯)
 # =============================================================================
 def load_l0_sources(target_date: str) -> Tuple[List[Dict[str, Any]], datetime]:
-    """讀入 L0 sources 並傳回最早檔案時間作為 run_started_at。"""
+    """讀入特定日期的 L0 sources (嚴格比對檔名結尾為 _YYYYMMDD.json)。"""
     c_date = _clean_date_str(target_date)
+    if not c_date or len(c_date) != 8:
+        raise ValueError(f"target_date 必須為 8 碼 YYYYMMDD 格式: '{target_date}'")
+
     earliest_time = datetime.now(TW_TZ)
 
     # 1. 優先嘗試 l0_sources_YYYYMMDD.json
@@ -164,13 +146,11 @@ def load_l0_sources(target_date: str) -> Tuple[List[Dict[str, Any]], datetime]:
             data = json.load(f)
             return data if isinstance(data, list) else data.get("sources", []), earliest_time
 
-    # 2. 搜尋子檔案 (例如 s1_*.json, s2_*.json)
-    matched = list(L0_DIR.glob(f"*{c_date}*.json")) if L0_DIR.exists() else []
-    if not matched and L0_DIR.exists():
-        matched = list(L0_DIR.glob("*.json"))
+    # 2. 搜尋子檔案 (例如 s1_*_YYYYMMDD.json, s2_*_YYYYMMDD.json)
+    matched = [p for p in L0_DIR.glob("*.json") if p.stem.endswith(f"_{c_date}")] if L0_DIR.exists() else []
 
     if not matched:
-        raise FileNotFoundError(f"找不到 L0 sources 來源檔案，搜尋目錄：{L0_DIR}")
+        raise FileNotFoundError(f"找不到日期結尾為 _{c_date}.json 的 L0 sources 來源檔案，搜尋目錄：{L0_DIR}")
 
     all_sources: List[Dict[str, Any]] = []
     seen_ids = set()
@@ -189,6 +169,7 @@ def load_l0_sources(target_date: str) -> Tuple[List[Dict[str, Any]], datetime]:
                         seen_ids.add(sid)
         except Exception as e:
             print(f"[Warn] 讀取 L0 檔案 {p} 失敗: {e}")
+            raise
 
     if timestamps:
         earliest_time = datetime.fromtimestamp(min(timestamps), tz=TW_TZ)
@@ -204,69 +185,78 @@ def load_l0_sources(target_date: str) -> Tuple[List[Dict[str, Any]], datetime]:
 
 
 def load_l1_observations(target_date: str) -> List[Dict[str, Any]]:
-    """讀入 L1 observations。"""
+    """讀入特定日期的 L1 observations (嚴格比對 _YYYYMMDD.json)。"""
     c_date = _clean_date_str(target_date)
-    exact = L1_DIR / f"l1_observations_{c_date}.json"
-    target = exact if exact.exists() else find_latest_file(L1_DIR, "l1_observations_*.json")
-    if not target or not target.exists():
-        raise FileNotFoundError(f"找不到 L1 observations 檔案：{L1_DIR}")
+    if not c_date or len(c_date) != 8:
+        raise ValueError(f"target_date 必須為 8 碼 YYYYMMDD 格式: '{target_date}'")
 
-    with open(target, "r", encoding="utf-8") as f:
+    exact = L1_DIR / f"l1_observations_{c_date}.json"
+    if not exact.exists():
+        raise FileNotFoundError(f"找不到日期為 {c_date} 的 L1 observations 檔案：{exact}")
+
+    with open(exact, "r", encoding="utf-8") as f:
         data = json.load(f)
         return data if isinstance(data, list) else data.get("observations", [])
 
 
 def load_l2m_market_view(target_date: str) -> Dict[str, Any]:
-    """讀入 L2M market_view。"""
+    """讀入特定日期的 L2M market_view (嚴格比對 _YYYYMMDD.json)。"""
     c_date = _clean_date_str(target_date)
-    exact = L2M_DIR / f"l2m_market_view_{c_date}.json"
-    target = exact if exact.exists() else find_latest_file(L2M_DIR, "l2m_market_view_*.json")
-    if not target or not target.exists():
-        raise FileNotFoundError(f"找不到 L2M market_view 檔案：{L2M_DIR}")
+    if not c_date or len(c_date) != 8:
+        raise ValueError(f"target_date 必須為 8 碼 YYYYMMDD 格式: '{target_date}'")
 
-    with open(target, "r", encoding="utf-8") as f:
+    exact = L2M_DIR / f"l2m_market_view_{c_date}.json"
+    if not exact.exists():
+        raise FileNotFoundError(f"找不到日期為 {c_date} 的 L2M market_view 檔案：{exact}")
+
+    with open(exact, "r", encoding="utf-8") as f:
         data = json.load(f)
         return data.get("market_view", data)
 
 
 def load_l2_inferences(target_date: str) -> List[Dict[str, Any]]:
-    """讀入 L2 inferences。"""
+    """讀入特定日期的 L2 inferences (嚴格比對 _YYYYMMDD.json)。"""
     c_date = _clean_date_str(target_date)
-    exact = L2_DIR / f"l2_inferences_{c_date}.json"
-    target = exact if exact.exists() else find_latest_file(L2_DIR, "l2_inferences_*.json")
-    if not target or not target.exists():
-        raise FileNotFoundError(f"找不到 L2 inferences 檔案：{L2_DIR}")
+    if not c_date or len(c_date) != 8:
+        raise ValueError(f"target_date 必須為 8 碼 YYYYMMDD 格式: '{target_date}'")
 
-    with open(target, "r", encoding="utf-8") as f:
+    exact = L2_DIR / f"l2_inferences_{c_date}.json"
+    if not exact.exists():
+        raise FileNotFoundError(f"找不到日期為 {c_date} 的 L2 inferences 檔案：{exact}")
+
+    with open(exact, "r", encoding="utf-8") as f:
         data = json.load(f)
         return data if isinstance(data, list) else data.get("inferences", [])
 
 
 def load_l3_decisions(target_date: str) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
-    """讀入 L3 decisions 與 no_trade_decisions。"""
+    """讀入特定日期的 L3 decisions 與 no_trade_decisions (嚴格比對 _YYYYMMDD.json)。"""
     c_date = _clean_date_str(target_date)
-    exact = L3_DIR / f"l3_decisions_{c_date}.json"
-    target = exact if exact.exists() else find_latest_file(L3_DIR, "l3_decisions_*.json")
-    if not target or not target.exists():
-        raise FileNotFoundError(f"找不到 L3 decisions 檔案：{L3_DIR}")
+    if not c_date or len(c_date) != 8:
+        raise ValueError(f"target_date 必須為 8 碼 YYYYMMDD 格式: '{target_date}'")
 
-    with open(target, "r", encoding="utf-8") as f:
+    exact = L3_DIR / f"l3_decisions_{c_date}.json"
+    if not exact.exists():
+        raise FileNotFoundError(f"找不到日期為 {c_date} 的 L3 decisions 檔案：{exact}")
+
+    with open(exact, "r", encoding="utf-8") as f:
         data = json.load(f)
         return data.get("decisions", []), data.get("no_trade_decisions", [])
 
 
 def load_l4_orders(target_date: str) -> List[Dict[str, Any]]:
-    """讀入 L4 orders。"""
+    """讀入特定日期的 L4 orders (嚴格比對 _YYYYMMDD.json)。"""
     c_date = _clean_date_str(target_date)
-    exact = L4_DIR / f"l4_orders_{c_date}.json"
-    target = exact if exact.exists() else find_latest_file(L4_DIR, "l4_orders_*.json")
-    if not target or not target.exists():
-        raise FileNotFoundError(f"找不到 L4 orders 檔案：{L4_DIR}")
+    if not c_date or len(c_date) != 8:
+        raise ValueError(f"target_date 必須為 8 碼 YYYYMMDD 格式: '{target_date}'")
 
-    with open(target, "r", encoding="utf-8") as f:
+    exact = L4_DIR / f"l4_orders_{c_date}.json"
+    if not exact.exists():
+        raise FileNotFoundError(f"找不到日期為 {c_date} 的 L4 orders 檔案：{exact}")
+
+    with open(exact, "r", encoding="utf-8") as f:
         data = json.load(f)
         orders = data.get("orders", data if isinstance(data, list) else [])
-        # 移除任何非官方規格自訂欄位 (若有殘留)
         clean_orders = []
         for o in orders:
             item = {

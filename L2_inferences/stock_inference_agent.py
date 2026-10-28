@@ -190,63 +190,32 @@ def _clean_date_str(date_str: str) -> str:
     return re.sub(r"\D", "", date_str)
 
 
-def find_latest_file(directory: Path, pattern: str) -> Optional[Path]:
-    """在指定目錄尋找符合條件且檔名日期最新的一個檔案。"""
-    if not directory.exists():
-        return None
-    matched = list(directory.glob(pattern))
-    if not matched:
-        return None
-
-    def _extract_date(p: Path) -> str:
-        m = re.findall(r"\d{8}", p.name)
-        if m:
-            return m[-1]
-        m2 = re.findall(r"\d{4}-\d{2}-\d{2}", p.name)
-        if m2:
-            return m2[-1].replace("-", "")
-        return ""
-
-    matched.sort(key=lambda p: (_extract_date(p), p.stat().st_mtime), reverse=True)
-    return matched[0]
-
-
 def load_all_observations(
     target_date: str,
     custom_path: Optional[Path] = None,
 ) -> Tuple[List[Dict[str, Any]], Set[str], Path]:
     """讀取 L1 observations JSON 中所有事實觀察資料。
 
-    Returns:
-        (observations_list, all_obs_ids, resolved_file_path)
+    嚴格比對檔名結尾為 _YYYYMMDD.json，若不存在直接報錯。
     """
-    file_path: Optional[Path] = custom_path
     clean_date = _clean_date_str(target_date)
+    if not clean_date or len(clean_date) != 8:
+        raise ValueError(f"target_date 必須為 8 碼 YYYYMMDD 格式: '{target_date}'")
+
+    file_path: Optional[Path] = custom_path
 
     if file_path is None:
         for l1_dir in L1_OBS_DIRS:
             if not l1_dir.exists():
                 continue
-            candidates = [
-                l1_dir / f"l1_observations_{clean_date}.json",
-                l1_dir / f"l1_observations_{target_date}.json",
-                l1_dir / f"1_observations_{clean_date}.json",
-            ]
-            for cand in candidates:
-                if cand.exists():
-                    file_path = cand
-                    break
-            if file_path:
-                break
-
-            latest = find_latest_file(l1_dir, "*observations_*.json")
-            if latest:
-                file_path = latest
+            cand = l1_dir / f"l1_observations_{clean_date}.json"
+            if cand.exists():
+                file_path = cand
                 break
 
     if file_path is None or not file_path.exists():
         raise FileNotFoundError(
-            f"找不到 L1 observations 檔案！搜尋目錄：{[str(d) for d in L1_OBS_DIRS]}，目標日期：{target_date}"
+            f"找不到日期為 {clean_date} 的 L1 observations 檔案！搜尋目錄：{[str(d) for d in L1_OBS_DIRS]}"
         )
 
     print(f"[StockInferenceAgent] 載入 L1 observations: {file_path}")
@@ -266,19 +235,10 @@ def load_all_observations(
 
 
 def load_optional_market_view(target_date: str) -> str:
-    """嘗試載入今日的 L2M market_view 作為總體環境參考。"""
+    """嘗試載入特定日期的 L2M market_view 作為總體環境參考 (嚴格比對 _YYYYMMDD.json)。"""
     clean_date = _clean_date_str(target_date)
-    candidates = [
-        L2M_VIEW_DIR / f"l2m_market_view_{clean_date}.json",
-        L2M_VIEW_DIR / f"l2m_market_view_{target_date}.json",
-    ]
-    file_path = None
-    for cand in candidates:
-        if cand.exists():
-            file_path = cand
-            break
-    if file_path is None:
-        file_path = find_latest_file(L2M_VIEW_DIR, "l2m_market_view_*.json")
+    cand = L2M_VIEW_DIR / f"l2m_market_view_{clean_date}.json"
+    file_path = cand if cand.exists() else None
 
     if file_path and file_path.exists():
         try:
@@ -293,23 +253,14 @@ def load_optional_market_view(target_date: str) -> str:
             )
         except Exception:
             pass
-    return "  (今日尚未產生 L2M market_view 或略過載入)"
+    return f"  (日期 {clean_date} 尚未產生 L2M market_view 或略過載入)"
 
 
 def load_optional_datapack(target_date: str) -> str:
-    """嘗試載入今日的 DataPack Processed 作為帳戶背景。"""
+    """嘗試載入特定日期的 DataPack Processed 作為帳戶背景 (嚴格比對 _YYYYMMDD.md)。"""
     clean_date = _clean_date_str(target_date)
-    candidates = [
-        DATAPACK_PROCESSED_DIR / f"DataPack_Processed_{clean_date}.md",
-        DATAPACK_PROCESSED_DIR / f"DataPack_Processed_{target_date}.md",
-    ]
-    file_path = None
-    for cand in candidates:
-        if cand.exists():
-            file_path = cand
-            break
-    if file_path is None:
-        file_path = find_latest_file(DATAPACK_PROCESSED_DIR, "DataPack_Processed_*.md")
+    cand = DATAPACK_PROCESSED_DIR / f"DataPack_Processed_{clean_date}.md"
+    file_path = cand if cand.exists() else None
 
     if file_path and file_path.exists():
         try:
@@ -320,7 +271,7 @@ def load_optional_datapack(target_date: str) -> str:
             return "\n".join(lines[:60])
         except Exception:
             pass
-    return "  (無可用之 DataPack 快照)"
+    return f"  (日期 {clean_date} 無可用之 DataPack 快照)"
 
 
 def load_etf_strategy() -> str:

@@ -70,7 +70,7 @@ TW_TZ = timezone(timedelta(hours=8))
 # =============================================================================
 # Prompt 樣板 (用於 Gemini 委託層審查與覆核)
 # =============================================================================
-REVIEW_PROMPT_TEMPLATE = """\
+REVIEW_PROMPT_TEMPLATE = r"""\
 你是主動式 ETF 基金經理人與交易風控覆核主管。
 依據玉山人工智慧公開賽 D-Plan v4.3 規範，我們已透過 Python 官方演算法由今日 L3 決策 (decisions)
 機械推導出今日初版委託清單 (orders)。
@@ -149,60 +149,42 @@ def _clean_date_str(date_str: str) -> str:
     return re.sub(r"\D", "", date_str)
 
 
-def find_latest_file(directory: Path, pattern: str) -> Optional[Path]:
-    """在指定目錄尋找符合條件且檔名日期最新的一個檔案。"""
-    if not directory.exists():
-        return None
-    matched = list(directory.glob(pattern))
-    if not matched:
-        return None
-
-    def _extract_date(p: Path) -> str:
-        m = re.findall(r"\d{8}", p.name)
-        if m:
-            return m[-1]
-        m2 = re.findall(r"\d{4}-\d{2}-\d{2}", p.name)
-        if m2:
-            return m2[-1].replace("-", "")
-        return ""
-
-    matched_sorted = sorted(matched, key=lambda p: (_extract_date(p), p.stat().st_mtime))
-    return matched_sorted[-1]
-
-
 def load_l3_decisions(target_date: str) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], Path]:
-    """讀入 L3 投資組合決策檔案。"""
+    """讀入 L3 投資組合決策檔案 (嚴格比對 _YYYYMMDD.json)。"""
     c_date = _clean_date_str(target_date)
+    if not c_date or len(c_date) != 8:
+        raise ValueError(f"target_date 必須為 8 碼 YYYYMMDD 格式: '{target_date}'")
+
     exact_file = L3_DEC_DIR / f"l3_decisions_{c_date}.json"
-    file_to_load = exact_file if exact_file.exists() else find_latest_file(L3_DEC_DIR, "l3_decisions_*.json")
+    if not exact_file.exists():
+        raise FileNotFoundError(f"找不到日期為 {c_date} 的 L3 決策檔案: {exact_file}")
 
-    if not file_to_load or not file_to_load.exists():
-        raise FileNotFoundError(f"找不到 L3 決策檔案，搜尋目錄：{L3_DEC_DIR}")
-
-    with open(file_to_load, "r", encoding="utf-8") as f:
+    with open(exact_file, "r", encoding="utf-8") as f:
         data = json.load(f)
 
     decisions = data.get("decisions", [])
     no_trade = data.get("no_trade_decisions", [])
-    return decisions, no_trade, file_to_load
+    return decisions, no_trade, exact_file
 
 
 def load_account_datapack(target_date: str) -> Tuple[Dict[str, Any], Path]:
-    """讀入 DataPack Raw JSON，取得最新帳戶資產與持股部位。"""
+    """讀入 DataPack Raw JSON，取得指定日期的帳戶資產與持股部位。"""
     c_date = _clean_date_str(target_date)
-    pattern = f"*{c_date}*.json"
-    matched = list(DATAPACK_RAW_DIR.glob(pattern)) if DATAPACK_RAW_DIR.exists() else []
-    file_to_load = matched[0] if matched else find_latest_file(DATAPACK_RAW_DIR, "DataPack_*.json")
+    if not c_date or len(c_date) != 8:
+        raise ValueError(f"target_date 必須為 8 碼 YYYYMMDD 格式: '{target_date}'")
+    iso_date = f"{c_date[:4]}-{c_date[4:6]}-{c_date[6:]}"
+
+    file_to_load = None
+    if DATAPACK_RAW_DIR.exists():
+        for p in DATAPACK_RAW_DIR.glob("*.json"):
+            if p.stem.endswith(f"_{c_date}") or p.stem.endswith(f"_{iso_date}"):
+                file_to_load = p
+                break
 
     if not file_to_load or not file_to_load.exists():
-        # 若無 Raw 檔，建立預設首日全現金帳戶
-        default_account = {
-            "nav_tradable": 1000000000.0,
-            "cash": 1000000000.0,
-            "holdings_count": 0,
-            "holdings": [],
-        }
-        return default_account, Path("default_fallback")
+        raise FileNotFoundError(
+            f"找不到日期結尾為 {c_date} (或 {iso_date}) 的 DataPack Raw JSON 檔案！目錄：{DATAPACK_RAW_DIR}"
+        )
 
     with open(file_to_load, "r", encoding="utf-8") as f:
         data = json.load(f)
@@ -217,41 +199,43 @@ def load_account_datapack(target_date: str) -> Tuple[Dict[str, Any], Path]:
 
 
 def load_stock_prices(target_date: str) -> Dict[str, float]:
-    """從 L1 observations 或 DataPack 中解析個股收盤價 (close_latest)。"""
+    """從 L1 observations 中解析指定日期個股收盤價 (嚴格比對 _YYYYMMDD.json)。"""
     c_date = _clean_date_str(target_date)
+    if not c_date or len(c_date) != 8:
+        raise ValueError(f"target_date 必須為 8 碼 YYYYMMDD 格式: '{target_date}'")
+
     exact_file = L1_OBS_DIR / f"l1_observations_{c_date}.json"
-    file_to_load = exact_file if exact_file.exists() else find_latest_file(L1_OBS_DIR, "l1_observations_*.json")
+    if not exact_file.exists():
+        raise FileNotFoundError(f"找不到日期為 {c_date} 的 L1 observations 檔案: {exact_file}")
 
     prices: Dict[str, float] = {}
-    if file_to_load and file_to_load.exists():
-        with open(file_to_load, "r", encoding="utf-8") as f:
-            obs_list = json.load(f)
-            for obs in obs_list:
-                vals = obs.get("values", {})
-                topic = obs.get("topic", "")
-                ticker = ""
-                if topic.startswith("stock_"):
-                    ticker = topic.replace("stock_", "").strip()
-                elif "ticker" in vals:
-                    ticker = str(vals["ticker"]).strip()
+    with open(exact_file, "r", encoding="utf-8") as f:
+        obs_list = json.load(f)
+        for obs in obs_list:
+            vals = obs.get("values", {})
+            topic = obs.get("topic", "")
+            ticker = ""
+            if topic.startswith("stock_"):
+                ticker = topic.replace("stock_", "").strip()
+            elif "ticker" in vals:
+                ticker = str(vals["ticker"]).strip()
 
-                if "close_latest" in vals:
-                    p = float(vals["close_latest"])
-                    if ticker:
-                        prices[ticker] = p
+            if "close_latest" in vals:
+                p = float(vals["close_latest"])
+                if ticker:
+                    prices[ticker] = p
 
     return prices
 
 
 def load_l2m_target_cash_range(target_date: str) -> List[float]:
-    """從 L2M market_view 取得目標現金區間。"""
+    """從特定日期的 L2M market_view 取得目標現金區間 (嚴格比對 _YYYYMMDD.json)。"""
     c_date = _clean_date_str(target_date)
     exact_file = L2M_VIEW_DIR / f"l2m_market_view_{c_date}.json"
-    file_to_load = exact_file if exact_file.exists() else find_latest_file(L2M_VIEW_DIR, "l2m_market_view_*.json")
 
-    if file_to_load and file_to_load.exists():
+    if exact_file.exists():
         try:
-            with open(file_to_load, "r", encoding="utf-8") as f:
+            with open(exact_file, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 return data.get("posture", {}).get("target_cash_pct_range", [0.05, 0.15])
         except Exception:
@@ -260,17 +244,18 @@ def load_l2m_target_cash_range(target_date: str) -> List[float]:
 
 
 def load_active_etf_holdings(target_date: str) -> Optional[pd.DataFrame]:
-    """讀入主動式 ETF 前 15 大持股 Parquet。"""
+    """讀入特定日期的主動式 ETF 前 15 大持股 Parquet (嚴格比對 _YYYYMMDD.parquet)。"""
     c_date = _clean_date_str(target_date)
     exact_file = ACTIVE_ETF_DIR / f"top_15_constituents_{c_date}.parquet"
-    file_to_load = exact_file if exact_file.exists() else find_latest_file(ACTIVE_ETF_DIR, "*.parquet")
 
-    if file_to_load and file_to_load.exists():
-        try:
-            return pd.read_parquet(file_to_load)
-        except Exception:
-            return None
-    return None
+    if not exact_file.exists():
+        raise FileNotFoundError(f"找不到日期為 {c_date} 的主動式 ETF 成分股檔案: {exact_file}")
+
+    try:
+        return pd.read_parquet(exact_file)
+    except Exception as e:
+        print(f"[警告] 讀取主動式 ETF 成分股失敗: {e}")
+        raise
 
 
 # =============================================================================

@@ -205,53 +205,26 @@ def _clean_date_str(date_str: str) -> str:
     return re.sub(r"\D", "", date_str)
 
 
-def find_latest_file(directory: Path, pattern: str) -> Optional[Path]:
-    """在指定目錄尋找符合條件且檔名日期最新的一個檔案。"""
-    if not directory.exists():
-        return None
-    matched = list(directory.glob(pattern))
-    if not matched:
-        return None
-
-    def _extract_date(p: Path) -> str:
-        m = re.findall(r"\d{8}", p.name)
-        if m:
-            return m[-1]
-        m2 = re.findall(r"\d{4}-\d{2}-\d{2}", p.name)
-        if m2:
-            return m2[-1].replace("-", "")
-        return ""
-
-    matched.sort(key=lambda p: (_extract_date(p), p.stat().st_mtime), reverse=True)
-    return matched[0]
-
-
 def load_l2_inferences(
     target_date: str,
     custom_path: Optional[Path] = None,
 ) -> Tuple[List[Dict[str, Any]], Set[str], Path]:
     """讀取 L2 inferences JSON 中所有個股推論資料。
 
-    Returns:
-        (inferences_list, all_inf_ids, resolved_file_path)
+    嚴格比對檔名結尾為 _YYYYMMDD.json，若不存在直接報錯。
     """
-    file_path: Optional[Path] = custom_path
     clean_date = _clean_date_str(target_date)
+    if not clean_date or len(clean_date) != 8:
+        raise ValueError(f"target_date 必須為 8 碼 YYYYMMDD 格式: '{target_date}'")
 
+    file_path: Optional[Path] = custom_path
     if file_path is None:
-        candidates = [
-            L2_INF_DIR / f"l2_inferences_{clean_date}.json",
-            L2_INF_DIR / f"l2_inferences_{target_date}.json",
-        ]
-        for cand in candidates:
-            if cand.exists():
-                file_path = cand
-                break
-        if file_path is None:
-            file_path = find_latest_file(L2_INF_DIR, "l2_inferences_*.json")
+        cand = L2_INF_DIR / f"l2_inferences_{clean_date}.json"
+        if cand.exists():
+            file_path = cand
 
     if file_path is None or not file_path.exists():
-        raise FileNotFoundError(f"找不到 L2 inferences 檔案！搜尋目錄：{L2_INF_DIR}，目標日期：{target_date}")
+        raise FileNotFoundError(f"找不到日期為 {clean_date} 的 L2 inferences 檔案！搜尋目錄：{L2_INF_DIR}")
 
     print(f"[PortfolioDecisionAgent] 載入 L2 inferences: {file_path}")
     raw_content = file_path.read_text(encoding="utf-8")
@@ -271,53 +244,41 @@ def load_l2_inferences(
 
 
 def load_datapack_info(target_date: str) -> Tuple[str, Set[str], int]:
-    """讀取 DataPack Processed md 並提取昨日既有持股代碼與檔數。
+    """讀取 DataPack Processed md 與 Raw json，提取昨日既有持股代碼與檔數。
 
-    Returns:
-        (datapack_text, prev_holdings_codes, holdings_count)
+    嚴格比對檔名日期完全等於 target_date。
     """
     clean_date = _clean_date_str(target_date)
-    candidates = [
-        DATAPACK_PROCESSED_DIR / f"DataPack_Processed_{clean_date}.md",
-        DATAPACK_PROCESSED_DIR / f"DataPack_Processed_{target_date}.md",
-    ]
-    file_path = None
-    for cand in candidates:
-        if cand.exists():
-            file_path = cand
-            break
-    if file_path is None:
-        file_path = find_latest_file(DATAPACK_PROCESSED_DIR, "DataPack_Processed_*.md")
+    if not clean_date or len(clean_date) != 8:
+        raise ValueError(f"target_date 必須為 8 碼 YYYYMMDD 格式: '{target_date}'")
+    iso_date = f"{clean_date[:4]}-{clean_date[4:6]}-{clean_date[6:]}"
 
-    datapack_text = ""
-    if file_path and file_path.exists():
-        datapack_text = file_path.read_text(encoding="utf-8")
+    proc_file = DATAPACK_PROCESSED_DIR / f"DataPack_Processed_{clean_date}.md"
+    if not proc_file.exists():
+        raise FileNotFoundError(f"找不到日期為 {clean_date} 的 DataPack Processed 檔案！{proc_file}")
+    datapack_text = proc_file.read_text(encoding="utf-8")
 
-    # 嘗試從 Raw JSON 讀取更精準的 holdings 陣列
-    raw_candidates = []
-    if DATAPACK_RAW_DIR.exists():
-        raw_candidates.extend(list(DATAPACK_RAW_DIR.glob(f"*{target_date}*.json")))
-        raw_candidates.extend(list(DATAPACK_RAW_DIR.glob(f"*{clean_date}*.json")))
+    # 從 Raw JSON 讀取精準 holdings 陣列
     raw_file = None
-    for rc in raw_candidates:
-        if rc.exists():
-            raw_file = rc
-            break
-    if raw_file is None:
-        raw_file = find_latest_file(DATAPACK_RAW_DIR, "DataPack_*.json")
+    if DATAPACK_RAW_DIR.exists():
+        for p in DATAPACK_RAW_DIR.glob("*.json"):
+            if p.stem.endswith(f"_{clean_date}") or p.stem.endswith(f"_{iso_date}"):
+                raw_file = p
+                break
+
+    if raw_file is None or not raw_file.exists():
+        raise FileNotFoundError(
+            f"找不到日期結尾為 {clean_date} (或 {iso_date}) 的 DataPack Raw JSON 檔案！目錄：{DATAPACK_RAW_DIR}"
+        )
 
     prev_holdings_codes: Set[str] = set()
-    if raw_file and raw_file.exists():
-        try:
-            raw_data = json.loads(raw_file.read_text(encoding="utf-8"))
-            holdings = raw_data.get("holdings") or []
-            for h in holdings:
-                code = str(h.get("code", "")).strip()
-                shares = int(h.get("shares", 0))
-                if code and shares > 0:
-                    prev_holdings_codes.add(code)
-        except Exception:
-            pass
+    raw_data = json.loads(raw_file.read_text(encoding="utf-8"))
+    holdings = raw_data.get("holdings") or []
+    for h in holdings:
+        code = str(h.get("code", "")).strip()
+        shares = int(h.get("shares", 0))
+        if code and shares > 0:
+            prev_holdings_codes.add(code)
 
     return datapack_text, prev_holdings_codes, len(prev_holdings_codes)
 
@@ -339,55 +300,42 @@ def load_etf_strategy() -> str:
 
 
 def load_active_etf_holdings(target_date: str) -> str:
-    """讀取同業主動式 ETF 前 15 大成分股快照並濃縮為排版摘要。"""
+    """讀取同業主動式 ETF 前 15 大成分股快照 (嚴格比對 _YYYYMMDD.parquet)。"""
     clean_date = _clean_date_str(target_date)
-    candidates = [
-        ACTIVE_ETF_DIR / f"top_15_constituents_{clean_date}.parquet",
-        ACTIVE_ETF_DIR / f"top_15_constituents_{target_date}.parquet",
-    ]
-    file_path = None
-    for cand in candidates:
-        if cand.exists():
-            file_path = cand
-            break
-    if file_path is None:
-        file_path = find_latest_file(ACTIVE_ETF_DIR, "top_15_constituents_*.parquet")
+    if not clean_date or len(clean_date) != 8:
+        raise ValueError(f"target_date 必須為 8 碼 YYYYMMDD 格式: '{target_date}'")
 
-    if file_path and file_path.exists():
-        try:
-            df = pd.read_parquet(file_path)
-            # 篩選 4 位數台股代碼
-            tw = df[df["constituent_id"].astype(str).str.match(r"^\d{4}$")].copy()
-            if not tw.empty:
-                top = (
-                    tw.groupby(["constituent_id", "constituent_name"])["weight"]
-                    .agg(["count", "mean"])
-                    .sort_values("mean", ascending=False)
-                    .head(15)
-                )
-                lines = ["| 代號 | 名稱 | 被納入檔數 | 平均權重(%) |", "| :--- | :--- | :--- | :--- |"]
-                for (cid, cname), row in top.iterrows():
-                    lines.append(f"| {cid} | {cname} | {int(row['count'])} 檔 | {row['mean']:.2f}% |")
-                return "\n".join(lines)
-        except Exception:
-            pass
+    file_path = ACTIVE_ETF_DIR / f"top_15_constituents_{clean_date}.parquet"
+    if not file_path.exists():
+        raise FileNotFoundError(f"找不到日期為 {clean_date} 的主動式 ETF 成分股檔案！{file_path}")
+
+    try:
+        df = pd.read_parquet(file_path)
+        # 篩選 4 位數台股代碼
+        tw = df[df["constituent_id"].astype(str).str.match(r"^\d{4}$")].copy()
+        if not tw.empty:
+            top = (
+                tw.groupby(["constituent_id", "constituent_name"])["weight"]
+                .agg(["count", "mean"])
+                .sort_values("mean", ascending=False)
+                .head(15)
+            )
+            lines = ["| 代號 | 名稱 | 被納入檔數 | 平均權重(%) |", "| :--- | :--- | :--- | :--- |"]
+            for (cid, cname), row in top.iterrows():
+                lines.append(f"| {cid} | {cname} | {int(row['count'])} 檔 | {row['mean']:.2f}% |")
+            return "\n".join(lines)
+    except Exception as e:
+        print(f"[警告] 解析主動式 ETF 成分股失敗: {e}")
+        raise
+
     return "  (無可用之主動式 ETF 成分股標竿資料)"
 
 
 def load_optional_market_view(target_date: str) -> str:
-    """嘗試載入今日的 L2M market_view 作為大盤姿態承諾背景。"""
+    """嘗試載入特定日期的 L2M market_view 作為大盤姿態承諾背景 (嚴格比對 _YYYYMMDD.json)。"""
     clean_date = _clean_date_str(target_date)
-    candidates = [
-        L2M_VIEW_DIR / f"l2m_market_view_{clean_date}.json",
-        L2M_VIEW_DIR / f"l2m_market_view_{target_date}.json",
-    ]
-    file_path = None
-    for cand in candidates:
-        if cand.exists():
-            file_path = cand
-            break
-    if file_path is None:
-        file_path = find_latest_file(L2M_VIEW_DIR, "l2m_market_view_*.json")
+    cand = L2M_VIEW_DIR / f"l2m_market_view_{clean_date}.json"
+    file_path = cand if cand.exists() else None
 
     if file_path and file_path.exists():
         try:
@@ -402,7 +350,7 @@ def load_optional_market_view(target_date: str) -> str:
             )
         except Exception:
             pass
-    return "  (今日尚未產生 L2M market_view 或略過載入)"
+    return f"  (日期 {clean_date} 尚未產生 L2M market_view 或略過載入)"
 
 
 def format_inferences_for_prompt(inferences: List[Dict[str, Any]]) -> str:

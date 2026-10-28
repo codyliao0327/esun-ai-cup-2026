@@ -180,66 +180,32 @@ def _clean_date_str(date_str: str) -> str:
     return re.sub(r"\D", "", date_str)
 
 
-def find_latest_file(directory: Path, pattern: str) -> Optional[Path]:
-    """在指定目錄尋找符合條件且檔名日期最新的一個檔案。"""
-    if not directory.exists():
-        return None
-    matched = list(directory.glob(pattern))
-    if not matched:
-        return None
-
-    def _extract_date(p: Path) -> str:
-        m = re.findall(r"\d{8}", p.name)
-        if m:
-            return m[-1]
-        m2 = re.findall(r"\d{4}-\d{2}-\d{2}", p.name)
-        if m2:
-            return m2[-1].replace("-", "")
-        return ""
-
-    matched.sort(key=lambda p: (_extract_date(p), p.stat().st_mtime), reverse=True)
-    return matched[0]
-
-
 def load_l1_market_observation(
     target_date: str,
     custom_path: Optional[Path] = None,
 ) -> Tuple[Dict[str, Any], Set[str], Path]:
     """讀取 L1 observations JSON 並擷取 topic == 'tw_market' 之資料。
 
-    Returns:
-        (tw_market_item, all_obs_ids, resolved_file_path)
+    嚴格比對檔名結尾為 _YYYYMMDD.json，若不存在直接報錯。
     """
-    file_path: Optional[Path] = custom_path
     clean_date = _clean_date_str(target_date)
+    if not clean_date or len(clean_date) != 8:
+        raise ValueError(f"target_date 必須為 8 碼 YYYYMMDD 格式: '{target_date}'")
+
+    file_path: Optional[Path] = custom_path
 
     if file_path is None:
-        # 依序在各 L1 目錄尋找
         for l1_dir in L1_OBS_DIRS:
             if not l1_dir.exists():
                 continue
-            # 優先找符合指定日期的檔案
-            candidates = [
-                l1_dir / f"l1_observations_{clean_date}.json",
-                l1_dir / f"l1_observations_{target_date}.json",
-                l1_dir / f"1_observations_{clean_date}.json",
-            ]
-            for cand in candidates:
-                if cand.exists():
-                    file_path = cand
-                    break
-            if file_path:
-                break
-
-            # 若特定日期不存在，找該目錄下最新的 l1_observations_*.json
-            latest = find_latest_file(l1_dir, "*observations_*.json")
-            if latest:
-                file_path = latest
+            cand = l1_dir / f"l1_observations_{clean_date}.json"
+            if cand.exists():
+                file_path = cand
                 break
 
     if file_path is None or not file_path.exists():
         raise FileNotFoundError(
-            f"找不到 L1 observations 檔案！搜尋目錄：{[str(d) for d in L1_OBS_DIRS]}，目標日期：{target_date}"
+            f"找不到日期為 {clean_date} 的 L1 observations 檔案！搜尋目錄：{[str(d) for d in L1_OBS_DIRS]}"
         )
 
     print(f"[MarketViewAgent] 載入 L1 observations: {file_path}")
@@ -280,30 +246,21 @@ def load_datapack_processed(
 ) -> Tuple[str, Path]:
     """讀取 DataPack Processed markdown 檔案內容。
 
-    Returns:
-        (text_content, resolved_file_path)
+    嚴格比對檔名結尾為 _YYYYMMDD.md，若不存在直接報錯。
     """
-    file_path: Optional[Path] = custom_path
     clean_date = _clean_date_str(target_date)
+    if not clean_date or len(clean_date) != 8:
+        raise ValueError(f"target_date 必須為 8 碼 YYYYMMDD 格式: '{target_date}'")
 
+    file_path: Optional[Path] = custom_path
     if file_path is None:
-        candidates = [
-            DATAPACK_PROCESSED_DIR / f"DataPack_Processed_{clean_date}.md",
-            DATAPACK_PROCESSED_DIR / f"DataPack_Processed_{target_date}.md",
-        ]
-        for cand in candidates:
-            if cand.exists():
-                file_path = cand
-                break
-
-        if file_path is None:
-            latest = find_latest_file(DATAPACK_PROCESSED_DIR, "DataPack_Processed_*.md")
-            if latest:
-                file_path = latest
+        cand = DATAPACK_PROCESSED_DIR / f"DataPack_Processed_{clean_date}.md"
+        if cand.exists():
+            file_path = cand
 
     if file_path is None or not file_path.exists():
         raise FileNotFoundError(
-            f"找不到 DataPack Processed 檔案！搜尋目錄：{DATAPACK_PROCESSED_DIR}，目標日期：{target_date}"
+            f"找不到日期為 {clean_date} 的 DataPack Processed 檔案！搜尋目錄：{DATAPACK_PROCESSED_DIR}"
         )
 
     print(f"[MarketViewAgent] 載入 DataPack Processed: {file_path}")

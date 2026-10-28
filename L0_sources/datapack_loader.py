@@ -37,35 +37,29 @@ RAW_DIR = ROOT / "data" / "Datapack" / "Raw"
 PROCESSED_DIR = ROOT / "data" / "Datapack" / "Processed"
 
 
-def find_datapack_raw(target_date: Optional[str] = None) -> Optional[Path]:
-    """在 Raw 資料夾中尋找對應日期或最新的 DataPack JSON 檔案。"""
+def find_datapack_raw(target_date: Optional[str] = None) -> Path:
+    """在 Raw 資料夾當層目錄中尋找日期結尾完全等於 target_date 的 DataPack JSON 檔案。
+
+    若找不到符合日期的檔案，嚴格拋出 FileNotFoundError。
+    """
     if not RAW_DIR.exists():
-        return None
+        raise FileNotFoundError(f"找不到 DataPack Raw 目錄: {RAW_DIR}")
+
+    if not target_date:
+        raise ValueError("必須指定 target_date (格式 YYYYMMDD)")
+
+    c_date = clean_date_str(target_date)
+    iso_date = format_iso_trade_date(target_date)
 
     raw_files = list(RAW_DIR.glob("*.json"))
-    if not raw_files:
-        return None
+    for p in raw_files:
+        # 比對檔名結尾為 _YYYYMMDD 或 _YYYY-MM-DD
+        if p.stem.endswith(f"_{c_date}") or p.stem.endswith(f"_{iso_date}"):
+            return p
 
-    if target_date:
-        c_date = clean_date_str(target_date)
-        iso_date = format_iso_trade_date(target_date)
-        # 1. 優先精準比對檔名包含目標日期的檔案
-        for p in raw_files:
-            if iso_date in p.name or (c_date and c_date in p.name):
-                return p
-
-    # 2. 若無指定日期或找不到精準日期，依檔名中日期與修改時間排序取最新
-    def _extract_date(p: Path) -> str:
-        m = re.findall(r"\d{8}", p.name)
-        if m:
-            return m[-1]
-        m2 = re.findall(r"\d{4}-\d{2}-\d{2}", p.name)
-        if m2:
-            return m2[-1].replace("-", "")
-        return ""
-
-    raw_files.sort(key=lambda p: (_extract_date(p), p.stat().st_mtime), reverse=True)
-    return raw_files[0]
+    raise FileNotFoundError(
+        f"在 {RAW_DIR} 找不到日期結尾為 {c_date} (或 {iso_date}) 的 DataPack Raw JSON 檔案！"
+    )
 
 # 固定說明：忠實濃縮自 DataPack_規格書_v4.3，欄位名與原始 JSON 完全一致
 GLOSSARY = """\

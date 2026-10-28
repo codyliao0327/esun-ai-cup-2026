@@ -106,40 +106,29 @@ PROMPT_TEMPLATE = """\
 
 
 # --------------------------------------------------------------------------- #
-# 讀檔工具
+# 讀檔工具 (嚴格僅抓取當層目錄中，檔名結尾為 _YYYYMMDD 且完全等於 target_date 的檔案)
 # --------------------------------------------------------------------------- #
-def _latest_per_dataset(
+def _files_for_target_date(
     folder: Path,
     patterns: tuple,
-    target_date: Optional[str] = None,
+    target_date: str,
 ) -> List[Path]:
-    """資料夾內，同一資料集 (去掉結尾 _YYYYMMDD) 取符合日期限制中最新的一個檔案。
+    """資料夾當層目錄內，抓取結尾為 _YYYYMMDD 且完全等於 target_date 的檔案。
 
-    若指定 target_date，則僅採用日期 <= target_date 的檔案 (避免使用未來數據)。
+    若指定日期找不到任何檔案，嚴格拋出 FileNotFoundError，絕不降級抓取其他日期。
     """
-    c_target = clean_date_str(target_date) if target_date else None
-    latest: dict = {}
-    fallback: dict = {}
+    c_target = clean_date_str(target_date)
+    if not c_target or len(c_target) != 8:
+        raise ValueError(f"target_date 必須為 8 碼 YYYYMMDD 格式: '{target_date}'")
 
+    matched: List[Path] = []
     for pat in patterns:
         for p in folder.glob(pat):
             m = re.match(r"^(.*)_(\d{8})$", p.stem)
-            key = (m.group(1) if m else p.stem, p.suffix)
-            stamp = m.group(2) if m else ""
+            if m and m.group(2) == c_target:
+                matched.append(p)
 
-            # 備援：記錄整體最新檔
-            if key not in fallback or stamp > fallback[key][0]:
-                fallback[key] = (stamp, p)
-
-            # 符合目標日期條件 (stamp <= c_target)
-            if c_target and stamp and stamp > c_target:
-                continue
-
-            if key not in latest or stamp > latest[key][0]:
-                latest[key] = (stamp, p)
-
-    chosen = latest if latest else fallback
-    return sorted(p for _, p in chosen.values())
+    return sorted(matched)
 
 
 STOCK_CODE_RE = re.compile(r"^\d{4}$")
@@ -247,24 +236,25 @@ def load_inputs(
     inputs: List[InputSpec] = INPUTS,
     target_date: Optional[str] = None,
 ) -> LoadedInputs:
-    """依 INPUTS 讀入所有資料。
+    """依 INPUTS 讀入所有指定日期結尾的資料。
 
-    - 大盤資料：存入 market_tables 與 market_values。
-    - 個股指標檔：以「檔名(不含日期):」加上表格 (tab 分隔) 放入 prompt，同時保留最新值供覆寫 values。
-    - 其它資料原樣放入 prompt。
+    - 嚴格比對檔名結尾為 _YYYYMMDD，完全等於 target_date。
+    - 若特定資料夾找不到該日期檔案，直接拋出 FileNotFoundError。
     """
+    if not target_date:
+        raise ValueError("load_inputs 必須指定 target_date (格式 YYYYMMDD)")
+    c_target = clean_date_str(target_date)
+
     res = LoadedInputs()
     other_blocks: List[str] = []
     for spec in inputs:
         folder = DATA_ROOT / spec.folder
         src = f"來源: {spec.source_id}" if spec.source_id else "無來源"
         if not folder.is_dir():
-            print(f"[略過] 找不到資料夾 {folder}")
-            continue
-        files = _latest_per_dataset(folder, spec.patterns, target_date=target_date)
+            raise FileNotFoundError(f"找不到輸入資料夾: {folder}")
+        files = _files_for_target_date(folder, spec.patterns, target_date=c_target)
         if not files:
-            print(f"[略過] {folder} 內沒有符合 {spec.patterns} 的檔案")
-            continue
+            raise FileNotFoundError(f"資料夾 {folder} 找不到日期結尾為 _{c_target} 的資料檔案！")
         parts: List[str] = []
         for p in files:
             try:
@@ -274,9 +264,10 @@ def load_inputs(
                     parts.append(_read_md(p))
             except Exception as e:  # noqa: BLE001
                 print(f"[警告] 讀取 {p} 失敗: {e}")
+                raise
         if parts:
             other_blocks.append(f"#### {spec.label} ({src})\n" + "\n".join(parts))
-        print(f"[讀入] {spec.folder}: {len(files)} 個檔案")
+        print(f"[讀入] {spec.folder}: {len(files)} 個檔案 (日期: {c_target})")
 
     sections = []
     if res.market_tables:
@@ -294,15 +285,24 @@ def load_inputs(
 
 
 def load_sources(target_date: Optional[str] = None) -> List[dict]:
-    """讀取 L0 輸出的最新來源清單 (每個 s*_*.json 取最新一份)，合併為清單。"""
-    sources: List[dict] = []
+    """讀取 L0 輸出的來源清單 (嚴格比對檔名結尾為 _YYYYMMDD.json)。"""
+    if not target_date:
+        raise ValueError("load_sources 必須指定 target_date (格式 YYYYMMDD)")
+    c_target = clean_date_str(target_date)
+
     if not SOURCES_DIR.is_dir():
-        return sources
-    for p in _latest_per_dataset(SOURCES_DIR, ("*.json",), target_date=target_date):
+        raise FileNotFoundError(f"找不到 L0 sources 目錄: {SOURCES_DIR}")
+    files = _files_for_target_date(SOURCES_DIR, ("*.json",), target_date=c_target)
+    if not files:
+        raise FileNotFoundError(f"目錄 {SOURCES_DIR} 找不到日期結尾為 _{c_target}.json 的來源檔案！")
+
+    sources: List[dict] = []
+    for p in files:
         try:
             sources.extend(json.loads(p.read_text(encoding="utf-8")))
         except Exception as e:  # noqa: BLE001
             print(f"[警告] 讀取來源檔 {p.name} 失敗: {e}")
+            raise
     return sorted(sources, key=lambda s: s.get("source_id", ""))
 
 
