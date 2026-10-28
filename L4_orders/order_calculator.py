@@ -231,16 +231,27 @@ def load_stock_prices(target_date: str) -> Dict[str, float]:
 def load_l2m_target_cash_range(target_date: str) -> List[float]:
     """從特定日期的 L2M market_view 取得目標現金區間 (嚴格比對 _YYYYMMDD.json)。"""
     c_date = _clean_date_str(target_date)
-    exact_file = L2M_VIEW_DIR / f"l2m_market_view_{c_date}.json"
+    if not c_date or len(c_date) != 8:
+        raise ValueError(f"target_date 必須為 8 碼 YYYYMMDD 格式: '{target_date}'")
 
-    if exact_file.exists():
-        try:
-            with open(exact_file, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                return data.get("posture", {}).get("target_cash_pct_range", [0.05, 0.15])
-        except Exception:
-            pass
-    return [0.05, 0.15]
+    exact_file = L2M_VIEW_DIR / f"l2m_market_view_{c_date}.json"
+    if not exact_file.exists():
+        raise FileNotFoundError(f"找不到日期為 {c_date} 的 L2M market_view 檔案: {exact_file}")
+
+    with open(exact_file, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    # 支援包在 market_view 內或位於根目錄
+    mv = data.get("market_view", data)
+    posture = mv.get("posture")
+    if not posture or "target_cash_pct_range" not in posture:
+        raise KeyError(f"{exact_file} 中缺少 posture.target_cash_pct_range 欄位！")
+
+    cash_range = posture["target_cash_pct_range"]
+    if not isinstance(cash_range, list) or len(cash_range) != 2:
+        raise ValueError(f"{exact_file} 的 target_cash_pct_range 格式錯誤: {cash_range}")
+
+    return [float(cash_range[0]), float(cash_range[1])]
 
 
 def load_active_etf_holdings(target_date: str) -> Optional[pd.DataFrame]:
