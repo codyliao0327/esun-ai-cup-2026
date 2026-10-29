@@ -30,7 +30,7 @@ if str(CODE_DIR) not in sys.path:
 
 from build_dplan import assemble_dplan  # noqa: E402
 from configs.date_utils import format_iso_trade_date, prompt_trade_date  # noqa: E402
-from generate_daily_report import build_daily_report  # noqa: E402
+from generate_daily_report import REPORT_DIR, build_daily_report  # noqa: E402
 
 TW_TZ = timezone(timedelta(hours=8))
 PYTHON_EXE = sys.executable
@@ -153,6 +153,7 @@ def run_pipeline(
     # -------------------------------------------------------------------------
     # Step 7: 每日投資決策與投資組合回顧報告生成 (真人回顧報告)
     # -------------------------------------------------------------------------
+    report_file = None
     if not skip_report:
         print("\n>>> [Step 7/7] 產生每日投資決策與投資組合回顧 Markdown 報告...")
         try:
@@ -166,8 +167,8 @@ def run_pipeline(
     print("\n" + "=" * 80)
     print(f" 🎉 [Pipeline 成功完成] 每日自動化產線全部成功！")
     print(f" -> 最終繳交檔: {final_file}")
-    if not skip_report:
-        print(f" -> 決策回顧報告: {REPORT_DIR / f'Daily_Decision_Report_{t_date}.md'}")
+    if not skip_report and report_file:
+        print(f" -> 決策回顧報告: {report_file}")
     print("=" * 80 + "\n")
     return final_file
 
