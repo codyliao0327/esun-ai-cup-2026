@@ -276,9 +276,13 @@ def main(argv: Optional[list[str]] = None) -> int:
     c_date = clean_date_str(target_date)
 
     results = download_all(only=args.only, overwrite=args.overwrite, target_date=c_date)
+    failed = [k for k, v in results.items() if v not in ("ok", "skipped")]
+    if failed:
+        raise RuntimeError(f"FinLab 指標計算有 {len(failed)} 個失敗 (不得漏抓): {failed}")
+
     write_sources_json(day=c_date)
-    return 0 if all(v in ("ok", "skipped") for v in results.values()) else 1
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

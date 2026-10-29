@@ -438,12 +438,14 @@ def main(argv: Optional[List[str]] = None) -> int:
         f"Prompt 長度: {len(prompt):,} 字元"
     )
 
-    # 3. Dry-run 模式：只存 Prompt
+    # 3. 儲存 Prompt (供排查與回溯)
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    prompt_file = OUTPUT_DIR / f"{OUTPUT_PREFIX}_prompt_{clean_date}.txt"
+    prompt_file.write_text(prompt, encoding="utf-8")
+    print(f"[MarketViewAgent] Prompt 已保存至: {prompt_file}")
+
     if args.dry_run:
-        OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-        prompt_file = OUTPUT_DIR / f"{OUTPUT_PREFIX}_prompt_{clean_date}.txt"
-        prompt_file.write_text(prompt, encoding="utf-8")
-        print(f"[MarketViewAgent] --dry-run 已啟用：Prompt 已輸出至 {prompt_file}")
+        print(f"[MarketViewAgent] --dry-run 已啟用：Prompt 已輸出至 {prompt_file}，不呼叫 API。")
         return 0
 
     # 4. 呼叫 Gemini 進行結構化生成

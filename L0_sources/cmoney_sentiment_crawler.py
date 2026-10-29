@@ -81,6 +81,7 @@ def main(target_date: Optional[str] = None):
 ]
 
     rows = []
+    failed_stocks = []
 
     for sid in stock_list:
         try:
@@ -103,31 +104,40 @@ def main(target_date: Optional[str] = None):
             print(f"✅ 成功抓取 {sid}")
         except Exception as e:
             print(f"❌ 抓取 {sid} 失敗: {e}")
+            failed_stocks.append((sid, str(e)))
+
+    if failed_stocks:
+        raise RuntimeError(
+            f"CMoney 個股情緒抓取失敗！共有 {len(failed_stocks)} 檔股票抓取失敗 (必須全數成功，不得漏抓): "
+            f"{[f'{s}: {err}' for s, err in failed_stocks]}"
+        )
 
     # 4. 轉換成 Pandas DataFrame
     df_sentiment = pd.DataFrame(rows)
     
-    if not df_sentiment.empty:
-        print("\n📊 抓取結果預覽：")
-        print(df_sentiment)
+    if df_sentiment.empty or len(df_sentiment) != len(stock_list):
+        raise RuntimeError(
+            f"CMoney 個股情緒資料不完整！預期 {len(stock_list)} 檔，實際取得 {len(df_sentiment)} 檔。"
+        )
 
-        # 5. 設定上上層資料夾與動態檔名
-        base_dir = Path(__file__).resolve().parent.parent.parent
-        target_dir = base_dir / "data" / "CMoney_Sentiment"
-        target_dir.mkdir(parents=True, exist_ok=True)
+    print("\n📊 抓取結果預覽：")
+    print(df_sentiment)
 
-        target_date_str = target_date or datetime.now(TW_TZ).strftime("%Y%m%d")
-        file_name = f"cmoney_sentiment_{target_date_str}.parquet"
-        output_path = target_dir / file_name
+    # 5. 設定上上層資料夾與動態檔名
+    base_dir = Path(__file__).resolve().parent.parent.parent
+    target_dir = base_dir / "data" / "CMoney_Sentiment"
+    target_dir.mkdir(parents=True, exist_ok=True)
 
-        # 6. 輸出為 parquet 檔
-        df_sentiment.to_parquet(output_path, engine="pyarrow", compression="zstd", index=False)
-        print(f"\n💾 檔案已成功儲存至: {output_path}")
+    target_date_str = target_date or datetime.now(TW_TZ).strftime("%Y%m%d")
+    file_name = f"cmoney_sentiment_{target_date_str}.parquet"
+    output_path = target_dir / file_name
 
-        # 7. 輸出 D-Plan L0 sources JSON
-        write_sources_json(base_dir, target_date_str)
-    else:
-        print("⚠️ 沒有成功抓取到任何資料。")
+    # 6. 輸出為 parquet 檔
+    df_sentiment.to_parquet(output_path, engine="pyarrow", compression="zstd", index=False)
+    print(f"\n💾 檔案已成功儲存至: {output_path}")
+
+    # 7. 輸出 D-Plan L0 sources JSON
+    write_sources_json(base_dir, target_date_str)
 
 
 def write_sources_json(base_dir: Path, target_date_str: str) -> Path:

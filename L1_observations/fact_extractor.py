@@ -439,11 +439,14 @@ def main(argv: Optional[List[str]] = None) -> int:
     prompt = build_prompt(loaded.text, sources)
     print(f"交易日期: {clean_date} | 大盤指標數: {len(loaded.market_values)} | 個股數: {len(loaded.stock_values)} | Prompt 字元數: {len(prompt):,}")
 
+    # 無論 dry-run 或正式執行，皆儲存 Prompt 供排查與回溯
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    out = OUTPUT_DIR / f"{OUTPUT_PREFIX}_prompt_{clean_date}.txt"
+    out.write_text(prompt, encoding="utf-8")
+    print(f"[FactExtractor] Prompt 已保存至: {out}")
+
     if args.dry_run:
-        out = OUTPUT_DIR / f"{OUTPUT_PREFIX}_prompt_{clean_date}.txt"
-        OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-        out.write_text(prompt, encoding="utf-8")
-        print(f"dry-run：prompt 已存至 {out}")
+        print(f"dry-run 模式：Prompt 已存至 {out}，不呼叫 Gemini API。")
         return 0
 
     valid_ids = {s["source_id"] for s in sources} or None
