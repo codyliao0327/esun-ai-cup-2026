@@ -430,6 +430,7 @@ def run_order_calculator(
     dry_run: bool = False,
     no_gemini: bool = False,
     no_stream: bool = False,
+    stream: bool = False,
     no_code_exec: bool = False,
 ) -> Path:
     """執行委託單計算與 Gemini 覆核主流程。"""
@@ -592,7 +593,13 @@ def run_order_calculator(
         print(" (已啟用 Code Execution 程式碼自動執行工具)")
     client = GeminiClient()
 
-    stream_enabled = not no_stream
+    if stream:
+        stream_enabled = True
+    elif no_stream:
+        stream_enabled = False
+    else:
+        stream_enabled = False if not no_code_exec else True
+
     valid_decision_ids = {d.get("decision_id") for d in decisions if d.get("decision_id")}
 
     try:
@@ -672,6 +679,7 @@ def main():
     parser.add_argument("--date", type=str, default=None, help="指定交易日期 (格式如 20261027 或 2026-10-27)")
     parser.add_argument("--dry-run", action="store_true", help="僅組裝 Prompt 並儲存至 txt，不實際呼叫 Gemini API")
     parser.add_argument("--no-gemini", action="store_true", help="僅執行 Python 官方公式算單，不呼叫 Gemini API")
+    parser.add_argument("--stream", action="store_true", help="強制開啟串流印出模式")
     parser.add_argument("--no-stream", action="store_true", help="關閉串流印出，改用一次性等待回傳")
     parser.add_argument("--no-code-exec", action="store_true", help="關閉 Gemini Python 程式碼自動執行 (Code Execution) 功能 (預設開啟)")
     args = parser.parse_args()
@@ -684,6 +692,7 @@ def main():
         dry_run=args.dry_run,
         no_gemini=args.no_gemini,
         no_stream=args.no_stream,
+        stream=args.stream,
         no_code_exec=args.no_code_exec,
     )
 

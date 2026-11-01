@@ -49,53 +49,68 @@ class GeminiClient:
         self.client = genai.Client(api_key=self.api_key)
 
     @staticmethod
-    def _log_code_execution(interaction_or_event: Any) -> None:
-        """從 Interaction、Step 或 Event 物件中檢查並印出 Code Execution 過程。"""
+    def _log_code_execution(interaction_or_event: Any) -> int:
+        """從 Interaction、Step 或 Event 物件中檢查並印出 Code Execution 過程。
+
+        Returns:
+            int: 成功印出的 code_execution_call 次數。
+        """
         if interaction_or_event is None:
-            return
+            return 0
+
+        call_count = 0
 
         # 1. 處理 interaction 物件中的 steps 清單 (批次/非串流模式)
         steps = getattr(interaction_or_event, "steps", None)
         if steps and isinstance(steps, (list, tuple)):
-            for step in steps:
+            for idx, step in enumerate(steps, 1):
                 stype = getattr(step, "type", None)
                 if stype == "code_execution_call":
+                    call_count += 1
                     args = getattr(step, "arguments", None)
                     code = getattr(args, "code", None) if args else None
                     if not code and isinstance(args, dict):
                         code = args.get("code")
                     if code:
                         print("\n" + "=" * 65)
-                        print("[Gemini 產生並執行 Python 程式碼]:")
+                        print(f"[Gemini 執行 Python 程式碼 (第 {call_count} 次)]:")
                         print("-" * 65)
                         print(str(code).strip())
                         print("-" * 65)
                 elif stype == "code_execution_result":
                     res = getattr(step, "result", None)
                     if res is not None:
-                        print("[Gemini 程式碼執行輸出結果]:")
+                        print(f"[Gemini 程式碼執行輸出結果]:")
                         print(str(res).strip())
                         print("=" * 65 + "\n")
 
-        # 2. 處理單一串流 event (串流模式)
+        # 2. 處理單一串流 event (串流模式，支援 event_type 與 step 結構)
         stype = getattr(interaction_or_event, "type", None)
-        if stype == "code_execution_call":
-            args = getattr(interaction_or_event, "arguments", None)
+        event_type = getattr(interaction_or_event, "event_type", None)
+        step_obj = getattr(interaction_or_event, "step", None)
+        if step_obj:
+            stype = getattr(step_obj, "type", None)
+
+        if stype == "code_execution_call" or event_type == "step.start" and getattr(step_obj, "type", None) == "code_execution_call":
+            call_count += 1
+            args = getattr(step_obj or interaction_or_event, "arguments", None)
             code = getattr(args, "code", None) if args else None
             if not code and isinstance(args, dict):
                 code = args.get("code")
             if code:
                 print("\n" + "=" * 65)
-                print("[Gemini 產生並執行 Python 程式碼 (串流)]: ")
+                print(f"[Gemini 執行 Python 程式碼 (串流)]:")
                 print("-" * 65)
                 print(str(code).strip())
                 print("-" * 65)
-        elif stype == "code_execution_result":
-            res = getattr(interaction_or_event, "result", None)
+        elif stype == "code_execution_result" or getattr(step_obj, "type", None) == "code_execution_result":
+            res = getattr(step_obj or interaction_or_event, "result", None)
             if res is not None:
-                print("[Gemini 程式碼執行輸出結果 (串流)]: ")
+                print(f"[Gemini 程式碼執行輸出結果 (串流)]:")
                 print(str(res).strip())
                 print("=" * 65 + "\n")
+
+        return call_count
 
     @staticmethod
     def _extract_chunk_text(chunk: Any) -> str:
@@ -180,6 +195,8 @@ class GeminiClient:
         candidates_tokens = 0
         total_tokens = 0
         cached_tokens = 0
+        tool_use_tokens = 0
+        thought_tokens = 0
 
         # 1. 嘗試讀取 interaction_or_event 上的 usage 屬性
         raw_usage = getattr(interaction_or_event, "usage", None)
@@ -198,10 +215,12 @@ class GeminiClient:
                             pass
                 return 0
 
-            prompt_tokens = _get_val(["prompt_token_count", "input_tokens", "prompt_tokens"])
-            candidates_tokens = _get_val(["candidates_token_count", "output_tokens", "completion_tokens"])
+            prompt_tokens = _get_val(["prompt_token_count", "input_tokens", "prompt_tokens", "total_input_tokens"])
+            candidates_tokens = _get_val(["candidates_token_count", "output_tokens", "completion_tokens", "total_output_tokens"])
             total_tokens = _get_val(["total_token_count", "total_tokens"])
-            cached_tokens = _get_val(["cached_content_token_count", "cached_tokens", "cache_tokens"])
+            cached_tokens = _get_val(["cached_content_token_count", "cached_tokens", "cache_tokens", "total_cached_tokens"])
+            tool_use_tokens = _get_val(["total_tool_use_tokens", "tool_use_tokens"])
+            thought_tokens = _get_val(["total_thought_tokens", "thought_tokens"])
 
         # 2. 若 total_tokens 仍為 0，嘗試以 prompt/output 長度與官方 count_tokens 備援
         if total_tokens == 0:
@@ -220,6 +239,22 @@ class GeminiClient:
 
             total_tokens = prompt_tokens + candidates_tokens
 
+        # 3. 統計 Code Execution 呼叫與執行的 Python 原始碼
+        executed_codes: List[str] = []
+        steps = getattr(interaction_or_event, "steps", None)
+        if steps and isinstance(steps, (list, tuple)):
+            for s in steps:
+                if getattr(s, "type", None) == "code_execution_call":
+                    args = getattr(s, "arguments", None)
+                    code = getattr(args, "code", None) if args else None
+                    if not code and isinstance(args, dict):
+                        code = args.get("code")
+                    if code:
+                        executed_codes.append(str(code).strip())
+
+        code_execution_used = len(executed_codes) > 0 or tool_use_tokens > 0
+        code_execution_call_count = len(executed_codes)
+
         usage_data = {
             "timestamp": end_dt.strftime("%Y-%m-%dT%H:%M:%S+08:00"),
             "model": model,
@@ -228,6 +263,11 @@ class GeminiClient:
             "candidates_tokens": candidates_tokens,
             "total_tokens": total_tokens,
             "cached_tokens": cached_tokens,
+            "tool_use_tokens": tool_use_tokens,
+            "thought_tokens": thought_tokens,
+            "code_execution_used": code_execution_used,
+            "code_execution_call_count": code_execution_call_count,
+            "executed_codes": executed_codes,
         }
         self.last_usage = usage_data
         return usage_data
@@ -259,6 +299,11 @@ class GeminiClient:
             "candidates_tokens": 0,
             "total_tokens": 0,
             "cached_tokens": 0,
+            "tool_use_tokens": 0,
+            "thought_tokens": 0,
+            "code_execution_used": False,
+            "code_execution_call_count": 0,
+            "executed_codes": [],
         })
         payload["date"] = c_date
         payload["stage"] = stage_prefix
@@ -269,10 +314,16 @@ class GeminiClient:
         with open(usage_file, "w", encoding="utf-8") as f:
             json.dump(payload, f, ensure_ascii=False, indent=2)
 
+        code_exec_msg = (
+            f"已執行 ({payload.get('code_execution_call_count')} 次, {payload.get('tool_use_tokens', 0)} tool tokens)"
+            if payload.get("code_execution_used")
+            else "未觸發 (直接文字推論)"
+        )
         print(
             f"[GeminiClient] Usage 紀錄已儲存至: {usage_file}\n"
             f" -> Model: {payload.get('model')} | Prompt: {payload.get('prompt_tokens')} | "
-            f"Candidates: {payload.get('candidates_tokens')} | Total: {payload.get('total_tokens')} | 耗時: {payload.get('duration_seconds')}s"
+            f"Candidates: {payload.get('candidates_tokens')} | Total: {payload.get('total_tokens')} | "
+            f"Code Execution: {code_exec_msg} | 耗時: {payload.get('duration_seconds')}s"
         )
         return usage_file
 
@@ -362,7 +413,7 @@ class GeminiClient:
         prompt: Union[str, List[Any]],
         response_model: Type[BaseModel],
         model: Optional[str] = None,
-        stream: bool = True,
+        stream: Optional[bool] = None,
         print_stream: bool = True,
         enable_code_execution: Optional[bool] = None,
     ) -> BaseModel:
@@ -370,12 +421,13 @@ class GeminiClient:
 
         支援 Stream 模式：可即時在終端機印出產字過程，便於即時監看內容與在中斷時節省輸出 Token。
         支援 Code Execution：模型可自動撰寫並執行 Python 程式碼，依據運算結果產出結構化輸出。
+        (注意：啟用 Code Execution 時，預設採用非串流批次生成以獲取完整 steps 與精確工具 Token)
 
         Args:
             prompt: 提示詞字串。
             response_model: Pydantic 的 BaseModel 衍生類別。
             model: 模型名稱。
-            stream: 是否使用串流 (Streaming) 方式即時生成。預設為 True。
+            stream: 是否使用串流 (Streaming)。若為 None，在啟用 Code Execution 時自動切為 False (批次)，否則為 True。
             print_stream: 串流模式下是否即時將字元輸出至 stdout。預設為 True。
             enable_code_execution: 是否啟用 Python 程式碼執行 (Code Execution)。若為 None 則使用實例預設值。
 
@@ -385,6 +437,12 @@ class GeminiClient:
         target_model = model or self.default_model
         use_code_exec = self.enable_code_execution if enable_code_execution is None else enable_code_execution
         tools = [{"type": "code_execution"}] if use_code_exec else None
+
+        # 當啟用 Code Execution 時，因包含程式碼執行與完整工具 Token 審計，預設採用穩定非串流模式
+        if stream is None:
+            actual_stream = False if use_code_exec else True
+        else:
+            actual_stream = stream
 
         response_format = {
             "type": "text",
@@ -404,7 +462,7 @@ class GeminiClient:
                 raise
 
         start_dt = datetime.now(TW_TZ)
-        if not stream:
+        if not actual_stream:
             kwargs: Dict[str, Any] = {
                 "model": target_model,
                 "input": prompt,
@@ -417,7 +475,9 @@ class GeminiClient:
             end_dt = datetime.now(TW_TZ)
 
             if use_code_exec:
-                self._log_code_execution(interaction)
+                calls = self._log_code_execution(interaction)
+                if calls == 0:
+                    print("\n[Gemini Client] 本次生成模型未呼叫 Python 程式碼執行 (直接由文字推論輸出)")
 
             self._record_usage(
                 interaction_or_event=interaction,
@@ -443,10 +503,11 @@ class GeminiClient:
             stream_resp = self.client.interactions.create(**kwargs)
             chunks: List[str] = []
             last_event = None
+            stream_calls = 0
             for event in stream_resp:
                 last_event = event
                 if use_code_exec:
-                    self._log_code_execution(event)
+                    stream_calls += self._log_code_execution(event)
                 piece = self._extract_chunk_text(event)
                 if piece:
                     chunks.append(piece)
@@ -455,6 +516,9 @@ class GeminiClient:
 
             if print_stream:
                 print()  # 串流結束換行
+
+            if use_code_exec and stream_calls == 0:
+                print("\n[Gemini Client] 本次生成模型未呼叫 Python 程式碼執行 (直接由文字推論輸出)")
 
             end_dt = datetime.now(TW_TZ)
             full_text = "".join(chunks)

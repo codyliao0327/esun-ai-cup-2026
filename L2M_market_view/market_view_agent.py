@@ -321,19 +321,20 @@ def generate_market_view(
     prompt: str,
     valid_obs_ids: Optional[Set[str]] = None,
     target_date: Optional[str] = None,
-    stream: bool = True,
+    stream: bool = False,
     code_execution: bool = True,
 ) -> MarketView:
     """呼叫 Gemini Client 進行結構化生成與嚴格檢核。"""
     client = GeminiClient()
 
+    print("\n" + "=" * 65)
     if stream:
-        print("\n" + "=" * 65)
         print(" [Gemini 串流模式啟動] 正在即時生成 L2M market_view...")
-        if code_execution:
-            print(" (已啟用 Code Execution 程式碼自動執行工具)")
-        print(" (提示：若生成方向有偏離，可隨時按 Ctrl + C 中斷以節省 Token)")
-        print("=" * 65 + "\n")
+    else:
+        print(" [Gemini 批次模式啟動] 正在生成 L2M market_view (啟用完整 Steps 與 Code Execution 監聽)...")
+    if code_execution:
+        print(" (已啟用 Code Execution 程式碼自動執行工具)")
+    print("=" * 65 + "\n")
 
     resp: MarketViewResponse = client.generate_structured(
         prompt=prompt,
@@ -395,6 +396,11 @@ def main(argv: Optional[List[str]] = None) -> int:
         "--dry-run",
         action="store_true",
         help="僅組合提示詞並輸出 txt，不實際呼叫 Gemini API",
+    )
+    parser.add_argument(
+        "--stream",
+        action="store_true",
+        help="強制開啟串流印出",
     )
     parser.add_argument(
         "--no-stream",
@@ -459,12 +465,20 @@ def main(argv: Optional[List[str]] = None) -> int:
         print(f"[MarketViewAgent] --dry-run 已啟用：Prompt 已輸出至 {prompt_file}，不呼叫 API。")
         return 0
 
+    # 決定串流模式：若有明確傳入 --stream / --no-stream 則遵照；否則 Code Execution 預設為批次 (False)
+    if args.stream:
+        use_stream = True
+    elif args.no_stream:
+        use_stream = False
+    else:
+        use_stream = False if not args.no_code_exec else True
+
     # 4. 呼叫 Gemini 進行結構化生成
     market_view = generate_market_view(
         prompt=prompt,
         valid_obs_ids=all_obs_ids,
         target_date=clean_date,
-        stream=not args.no_stream,
+        stream=use_stream,
         code_execution=not args.no_code_exec,
     )
 
