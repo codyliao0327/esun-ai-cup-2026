@@ -9,9 +9,10 @@
 
 用法::
 
-    python market_view_agent.py                  # 執行今日分析 (預設串流生成)
+    python market_view_agent.py                  # 執行今日分析 (預設串流生成與啟用 Code Execution)
     python market_view_agent.py --dry-run        # 僅組裝 Prompt 並存成 txt，不呼叫 API
     python market_view_agent.py --no-stream      # 關閉串流印出，改用單次等待
+    python market_view_agent.py --no-code-exec   # 關閉 Code Execution 功能
     python market_view_agent.py --date 20261027  # 指定特定日期
 """
 
@@ -170,6 +171,7 @@ PROMPT_TEMPLATE = """\
 2. logic 內必須提及 {market_obs_id} 並對照實際數值。
 3. 若無反向訊號，counter_evidence 請填 null。
 4. net_exposure_intent 若為 hold，需在 logic 內提及淨買賣金額差距在 NAV 2% 容差內，NAV = (Σ 各持股張數 × 1,000 × 當日收盤價) + 現金部位。
+5. 程式碼執行功能 (Code Execution)：系統已為你開啟 Python Code Execution 工具。若需計算均線差距、指數報酬率、融資增減比例或目標現金比率試算或其他計算時，請主動撰寫並執行 Python 程式碼，確保所有數據與結論精確無誤。
 """
 
 
@@ -320,6 +322,7 @@ def generate_market_view(
     valid_obs_ids: Optional[Set[str]] = None,
     target_date: Optional[str] = None,
     stream: bool = True,
+    code_execution: bool = True,
 ) -> MarketView:
     """呼叫 Gemini Client 進行結構化生成與嚴格檢核。"""
     client = GeminiClient()
@@ -327,6 +330,8 @@ def generate_market_view(
     if stream:
         print("\n" + "=" * 65)
         print(" [Gemini 串流模式啟動] 正在即時生成 L2M market_view...")
+        if code_execution:
+            print(" (已啟用 Code Execution 程式碼自動執行工具)")
         print(" (提示：若生成方向有偏離，可隨時按 Ctrl + C 中斷以節省 Token)")
         print("=" * 65 + "\n")
 
@@ -334,6 +339,7 @@ def generate_market_view(
         prompt=prompt,
         response_model=MarketViewResponse,
         stream=stream,
+        enable_code_execution=code_execution,
     )
 
     # 輸出 Gemini Usage 統計至 OUTPUT_DIR / "usage" / "l2m_usage_YYYYMMDD.json"
@@ -396,6 +402,11 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="關閉串流印出，改用一次性等待回傳",
     )
     parser.add_argument(
+        "--no-code-exec",
+        action="store_true",
+        help="關閉 Gemini Python 程式碼自動執行 (Code Execution) 功能 (預設開啟)",
+    )
+    parser.add_argument(
         "--l1-path",
         type=Path,
         default=None,
@@ -454,6 +465,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         valid_obs_ids=all_obs_ids,
         target_date=clean_date,
         stream=not args.no_stream,
+        code_execution=not args.no_code_exec,
     )
 
     # 5. 輸出存檔

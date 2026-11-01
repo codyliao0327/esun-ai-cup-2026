@@ -20,9 +20,10 @@
 
 用法::
 
-    python order_calculator.py                  # 完整執行 (Python 算單 + Gemini 覆核)
+    python order_calculator.py                  # 完整執行 (Python 算單 + Gemini 覆核，預設啟用 Code Execution)
     python order_calculator.py --no-gemini      # 僅執行 Python 官方公式算單
     python order_calculator.py --dry-run        # 僅組裝 Prompt，不實際調用 Gemini API
+    python order_calculator.py --no-code-exec   # 關閉 Code Execution 功能
     python order_calculator.py --date 20261027  # 指定特定日期
 """
 
@@ -122,6 +123,7 @@ REVIEW_PROMPT_TEMPLATE = r"""\
 2. **整股取整偏離與現金檢核**：確認因向下整股取整所保留之剩餘現金比率 ({est_cash_pct_str})，完全符合 L2M 所宣示之目標現金區間 {target_cash_pct_range_str}，資金水位健康充足。
 3. **委託方向與無超賣檢核**：確認賣出委託 (SELL) 之股數絕無超過庫存持股數 (絕不可超賣)；買進委託 (BUY) 所需資金未超過帳戶淨額上限。
 4. **推導明細 (derivation_detail) 格式確認**：每筆委託單之推導算式皆精準對應官方範例格式。
+5. **程式碼執行工具 (Code Execution)**：系統已為你開啟 Python Code Execution 工具。若需驗證委託股數金額、覆核 Active Share 或計算成交後現金水位或其他計算時，請主動撰寫並執行 Python 程式碼進行驗證。
 
 ## 輸出格式要求 (嚴格遵循 D-Plan v4.3 JSON 結構)
 請產生符合下列結構的 JSON 回應：
@@ -428,6 +430,7 @@ def run_order_calculator(
     dry_run: bool = False,
     no_gemini: bool = False,
     no_stream: bool = False,
+    no_code_exec: bool = False,
 ) -> Path:
     """執行委託單計算與 Gemini 覆核主流程。"""
     now_dt = datetime.now(TW_TZ)
@@ -585,6 +588,8 @@ def run_order_calculator(
 
     # 8. 連接 Gemini Client 進行審核
     print(f"\n{'='*65}\n [OrderCalculator] 連接 Gemini Client 進行委託單審查與覆核...\n{'='*65}")
+    if not no_code_exec:
+        print(" (已啟用 Code Execution 程式碼自動執行工具)")
     client = GeminiClient()
 
     stream_enabled = not no_stream
@@ -595,6 +600,7 @@ def run_order_calculator(
             prompt=prompt,
             response_model=OrdersResponse,
             stream=stream_enabled,
+            enable_code_execution=not no_code_exec,
         )
         # 輸出 Gemini Usage 統計至 OUTPUT_DIR / "usage" / "l4_usage_YYYYMMDD.json"
         client.save_usage_metadata(
@@ -667,6 +673,7 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="僅組裝 Prompt 並儲存至 txt，不實際呼叫 Gemini API")
     parser.add_argument("--no-gemini", action="store_true", help="僅執行 Python 官方公式算單，不呼叫 Gemini API")
     parser.add_argument("--no-stream", action="store_true", help="關閉串流印出，改用一次性等待回傳")
+    parser.add_argument("--no-code-exec", action="store_true", help="關閉 Gemini Python 程式碼自動執行 (Code Execution) 功能 (預設開啟)")
     args = parser.parse_args()
 
     # 取得交易日期 (若無命令列參數則在終端機提示輸入)
@@ -677,6 +684,7 @@ def main():
         dry_run=args.dry_run,
         no_gemini=args.no_gemini,
         no_stream=args.no_stream,
+        no_code_exec=args.no_code_exec,
     )
 
 

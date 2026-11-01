@@ -31,30 +31,89 @@ class GeminiClient:
         self,
         api_key: Optional[str] = None,
         default_model: str = DEFAULT_GEMINI_MODEL,
+        enable_code_execution: bool = False,
     ):
         """初始化 Gemini 客戶端。
 
         Args:
             api_key: Gemini API 金鑰。若為 None，則自動從本地 credentials.json 讀取。
             default_model: 預設呼叫的模型名稱 (例如 "gemini-3.8-flash")。
+            enable_code_execution: 是否預設啟用 Gemini 內建 Python 程式碼執行 (Code Execution)。預設為 False。
         """
         self.api_key = api_key or get_gemini_api_key()
         self.default_model = default_model
+        self.enable_code_execution = enable_code_execution
         self.last_usage: Optional[Dict[str, Any]] = None
 
         # 依據 google-genai 規範，將 api_key 明確傳入 Client 進行驗證
         self.client = genai.Client(api_key=self.api_key)
 
     @staticmethod
+    def _log_code_execution(interaction_or_event: Any) -> None:
+        """從 Interaction、Step 或 Event 物件中檢查並印出 Code Execution 過程。"""
+        if interaction_or_event is None:
+            return
+
+        # 1. 處理 interaction 物件中的 steps 清單 (批次/非串流模式)
+        steps = getattr(interaction_or_event, "steps", None)
+        if steps and isinstance(steps, (list, tuple)):
+            for step in steps:
+                stype = getattr(step, "type", None)
+                if stype == "code_execution_call":
+                    args = getattr(step, "arguments", None)
+                    code = getattr(args, "code", None) if args else None
+                    if not code and isinstance(args, dict):
+                        code = args.get("code")
+                    if code:
+                        print("\n" + "=" * 65)
+                        print("[Gemini 產生並執行 Python 程式碼]:")
+                        print("-" * 65)
+                        print(str(code).strip())
+                        print("-" * 65)
+                elif stype == "code_execution_result":
+                    res = getattr(step, "result", None)
+                    if res is not None:
+                        print("[Gemini 程式碼執行輸出結果]:")
+                        print(str(res).strip())
+                        print("=" * 65 + "\n")
+
+        # 2. 處理單一串流 event (串流模式)
+        stype = getattr(interaction_or_event, "type", None)
+        if stype == "code_execution_call":
+            args = getattr(interaction_or_event, "arguments", None)
+            code = getattr(args, "code", None) if args else None
+            if not code and isinstance(args, dict):
+                code = args.get("code")
+            if code:
+                print("\n" + "=" * 65)
+                print("[Gemini 產生並執行 Python 程式碼 (串流)]: ")
+                print("-" * 65)
+                print(str(code).strip())
+                print("-" * 65)
+        elif stype == "code_execution_result":
+            res = getattr(interaction_or_event, "result", None)
+            if res is not None:
+                print("[Gemini 程式碼執行輸出結果 (串流)]: ")
+                print(str(res).strip())
+                print("=" * 65 + "\n")
+
+    @staticmethod
     def _extract_chunk_text(chunk: Any) -> str:
         """從各種串流事件格式中提取增量文字。"""
         if isinstance(chunk, str):
             return chunk
+
+        # 忽略 code execution 相關事件，避免程式碼或執行標準輸出混入文字或結構化 JSON
+        chunk_type = getattr(chunk, "type", None)
+        if chunk_type in ("code_execution_call", "code_execution_result"):
+            return ""
+
         # 1. 優先嘗試常用屬性 (output_text / text)
         for attr in ("text", "output_text"):
             val = getattr(chunk, attr, None)
             if isinstance(val, str) and val:
                 return val
+
         # 2. 嘗試 delta 物件
         delta = getattr(chunk, "delta", None)
         if delta is not None:
@@ -62,13 +121,27 @@ class GeminiClient:
                 val = getattr(delta, attr, None)
                 if isinstance(val, str) and val:
                     return val
-        # 3. 嘗試 candidates 物件 (標準 generate_content 格式)
+
+        # 3. 嘗試 content / content_block 結構 (Interactions API step 格式)
+        content = getattr(chunk, "content", None)
+        if content and isinstance(content, (list, tuple)):
+            text_parts = []
+            for b in content:
+                b_type = getattr(b, "type", None) if not isinstance(b, dict) else b.get("type")
+                if b_type == "text":
+                    t = getattr(b, "text", None) if not isinstance(b, dict) else b.get("text")
+                    if t:
+                        text_parts.append(t)
+            if text_parts:
+                return "".join(text_parts)
+
+        # 4. 嘗試 candidates 物件 (標準 generate_content 格式)
         candidates = getattr(chunk, "candidates", None)
         if candidates and len(candidates) > 0:
             c = candidates[0]
-            content = getattr(c, "content", None)
-            if content:
-                parts = getattr(content, "parts", None)
+            c_content = getattr(c, "content", None)
+            if c_content:
+                parts = getattr(c_content, "parts", None)
                 if parts:
                     return "".join(getattr(p, "text", "") for p in parts)
         return ""
@@ -208,6 +281,7 @@ class GeminiClient:
         prompt: Union[str, List[Any]],
         model: Optional[str] = None,
         system_instruction: Optional[str] = None,
+        enable_code_execution: Optional[bool] = None,
     ) -> str:
         """發送文字或多模態請求並取得模型回覆純文字。
 
@@ -215,11 +289,13 @@ class GeminiClient:
             prompt: 提示詞字串或結構化輸入列表。
             model: 模型名稱 (預設使用 default_model)。
             system_instruction: 系統提示指令 (選用)。
+            enable_code_execution: 是否啟用 Python 程式碼執行 (Code Execution)。若為 None 則使用實例預設值。
 
         Returns:
             str: 模型的文字回應。
         """
         target_model = model or self.default_model
+        use_code_exec = self.enable_code_execution if enable_code_execution is None else enable_code_execution
         kwargs: Dict[str, Any] = {
             "model": target_model,
             "input": prompt,
@@ -229,9 +305,16 @@ class GeminiClient:
         if system_instruction:
             kwargs["system_instruction"] = system_instruction
 
+        if use_code_exec:
+            kwargs["tools"] = [{"type": "code_execution"}]
+
         start_dt = datetime.now(TW_TZ)
         interaction = self.client.interactions.create(**kwargs)
         end_dt = datetime.now(TW_TZ)
+
+        if use_code_exec:
+            self._log_code_execution(interaction)
+
         self._record_usage(
             interaction_or_event=interaction,
             model=target_model,
@@ -246,23 +329,32 @@ class GeminiClient:
         self,
         prompt: Union[str, List[Any]],
         model: Optional[str] = None,
-    ) -> Generator[str, None, None]:
+        enable_code_execution: Optional[bool] = None,
+    ) -> Generator[Any, None, None]:
         """以串流方式生成回覆。
 
         Args:
             prompt: 提示詞字串。
             model: 模型名稱。
+            enable_code_execution: 是否啟用 Python 程式碼執行 (Code Execution)。若為 None 則使用實例預設值。
 
         Yields:
-            str: 每個事件區塊的文字增量。
+            Any: 每個事件區塊。
         """
         target_model = model or self.default_model
-        stream = self.client.interactions.create(
-            model=target_model,
-            input=prompt,
-            stream=True,
-        )
+        use_code_exec = self.enable_code_execution if enable_code_execution is None else enable_code_execution
+        kwargs: Dict[str, Any] = {
+            "model": target_model,
+            "input": prompt,
+            "stream": True,
+        }
+        if use_code_exec:
+            kwargs["tools"] = [{"type": "code_execution"}]
+
+        stream = self.client.interactions.create(**kwargs)
         for event in stream:
+            if use_code_exec:
+                self._log_code_execution(event)
             yield event
 
     def generate_structured(
@@ -272,10 +364,12 @@ class GeminiClient:
         model: Optional[str] = None,
         stream: bool = True,
         print_stream: bool = True,
+        enable_code_execution: Optional[bool] = None,
     ) -> BaseModel:
         """要求模型依據指定的 Pydantic 模型產生結構化 JSON 輸出。
 
         支援 Stream 模式：可即時在終端機印出產字過程，便於即時監看內容與在中斷時節省輸出 Token。
+        支援 Code Execution：模型可自動撰寫並執行 Python 程式碼，依據運算結果產出結構化輸出。
 
         Args:
             prompt: 提示詞字串。
@@ -283,25 +377,48 @@ class GeminiClient:
             model: 模型名稱。
             stream: 是否使用串流 (Streaming) 方式即時生成。預設為 True。
             print_stream: 串流模式下是否即時將字元輸出至 stdout。預設為 True。
+            enable_code_execution: 是否啟用 Python 程式碼執行 (Code Execution)。若為 None 則使用實例預設值。
 
         Returns:
             BaseModel: 依 response_model 解析並驗證後的物件。
         """
         target_model = model or self.default_model
+        use_code_exec = self.enable_code_execution if enable_code_execution is None else enable_code_execution
+        tools = [{"type": "code_execution"}] if use_code_exec else None
+
         response_format = {
             "type": "text",
             "mime_type": "application/json",
             "schema": response_model.model_json_schema(),
         }
 
+        def _safe_parse_json(text_content: str) -> BaseModel:
+            """解析 JSON 並驗證為 response_model，若有外部標籤做容錯正則抽取。"""
+            try:
+                return response_model.model_validate_json(text_content)
+            except Exception:
+                # 容錯嘗試：搜尋第一個符合的 { ... }
+                m = re.search(r"(\{.*\})", text_content, re.DOTALL)
+                if m:
+                    return response_model.model_validate_json(m.group(1))
+                raise
+
         start_dt = datetime.now(TW_TZ)
         if not stream:
-            interaction = self.client.interactions.create(
-                model=target_model,
-                input=prompt,
-                response_format=response_format,
-            )
+            kwargs: Dict[str, Any] = {
+                "model": target_model,
+                "input": prompt,
+                "response_format": response_format,
+            }
+            if tools:
+                kwargs["tools"] = tools
+
+            interaction = self.client.interactions.create(**kwargs)
             end_dt = datetime.now(TW_TZ)
+
+            if use_code_exec:
+                self._log_code_execution(interaction)
+
             self._record_usage(
                 interaction_or_event=interaction,
                 model=target_model,
@@ -310,20 +427,26 @@ class GeminiClient:
                 prompt_text=str(prompt),
                 output_text=interaction.output_text,
             )
-            return response_model.model_validate_json(interaction.output_text)
+            return _safe_parse_json(interaction.output_text)
 
         # 串流生成模式
         try:
-            stream_resp = self.client.interactions.create(
-                model=target_model,
-                input=prompt,
-                response_format=response_format,
-                stream=True,
-            )
+            kwargs = {
+                "model": target_model,
+                "input": prompt,
+                "response_format": response_format,
+                "stream": True,
+            }
+            if tools:
+                kwargs["tools"] = tools
+
+            stream_resp = self.client.interactions.create(**kwargs)
             chunks: List[str] = []
             last_event = None
             for event in stream_resp:
                 last_event = event
+                if use_code_exec:
+                    self._log_code_execution(event)
                 piece = self._extract_chunk_text(event)
                 if piece:
                     chunks.append(piece)
@@ -335,6 +458,11 @@ class GeminiClient:
 
             end_dt = datetime.now(TW_TZ)
             full_text = "".join(chunks)
+
+            # 若 chunks 為空但 last_event 包含 output_text 則備援使用
+            if not full_text.strip() and last_event:
+                full_text = getattr(last_event, "output_text", "") or ""
+
             self._record_usage(
                 interaction_or_event=last_event,
                 model=target_model,
@@ -343,18 +471,26 @@ class GeminiClient:
                 prompt_text=str(prompt),
                 output_text=full_text,
             )
-            return response_model.model_validate_json(full_text)
+            return _safe_parse_json(full_text)
         except Exception as e:
             # 若串流請求在特定環境不支援，自動 fallback 為非串流批次模式
             if "stream" in str(e).lower() or type(e).__name__ in ("NotImplementedError", "TypeError"):
                 print(f"\n[GeminiClient 提示] 串流模式未就緒 ({e})，自動切換為批次生成...")
                 fb_start = datetime.now(TW_TZ)
-                interaction = self.client.interactions.create(
-                    model=target_model,
-                    input=prompt,
-                    response_format=response_format,
-                )
+                fb_kwargs: Dict[str, Any] = {
+                    "model": target_model,
+                    "input": prompt,
+                    "response_format": response_format,
+                }
+                if tools:
+                    fb_kwargs["tools"] = tools
+
+                interaction = self.client.interactions.create(**fb_kwargs)
                 fb_end = datetime.now(TW_TZ)
+
+                if use_code_exec:
+                    self._log_code_execution(interaction)
+
                 self._record_usage(
                     interaction_or_event=interaction,
                     model=target_model,
@@ -363,7 +499,7 @@ class GeminiClient:
                     prompt_text=str(prompt),
                     output_text=interaction.output_text,
                 )
-                return response_model.model_validate_json(interaction.output_text)
+                return _safe_parse_json(interaction.output_text)
             raise
 
 

@@ -12,9 +12,10 @@
 
 用法::
 
-    python portfolio_decision_agent.py                  # 執行今日決策 (預設串流生成)
+    python portfolio_decision_agent.py                  # 執行今日決策 (預設串流生成與啟用 Code Execution)
     python portfolio_decision_agent.py --dry-run        # 僅組裝 Prompt 並存成 txt，不呼叫 API
     python portfolio_decision_agent.py --no-stream      # 關閉串流印出，改用單次等待
+    python portfolio_decision_agent.py --no-code-exec   # 關閉 Code Execution 功能
     python portfolio_decision_agent.py --date 20261027  # 指定特定日期
 """
 
@@ -194,6 +195,7 @@ PROMPT_TEMPLATE = """\
 3. 非首日建倉：昨日持有的每檔股票 ({prev_holdings_codes_str}) 必須恰好出現在 decisions 或 no_trade_decisions 之一。
 4. 各股 target_weight 之總和加上剩餘現金必須為 1.0 (100%)，且單一股票 <= 0.10 (台積電 2330 <= 0.25)。
 5. 每筆決策的 inference_refs 必須真實存在於上方推論 ID 清單中。
+6. 程式碼執行功能 (Code Execution)：系統已為你開啟 Python Code Execution 工具。你在決定各檔目標權重 (target_weight)、計算持股總權重、預估剩餘現金 (1.0 - sum(target_weight)) 以及檢核權重上限 (個股<=10%、台積電<=25%) 與持股檔數 (20~30檔) 或其他計算時，請務必主動撰寫並執行 Python 程式碼進行驗證與試算，確保投資組合數據完全合規。
 """
 
 
@@ -416,6 +418,7 @@ def generate_decisions(
     prev_holdings_codes: Optional[Set[str]] = None,
     target_date: Optional[str] = None,
     stream: bool = True,
+    code_execution: bool = True,
 ) -> DecisionsResult:
     """呼叫 Gemini Client 進行結構化生成與嚴格檢核。"""
     client = GeminiClient()
@@ -423,6 +426,8 @@ def generate_decisions(
     if stream:
         print("\n" + "=" * 65)
         print(" [Gemini 串流模式啟動] 正在即時生成 L3 decisions (投資組合決策)...")
+        if code_execution:
+            print(" (已啟用 Code Execution 程式碼自動執行工具)")
         print(" (提示：若生成方向有偏離，可隨時按 Ctrl + C 中斷以節省 Token)")
         print("=" * 65 + "\n")
 
@@ -430,6 +435,7 @@ def generate_decisions(
         prompt=prompt,
         response_model=DecisionsResponse,
         stream=stream,
+        enable_code_execution=code_execution,
     )
 
     # 輸出 Gemini Usage 統計至 OUTPUT_DIR / "usage" / "l3_usage_YYYYMMDD.json"
@@ -494,6 +500,11 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="關閉串流印出，改用一次性等待回傳",
     )
     parser.add_argument(
+        "--no-code-exec",
+        action="store_true",
+        help="關閉 Gemini Python 程式碼自動執行 (Code Execution) 功能 (預設開啟)",
+    )
+    parser.add_argument(
         "--l2-path",
         type=Path,
         default=None,
@@ -552,6 +563,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         prev_holdings_codes=prev_holdings_codes,
         target_date=clean_date,
         stream=not args.no_stream,
+        code_execution=not args.no_code_exec,
     )
 
     # 5. 輸出存檔
