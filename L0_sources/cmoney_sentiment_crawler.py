@@ -24,44 +24,16 @@ session = requests.Session()
 # 忽略 CMoney 伺服器缺少 Subject Key Identifier 之 SSL 憑證驗證問題
 session.verify = False
 
-session.cookies.update({
-    '_ga': 'GA1.1.616575418.1792862649',
-    '__lt__cid': '2ee2beba-f583-41a0-92f9-63e2ffa12682',
-    '_qg_fts': '1792862650',
-    'QGUserId': '1385138909155198',
-    '_qg_cm': '2',
-    'AspSession': 'qdw1vkqigvntgtfdvui1fdvl',
-    '_ga_5XLZWTV92B': 'GS2.1.s1793465416$o2$g0$t1793465416$j60$l0$h0',
-    '__lt__sid': '31313697-8b032616',
-    'FCNEC': '%5B%5B%22AKsRol9w29fIrS35rBf8twjUGuFegqEU6lCI64I0_F6hLmnInkiP83T5ghyE0d4WuD9xNzIYCeCvVWvjh1GxiCHeL0elg-1ocw%3D%3D%22%5D%5D',
-    'g_state': '{"i_l":0,"i_ll":1793533952770,"i_b":"F6yHZwsxa98GSTWnRIHiPMBf2t1xzBjRA9Wx6r7W/4A","i_e":{"enable_itp_optimization":24},"i_et":1793533952770}',
-    '_clck': '1j19rpv%5E2%5Egas%5E0%5E2488',
-    '_clsk': 'o70trr%5E1793533953703%5E1%5E0%5Ea.clarity.ms%2Fcollect',
-    '_ga_7VD5TT91L3': 'GS2.1.s1793533952$o17$g0$t1793533964$j60$l0$h0',
-    '_ga_4JFZQM569R': 'GS2.1.s1793533952$o17$g0$t1793533964$j60$l0$h0',
-    '_ga_SG15L0JFQ7': 'GS2.1.s1793533952$o15$g1$t1793533964$j60$l0$h1879707480',
-    '_ga_H3D2MQFGQP': 'GS2.1.s1793533952$o16$g0$t1793533964$j60$l0$h0',
-    '_gcl_au': '1.1.1605001415.1792862649.799840181.1793460410.1793533965.572690828.1793460410.1793533965',
-    'FCCDCF': '%5Bnull%2Cnull%2Cnull%2Cnull%2Cnull%2Cnull%2C%5B%5B32%2C%22%5B%5C%2268a41f29-ee81-42d7-b5d7-eb528d8c8028%5C%22%2C%5B1792862649%2C367000000%5D%5D%22%5D%5D%5D',
-    '_ga_32V50L7K4M': 'GS2.1.s1793533952$o16$g1$t1793533965$j60$l0$h0',
-})
-
 session.headers.update({
-    'accept': 'application/json, text/plain, */*',
-    'accept-language': 'zh-TW,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
-    'authorization': 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkEydWczbUIxRFQiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiI0MzYyMjYzIiwidXNlcl9ndWlkIjoiNjU3MzQ4NjUtMzQ5Yy00ZGE2LTllNmQtZmE5MzVmYWIwZjNkIiwidG9rZW5faWQiOiIwIiwiYXBwX2lkIjoiMjEiLCJpc19ndWVzdCI6dHJ1ZSwibmJmIjoxNzkzNTMwMjAwLCJleHAiOjE3OTM2MjAyMDAsImlhdCI6MTc5MzUzMzgwMCwiaXNzIjoiaHR0cHM6Ly93d3cuY21vbmV5LnR3IiwiYXVkIjoiY21vbmV5YXBpIn0.4CYwiDuz-rt8nfLlLIho24aOqfrHBWC9OH9cvOeCZvh3uHMOkz1SBFr4JIq5uAn8E9r3G5aVEYdcBG7Wae1obCVDKwzQhZ8WiY97QCDRHyuUgPec8n7zqMr2wLcCAjGJn5yEfBw2vRGUCATyvVNAoxs2lifaTqrCoLh3znVAHYFflH_I3z9dhQhmtz83qkuiTlr1Mos0nY_0_zKzuSlmk3ba61LkPzZ3kjEzF19SRc65HVp0HsGnrLhtkjxQqcsL3DF-bcyBQ09sAbFKc6c1ui-8FG6phaYybCp2-tH03UU6DX4lW-P83XlQ5E3d4qczu4lfeenhH6NR6dEj673YBw',
-    'cache-control': 'private max-age=5',
-    'cmoneyapi-trace-context': '{"device":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36 Edg/156.0.0.0","deviceId":"daf31bb2-abd9-4d25-afd0-b71830b25c5f"}',
-    'priority': 'u=1, i',
-    'referer': 'https://www.cmoney.tw/forum/stock/2330?utm_source=chatgpt.com&tab=AISummary',
+    'sec-ch-ua-platform': '"Windows"',
+    'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkEydWczbUIxRFQiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiI0MzYyMjYzIiwidXNlcl9ndWlkIjoiNjU3MzQ4NjUtMzQ5Yy00ZGE2LTllNmQtZmE5MzVmYWIwZjNkIiwidG9rZW5faWQiOiIwIiwiYXBwX2lkIjoiMjEiLCJpc19ndWVzdCI6dHJ1ZSwibmJmIjoxNzkzNjIxMTAwLCJleHAiOjE3OTM3MTExMDAsImlhdCI6MTc5MzYyNDcwMCwiaXNzIjoiaHR0cHM6Ly93d3cuY21vbmV5LnR3IiwiYXVkIjoiY21vbmV5YXBpIn0.ZVGloyG3SPLgL1BlMmkTQEOICkeMXjR40AlG372zUAY7LR7BIyztKelr0Gpio15eHEMFXOZ_RNB89tbNa2I9jUwOthuLiEurfroXxSR-0R0tXKE7iBl7mteCCY_AHr5NzBh-U0JblwT-SjsLpNLes9g4kGthAuOzeFJVQl1IyTAW9z1bXFqgguocwDAKNwYz1JmiLofJy_oOfN_PwtAqBdBwDrPGllTMx_Z84oYegpFi5p1PIIdYB82Ad2PCfo2eqKIUGWF8AYv5aToIMidxdy3Uf-FJTpI0p-ZirGsFHFtn1PV4OO_kX71fcmeEjfKpNUzRKpilVuCtVr2gPK_t4A',
+    'Cache-Control': 'private max-age=5',
+    'Referer': 'https://www.cmoney.tw/forum/stock/00631L',
     'sec-ch-ua': '"Not:A-Brand";v="8", "Chromium";v="156", "Microsoft Edge";v="156"',
     'sec-ch-ua-mobile': '?0',
-    'sec-ch-ua-platform': '"Windows"',
-    'sec-fetch-dest': 'empty',
-    'sec-fetch-mode': 'cors',
-    'sec-fetch-site': 'same-origin',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36 Edg/156.0.0.0',
-    # 'cookie': '_ga=GA1.1.616575418.1792862649; __lt__cid=2ee2beba-f583-41a0-92f9-63e2ffa12682; _qg_fts=1792862650; QGUserId=1385138909155198; _qg_cm=2; AspSession=qdw1vkqigvntgtfdvui1fdvl; _ga_5XLZWTV92B=GS2.1.s1793465416$o2$g0$t1793465416$j60$l0$h0; __lt__sid=31313697-8b032616; FCNEC=%5B%5B%22AKsRol9w29fIrS35rBf8twjUGuFegqEU6lCI64I0_F6hLmnInkiP83T5ghyE0d4WuD9xNzIYCeCvVWvjh1GxiCHeL0elg-1ocw%3D%3D%22%5D%5D; g_state={"i_l":0,"i_ll":1793533952770,"i_b":"F6yHZwsxa98GSTWnRIHiPMBf2t1xzBjRA9Wx6r7W/4A","i_e":{"enable_itp_optimization":24},"i_et":1793533952770}; _clck=1j19rpv%5E2%5Egas%5E0%5E2488; _clsk=o70trr%5E1793533953703%5E1%5E0%5Ea.clarity.ms%2Fcollect; _ga_7VD5TT91L3=GS2.1.s1793533952$o17$g0$t1793533964$j60$l0$h0; _ga_4JFZQM569R=GS2.1.s1793533952$o17$g0$t1793533964$j60$l0$h0; _ga_SG15L0JFQ7=GS2.1.s1793533952$o15$g1$t1793533964$j60$l0$h1879707480; _ga_H3D2MQFGQP=GS2.1.s1793533952$o16$g0$t1793533964$j60$l0$h0; _gcl_au=1.1.1605001415.1792862649.799840181.1793460410.1793533965.572690828.1793460410.1793533965; FCCDCF=%5Bnull%2Cnull%2Cnull%2Cnull%2Cnull%2Cnull%2C%5B%5B32%2C%22%5B%5C%2268a41f29-ee81-42d7-b5d7-eb528d8c8028%5C%22%2C%5B1792862649%2C367000000%5D%5D%22%5D%5D%5D; _ga_32V50L7K4M=GS2.1.s1793533952$o16$g1$t1793533965$j60$l0$h0',
+    'cmoneyapi-trace-context': '{"device":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36 Edg/156.0.0.0","deviceId":"daf31bb2-abd9-4d25-afd0-b71830b25c5f"}',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36 Edg/156.0.0.0',
+    'Accept': 'application/json, text/plain, */*',
 })
 
 def get_stock_sentiment(stock_id: str = "2330") -> Dict[str, Any]:
@@ -75,11 +47,12 @@ def get_stock_sentiment(stock_id: str = "2330") -> Dict[str, Any]:
 def main(target_date: Optional[str] = None):
     # 3. 批次抓取多檔股票
     stock_list = [
+        # "0050", "00631L", "00685L",
         "1303", "4958", "6505", "8046", "3189", "4938", "1301", "3533", "1802", "6415",
         "1326", "2603", "2368", "2891", "3034", "3037", "2409", "3044", "3653", "2379",
         "2383", "2881", "3231", "2609", "2313", "6446", "2882", "2357", "3443", "3711",
         "2317", "3008", "2345", "2404", "2330", "2887", "3661", "2376", "2382", "2883"
-]
+    ]
 
     rows = []
     failed_stocks = []

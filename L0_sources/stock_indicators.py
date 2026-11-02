@@ -39,20 +39,39 @@ def roe_latest() -> pd.DataFrame:
         return roe.loc[["2026-Q2"]].round(2)
     return roe.iloc[[-1]].round(2)
 
+# def revenue_yoy_latest() -> pd.DataFrame:
+#     """最新月營收年增率 (基本面，單位：%)。"""
+#     from finlab import data
+
+#     revenue = data.get("monthly_revenue:去年同月增減(%)", start=START_DATE)
+#     return revenue.iloc[[-1]].round(2)
+
+
+# def revenue_mom_latest() -> pd.DataFrame:
+#     """最新月營收月增率 (基本面，單位：%)。"""
+#     from finlab import data
+
+#     revenue = data.get("monthly_revenue:上月比較增減(%)", start=START_DATE)
+#     return revenue.iloc[[-1]].round(2)
 
 def revenue_yoy_latest() -> pd.DataFrame:
-    """最新月營收年增率 (基本面，單位：%)。"""
+    """指定2026-10-12月營收年增率 (基本面，單位：%)。"""
     from finlab import data
 
     revenue = data.get("monthly_revenue:去年同月增減(%)", start=START_DATE)
+    target_date = "2026-10-12"
+    if target_date in revenue.index:
+        return revenue.loc[[target_date]].round(2)
     return revenue.iloc[[-1]].round(2)
 
-
 def revenue_mom_latest() -> pd.DataFrame:
-    """最新月營收月增率 (基本面，單位：%)。"""
+    """指定2026-10-12月營收月增率 (基本面，單位：%)。"""
     from finlab import data
 
     revenue = data.get("monthly_revenue:上月比較增減(%)", start=START_DATE)
+    target_date = "2026-10-12"
+    if target_date in revenue.index:
+        return revenue.loc[[target_date]].round(2)
     return revenue.iloc[[-1]].round(2)
 
 
