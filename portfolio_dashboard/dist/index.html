@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TEAM_11402 · 玉山人工智慧挑戰賽 · 投資決策與持股看板</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>">
+  
+  <!-- 字體引入 Inter & SF Pro 質感 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root {
+      --font-sans: 'Plus Jakarta Sans', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      
+      /* 台股習慣色彩：紅漲綠跌 */
+      --color-up: #ef4444;
+      --color-up-bg: rgba(239, 68, 68, 0.12);
+      --color-up-border: rgba(239, 68, 68, 0.25);
+      --color-down: #10b981;
+      --color-down-bg: rgba(16, 185, 129, 0.12);
+      --color-down-border: rgba(16, 185, 129, 0.25);
+      --color-flat: #94a3b8;
+
+      --primary-accent: #0284c7;
+      --primary-glow: rgba(2, 132, 199, 0.25);
+    }
+
+    /* 深色主題 (Apple Liquid Dark Glass) */
+    .theme-dark {
+      --bg-gradient: radial-gradient(circle at 10% 20%, #0d121d 0%, #090c13 50%, #05070a 100%);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --glass-bg: rgba(18, 24, 38, 0.65);
+      --glass-bg-hover: rgba(28, 38, 58, 0.75);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-border-specular: rgba(255, 255, 255, 0.18);
+      --glass-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
+      
+      --card-highlight: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+      --table-stripe: rgba(255, 255, 255, 0.015);
+      --table-hover: rgba(255, 255, 255, 0.04);
+      --pill-bg: rgba(255, 255, 255, 0.06);
+    }
+
+    /* 淺色主題 (Apple Liquid White Glass) */
+    .theme-light {
+      --bg-gradient: radial-gradient(circle at 10% 10%, #f8fafc 0%, #e2e8f0 60%, #cbd5e1 100%);
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-bg-hover: rgba(255, 255, 255, 0.88);
+      --glass-border: rgba(255, 255, 255, 0.6);
+      --glass-border-specular: rgba(255, 255, 255, 0.9);
+      --glass-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.08), inset 0 1px 2px 0 rgba(255, 255, 255, 0.9);
+      
+      --card-highlight: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.1) 100%);
+      --table-stripe: rgba(0, 0, 0, 0.015);
+      --table-hover: rgba(0, 0, 0, 0.035);
+      --pill-bg: rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: 48px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* 頂部光暈氛圍特效 */
+    .ambient-glow {
+      position: fixed;
+      top: -160px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 380px;
+      background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.15) 0%, rgba(99, 102, 241, 0.08) 50%, transparent 80%);
+      filter: blur(60px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* 容器架構 */
+    .app-container {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 24px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 頂部導航欄 (Header) */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--glass-border);
+      margin-bottom: 24px;
+    }
+
+    .header-branding {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 20px;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.4);
+    }
+
+    .header-title-box h1 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-title-box .team-pill {
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--pill-bg);
+      color: var(--primary-accent);
+      font-weight: 700;
+      font-family: var(--font-mono);
+      border: 1px solid var(--glass-border-specular);
+    }
+
+    .header-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .date-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 20px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border-specular);
+      font-size: 13px;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      color: var(--text-main);
+      box-shadow: var(--glass-shadow);
+    }
+
+    .date-pill::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      display: inline-block;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    /* 主題切換按鈕 */
+    .theme-toggle-btn {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border-specular);
+      color: var(--text-main);
+      border-radius: 20px;
+      padding: 7px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--glass-shadow);
+      transition: all 0.2s ease;
+    }
+    .theme-toggle-btn:hover {
+      background: var(--glass-bg-hover);
+      transform: translateY(-1px);
+    }
+
+    /* 主選單分頁切換 (Tabs) - Apple 膠囊控制器 */
+    .tab-nav-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+
+    .segmented-control {
+      display: inline-flex;
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      padding: 5px;
+      border-radius: 16px;
+      border: 1px solid var(--glass-border-specular);
+      box-shadow: var(--glass-shadow);
+      gap: 6px;
+    }
+
+    .tab-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      padding: 10px 22px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn.active {
+      background: var(--card-highlight), var(--glass-bg-hover);
+      color: var(--text-main);
+      border: 1px solid var(--glass-border-specular);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* 毛玻璃卡片通用樣式 (Glass Card) */
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: var(--glass-shadow);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--card-highlight);
+      pointer-events: none;
+    }
+
+    /* 頂部 KPI 卡片網格 */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .kpi-card {
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .kpi-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .kpi-value {
+      font-size: 24px;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      letter-spacing: -0.02em;
+      margin: 8px 0 4px 0;
+    }
+
+    .kpi-subtext {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* 歷史圖表區域 */
+    .chart-section {
+      margin-bottom: 28px;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .chart-title {
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chart-wrapper {
+      height: 280px;
+      width: 100%;
+    }
+
+    /* 表格控制與搜尋工具列 */
+    .table-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: var(--pill-bg);
+      border: 1px solid var(--glass-border);
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-btn:hover {
+      background: var(--glass-bg-hover);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--primary-accent);
+      color: #fff;
+      border-color: var(--primary-accent);
+      box-shadow: 0 2px 10px var(--primary-glow);
+    }
+
+    .search-box {
+      position: relative;
+      min-width: 240px;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--pill-bg);
+      border: 1px solid var(--glass-border-specular);
+      padding: 9px 14px 9px 36px;
+      border-radius: 12px;
+      color: var(--text-main);
+      font-size: 13px;
+      font-family: var(--font-sans);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary-accent);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+
+    /* 專業表格樣式 (Table) - 富果風格高密度 */
+    .table-container {
+      overflow-x: auto;
+      border-radius: 16px;
+    }
+
+    table.fugle-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 13px;
+    }
+
+    table.fugle-table th {
+      background: var(--pill-bg);
+      color: var(--text-muted);
+      font-weight: 700;
+      text-align: right;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--glass-border);
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.15s ease;
+    }
+
+    table.fugle-table th:first-child {
+      text-align: left;
+      border-top-left-radius: 12px;
+    }
+    table.fugle-table th:nth-child(2) {
+      text-align: left;
+    }
+    table.fugle-table th:last-child {
+      border-top-right-radius: 12px;
+    }
+
+    table.fugle-table th:hover {
+      color: var(--text-main);
+    }
+
+    table.fugle-table th .sort-icon {
+      margin-left: 4px;
+      font-size: 11px;
+      opacity: 0.5;
+    }
+    table.fugle-table th.sorted .sort-icon {
+      opacity: 1;
+      color: var(--primary-accent);
+    }
+
+    table.fugle-table td {
+      padding: 14px;
+      border-bottom: 1px solid var(--glass-border);
+      text-align: right;
+      font-family: var(--font-mono);
+      white-space: nowrap;
+      transition: background 0.15s ease;
+    }
+
+    table.fugle-table td:first-child,
+    table.fugle-table td:nth-child(2) {
+      text-align: left;
+    }
+
+    table.fugle-table tbody tr:hover td {
+      background: var(--table-hover);
+    }
+
+    /* 股票標籤 */
+    .stock-tag-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stock-code {
+      font-weight: 800;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--text-main);
+    }
+
+    .stock-name {
+      font-weight: 700;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      color: var(--text-main);
+    }
+
+    .market-badge {
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--pill-bg);
+      color: var(--text-dim);
+      font-family: var(--font-sans);
+    }
+
+    /* 漲跌徽章 (Up/Down Badges) */
+    .badge-pnl {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 12px;
+      font-family: var(--font-mono);
+    }
+
+    .badge-pnl.up {
+      background: var(--color-up-bg);
+      color: var(--color-up);
+      border: 1px solid var(--color-up-border);
+    }
+
+    .badge-pnl.down {
+      background: var(--color-down-bg);
+      color: var(--color-down);
+      border: 1px solid var(--color-down-border);
+    }
+
+    .badge-pnl.flat {
+      color: var(--color-flat);
+    }
+
+    /* 權重進度條 */
+    .weight-bar-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .weight-progress {
+      width: 50px;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--pill-bg);
+      overflow: hidden;
+    }
+
+    .weight-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8, #0284c7);
+      border-radius: 3px;
+    }
+
+    /* 頁腳 */
+    .app-footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-dim);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* RWD 適應 */
+    @media (max-width: 768px) {
+      .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .header-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .segmented-control {
+        width: 100%;
+      }
+      .tab-btn {
+        flex: 1;
+        justify-content: center;
+      }
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .table-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .search-box {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient-glow"></div>
+
+  <div class="app-container">
+    <!-- 頂部標頭 -->
+    <header class="app-header">
+      <div class="header-branding">
+        <div class="logo-badge">玉</div>
+        <div class="header-title-box">
+          <h1>
+            <span>2026 AI 經理人投資決策看板</span>
+            <span class="team-pill">TEAM_11402</span>
+          </h1>
+          <div class="header-subtitle">玉山證券行情 SDK 串接 · Multi-Agent 每日決策追蹤系統</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="date-pill" id="dateBadge">基準日: 2026-11-03</div>
+        <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()">
+          <span id="themeIcon">☀️</span>
+          <span id="themeLabel">淺色模式</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 分頁導航切換 -->
+    <div class="tab-nav-container">
+      <div class="segmented-control">
+        <button class="tab-btn active" id="tabBtn1" onclick="switchTab('tab1')">
+          <span>📊</span> 帳戶總覽與庫存損益
+        </button>
+        <button class="tab-btn" id="tabBtn2" onclick="switchTab('tab2')">
+          <span>📈</span> 自選行情觀察群組
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= 頁籤 1: 帳戶總覽與庫存損益 ================= -->
+    <div id="tab1Content">
+      <!-- 頂部 KPI 卡片 -->
+      <div class="kpi-grid">
+        <div class="glass-card kpi-card">
+          <div class="kpi-label">可交易淨值 (NAV)</div>
+          <div class="kpi-value">$959,434,368</div>
+          <div class="kpi-subtext">初始資金 $1,000,000,000</div>
+        </div>
+        <div class="glass-card kpi-card">
+          <div class="kpi-label">累計總報酬率</div>
+          <div class="kpi-value badge-pnl down" style="display:inline-block; font-size:22px;">
+            -4.06%
+          </div>
+          <div class="kpi-subtext">累計損益 $-40,565,632</div>
+        </div>
+        <div class="glass-card kpi-card">
+          <div class="kpi-label">可動用現金 (Cash)</div>
+          <div class="kpi-value">$227,476,168</div>
+          <div class="kpi-subtext">現金比率 23.71%</div>
+        </div>
+        <div class="glass-card kpi-card">
+          <div class="kpi-label">總持股市值</div>
+          <div class="kpi-value">$731,958,200</div>
+          <div class="kpi-subtext">未實現損益 $-36,996,672</div>
+        </div>
+        <div class="glass-card kpi-card">
+          <div class="kpi-label">持股檔數 / 合規</div>
+          <div class="kpi-value">25 <span style="font-size:14px; color:var(--text-muted);">/ 20~30檔</span></div>
+          <div class="kpi-subtext">⚠️ 違規 0 次 · 提示 0 次</div>
+        </div>
+      </div>
+
+      <!-- 資產走勢折線圖 -->
+      <div class="glass-card chart-section">
+        <div class="chart-header">
+          <div class="chart-title">
+            <span>📈</span> 每日可交易淨值 (NAV) 與現金水位變化趨勢
+          </div>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="assetHistoryChart"></canvas>
+        </div>
+      </div>
+
+      <!-- 目前庫存持股明細表 -->
+      <div class="glass-card">
+        <div class="table-toolbar">
+          <div class="chart-title">
+            <span>📋</span> 目前庫存部位與未實現損益明細 (25 檔)
+          </div>
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" id="holdingsSearchInput" placeholder="搜尋代號或名稱..." oninput="filterHoldingsTable()">
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="fugle-table" id="holdingsTable">
+            <thead>
+              <tr>
+                <th onclick="sortHoldings('code')">代號/名稱 <span class="sort-icon">⇅</span></th>
+                <th onclick="sortHoldings('market')">市場 <span class="sort-icon">⇅</span></th>
+                <th onclick="sortHoldings('lots')">庫存張數 <span class="sort-icon">⇅</span></th>
+                <th onclick="sortHoldings('avg_cost')">成本均價 <span class="sort-icon">⇅</span></th>
+                <th onclick="sortHoldings('close_price')">最新現價 <span class="sort-icon">⇅</span></th>
+                <th onclick="sortHoldings('change_pct')">今日漲跌 <span class="sort-icon">⇅</span></th>
+                <th onclick="sortHoldings('market_value')">現值 (元) <span class="sort-icon">⇅</span></th>
+                <th onclick="sortHoldings('unrealized_pnl')">未實現損益 <span class="sort-icon">⇅</span></th>
+                <th onclick="sortHoldings('unrealized_return_pct')">報酬率 <span class="sort-icon">⇅</span></th>
+                <th onclick="sortHoldings('weight_pct')">佔比 <span class="sort-icon">⇅</span></th>
+              </tr>
+            </thead>
+            <tbody id="holdingsTableBody">
+              <!-- JS 動態渲染 -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 頁籤 2: 自選行情觀察群組 ================= -->
+    <div id="tab2Content" style="display: none;">
+      <div class="glass-card">
+        <div class="table-toolbar">
+          <div class="filter-pills">
+            <button class="filter-btn active" id="btnGroupA" onclick="setWatchGroup('held')">
+              我的持股 (25 檔)
+            </button>
+            <button class="filter-btn" id="btnGroupB" onclick="setWatchGroup('unheld')">
+              其餘標的 (125 檔)
+            </button>
+            <button class="filter-btn" id="btnGroupAll" onclick="setWatchGroup('all')">
+              全部 150 檔
+            </button>
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <div class="filter-pills">
+              <button class="filter-btn" id="sortGainBtn" onclick="setSortMode('gain')">📈 漲幅由大到小</button>
+              <button class="filter-btn" id="sortLossBtn" onclick="setSortMode('loss')">📉 跌幅由大到小</button>
+            </div>
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" class="search-input" id="watchSearchInput" placeholder="搜尋 150 檔標的..." oninput="renderWatchTable()">
+            </div>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="fugle-table" id="watchTable">
+            <thead>
+              <tr>
+                <th onclick="setSortCol('code')">代號/名稱 <span class="sort-icon">⇅</span></th>
+                <th onclick="setSortCol('market')">市場 <span class="sort-icon">⇅</span></th>
+                <th onclick="setSortCol('close_price')">最新現價 <span class="sort-icon">⇅</span></th>
+                <th onclick="setSortCol('prev_close')">昨日收盤 <span class="sort-icon">⇅</span></th>
+                <th onclick="setSortCol('change')">漲跌價差 <span class="sort-icon">⇅</span></th>
+                <th onclick="setSortCol('change_pct')">漲跌幅 <span class="sort-icon">⇅</span></th>
+                <th onclick="setSortCol('volume_lots')">成交量 (張) <span class="sort-icon">⇅</span></th>
+                <th style="text-align: center;">10-27起走勢 (Sparkline)</th>
+                <th>持股狀態</th>
+              </tr>
+            </thead>
+            <tbody id="watchTableBody">
+              <!-- JS 動態渲染 -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer class="app-footer">
+      <div>AI CUP 2026 玉山人工智慧公開挑戰賽 · 隊伍 TEAM_11402 專用看板</div>
+      <div>數據更新自官方 DataPack 與玉山證券行情 SDK · 僅供研究與競賽內部覆核使用</div>
+    </footer>
+  </div>
+
+  <!-- 資料 Payload 注入 -->
+  <script>
+    const DASHBOARD_DATA = {"as_of_date": "2026-11-03", "trade_date": "2026-11-04", "account": {"nav": 959434368.0, "aum": 959434368.0, "cash": 227476168.0, "stock_value": 731958200.0, "cash_ratio_pct": 23.71, "cum_pnl": -40565632.0, "cum_return_pct": -4.06, "unrealized_pnl": -36996672.0, "holdings_count": 25, "violations": 0, "notices": 0}, "history": [{"date": "2026-10-27", "nav": 994931699.0, "cash": 111383299.0, "stock_value": 883548400.0, "cash_ratio_pct": 11.2, "cum_return_pct": -0.51}, {"date": "2026-10-28", "nav": 1016667892.0, "cash": 178349792.0, "stock_value": 838318100.0, "cash_ratio_pct": 17.54, "cum_return_pct": 1.67}, {"date": "2026-10-29", "nav": 1001147692.0, "cash": 178349792.0, "stock_value": 822797900.0, "cash_ratio_pct": 17.81, "cum_return_pct": 0.11}, {"date": "2026-10-30", "nav": 985357292.0, "cash": 178349792.0, "stock_value": 807007500.0, "cash_ratio_pct": 18.1, "cum_return_pct": -1.46}, {"date": "2026-11-02", "nav": 984607868.0, "cash": 227476168.0, "stock_value": 757131700.0, "cash_ratio_pct": 23.1, "cum_return_pct": -1.54}, {"date": "2026-11-03", "nav": 959434368.0, "cash": 227476168.0, "stock_value": 731958200.0, "cash_ratio_pct": 23.71, "cum_return_pct": -4.06}], "stocks": [{"code": "2330", "name": "台積電", "market": "上市", "close_price": 2295.0, "prev_close": 2330.0, "change": -35.0, "change_pct": -1.5, "volume_lots": 36.6, "is_held": true, "shares": 29000, "lots": 29.0, "avg_cost": 2392.08, "market_value": 66555000.0, "unrealized_pnl": -2815320.0, "unrealized_return_pct": -4.06, "weight_pct": 6.94, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.2 20.0,3.0 40.0,4.7 60.0,12.3 80.0,19.1 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.2 20.0,3.0 40.0,4.7 60.0,12.3 80.0,19.1 100.0,25.0\" /></svg>", "trend": [2400.0, 2425.0, 2415.0, 2370.0, 2330.0, 2295.0]}, {"code": "2883", "name": "凱基金", "market": "上市", "close_price": 34.95, "prev_close": 37.25, "change": -2.3, "change_pct": -6.17, "volume_lots": 68.4, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.6 20.0,3.0 40.0,3.3 60.0,7.6 80.0,10.9 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.6 20.0,3.0 40.0,3.3 60.0,7.6 80.0,10.9 100.0,25.0\" /></svg>", "trend": [38.45, 38.55, 38.5, 37.8, 37.25, 34.95]}, {"code": "2454", "name": "聯發科", "market": "上市", "close_price": 3675.0, "prev_close": 3970.0, "change": -295.0, "change_pct": -7.43, "volume_lots": 11.2, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,13.8 20.0,3.0 40.0,10.5 60.0,15.6 80.0,13.4 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,13.8 20.0,3.0 40.0,10.5 60.0,15.6 80.0,13.4 100.0,25.0\" /></svg>", "trend": [3960.0, 4235.0, 4045.0, 3915.0, 3970.0, 3675.0]}, {"code": "3443", "name": "創意", "market": "上市", "close_price": 6795.0, "prev_close": 7285.0, "change": -490.0, "change_pct": -6.73, "volume_lots": 2.6, "is_held": true, "shares": 2000, "lots": 2.0, "avg_cost": 7470.14, "market_value": 13590000.0, "unrealized_pnl": -1350280.0, "unrealized_return_pct": -9.04, "weight_pct": 1.42, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,14.8 20.0,3.0 40.0,11.5 60.0,11.6 80.0,17.2 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,14.8 20.0,3.0 40.0,11.5 60.0,11.6 80.0,17.2 100.0,25.0\" /></svg>", "trend": [7430.0, 8170.0, 7640.0, 7635.0, 7285.0, 6795.0]}, {"code": "2308", "name": "台達電", "market": "上市", "close_price": 1270.0, "prev_close": 1355.0, "change": -85.0, "change_pct": -6.27, "volume_lots": 13.9, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,6.1 20.0,3.0 40.0,8.5 60.0,19.9 80.0,18.3 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,6.1 20.0,3.0 40.0,8.5 60.0,19.9 80.0,18.3 100.0,25.0\" /></svg>", "trend": [1510.0, 1550.0, 1480.0, 1335.0, 1355.0, 1270.0]}, {"code": "3653", "name": "健策", "market": "上市", "close_price": 6035.0, "prev_close": 6320.0, "change": -285.0, "change_pct": -4.51, "volume_lots": 1.9, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,25.0 20.0,4.2 40.0,3.0 60.0,6.6 80.0,6.4 100.0,17.9 100,28\" fill=\"rgba(244, 63, 94, 0.12)\" /><polyline fill=\"none\" stroke=\"#f43f5e\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,25.0 20.0,4.2 40.0,3.0 60.0,6.6 80.0,6.4 100.0,17.9\" /></svg>", "trend": [5860.0, 6375.0, 6405.0, 6315.0, 6320.0, 6035.0]}, {"code": "2317", "name": "鴻海", "market": "上市", "close_price": 245.5, "prev_close": 251.0, "change": -5.5, "change_pct": -2.19, "volume_lots": 43.3, "is_held": true, "shares": 192000, "lots": 192.0, "avg_cost": 246.84, "market_value": 47136000.0, "unrealized_pnl": -257310.0, "unrealized_return_pct": -0.54, "weight_pct": 4.91, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,17.7 20.0,3.0 40.0,15.8 60.0,25.0 80.0,4.8 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,17.7 20.0,3.0 40.0,15.8 60.0,25.0 80.0,4.8 100.0,25.0\" /></svg>", "trend": [247.5, 251.5, 248.0, 245.5, 251.0, 245.5]}, {"code": "2395", "name": "研華", "market": "上市", "close_price": 620.0, "prev_close": 655.0, "change": -35.0, "change_pct": -5.34, "volume_lots": 3.3, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.6 20.0,3.0 40.0,8.1 60.0,5.9 80.0,13.8 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.6 20.0,3.0 40.0,8.1 60.0,5.9 80.0,13.8 100.0,25.0\" /></svg>", "trend": [687.0, 689.0, 673.0, 680.0, 655.0, 620.0]}, {"code": "3711", "name": "日月光投控", "market": "上市", "close_price": 616.0, "prev_close": 674.0, "change": -58.0, "change_pct": -8.61, "volume_lots": 26.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,15.3 20.0,3.0 40.0,6.3 60.0,10.5 80.0,8.8 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,15.3 20.0,3.0 40.0,6.3 60.0,10.5 80.0,8.8 100.0,25.0\" /></svg>", "trend": [651.0, 695.0, 683.0, 668.0, 674.0, 616.0]}, {"code": "2301", "name": "光寶科", "market": "上市", "close_price": 228.0, "prev_close": 243.5, "change": -15.5, "change_pct": -6.37, "volume_lots": 21.0, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,8.9 20.0,3.0 40.0,9.2 60.0,16.8 80.0,14.8 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,8.9 20.0,3.0 40.0,9.2 60.0,16.8 80.0,14.8 100.0,25.0\" /></svg>", "trend": [252.5, 261.5, 252.0, 240.5, 243.5, 228.0]}, {"code": "2881", "name": "富邦金", "market": "上市", "close_price": 154.0, "prev_close": 159.5, "change": -5.5, "change_pct": -3.45, "volume_lots": 23.5, "is_held": true, "shares": 233000, "lots": 233.0, "avg_cost": 161.41, "market_value": 35882000.0, "unrealized_pnl": -1726540.0, "unrealized_return_pct": -4.59, "weight_pct": 3.74, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,5.8 40.0,3.0 60.0,4.4 80.0,9.9 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,5.8 40.0,3.0 60.0,4.4 80.0,9.9 100.0,25.0\" /></svg>", "trend": [162.0, 161.0, 162.0, 161.5, 159.5, 154.0]}, {"code": "6446", "name": "藥華藥", "market": "上市", "close_price": 1225.0, "prev_close": 1190.0, "change": 35.0, "change_pct": 2.94, "volume_lots": 2.3, "is_held": true, "shares": 23000, "lots": 23.0, "avg_cost": 1188.9, "market_value": 28175000.0, "unrealized_pnl": 830240.0, "unrealized_return_pct": 3.04, "weight_pct": 2.94, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,25.0 20.0,20.6 40.0,3.0 60.0,25.0 80.0,25.0 100.0,9.6 100,28\" fill=\"rgba(244, 63, 94, 0.12)\" /><polyline fill=\"none\" stroke=\"#f43f5e\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,25.0 20.0,20.6 40.0,3.0 60.0,25.0 80.0,25.0 100.0,9.6\" /></svg>", "trend": [1190.0, 1200.0, 1240.0, 1190.0, 1190.0, 1225.0]}, {"code": "2383", "name": "台光電", "market": "上市", "close_price": 4395.0, "prev_close": 4705.0, "change": -310.0, "change_pct": -6.59, "volume_lots": 3.1, "is_held": true, "shares": 3000, "lots": 3.0, "avg_cost": 4889.99, "market_value": 13185000.0, "unrealized_pnl": -1484970.0, "unrealized_return_pct": -10.12, "weight_pct": 1.37, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,12.6 20.0,3.0 40.0,3.5 60.0,15.2 80.0,14.2 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,12.6 20.0,3.0 40.0,3.5 60.0,15.2 80.0,14.2 100.0,25.0\" /></svg>", "trend": [4750.0, 5025.0, 5010.0, 4675.0, 4705.0, 4395.0]}, {"code": "4958", "name": "臻鼎-KY", "market": "上市", "close_price": 443.0, "prev_close": 487.0, "change": -44.0, "change_pct": -9.03, "volume_lots": 34.7, "is_held": true, "shares": 24000, "lots": 24.0, "avg_cost": 546.34, "market_value": 10632000.0, "unrealized_pnl": -2480160.0, "unrealized_return_pct": -18.91, "weight_pct": 1.11, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,9.2 20.0,3.0 40.0,9.2 60.0,16.2 80.0,16.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,9.2 20.0,3.0 40.0,9.2 60.0,16.2 80.0,16.0 100.0,25.0\" /></svg>", "trend": [520.0, 550.0, 520.0, 486.0, 487.0, 443.0]}, {"code": "2303", "name": "聯電", "market": "上市", "close_price": 103.0, "prev_close": 110.0, "change": -7.0, "change_pct": -6.36, "volume_lots": 169.3, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.8 20.0,3.0 40.0,14.0 60.0,17.5 80.0,18.8 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.8 20.0,3.0 40.0,14.0 60.0,17.5 80.0,18.8 100.0,25.0\" /></svg>", "trend": [122.5, 128.0, 115.5, 111.5, 110.0, 103.0]}, {"code": "2603", "name": "長榮", "market": "上市", "close_price": 266.5, "prev_close": 274.5, "change": -8.0, "change_pct": -2.91, "volume_lots": 10.4, "is_held": true, "shares": 159000, "lots": 159.0, "avg_cost": 259.73, "market_value": 42373500.0, "unrealized_pnl": 1076910.0, "unrealized_return_pct": 2.61, "weight_pct": 4.42, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,24.2 20.0,21.7 40.0,25.0 60.0,7.9 80.0,3.0 100.0,16.0 100,28\" fill=\"rgba(244, 63, 94, 0.12)\" /><polyline fill=\"none\" stroke=\"#f43f5e\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,24.2 20.0,21.7 40.0,25.0 60.0,7.9 80.0,3.0 100.0,16.0\" /></svg>", "trend": [261.5, 263.0, 261.0, 271.5, 274.5, 266.5]}, {"code": "2882", "name": "國泰金", "market": "上市", "close_price": 113.0, "prev_close": 116.0, "change": -3.0, "change_pct": -2.59, "volume_lots": 29.6, "is_held": true, "shares": 314000, "lots": 314.0, "avg_cost": 114.11, "market_value": 35482000.0, "unrealized_pnl": -347500.0, "unrealized_return_pct": -0.97, "weight_pct": 3.7, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,18.7 20.0,9.3 40.0,3.0 60.0,6.1 80.0,6.1 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,18.7 20.0,9.3 40.0,3.0 60.0,6.1 80.0,6.1 100.0,25.0\" /></svg>", "trend": [114.0, 115.5, 116.5, 116.0, 116.0, 113.0]}, {"code": "5880", "name": "合庫金", "market": "上市", "close_price": 28.45, "prev_close": 29.05, "change": -0.6, "change_pct": -2.07, "volume_lots": 18.0, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,12.2 20.0,25.0 40.0,8.5 60.0,4.8 80.0,3.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,12.2 20.0,25.0 40.0,8.5 60.0,4.8 80.0,3.0 100.0,25.0\" /></svg>", "trend": [28.8, 28.45, 28.9, 29.0, 29.05, 28.45]}, {"code": "3037", "name": "欣興", "market": "上市", "close_price": 902.0, "prev_close": 997.0, "change": -95.0, "change_pct": -9.53, "volume_lots": 28.0, "is_held": true, "shares": 14000, "lots": 14.0, "avg_cost": 1083.4, "market_value": 12628000.0, "unrealized_pnl": -2539600.0, "unrealized_return_pct": -16.74, "weight_pct": 1.32, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.4 20.0,3.0 40.0,9.7 60.0,15.3 80.0,14.4 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.4 20.0,3.0 40.0,9.7 60.0,15.3 80.0,14.4 100.0,25.0\" /></svg>", "trend": [1060.0, 1100.0, 1040.0, 989.0, 997.0, 902.0]}, {"code": "1216", "name": "統一", "market": "上市", "close_price": 81.1, "prev_close": 80.6, "change": 0.5, "change_pct": 0.62, "volume_lots": 15.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,11.2 20.0,25.0 40.0,22.3 60.0,11.2 80.0,7.6 100.0,3.0 100,28\" fill=\"rgba(244, 63, 94, 0.12)\" /><polyline fill=\"none\" stroke=\"#f43f5e\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,11.2 20.0,25.0 40.0,22.3 60.0,11.2 80.0,7.6 100.0,3.0\" /></svg>", "trend": [80.2, 78.7, 79.0, 80.2, 80.6, 81.1]}, {"code": "2891", "name": "中信金", "market": "上市", "close_price": 74.2, "prev_close": 75.0, "change": -0.8, "change_pct": -1.07, "volume_lots": 47.3, "is_held": true, "shares": 570000, "lots": 570.0, "avg_cost": 74.91, "market_value": 42294000.0, "unrealized_pnl": -402660.0, "unrealized_return_pct": -0.94, "weight_pct": 4.41, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,14.0 20.0,25.0 40.0,9.9 60.0,3.0 80.0,14.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,14.0 20.0,25.0 40.0,9.9 60.0,3.0 80.0,14.0 100.0,25.0\" /></svg>", "trend": [75.0, 74.2, 75.3, 75.8, 75.0, 74.2]}, {"code": "3045", "name": "台灣大", "market": "上市", "close_price": 133.0, "prev_close": 133.0, "change": 0.0, "change_pct": 0.0, "volume_lots": 10.6, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,25.0 40.0,3.0 60.0,14.0 80.0,19.5 100.0,19.5 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,25.0 40.0,3.0 60.0,14.0 80.0,19.5 100.0,19.5\" /></svg>", "trend": [134.5, 132.5, 134.5, 133.5, 133.0, 133.0]}, {"code": "1303", "name": "南亞", "market": "上市", "close_price": 271.0, "prev_close": 301.0, "change": -30.0, "change_pct": -9.97, "volume_lots": 87.8, "is_held": true, "shares": 107000, "lots": 107.0, "avg_cost": 303.52, "market_value": 28997000.0, "unrealized_pnl": -3479640.0, "unrealized_return_pct": -10.71, "weight_pct": 3.02, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,12.9 20.0,3.0 40.0,6.2 60.0,13.5 80.0,11.2 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,12.9 20.0,3.0 40.0,6.2 60.0,13.5 80.0,11.2 100.0,25.0\" /></svg>", "trend": [297.5, 319.0, 312.0, 296.0, 301.0, 271.0]}, {"code": "2368", "name": "金像電", "market": "上市", "close_price": 970.0, "prev_close": 1060.0, "change": -90.0, "change_pct": -8.49, "volume_lots": 11.0, "is_held": true, "shares": 17000, "lots": 17.0, "avg_cost": 1095.62, "market_value": 16490000.0, "unrealized_pnl": -2135540.0, "unrealized_return_pct": -11.47, "weight_pct": 1.72, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,13.7 20.0,3.0 40.0,10.2 60.0,19.9 80.0,15.8 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,13.7 20.0,3.0 40.0,10.2 60.0,19.9 80.0,15.8 100.0,25.0\" /></svg>", "trend": [1080.0, 1185.0, 1115.0, 1020.0, 1060.0, 970.0]}, {"code": "2345", "name": "智邦", "market": "上市", "close_price": 1495.0, "prev_close": 1615.0, "change": -120.0, "change_pct": -7.43, "volume_lots": 3.6, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,6.8 20.0,3.0 40.0,7.1 60.0,16.8 80.0,16.8 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,6.8 20.0,3.0 40.0,7.1 60.0,16.8 80.0,16.8 100.0,25.0\" /></svg>", "trend": [1760.0, 1815.0, 1755.0, 1615.0, 1615.0, 1495.0]}, {"code": "3665", "name": "貿聯-KY", "market": "上市", "close_price": 1575.0, "prev_close": 1625.0, "change": -50.0, "change_pct": -3.08, "volume_lots": 2.9, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,10.0 20.0,3.0 40.0,12.8 60.0,20.3 80.0,20.3 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,10.0 20.0,3.0 40.0,12.8 60.0,20.3 80.0,20.3 100.0,25.0\" /></svg>", "trend": [1735.0, 1810.0, 1705.0, 1625.0, 1625.0, 1575.0]}, {"code": "2382", "name": "廣達", "market": "上市", "close_price": 311.5, "prev_close": 318.0, "change": -6.5, "change_pct": -2.04, "volume_lots": 10.5, "is_held": true, "shares": 115000, "lots": 115.0, "avg_cost": 327.78, "market_value": 35822500.0, "unrealized_pnl": -1872530.0, "unrealized_return_pct": -4.97, "weight_pct": 3.73, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,6.0 20.0,3.0 40.0,17.3 60.0,17.3 80.0,17.3 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,6.0 20.0,3.0 40.0,17.3 60.0,17.3 80.0,17.3 100.0,25.0\" /></svg>", "trend": [327.5, 330.0, 318.0, 318.0, 318.0, 311.5]}, {"code": "4904", "name": "遠傳", "market": "上市", "close_price": 112.5, "prev_close": 113.5, "change": -1.0, "change_pct": -0.88, "volume_lots": 7.5, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,25.0 40.0,14.0 60.0,3.0 80.0,8.5 100.0,19.5 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,25.0 40.0,14.0 60.0,3.0 80.0,8.5 100.0,19.5\" /></svg>", "trend": [114.0, 112.0, 113.0, 114.0, 113.5, 112.5]}, {"code": "2408", "name": "南亞科", "market": "上市", "close_price": 411.0, "prev_close": 456.5, "change": -45.5, "change_pct": -9.97, "volume_lots": 49.5, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,15.0 20.0,3.0 40.0,3.0 60.0,10.5 80.0,9.8 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,15.0 20.0,3.0 40.0,3.0 60.0,10.5 80.0,9.8 100.0,25.0\" /></svg>", "trend": [441.0, 477.0, 477.0, 454.5, 456.5, 411.0]}, {"code": "3481", "name": "群創", "market": "上市", "close_price": 41.2, "prev_close": 44.55, "change": -3.35, "change_pct": -7.52, "volume_lots": 130.9, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,9.7 20.0,3.0 40.0,10.4 60.0,20.9 80.0,14.8 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,9.7 20.0,3.0 40.0,10.4 60.0,20.9 80.0,14.8 100.0,25.0\" /></svg>", "trend": [46.25, 48.45, 46.0, 42.55, 44.55, 41.2]}, {"code": "7769", "name": "鴻勁", "market": "上市", "close_price": 4470.0, "prev_close": 4915.0, "change": -445.0, "change_pct": -9.05, "volume_lots": 1.0, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,10.1 20.0,3.0 40.0,10.5 60.0,15.4 80.0,16.1 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,10.1 20.0,3.0 40.0,10.5 60.0,15.4 80.0,16.1 100.0,25.0\" /></svg>", "trend": [5210.0, 5565.0, 5190.0, 4950.0, 4915.0, 4470.0]}, {"code": "2379", "name": "瑞昱", "market": "上市", "close_price": 756.0, "prev_close": 785.0, "change": -29.0, "change_pct": -3.69, "volume_lots": 2.7, "is_held": true, "shares": 47000, "lots": 47.0, "avg_cost": 786.83, "market_value": 35532000.0, "unrealized_pnl": -1449110.0, "unrealized_return_pct": -3.92, "weight_pct": 3.7, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.7 20.0,8.6 40.0,7.2 60.0,3.0 80.0,11.4 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.7 20.0,8.6 40.0,7.2 60.0,3.0 80.0,11.4 100.0,25.0\" /></svg>", "trend": [793.0, 791.0, 794.0, 803.0, 785.0, 756.0]}, {"code": "2412", "name": "中華電", "market": "上市", "close_price": 159.0, "prev_close": 159.5, "change": -0.5, "change_pct": -0.31, "volume_lots": 10.0, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,15.6 20.0,25.0 40.0,15.6 60.0,3.0 80.0,6.1 100.0,9.3 100,28\" fill=\"rgba(244, 63, 94, 0.12)\" /><polyline fill=\"none\" stroke=\"#f43f5e\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,15.6 20.0,25.0 40.0,15.6 60.0,3.0 80.0,6.1 100.0,9.3\" /></svg>", "trend": [158.0, 156.5, 158.0, 160.0, 159.5, 159.0]}, {"code": "1301", "name": "台塑", "market": "上市", "close_price": 68.7, "prev_close": 73.1, "change": -4.4, "change_pct": -6.02, "volume_lots": 33.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,6.3 20.0,3.0 40.0,7.9 60.0,12.5 80.0,10.6 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,6.3 20.0,3.0 40.0,7.9 60.0,12.5 80.0,10.6 100.0,25.0\" /></svg>", "trend": [74.4, 75.4, 73.9, 72.5, 73.1, 68.7]}, {"code": "2327", "name": "國巨", "market": "上市", "close_price": 453.0, "prev_close": 498.5, "change": -45.5, "change_pct": -9.13, "volume_lots": 42.6, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,9.1 20.0,3.0 40.0,3.9 60.0,13.5 80.0,14.4 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,9.1 20.0,3.0 40.0,3.9 60.0,13.5 80.0,14.4 100.0,25.0\" /></svg>", "trend": [521.0, 547.0, 543.0, 502.0, 498.5, 453.0]}, {"code": "1326", "name": "台化", "market": "上市", "close_price": 68.4, "prev_close": 73.6, "change": -5.2, "change_pct": -7.07, "volume_lots": 30.1, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,6.4 20.0,3.0 40.0,6.4 60.0,12.3 80.0,8.9 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,6.4 20.0,3.0 40.0,6.4 60.0,12.3 80.0,8.9 100.0,25.0\" /></svg>", "trend": [74.4, 75.5, 74.4, 72.5, 73.6, 68.4]}, {"code": "6669", "name": "緯穎", "market": "上市", "close_price": 1770.0, "prev_close": 1820.0, "change": -50.0, "change_pct": -2.75, "volume_lots": 2.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,3.0 40.0,10.9 60.0,20.1 80.0,18.9 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,3.0 40.0,10.9 60.0,20.1 80.0,18.9 100.0,25.0\" /></svg>", "trend": [1950.0, 1950.0, 1885.0, 1810.0, 1820.0, 1770.0]}, {"code": "3189", "name": "景碩", "market": "上市", "close_price": 819.0, "prev_close": 910.0, "change": -91.0, "change_pct": -10.0, "volume_lots": 17.5, "is_held": true, "shares": 10000, "lots": 10.0, "avg_cost": 980.19, "market_value": 8190000.0, "unrealized_pnl": -1611900.0, "unrealized_return_pct": -16.44, "weight_pct": 0.85, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,12.6 20.0,3.0 40.0,10.7 60.0,13.5 80.0,15.7 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,12.6 20.0,3.0 40.0,10.7 60.0,13.5 80.0,15.7 100.0,25.0\" /></svg>", "trend": [941.0, 1035.0, 959.0, 932.0, 910.0, 819.0]}, {"code": "3017", "name": "奇鋐", "market": "上市", "close_price": 2935.0, "prev_close": 3060.0, "change": -125.0, "change_pct": -4.08, "volume_lots": 2.8, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,9.7 20.0,3.0 40.0,11.6 60.0,12.4 80.0,15.2 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,9.7 20.0,3.0 40.0,11.6 60.0,12.4 80.0,15.2 100.0,25.0\" /></svg>", "trend": [3130.0, 3215.0, 3105.0, 3095.0, 3060.0, 2935.0]}, {"code": "3034", "name": "聯詠", "market": "上市", "close_price": 555.0, "prev_close": 571.0, "change": -16.0, "change_pct": -2.8, "volume_lots": 2.1, "is_held": true, "shares": 71000, "lots": 71.0, "avg_cost": 595.24, "market_value": 39405000.0, "unrealized_pnl": -2856750.0, "unrealized_return_pct": -6.76, "weight_pct": 4.11, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,3.5 40.0,4.5 60.0,15.0 80.0,17.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,3.5 40.0,4.5 60.0,15.0 80.0,17.0 100.0,25.0\" /></svg>", "trend": [599.0, 598.0, 596.0, 575.0, 571.0, 555.0]}, {"code": "2885", "name": "元大金", "market": "上市", "close_price": 69.2, "prev_close": 71.5, "change": -2.3, "change_pct": -3.22, "volume_lots": 27.4, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,4.0 20.0,5.1 40.0,3.0 60.0,7.2 80.0,13.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,4.0 20.0,5.1 40.0,3.0 60.0,7.2 80.0,13.0 100.0,25.0\" /></svg>", "trend": [73.2, 73.0, 73.4, 72.6, 71.5, 69.2]}, {"code": "2207", "name": "和泰車", "market": "上市", "close_price": 544.0, "prev_close": 536.0, "change": 8.0, "change_pct": 1.49, "volume_lots": 0.4, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,21.5 40.0,25.0 60.0,22.7 80.0,20.4 100.0,11.1 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,21.5 40.0,25.0 60.0,22.7 80.0,20.4 100.0,11.1\" /></svg>", "trend": [551.0, 535.0, 532.0, 534.0, 536.0, 544.0]}, {"code": "2887", "name": "台新新光金", "market": "上市", "close_price": 41.25, "prev_close": 41.7, "change": -0.45, "change_pct": -1.08, "volume_lots": 57.3, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,6.8 20.0,10.7 40.0,3.0 60.0,5.9 80.0,16.4 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,6.8 20.0,10.7 40.0,3.0 60.0,5.9 80.0,16.4 100.0,25.0\" /></svg>", "trend": [42.2, 42.0, 42.4, 42.25, 41.7, 41.25]}, {"code": "2002", "name": "中鋼", "market": "上市", "close_price": 19.35, "prev_close": 19.4, "change": -0.05, "change_pct": -0.26, "volume_lots": 33.3, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,3.0 40.0,16.2 60.0,25.0 80.0,18.4 100.0,20.6 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,3.0 40.0,16.2 60.0,25.0 80.0,18.4 100.0,20.6\" /></svg>", "trend": [19.75, 19.75, 19.45, 19.25, 19.4, 19.35]}, {"code": "2360", "name": "致茂", "market": "上市", "close_price": 1545.0, "prev_close": 1715.0, "change": -170.0, "change_pct": -9.91, "volume_lots": 3.0, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,6.6 20.0,3.0 40.0,7.0 60.0,15.6 80.0,17.4 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,6.6 20.0,3.0 40.0,7.0 60.0,15.6 80.0,17.4 100.0,25.0\" /></svg>", "trend": [1955.0, 2035.0, 1945.0, 1755.0, 1715.0, 1545.0]}, {"code": "2801", "name": "彰銀", "market": "上市", "close_price": 29.7, "prev_close": 30.85, "change": -1.15, "change_pct": -3.73, "volume_lots": 28.4, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,15.4 20.0,20.2 40.0,9.7 60.0,5.9 80.0,3.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,15.4 20.0,20.2 40.0,9.7 60.0,5.9 80.0,3.0 100.0,25.0\" /></svg>", "trend": [30.2, 29.95, 30.5, 30.7, 30.85, 29.7]}, {"code": "2886", "name": "兆豐金", "market": "上市", "close_price": 53.2, "prev_close": 54.1, "change": -0.9, "change_pct": -1.66, "volume_lots": 28.1, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,16.4 40.0,5.4 60.0,5.4 80.0,14.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,16.4 40.0,5.4 60.0,5.4 80.0,14.0 100.0,25.0\" /></svg>", "trend": [55.0, 53.9, 54.8, 54.8, 54.1, 53.2]}, {"code": "2449", "name": "京元電子", "market": "上市", "close_price": 253.5, "prev_close": 263.0, "change": -9.5, "change_pct": -3.61, "volume_lots": 13.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,10.8 20.0,3.0 40.0,10.3 60.0,25.0 80.0,16.3 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,10.8 20.0,3.0 40.0,10.3 60.0,25.0 80.0,16.3 100.0,25.0\" /></svg>", "trend": [269.0, 277.5, 269.5, 253.5, 263.0, 253.5]}, {"code": "2059", "name": "川湖", "market": "上市", "close_price": 9240.0, "prev_close": 9420.0, "change": -180.0, "change_pct": -1.91, "volume_lots": 0.5, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,11.2 20.0,3.0 40.0,9.5 60.0,15.1 80.0,20.6 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,11.2 20.0,3.0 40.0,9.5 60.0,15.1 80.0,20.6 100.0,25.0\" /></svg>", "trend": [9810.0, 10150.0, 9880.0, 9650.0, 9420.0, 9240.0]}, {"code": "1590", "name": "亞德客-KY", "market": "上市", "close_price": 1050.0, "prev_close": 1090.0, "change": -40.0, "change_pct": -3.67, "volume_lots": 1.0, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,5.2 20.0,5.2 40.0,3.0 60.0,19.5 80.0,16.2 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,5.2 20.0,5.2 40.0,3.0 60.0,19.5 80.0,16.2 100.0,25.0\" /></svg>", "trend": [1140.0, 1140.0, 1150.0, 1075.0, 1090.0, 1050.0]}, {"code": "6505", "name": "台塑化", "market": "上市", "close_price": 94.9, "prev_close": 103.0, "change": -8.1, "change_pct": -7.86, "volume_lots": 29.3, "is_held": true, "shares": 200000, "lots": 200.0, "avg_cost": 106.04, "market_value": 18980000.0, "unrealized_pnl": -2228000.0, "unrealized_return_pct": -10.51, "weight_pct": 1.98, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,8.9 40.0,17.7 60.0,18.3 80.0,8.9 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,8.9 40.0,17.7 60.0,18.3 80.0,8.9 100.0,25.0\" /></svg>", "trend": [106.0, 103.0, 98.6, 98.3, 103.0, 94.9]}, {"code": "3661", "name": "世芯-KY", "market": "上市", "close_price": 3140.0, "prev_close": 3395.0, "change": -255.0, "change_pct": -7.51, "volume_lots": 1.8, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,13.2 20.0,3.0 40.0,7.0 60.0,15.5 80.0,16.5 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,13.2 20.0,3.0 40.0,7.0 60.0,15.5 80.0,16.5 100.0,25.0\" /></svg>", "trend": [3495.0, 3800.0, 3680.0, 3425.0, 3395.0, 3140.0]}, {"code": "2884", "name": "玉山金", "market": "上市", "close_price": 47.4, "prev_close": 48.7, "change": -1.3, "change_pct": -2.67, "volume_lots": 38.1, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,14.8 40.0,7.8 60.0,7.3 80.0,11.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,14.8 40.0,7.8 60.0,7.3 80.0,11.0 100.0,25.0\" /></svg>", "trend": [49.45, 48.35, 49.0, 49.05, 48.7, 47.4]}, {"code": "6770", "name": "力積電", "market": "上市", "close_price": 60.2, "prev_close": 65.3, "change": -5.1, "change_pct": -7.81, "volume_lots": 107.9, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,6.8 20.0,3.0 40.0,6.6 60.0,12.3 80.0,14.9 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,6.8 20.0,3.0 40.0,6.6 60.0,12.3 80.0,14.9 100.0,25.0\" /></svg>", "trend": [69.4, 71.3, 69.5, 66.6, 65.3, 60.2]}, {"code": "2880", "name": "華南金", "market": "上市", "close_price": 49.05, "prev_close": 49.6, "change": -0.55, "change_pct": -1.11, "volume_lots": 17.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.9 20.0,20.9 40.0,7.9 60.0,3.0 80.0,16.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.9 20.0,20.9 40.0,7.9 60.0,3.0 80.0,16.0 100.0,25.0\" /></svg>", "trend": [50.1, 49.3, 50.1, 50.4, 49.6, 49.05]}, {"code": "3036", "name": "文曄", "market": "上市", "close_price": 201.5, "prev_close": 204.5, "change": -3.0, "change_pct": -1.47, "volume_lots": 5.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,5.8 20.0,3.0 40.0,7.3 60.0,17.2 80.0,20.7 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,5.8 20.0,3.0 40.0,7.3 60.0,17.2 80.0,20.7 100.0,25.0\" /></svg>", "trend": [215.0, 217.0, 214.0, 207.0, 204.5, 201.5]}, {"code": "2357", "name": "華碩", "market": "上市", "close_price": 889.0, "prev_close": 912.0, "change": -23.0, "change_pct": -2.52, "volume_lots": 2.6, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.7 20.0,3.0 40.0,11.4 60.0,21.2 80.0,19.9 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.7 20.0,3.0 40.0,11.4 60.0,21.2 80.0,19.9 100.0,25.0\" /></svg>", "trend": [967.0, 988.0, 950.0, 906.0, 912.0, 889.0]}, {"code": "2615", "name": "萬海", "market": "上市", "close_price": 115.5, "prev_close": 119.5, "change": -4.0, "change_pct": -3.35, "volume_lots": 8.9, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,18.4 20.0,9.6 40.0,25.0 60.0,3.0 80.0,5.2 100.0,22.8 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,18.4 20.0,9.6 40.0,25.0 60.0,3.0 80.0,5.2 100.0,22.8\" /></svg>", "trend": [116.5, 118.5, 115.0, 120.0, 119.5, 115.5]}, {"code": "2890", "name": "永豐金", "market": "上市", "close_price": 44.4, "prev_close": 45.8, "change": -1.4, "change_pct": -3.06, "volume_lots": 28.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,5.6 20.0,5.1 40.0,3.5 60.0,3.0 80.0,10.3 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,5.6 20.0,5.1 40.0,3.5 60.0,3.0 80.0,10.3 100.0,25.0\" /></svg>", "trend": [46.25, 46.3, 46.45, 46.5, 45.8, 44.4]}, {"code": "2618", "name": "長榮航", "market": "上市", "close_price": 43.7, "prev_close": 43.15, "change": 0.55, "change_pct": 1.27, "volume_lots": 33.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,15.7 20.0,25.0 40.0,19.1 60.0,19.9 80.0,12.3 100.0,3.0 100,28\" fill=\"rgba(244, 63, 94, 0.12)\" /><polyline fill=\"none\" stroke=\"#f43f5e\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,15.7 20.0,25.0 40.0,19.1 60.0,19.9 80.0,12.3 100.0,3.0\" /></svg>", "trend": [42.95, 42.4, 42.75, 42.7, 43.15, 43.7]}, {"code": "8046", "name": "南電", "market": "上市", "close_price": 1070.0, "prev_close": 1185.0, "change": -115.0, "change_pct": -9.7, "volume_lots": 9.4, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.3 20.0,3.0 40.0,7.8 60.0,13.5 80.0,14.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.3 20.0,3.0 40.0,7.8 60.0,13.5 80.0,14.0 100.0,25.0\" /></svg>", "trend": [1255.0, 1300.0, 1250.0, 1190.0, 1185.0, 1070.0]}, {"code": "2912", "name": "統一超", "market": "上市", "close_price": 222.5, "prev_close": 225.5, "change": -3.0, "change_pct": -1.33, "volume_lots": 1.2, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,12.4 40.0,25.0 60.0,3.0 80.0,3.0 100.0,21.9 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,12.4 40.0,25.0 60.0,3.0 80.0,3.0 100.0,21.9\" /></svg>", "trend": [225.5, 224.0, 222.0, 225.5, 225.5, 222.5]}, {"code": "2344", "name": "華邦電", "market": "上市", "close_price": 146.0, "prev_close": 162.0, "change": -16.0, "change_pct": -9.88, "volume_lots": 88.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,10.6 20.0,3.0 40.0,4.3 60.0,9.3 80.0,11.5 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,10.6 20.0,3.0 40.0,4.3 60.0,9.3 80.0,11.5 100.0,25.0\" /></svg>", "trend": [163.0, 172.0, 170.5, 164.5, 162.0, 146.0]}, {"code": "4938", "name": "和碩", "market": "上市", "close_price": 101.5, "prev_close": 102.5, "change": -1.0, "change_pct": -0.98, "volume_lots": 10.9, "is_held": true, "shares": 407000, "lots": 407.0, "avg_cost": 104.56, "market_value": 41310500.0, "unrealized_pnl": -1246030.0, "unrealized_return_pct": -2.93, "weight_pct": 4.31, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,13.2 20.0,3.0 40.0,14.8 60.0,21.6 80.0,21.6 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,13.2 20.0,3.0 40.0,14.8 60.0,21.6 80.0,21.6 100.0,25.0\" /></svg>", "trend": [105.0, 108.0, 104.5, 102.5, 102.5, 101.5]}, {"code": "3231", "name": "緯創", "market": "上市", "close_price": 176.5, "prev_close": 181.5, "change": -5.0, "change_pct": -2.75, "volume_lots": 22.2, "is_held": true, "shares": 171000, "lots": 171.0, "avg_cost": 190.17, "market_value": 30181500.0, "unrealized_pnl": -2337881.0, "unrealized_return_pct": -7.19, "weight_pct": 3.15, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.9 20.0,3.0 40.0,10.3 60.0,16.4 80.0,18.9 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.9 20.0,3.0 40.0,10.3 60.0,16.4 80.0,18.9 100.0,25.0\" /></svg>", "trend": [190.5, 194.5, 188.5, 183.5, 181.5, 176.5]}, {"code": "2376", "name": "技嘉", "market": "上市", "close_price": 327.0, "prev_close": 339.5, "change": -12.5, "change_pct": -3.68, "volume_lots": 3.8, "is_held": true, "shares": 87000, "lots": 87.0, "avg_cost": 357.46, "market_value": 28449000.0, "unrealized_pnl": -2650061.0, "unrealized_return_pct": -8.52, "weight_pct": 2.97, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,6.1 20.0,3.0 40.0,15.1 60.0,19.4 80.0,17.3 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,6.1 20.0,3.0 40.0,15.1 60.0,19.4 80.0,17.3 100.0,25.0\" /></svg>", "trend": [357.5, 362.5, 343.0, 336.0, 339.5, 327.0]}, {"code": "2892", "name": "第一金", "market": "上市", "close_price": 42.6, "prev_close": 43.65, "change": -1.05, "change_pct": -2.41, "volume_lots": 25.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,19.0 20.0,22.8 40.0,4.6 60.0,3.0 80.0,13.5 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,19.0 20.0,22.8 40.0,4.6 60.0,3.0 80.0,13.5 100.0,25.0\" /></svg>", "trend": [43.15, 42.8, 44.45, 44.6, 43.65, 42.6]}, {"code": "5876", "name": "上海商銀", "market": "上市", "close_price": 52.6, "prev_close": 54.3, "change": -1.7, "change_pct": -3.13, "volume_lots": 10.5, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,15.6 40.0,10.1 60.0,10.1 80.0,11.6 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,15.6 40.0,10.1 60.0,10.1 80.0,11.6 100.0,25.0\" /></svg>", "trend": [55.4, 53.8, 54.5, 54.5, 54.3, 52.6]}, {"code": "3008", "name": "大立光", "market": "上市", "close_price": 4945.0, "prev_close": 5490.0, "change": -545.0, "change_pct": -9.93, "volume_lots": 2.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,8.3 20.0,3.0 40.0,11.2 60.0,17.3 80.0,16.4 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,8.3 20.0,3.0 40.0,11.2 60.0,17.3 80.0,16.4 100.0,25.0\" /></svg>", "trend": [6000.0, 6335.0, 5815.0, 5430.0, 5490.0, 4945.0]}, {"code": "1519", "name": "華城", "market": "上市", "close_price": 519.0, "prev_close": 555.0, "change": -36.0, "change_pct": -6.49, "volume_lots": 1.2, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,5.1 20.0,3.0 40.0,11.7 60.0,15.4 80.0,14.2 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,5.1 20.0,3.0 40.0,11.7 60.0,15.4 80.0,14.2 100.0,25.0\" /></svg>", "trend": [585.0, 592.0, 563.0, 551.0, 555.0, 519.0]}, {"code": "2356", "name": "英業達", "market": "上市", "close_price": 57.2, "prev_close": 59.6, "change": -2.4, "change_pct": -4.03, "volume_lots": 13.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,5.7 20.0,3.0 40.0,11.0 60.0,17.3 80.0,17.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,5.7 20.0,3.0 40.0,11.0 60.0,17.3 80.0,17.0 100.0,25.0\" /></svg>", "trend": [63.0, 63.8, 61.4, 59.5, 59.6, 57.2]}, {"code": "6415", "name": "矽力-KY", "market": "上市", "close_price": 472.5, "prev_close": 501.0, "change": -28.5, "change_pct": -5.69, "volume_lots": 9.5, "is_held": true, "shares": 68000, "lots": 68.0, "avg_cost": 475.23, "market_value": 32130000.0, "unrealized_pnl": -185640.0, "unrealized_return_pct": -0.57, "weight_pct": 3.35, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,22.7 20.0,3.0 40.0,3.4 60.0,12.6 80.0,13.1 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,22.7 20.0,3.0 40.0,3.4 60.0,12.6 80.0,13.1 100.0,25.0\" /></svg>", "trend": [478.0, 525.0, 524.0, 502.0, 501.0, 472.5]}, {"code": "2404", "name": "漢唐", "market": "上市", "close_price": 1000.0, "prev_close": 1060.0, "change": -60.0, "change_pct": -5.66, "volume_lots": 0.7, "is_held": true, "shares": 16000, "lots": 16.0, "avg_cost": 1085.8, "market_value": 16000000.0, "unrealized_pnl": -1372800.0, "unrealized_return_pct": -7.9, "weight_pct": 1.67, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.2 20.0,4.0 40.0,3.0 60.0,9.3 80.0,12.4 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.2 20.0,4.0 40.0,3.0 60.0,9.3 80.0,12.4 100.0,25.0\" /></svg>", "trend": [1085.0, 1100.0, 1105.0, 1075.0, 1060.0, 1000.0]}, {"code": "6919", "name": "康霈", "market": "上市", "close_price": 63.1, "prev_close": 64.5, "change": -1.4, "change_pct": -2.17, "volume_lots": 4.8, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,3.0 40.0,13.5 60.0,7.5 80.0,18.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,3.0 40.0,13.5 60.0,7.5 80.0,18.0 100.0,25.0\" /></svg>", "trend": [67.5, 67.5, 65.4, 66.6, 64.5, 63.1]}, {"code": "6515", "name": "穎崴", "market": "上市", "close_price": 4075.0, "prev_close": 4485.0, "change": -410.0, "change_pct": -9.14, "volume_lots": 0.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.1 20.0,3.0 40.0,10.2 60.0,12.5 80.0,14.5 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.1 20.0,3.0 40.0,10.2 60.0,12.5 80.0,14.5 100.0,25.0\" /></svg>", "trend": [4775.0, 4935.0, 4655.0, 4565.0, 4485.0, 4075.0]}, {"code": "2324", "name": "仁寶", "market": "上市", "close_price": 33.55, "prev_close": 34.75, "change": -1.2, "change_pct": -3.45, "volume_lots": 32.2, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,4.8 20.0,3.0 40.0,9.5 60.0,16.7 80.0,19.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,4.8 20.0,3.0 40.0,9.5 60.0,16.7 80.0,19.0 100.0,25.0\" /></svg>", "trend": [37.6, 37.95, 36.65, 35.2, 34.75, 33.55]}, {"code": "3533", "name": "嘉澤", "market": "上市", "close_price": 1735.0, "prev_close": 1820.0, "change": -85.0, "change_pct": -4.67, "volume_lots": 0.9, "is_held": true, "shares": 16000, "lots": 16.0, "avg_cost": 1900.12, "market_value": 27760000.0, "unrealized_pnl": -2641920.0, "unrealized_return_pct": -8.69, "weight_pct": 2.89, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,6.0 20.0,3.0 40.0,8.5 60.0,12.5 80.0,16.5 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,6.0 20.0,3.0 40.0,8.5 60.0,12.5 80.0,16.5 100.0,25.0\" /></svg>", "trend": [1925.0, 1955.0, 1900.0, 1860.0, 1820.0, 1735.0]}, {"code": "2347", "name": "聯強", "market": "上市", "close_price": 91.4, "prev_close": 94.5, "change": -3.1, "change_pct": -3.28, "volume_lots": 3.3, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,4.0 20.0,3.0 40.0,4.0 60.0,8.9 80.0,18.9 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,4.0 20.0,3.0 40.0,4.0 60.0,8.9 80.0,18.9 100.0,25.0\" /></svg>", "trend": [102.0, 102.5, 102.0, 99.5, 94.5, 91.4]}, {"code": "2313", "name": "華通", "market": "上市", "close_price": 186.0, "prev_close": 205.0, "change": -19.0, "change_pct": -9.27, "volume_lots": 20.9, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.6 20.0,3.0 40.0,9.1 60.0,15.7 80.0,14.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.6 20.0,3.0 40.0,9.1 60.0,15.7 80.0,14.0 100.0,25.0\" /></svg>", "trend": [216.0, 224.0, 213.5, 202.0, 205.0, 186.0]}, {"code": "1504", "name": "東元", "market": "上市", "close_price": 66.2, "prev_close": 69.3, "change": -3.1, "change_pct": -4.47, "volume_lots": 6.3, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,9.6 20.0,3.0 40.0,6.9 60.0,9.1 80.0,8.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,9.6 20.0,3.0 40.0,6.9 60.0,9.1 80.0,8.0 100.0,25.0\" /></svg>", "trend": [69.0, 70.2, 69.5, 69.1, 69.3, 66.2]}, {"code": "2337", "name": "旺宏", "market": "上市", "close_price": 88.3, "prev_close": 96.2, "change": -7.9, "change_pct": -8.21, "volume_lots": 54.5, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.7 20.0,3.0 40.0,8.1 60.0,14.7 80.0,13.6 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.7 20.0,3.0 40.0,8.1 60.0,14.7 80.0,13.6 100.0,25.0\" /></svg>", "trend": [103.0, 103.5, 100.0, 95.4, 96.2, 88.3]}, {"code": "7750", "name": "新代", "market": "上市", "close_price": 1655.0, "prev_close": 1835.0, "change": -180.0, "change_pct": -9.81, "volume_lots": 0.4, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,8.1 20.0,7.3 40.0,3.0 60.0,5.8 80.0,15.9 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,8.1 20.0,7.3 40.0,3.0 60.0,5.8 80.0,15.9 100.0,25.0\" /></svg>", "trend": [1990.0, 2005.0, 2090.0, 2035.0, 1835.0, 1655.0]}, {"code": "5871", "name": "中租-KY", "market": "上市", "close_price": 105.0, "prev_close": 105.0, "change": 0.0, "change_pct": 0.0, "volume_lots": 11.4, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,6.7 40.0,10.3 60.0,21.3 80.0,25.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,6.7 40.0,10.3 60.0,21.3 80.0,25.0 100.0,25.0\" /></svg>", "trend": [108.0, 107.5, 107.0, 105.5, 105.0, 105.0]}, {"code": "1402", "name": "遠東新", "market": "上市", "close_price": 28.55, "prev_close": 28.55, "change": 0.0, "change_pct": 0.0, "volume_lots": 5.9, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,25.0 40.0,18.2 60.0,21.6 80.0,11.5 100.0,11.5 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,25.0 40.0,18.2 60.0,21.6 80.0,11.5 100.0,11.5\" /></svg>", "trend": [28.8, 28.15, 28.35, 28.25, 28.55, 28.55]}, {"code": "3044", "name": "健鼎", "market": "上市", "close_price": 488.5, "prev_close": 527.0, "change": -38.5, "change_pct": -7.31, "volume_lots": 2.9, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,11.7 20.0,3.0 40.0,6.2 60.0,15.7 80.0,9.7 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,11.7 20.0,3.0 40.0,6.2 60.0,15.7 80.0,9.7 100.0,25.0\" /></svg>", "trend": [522.0, 544.0, 536.0, 512.0, 527.0, 488.5]}, {"code": "1605", "name": "華新", "market": "上市", "close_price": 35.0, "prev_close": 37.6, "change": -2.6, "change_pct": -6.91, "volume_lots": 30.2, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.7 20.0,3.4 40.0,6.0 60.0,17.0 80.0,3.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.7 20.0,3.4 40.0,6.0 60.0,17.0 80.0,3.0 100.0,25.0\" /></svg>", "trend": [37.05, 37.55, 37.25, 35.95, 37.6, 35.0]}, {"code": "3702", "name": "大聯大", "market": "上市", "close_price": 101.0, "prev_close": 105.5, "change": -4.5, "change_pct": -4.27, "volume_lots": 9.4, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,3.7 40.0,12.2 60.0,14.4 80.0,18.6 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,3.7 40.0,12.2 60.0,14.4 80.0,18.6 100.0,25.0\" /></svg>", "trend": [116.5, 116.0, 110.0, 108.5, 105.5, 101.0]}, {"code": "2610", "name": "華航", "market": "上市", "close_price": 20.7, "prev_close": 20.65, "change": 0.05, "change_pct": 0.24, "volume_lots": 29.2, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,13.0 20.0,21.0 40.0,21.0 60.0,25.0 80.0,5.0 100.0,3.0 100,28\" fill=\"rgba(244, 63, 94, 0.12)\" /><polyline fill=\"none\" stroke=\"#f43f5e\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,13.0 20.0,21.0 40.0,21.0 60.0,25.0 80.0,5.0 100.0,3.0\" /></svg>", "trend": [20.45, 20.25, 20.25, 20.15, 20.65, 20.7]}, {"code": "1101", "name": "台泥", "market": "上市", "close_price": 27.7, "prev_close": 28.1, "change": -0.4, "change_pct": -1.42, "volume_lots": 47.9, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,11.5 20.0,14.8 40.0,8.1 60.0,3.0 80.0,11.5 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,11.5 20.0,14.8 40.0,8.1 60.0,3.0 80.0,11.5 100.0,25.0\" /></svg>", "trend": [28.1, 28.0, 28.2, 28.35, 28.1, 27.7]}, {"code": "6789", "name": "采鈺", "market": "上市", "close_price": 390.0, "prev_close": 414.5, "change": -24.5, "change_pct": -5.91, "volume_lots": 1.2, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,8.2 20.0,3.0 40.0,6.3 60.0,16.9 80.0,15.5 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,8.2 20.0,3.0 40.0,6.3 60.0,16.9 80.0,15.5 100.0,25.0\" /></svg>", "trend": [433.5, 447.0, 438.5, 411.0, 414.5, 390.0]}, {"code": "2409", "name": "友達", "market": "上市", "close_price": 28.8, "prev_close": 30.75, "change": -1.95, "change_pct": -6.34, "volume_lots": 206.5, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,9.8 20.0,3.0 40.0,7.9 60.0,19.0 80.0,18.6 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,9.8 20.0,3.0 40.0,7.9 60.0,19.0 80.0,18.6 100.0,25.0\" /></svg>", "trend": [33.45, 35.55, 34.05, 30.65, 30.75, 28.8]}, {"code": "1802", "name": "台玻", "market": "上市", "close_price": 67.7, "prev_close": 63.7, "change": 4.0, "change_pct": 6.28, "volume_lots": 299.6, "is_held": true, "shares": 366000, "lots": 366.0, "avg_cost": 66.15, "market_value": 24778200.0, "unrealized_pnl": 568320.0, "unrealized_return_pct": 2.35, "weight_pct": 2.58, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,12.6 20.0,11.1 40.0,25.0 60.0,23.8 80.0,18.4 100.0,3.0 100,28\" fill=\"rgba(244, 63, 94, 0.12)\" /><polyline fill=\"none\" stroke=\"#f43f5e\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,12.6 20.0,11.1 40.0,25.0 60.0,23.8 80.0,18.4 100.0,3.0\" /></svg>", "trend": [65.2, 65.6, 62.0, 62.3, 63.7, 67.7]}, {"code": "6239", "name": "力成", "market": "上市", "close_price": 239.5, "prev_close": 257.5, "change": -18.0, "change_pct": -6.99, "volume_lots": 9.6, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,15.0 20.0,3.0 40.0,4.3 60.0,14.0 80.0,13.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,15.0 20.0,3.0 40.0,4.3 60.0,14.0 80.0,13.0 100.0,25.0\" /></svg>", "trend": [254.5, 272.5, 270.5, 256.0, 257.5, 239.5]}, {"code": "8210", "name": "勤誠", "market": "上市", "close_price": 647.0, "prev_close": 705.0, "change": -58.0, "change_pct": -8.23, "volume_lots": 1.9, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,4.0 20.0,3.0 40.0,7.1 60.0,13.7 80.0,15.5 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,4.0 20.0,3.0 40.0,7.1 60.0,13.7 80.0,15.5 100.0,25.0\" /></svg>", "trend": [775.0, 781.0, 756.0, 716.0, 705.0, 647.0]}, {"code": "2609", "name": "陽明", "market": "上市", "close_price": 62.1, "prev_close": 64.0, "change": -1.9, "change_pct": -2.97, "volume_lots": 14.9, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,14.0 20.0,15.1 40.0,25.0 60.0,8.5 80.0,3.0 100.0,23.9 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,14.0 20.0,15.1 40.0,25.0 60.0,8.5 80.0,3.0 100.0,23.9\" /></svg>", "trend": [63.0, 62.9, 62.0, 63.5, 64.0, 62.1]}, {"code": "2451", "name": "創見", "market": "上市", "close_price": 273.0, "prev_close": 285.0, "change": -12.0, "change_pct": -4.21, "volume_lots": 2.3, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,16.1 20.0,3.5 40.0,3.0 60.0,13.5 80.0,12.4 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,16.1 20.0,3.5 40.0,3.0 60.0,13.5 80.0,12.4 100.0,25.0\" /></svg>", "trend": [281.5, 293.5, 294.0, 284.0, 285.0, 273.0]}, {"code": "2834", "name": "臺企銀", "market": "上市", "close_price": 17.7, "prev_close": 18.05, "change": -0.35, "change_pct": -1.94, "volume_lots": 28.5, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,12.4 20.0,6.1 40.0,6.1 60.0,3.0 80.0,3.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,12.4 20.0,6.1 40.0,6.1 60.0,3.0 80.0,3.0 100.0,25.0\" /></svg>", "trend": [17.9, 18.0, 18.0, 18.05, 18.05, 17.7]}, {"code": "2812", "name": "台中銀", "market": "上市", "close_price": 18.15, "prev_close": 18.55, "change": -0.4, "change_pct": -2.16, "volume_lots": 21.1, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,5.2 20.0,5.2 40.0,3.0 60.0,5.2 80.0,7.4 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,5.2 20.0,5.2 40.0,3.0 60.0,5.2 80.0,7.4 100.0,25.0\" /></svg>", "trend": [18.6, 18.6, 18.65, 18.6, 18.55, 18.15]}, {"code": "6139", "name": "亞翔", "market": "上市", "close_price": 608.0, "prev_close": 637.0, "change": -29.0, "change_pct": -4.55, "volume_lots": 2.2, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,10.1 20.0,3.0 40.0,5.7 60.0,15.5 80.0,15.2 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,10.1 20.0,3.0 40.0,5.7 60.0,15.5 80.0,15.2 100.0,25.0\" /></svg>", "trend": [652.0, 673.0, 665.0, 636.0, 637.0, 608.0]}, {"code": "2377", "name": "微星", "market": "上市", "close_price": 153.0, "prev_close": 156.5, "change": -3.5, "change_pct": -2.24, "volume_lots": 4.9, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,6.5 20.0,3.0 40.0,15.1 60.0,18.6 80.0,20.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,6.5 20.0,3.0 40.0,15.1 60.0,18.6 80.0,20.0 100.0,25.0\" /></svg>", "trend": [166.0, 168.5, 160.0, 157.5, 156.5, 153.0]}, {"code": "5274", "name": "信驊", "market": "上櫃", "close_price": 14730.0, "prev_close": 15625.0, "change": -895.0, "change_pct": -5.73, "volume_lots": 0.3, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,14.0 20.0,3.0 40.0,5.7 60.0,14.4 80.0,17.3 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,14.0 20.0,3.0 40.0,5.7 60.0,14.4 80.0,17.3 100.0,25.0\" /></svg>", "trend": [16015.0, 17295.0, 16980.0, 15970.0, 15625.0, 14730.0]}, {"code": "3491", "name": "昇達科", "market": "上櫃", "close_price": 1260.0, "prev_close": 1300.0, "change": -40.0, "change_pct": -3.08, "volume_lots": 1.0, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,19.8 20.0,3.0 40.0,15.9 60.0,25.0 80.0,13.4 100.0,23.7 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,19.8 20.0,3.0 40.0,15.9 60.0,25.0 80.0,13.4 100.0,23.7\" /></svg>", "trend": [1275.0, 1340.0, 1290.0, 1255.0, 1300.0, 1260.0]}, {"code": "6223", "name": "旺矽", "market": "上櫃", "close_price": 4190.0, "prev_close": 4655.0, "change": -465.0, "change_pct": -9.99, "volume_lots": 1.0, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,10.7 20.0,3.0 40.0,9.5 60.0,15.0 80.0,13.9 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,10.7 20.0,3.0 40.0,9.5 60.0,15.0 80.0,13.9 100.0,25.0\" /></svg>", "trend": [4790.0, 5115.0, 4840.0, 4610.0, 4655.0, 4190.0]}, {"code": "6121", "name": "新普", "market": "上櫃", "close_price": 369.0, "prev_close": 373.0, "change": -4.0, "change_pct": -1.07, "volume_lots": 0.6, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,14.8 20.0,3.0 40.0,8.9 60.0,19.1 80.0,18.2 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,14.8 20.0,3.0 40.0,8.9 60.0,19.1 80.0,18.2 100.0,25.0\" /></svg>", "trend": [375.0, 382.0, 378.5, 372.5, 373.0, 369.0]}, {"code": "6488", "name": "環球晶", "market": "上櫃", "close_price": 685.0, "prev_close": 760.0, "change": -75.0, "change_pct": -9.87, "volume_lots": 10.5, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.7 20.0,3.0 40.0,7.7 60.0,15.5 80.0,14.9 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.7 20.0,3.0 40.0,7.7 60.0,15.5 80.0,14.9 100.0,25.0\" /></svg>", "trend": [814.0, 849.0, 814.0, 756.0, 760.0, 685.0]}, {"code": "6548", "name": "長科", "market": "上櫃", "close_price": 63.2, "prev_close": 66.8, "change": -3.6, "change_pct": -5.39, "volume_lots": 2.6, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,10.6 20.0,3.0 40.0,11.1 60.0,19.2 80.0,19.6 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,10.6 20.0,3.0 40.0,11.1 60.0,19.2 80.0,19.6 100.0,25.0\" /></svg>", "trend": [72.8, 77.9, 72.5, 67.1, 66.8, 63.2]}, {"code": "8299", "name": "群聯", "market": "上櫃", "close_price": 1690.0, "prev_close": 1875.0, "change": -185.0, "change_pct": -9.87, "volume_lots": 3.9, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,11.6 20.0,3.6 40.0,3.0 60.0,10.3 80.0,13.7 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,11.6 20.0,3.6 40.0,3.0 60.0,10.3 80.0,13.7 100.0,25.0\" /></svg>", "trend": [1910.0, 2040.0, 2050.0, 1930.0, 1875.0, 1690.0]}, {"code": "1785", "name": "光洋科", "market": "上櫃", "close_price": 78.6, "prev_close": 87.3, "change": -8.7, "change_pct": -9.97, "volume_lots": 15.2, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.4 20.0,3.0 40.0,7.2 60.0,12.4 80.0,13.3 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.4 20.0,3.0 40.0,7.2 60.0,12.4 80.0,13.3 100.0,25.0\" /></svg>", "trend": [91.7, 95.0, 91.9, 88.0, 87.3, 78.6]}, {"code": "6274", "name": "台燿", "market": "上櫃", "close_price": 1090.0, "prev_close": 1210.0, "change": -120.0, "change_pct": -9.92, "volume_lots": 11.1, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,11.1 20.0,4.1 40.0,3.0 60.0,12.2 80.0,16.2 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,11.1 20.0,4.1 40.0,3.0 60.0,12.2 80.0,16.2 100.0,25.0\" /></svg>", "trend": [1280.0, 1375.0, 1390.0, 1265.0, 1210.0, 1090.0]}, {"code": "3363", "name": "上詮", "market": "上櫃", "close_price": 415.5, "prev_close": 458.0, "change": -42.5, "change_pct": -9.28, "volume_lots": 3.2, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,9.3 20.0,3.0 40.0,11.1 60.0,14.0 80.0,17.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,9.3 20.0,3.0 40.0,11.1 60.0,14.0 80.0,17.0 100.0,25.0\" /></svg>", "trend": [499.5, 533.0, 490.0, 474.5, 458.0, 415.5]}, {"code": "5347", "name": "世界", "market": "上櫃", "close_price": 134.0, "prev_close": 145.0, "change": -11.0, "change_pct": -7.59, "volume_lots": 18.4, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,6.9 20.0,3.0 40.0,10.2 60.0,18.4 80.0,17.8 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,6.9 20.0,3.0 40.0,10.2 60.0,18.4 80.0,17.8 100.0,25.0\" /></svg>", "trend": [161.5, 167.5, 156.5, 144.0, 145.0, 134.0]}, {"code": "7828", "name": "創新服務", "market": "上櫃", "close_price": 1200.0, "prev_close": 1250.0, "change": -50.0, "change_pct": -4.0, "volume_lots": 0.1, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.2 20.0,3.0 40.0,10.3 60.0,20.8 80.0,19.8 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.2 20.0,3.0 40.0,10.3 60.0,20.8 80.0,19.8 100.0,25.0\" /></svg>", "trend": [1370.0, 1410.0, 1340.0, 1240.0, 1250.0, 1200.0]}, {"code": "3293", "name": "鈊象", "market": "上櫃", "close_price": 777.0, "prev_close": 797.0, "change": -20.0, "change_pct": -2.51, "volume_lots": 1.0, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,12.3 20.0,9.7 40.0,4.3 60.0,3.0 80.0,11.7 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,12.3 20.0,9.7 40.0,4.3 60.0,3.0 80.0,11.7 100.0,25.0\" /></svg>", "trend": [796.0, 800.0, 808.0, 810.0, 797.0, 777.0]}, {"code": "4979", "name": "華星光", "market": "上櫃", "close_price": 383.5, "prev_close": 426.0, "change": -42.5, "change_pct": -9.98, "volume_lots": 7.3, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.4 20.0,3.0 40.0,5.4 60.0,11.7 80.0,16.1 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.4 20.0,3.0 40.0,5.4 60.0,11.7 80.0,16.1 100.0,25.0\" /></svg>", "trend": [467.5, 488.5, 477.0, 447.0, 426.0, 383.5]}, {"code": "8069", "name": "元太", "market": "上櫃", "close_price": 143.5, "prev_close": 152.5, "change": -9.0, "change_pct": -5.9, "volume_lots": 8.5, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,4.6 40.0,9.5 60.0,16.0 80.0,10.3 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,4.6 40.0,9.5 60.0,16.0 80.0,10.3 100.0,25.0\" /></svg>", "trend": [157.0, 156.0, 153.0, 149.0, 152.5, 143.5]}, {"code": "6182", "name": "合晶", "market": "上櫃", "close_price": 85.3, "prev_close": 94.1, "change": -8.8, "change_pct": -9.35, "volume_lots": 23.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,6.4 20.0,3.0 40.0,8.0 60.0,15.4 80.0,15.2 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,6.4 20.0,3.0 40.0,8.0 60.0,15.4 80.0,15.2 100.0,25.0\" /></svg>", "trend": [102.0, 105.0, 100.5, 93.9, 94.1, 85.3]}, {"code": "3529", "name": "力旺", "market": "上櫃", "close_price": 2160.0, "prev_close": 2395.0, "change": -235.0, "change_pct": -9.81, "volume_lots": 1.5, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,9.2 20.0,3.0 40.0,8.1 60.0,10.3 80.0,14.6 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,9.2 20.0,3.0 40.0,8.1 60.0,10.3 80.0,14.6 100.0,25.0\" /></svg>", "trend": [2515.0, 2655.0, 2540.0, 2490.0, 2395.0, 2160.0]}, {"code": "3163", "name": "波若威", "market": "上櫃", "close_price": 462.0, "prev_close": 510.0, "change": -48.0, "change_pct": -9.41, "volume_lots": 2.1, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,9.4 20.0,3.0 40.0,8.6 60.0,15.3 80.0,15.1 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,9.4 20.0,3.0 40.0,8.6 60.0,15.3 80.0,15.1 100.0,25.0\" /></svg>", "trend": [538.0, 569.0, 542.0, 509.0, 510.0, 462.0]}, {"code": "3081", "name": "聯亞", "market": "上櫃", "close_price": 2175.0, "prev_close": 2415.0, "change": -240.0, "change_pct": -9.94, "volume_lots": 4.0, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.3 20.0,3.0 40.0,3.3 60.0,14.4 80.0,12.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.3 20.0,3.0 40.0,3.3 60.0,14.4 80.0,12.0 100.0,25.0\" /></svg>", "trend": [2500.0, 2580.0, 2575.0, 2370.0, 2415.0, 2175.0]}, {"code": "3211", "name": "順達", "market": "上櫃", "close_price": 279.5, "prev_close": 302.0, "change": -22.5, "change_pct": -7.45, "volume_lots": 3.5, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,6.8 20.0,3.0 40.0,8.4 60.0,18.1 80.0,16.4 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,6.8 20.0,3.0 40.0,8.4 60.0,18.1 80.0,16.4 100.0,25.0\" /></svg>", "trend": [327.0, 337.0, 323.0, 297.5, 302.0, 279.5]}, {"code": "3260", "name": "威剛", "market": "上櫃", "close_price": 318.0, "prev_close": 340.5, "change": -22.5, "change_pct": -6.61, "volume_lots": 5.6, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,19.0 20.0,3.0 40.0,3.7 60.0,11.2 80.0,14.1 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,19.0 20.0,3.0 40.0,3.7 60.0,11.2 80.0,14.1 100.0,25.0\" /></svg>", "trend": [330.5, 363.5, 362.0, 346.5, 340.5, 318.0]}, {"code": "4966", "name": "譜瑞-KY", "market": "上櫃", "close_price": 450.5, "prev_close": 485.0, "change": -34.5, "change_pct": -7.11, "volume_lots": 0.9, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.9 20.0,3.0 40.0,13.2 60.0,19.4 80.0,14.8 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.9 20.0,3.0 40.0,13.2 60.0,19.4 80.0,14.8 100.0,25.0\" /></svg>", "trend": [522.0, 525.0, 490.5, 469.5, 485.0, 450.5]}, {"code": "3105", "name": "穩懋", "market": "上櫃", "close_price": 530.0, "prev_close": 588.0, "change": -58.0, "change_pct": -9.86, "volume_lots": 23.6, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,25.0 20.0,14.5 40.0,3.0 60.0,6.4 80.0,4.3 100.0,16.7 100,28\" fill=\"rgba(244, 63, 94, 0.12)\" /><polyline fill=\"none\" stroke=\"#f43f5e\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,25.0 20.0,14.5 40.0,3.0 60.0,6.4 80.0,4.3 100.0,16.7\" /></svg>", "trend": [491.0, 540.0, 594.0, 578.0, 588.0, 530.0]}, {"code": "4991", "name": "環宇-KY", "market": "上櫃", "close_price": 367.5, "prev_close": 391.5, "change": -24.0, "change_pct": -6.13, "volume_lots": 3.9, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,10.4 20.0,3.0 40.0,8.1 60.0,18.9 80.0,17.9 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,10.4 20.0,3.0 40.0,8.1 60.0,18.9 80.0,17.9 100.0,25.0\" /></svg>", "trend": [416.5, 441.5, 424.5, 388.0, 391.5, 367.5]}, {"code": "5289", "name": "宜鼎", "market": "上櫃", "close_price": 1020.0, "prev_close": 1110.0, "change": -90.0, "change_pct": -8.11, "volume_lots": 1.6, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,14.7 20.0,5.8 40.0,3.0 60.0,11.2 80.0,12.6 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,14.7 20.0,5.8 40.0,3.0 60.0,11.2 80.0,12.6 100.0,25.0\" /></svg>", "trend": [1095.0, 1160.0, 1180.0, 1120.0, 1110.0, 1020.0]}, {"code": "5903", "name": "全家", "market": "上櫃", "close_price": 185.5, "prev_close": 184.5, "change": 1.0, "change_pct": 0.54, "volume_lots": 0, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,10.3 40.0,17.7 60.0,25.0 80.0,25.0 100.0,10.3 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,10.3 40.0,17.7 60.0,25.0 80.0,25.0 100.0,10.3\" /></svg>", "trend": [186.0, 185.5, 185.0, 184.5, 184.5, 185.5]}, {"code": "5536", "name": "聖暉", "market": "上櫃", "close_price": 732.0, "prev_close": 770.0, "change": -38.0, "change_pct": -4.94, "volume_lots": 0.5, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,16.8 20.0,3.0 40.0,4.2 60.0,14.0 80.0,10.1 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,16.8 20.0,3.0 40.0,4.2 60.0,14.0 80.0,10.1 100.0,25.0\" /></svg>", "trend": [753.0, 788.0, 785.0, 760.0, 770.0, 732.0]}, {"code": "1815", "name": "富喬", "market": "上櫃", "close_price": 131.0, "prev_close": 139.0, "change": -8.0, "change_pct": -5.76, "volume_lots": 146.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,19.3 20.0,3.0 40.0,11.8 60.0,25.0 80.0,9.3 100.0,19.3 100,28\" fill=\"rgba(244, 63, 94, 0.12)\" /><polyline fill=\"none\" stroke=\"#f43f5e\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,19.3 20.0,3.0 40.0,11.8 60.0,25.0 80.0,9.3 100.0,19.3\" /></svg>", "trend": [131.0, 144.0, 137.0, 126.5, 139.0, 131.0]}, {"code": "5483", "name": "中美晶", "market": "上櫃", "close_price": 162.5, "prev_close": 174.5, "change": -12.0, "change_pct": -6.88, "volume_lots": 8.5, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,6.4 20.0,3.0 40.0,6.8 60.0,15.3 80.0,14.8 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,6.4 20.0,3.0 40.0,6.8 60.0,15.3 80.0,14.8 100.0,25.0\" /></svg>", "trend": [184.5, 188.5, 184.0, 174.0, 174.5, 162.5]}, {"code": "3680", "name": "家登", "market": "上櫃", "close_price": 440.5, "prev_close": 489.0, "change": -48.5, "change_pct": -9.92, "volume_lots": 1.3, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,9.5 20.0,3.0 40.0,5.6 60.0,12.5 80.0,13.3 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,9.5 20.0,3.0 40.0,5.6 60.0,12.5 80.0,13.3 100.0,25.0\" /></svg>", "trend": [505.0, 532.0, 521.0, 492.5, 489.0, 440.5]}, {"code": "6147", "name": "頎邦", "market": "上櫃", "close_price": 172.5, "prev_close": 191.5, "change": -19.0, "change_pct": -9.92, "volume_lots": 20.5, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,9.8 20.0,3.0 40.0,11.6 60.0,14.7 80.0,16.6 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,9.8 20.0,3.0 40.0,11.6 60.0,14.7 80.0,16.6 100.0,25.0\" /></svg>", "trend": [207.0, 222.5, 203.0, 196.0, 191.5, 172.5]}, {"code": "8415", "name": "大國鋼", "market": "上櫃", "close_price": 36.2, "prev_close": 36.65, "change": -0.45, "change_pct": -1.23, "volume_lots": 0.2, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,4.5 20.0,13.3 40.0,11.8 60.0,25.0 80.0,3.0 100.0,16.2 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,4.5 20.0,13.3 40.0,11.8 60.0,25.0 80.0,3.0 100.0,16.2\" /></svg>", "trend": [36.6, 36.3, 36.35, 35.9, 36.65, 36.2]}, {"code": "7734", "name": "印能科技", "market": "上櫃", "close_price": 1850.0, "prev_close": 2015.0, "change": -165.0, "change_pct": -8.19, "volume_lots": 0.3, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,8.9 20.0,3.0 40.0,8.9 60.0,16.0 80.0,18.1 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,8.9 20.0,3.0 40.0,8.9 60.0,16.0 80.0,18.1 100.0,25.0\" /></svg>", "trend": [2235.0, 2375.0, 2235.0, 2065.0, 2015.0, 1850.0]}, {"code": "6290", "name": "良維", "market": "上櫃", "close_price": 205.5, "prev_close": 227.0, "change": -21.5, "change_pct": -9.47, "volume_lots": 3.4, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,10.0 20.0,3.0 40.0,8.0 60.0,15.7 80.0,15.2 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,10.0 20.0,3.0 40.0,8.0 60.0,15.7 80.0,15.2 100.0,25.0\" /></svg>", "trend": [238.5, 254.0, 243.0, 226.0, 227.0, 205.5]}, {"code": "6187", "name": "萬潤", "market": "上櫃", "close_price": 1080.0, "prev_close": 1195.0, "change": -115.0, "change_pct": -9.62, "volume_lots": 1.8, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,8.0 20.0,3.0 40.0,10.1 60.0,15.9 80.0,15.5 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,8.0 20.0,3.0 40.0,10.1 60.0,15.9 80.0,15.5 100.0,25.0\" /></svg>", "trend": [1285.0, 1345.0, 1260.0, 1190.0, 1195.0, 1080.0]}, {"code": "7751", "name": "竑騰", "market": "上櫃", "close_price": 1125.0, "prev_close": 1250.0, "change": -125.0, "change_pct": -10.0, "volume_lots": 0.3, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,9.9 20.0,3.0 40.0,5.9 60.0,12.0 80.0,16.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,9.9 20.0,3.0 40.0,5.9 60.0,12.0 80.0,16.0 100.0,25.0\" /></svg>", "trend": [1335.0, 1430.0, 1390.0, 1305.0, 1250.0, 1125.0]}, {"code": "3264", "name": "欣銓", "market": "上櫃", "close_price": 195.0, "prev_close": 216.5, "change": -21.5, "change_pct": -9.93, "volume_lots": 12.9, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,7.4 40.0,7.8 60.0,14.4 80.0,16.1 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,7.4 40.0,7.8 60.0,14.4 80.0,16.1 100.0,25.0\" /></svg>", "trend": [248.0, 237.5, 236.5, 220.5, 216.5, 195.0]}, {"code": "6023", "name": "元大期", "market": "上櫃", "close_price": 81.4, "prev_close": 81.9, "change": -0.5, "change_pct": -0.61, "volume_lots": 0.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,3.0 40.0,3.0 60.0,3.0 80.0,15.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,3.0 40.0,3.0 60.0,3.0 80.0,15.0 100.0,25.0\" /></svg>", "trend": [82.5, 82.5, 82.5, 82.5, 81.9, 81.4]}, {"code": "3324", "name": "雙鴻", "market": "上櫃", "close_price": 1320.0, "prev_close": 1395.0, "change": -75.0, "change_pct": -5.38, "volume_lots": 6.8, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,22.7 20.0,7.6 40.0,3.0 60.0,23.5 80.0,13.6 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,22.7 20.0,7.6 40.0,3.0 60.0,23.5 80.0,13.6 100.0,25.0\" /></svg>", "trend": [1335.0, 1435.0, 1465.0, 1330.0, 1395.0, 1320.0]}, {"code": "4772", "name": "台特化", "market": "上櫃", "close_price": 214.0, "prev_close": 227.0, "change": -13.0, "change_pct": -5.73, "volume_lots": 0.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,6.4 20.0,3.0 40.0,6.4 60.0,15.1 80.0,17.7 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,6.4 20.0,3.0 40.0,6.4 60.0,15.1 80.0,17.7 100.0,25.0\" /></svg>", "trend": [247.0, 253.0, 247.0, 231.5, 227.0, 214.0]}, {"code": "6510", "name": "精測", "market": "上櫃", "close_price": 2625.0, "prev_close": 2850.0, "change": -225.0, "change_pct": -7.89, "volume_lots": 0.9, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,14.1 20.0,3.0 40.0,15.2 60.0,17.5 80.0,16.4 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,14.1 20.0,3.0 40.0,15.2 60.0,17.5 80.0,16.4 100.0,25.0\" /></svg>", "trend": [2910.0, 3200.0, 2880.0, 2820.0, 2850.0, 2625.0]}, {"code": "8932", "name": "智通", "market": "上櫃", "close_price": 84.6, "prev_close": 89.2, "change": -4.6, "change_pct": -5.16, "volume_lots": 2.5, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,13.6 20.0,7.6 40.0,3.0 60.0,9.4 80.0,7.6 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,13.6 20.0,7.6 40.0,3.0 60.0,9.4 80.0,7.6 100.0,25.0\" /></svg>", "trend": [87.6, 89.2, 90.4, 88.7, 89.2, 84.6]}, {"code": "8358", "name": "金居", "market": "上櫃", "close_price": 376.0, "prev_close": 417.5, "change": -41.5, "change_pct": -9.94, "volume_lots": 20.4, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,13.3 20.0,3.0 40.0,8.6 60.0,17.4 80.0,14.1 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,13.3 20.0,3.0 40.0,8.6 60.0,17.4 80.0,14.1 100.0,25.0\" /></svg>", "trend": [420.5, 460.0, 438.5, 405.0, 417.5, 376.0]}, {"code": "6584", "name": "南俊國際", "market": "上櫃", "close_price": 375.0, "prev_close": 402.5, "change": -27.5, "change_pct": -6.83, "volume_lots": 0.3, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.1 20.0,3.0 40.0,9.5 60.0,13.8 80.0,15.9 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.1 20.0,3.0 40.0,9.5 60.0,13.8 80.0,15.9 100.0,25.0\" /></svg>", "trend": [429.0, 441.5, 422.0, 409.0, 402.5, 375.0]}, {"code": "3374", "name": "精材", "market": "上櫃", "close_price": 430.0, "prev_close": 471.5, "change": -41.5, "change_pct": -8.8, "volume_lots": 3.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,14.5 20.0,3.0 40.0,6.9 60.0,6.8 80.0,12.0 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,14.5 20.0,3.0 40.0,6.9 60.0,6.8 80.0,12.0 100.0,25.0\" /></svg>", "trend": [463.5, 500.0, 487.5, 488.0, 471.5, 430.0]}, {"code": "3227", "name": "原相", "market": "上櫃", "close_price": 175.0, "prev_close": 180.5, "change": -5.5, "change_pct": -3.05, "volume_lots": 1.0, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,5.9 20.0,3.0 40.0,9.7 60.0,14.5 80.0,14.5 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,5.9 20.0,3.0 40.0,9.7 60.0,14.5 80.0,14.5 100.0,25.0\" /></svg>", "trend": [185.0, 186.5, 183.0, 180.5, 180.5, 175.0]}, {"code": "3131", "name": "弘塑", "market": "上櫃", "close_price": 1750.0, "prev_close": 1905.0, "change": -155.0, "change_pct": -8.14, "volume_lots": 0.2, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,7.3 20.0,3.0 40.0,8.3 60.0,16.3 80.0,14.7 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,7.3 20.0,3.0 40.0,8.3 60.0,16.3 80.0,14.7 100.0,25.0\" /></svg>", "trend": [2015.0, 2080.0, 2000.0, 1880.0, 1905.0, 1750.0]}, {"code": "4123", "name": "晟德", "market": "上櫃", "close_price": 28.1, "prev_close": 28.4, "change": -0.3, "change_pct": -1.06, "volume_lots": 1.4, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,6.9 40.0,8.8 60.0,19.2 80.0,21.1 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,6.9 40.0,8.8 60.0,19.2 80.0,21.1 100.0,25.0\" /></svg>", "trend": [29.8, 29.5, 29.35, 28.55, 28.4, 28.1]}, {"code": "4749", "name": "新應材", "market": "上櫃", "close_price": 625.0, "prev_close": 680.0, "change": -55.0, "change_pct": -8.09, "volume_lots": 0.7, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,8.3 20.0,3.0 40.0,8.8 60.0,12.7 80.0,12.3 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,8.3 20.0,3.0 40.0,8.8 60.0,12.7 80.0,12.3 100.0,25.0\" /></svg>", "trend": [697.0, 720.0, 695.0, 678.0, 680.0, 625.0]}, {"code": "3718", "name": "中光電投控", "market": "上櫃", "close_price": 48.85, "prev_close": 51.8, "change": -2.95, "change_pct": -5.69, "volume_lots": 3.0, "is_held": false, "shares": 0, "lots": 0.0, "avg_cost": 0.0, "market_value": 0, "unrealized_pnl": 0, "unrealized_return_pct": 0.0, "weight_pct": 0.0, "sparkline": "<svg width=\"100\" height=\"28\" class=\"sparkline\" viewBox=\"0 0 100 28\"><polygon points=\"0,28 0.0,3.0 20.0,3.9 40.0,10.9 60.0,13.2 80.0,16.4 100.0,25.0 100,28\" fill=\"rgba(16, 185, 129, 0.12)\" /><polyline fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" points=\"0.0,3.0 20.0,3.9 40.0,10.9 60.0,13.2 80.0,16.4 100.0,25.0\" /></svg>", "trend": [56.4, 56.1, 53.7, 52.9, 51.8, 48.85]}]};
+  </script>
+
+  <!-- 核心互動邏輯腳本 -->
+  <script>
+    let currentTab = 'tab1';
+    let currentWatchGroup = 'held';
+    let currentSortMode = 'none'; // 'gain', 'loss', 'col'
+    let watchSortCol = 'change_pct';
+    let watchSortAsc = false;
+
+    let holdingsSortCol = 'weight_pct';
+    let holdingsSortAsc = false;
+
+    // 主題切換 (深淺模式)
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.classList.contains('theme-dark');
+      if (isDark) {
+        html.classList.remove('theme-dark');
+        html.classList.add('theme-light');
+        document.getElementById('themeIcon').textContent = '🌙';
+        document.getElementById('themeLabel').textContent = '深色模式';
+        localStorage.setItem('esun_dashboard_theme', 'light');
+      } else {
+        html.classList.remove('theme-light');
+        html.classList.add('theme-dark');
+        document.getElementById('themeIcon').textContent = '☀️';
+        document.getElementById('themeLabel').textContent = '淺色模式';
+        localStorage.setItem('esun_dashboard_theme', 'dark');
+      }
+      if (window.assetChart) {
+        updateChartTheme();
+      }
+    }
+
+    // 初始化主題
+    (function initTheme() {
+      const saved = localStorage.getItem('esun_dashboard_theme');
+      if (saved === 'light') {
+        document.documentElement.classList.remove('theme-dark');
+        document.documentElement.classList.add('theme-light');
+        document.getElementById('themeIcon').textContent = '🌙';
+        document.getElementById('themeLabel').textContent = '深色模式';
+      }
+    })();
+
+    // 分頁切換
+    function switchTab(tabId) {
+      currentTab = tabId;
+      document.getElementById('tabBtn1').classList.toggle('active', tabId === 'tab1');
+      document.getElementById('tabBtn2').classList.toggle('active', tabId === 'tab2');
+      document.getElementById('tab1Content').style.display = tabId === 'tab1' ? 'block' : 'none';
+      document.getElementById('tab2Content').style.display = tabId === 'tab2' ? 'block' : 'none';
+      if (tabId === 'tab2') {
+        renderWatchTable();
+      }
+    }
+
+    // 格式化數字
+    function fmtNum(n, d = 2) {
+      if (n === null || n === undefined || isNaN(n)) return '--';
+      return Number(n).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+    }
+
+    // 渲染庫存表格
+    function renderHoldingsTable() {
+      const query = (document.getElementById('holdingsSearchInput').value || '').trim().toLowerCase();
+      let list = DASHBOARD_DATA.stocks.filter(s => s.is_held);
+
+      if (query) {
+        list = list.filter(s => s.code.includes(query) || s.name.toLowerCase().includes(query));
+      }
+
+      list.sort((a, b) => {
+        let v1 = a[holdingsSortCol];
+        let v2 = b[holdingsSortCol];
+        if (typeof v1 === 'string') return holdingsSortAsc ? v1.localeCompare(v2) : v2.localeCompare(v1);
+        return holdingsSortAsc ? (v1 - v2) : (v2 - v1);
+      });
+
+      const tbody = document.getElementById('holdingsTableBody');
+      tbody.innerHTML = list.map(item => {
+        const isUp = item.unrealized_return_pct >= 0;
+        const changeUp = item.change >= 0;
+        return `
+          <tr>
+            <td>
+              <div class="stock-tag-box">
+                <span class="stock-code">${item.code}</span>
+                <span class="stock-name">${item.name}</span>
+              </div>
+            </td>
+            <td><span class="market-badge">${item.market}</span></td>
+            <td><strong>${fmtNum(item.lots, 1)}</strong> 張</td>
+            <td>$${fmtNum(item.avg_cost, 2)}</td>
+            <td><strong>$${fmtNum(item.close_price, 2)}</strong></td>
+            <td>
+              <span class="badge-pnl ${changeUp ? 'up' : 'down'}">
+                ${changeUp ? '+' : ''}${fmtNum(item.change_pct, 2)}%
+              </span>
+            </td>
+            <td>$${fmtNum(item.market_value, 0)}</td>
+            <td>
+              <span style="color: ${isUp ? 'var(--color-up)' : 'var(--color-down)'}; font-weight:700;">
+                ${isUp ? '+' : ''}${fmtNum(item.unrealized_pnl, 0)}
+              </span>
+            </td>
+            <td>
+              <span class="badge-pnl ${isUp ? 'up' : 'down'}">
+                ${isUp ? '+' : ''}${fmtNum(item.unrealized_return_pct, 2)}%
+              </span>
+            </td>
+            <td>
+              <div class="weight-bar-wrapper">
+                <div class="weight-progress">
+                  <div class="weight-fill" style="width: ${Math.min(item.weight_pct * 10, 100)}%;"></div>
+                </div>
+                <span>${fmtNum(item.weight_pct, 2)}%</span>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterHoldingsTable() {
+      renderHoldingsTable();
+    }
+
+    function sortHoldings(col) {
+      if (holdingsSortCol === col) {
+        holdingsSortAsc = !holdingsSortAsc;
+      } else {
+        holdingsSortCol = col;
+        holdingsSortAsc = false;
+      }
+      renderHoldingsTable();
+    }
+
+    // 自選觀察群組切換與篩選
+    function setWatchGroup(group) {
+      currentWatchGroup = group;
+      document.getElementById('btnGroupA').classList.toggle('active', group === 'held');
+      document.getElementById('btnGroupB').classList.toggle('active', group === 'unheld');
+      document.getElementById('btnGroupAll').classList.toggle('active', group === 'all');
+      renderWatchTable();
+    }
+
+    function setSortMode(mode) {
+      if (currentSortMode === mode) {
+        currentSortMode = 'none';
+        document.getElementById('sortGainBtn').classList.remove('active');
+        document.getElementById('sortLossBtn').classList.remove('active');
+      } else {
+        currentSortMode = mode;
+        document.getElementById('sortGainBtn').classList.toggle('active', mode === 'gain');
+        document.getElementById('sortLossBtn').classList.toggle('active', mode === 'loss');
+      }
+      renderWatchTable();
+    }
+
+    function setSortCol(col) {
+      currentSortMode = 'col';
+      document.getElementById('sortGainBtn').classList.remove('active');
+      document.getElementById('sortLossBtn').classList.remove('active');
+      if (watchSortCol === col) {
+        watchSortAsc = !watchSortAsc;
+      } else {
+        watchSortCol = col;
+        watchSortAsc = false;
+      }
+      renderWatchTable();
+    }
+
+    function renderWatchTable() {
+      const query = (document.getElementById('watchSearchInput').value || '').trim().toLowerCase();
+      let list = DASHBOARD_DATA.stocks.slice();
+
+      // 分組篩選
+      if (currentWatchGroup === 'held') {
+        list = list.filter(s => s.is_held);
+      } else if (currentWatchGroup === 'unheld') {
+        list = list.filter(s => !s.is_held);
+      }
+
+      // 搜尋關鍵字
+      if (query) {
+        list = list.filter(s => s.code.includes(query) || s.name.toLowerCase().includes(query));
+      }
+
+      // 排序
+      if (currentSortMode === 'gain') {
+        list.sort((a, b) => b.change_pct - a.change_pct);
+      } else if (currentSortMode === 'loss') {
+        list.sort((a, b) => a.change_pct - b.change_pct);
+      } else if (currentSortMode === 'col') {
+        list.sort((a, b) => {
+          let v1 = a[watchSortCol];
+          let v2 = b[watchSortCol];
+          if (typeof v1 === 'string') return watchSortAsc ? v1.localeCompare(v2) : v2.localeCompare(v1);
+          return watchSortAsc ? (v1 - v2) : (v2 - v1);
+        });
+      }
+
+      const tbody = document.getElementById('watchTableBody');
+      tbody.innerHTML = list.map(item => {
+        const isUp = item.change >= 0;
+        return `
+          <tr>
+            <td>
+              <div class="stock-tag-box">
+                <span class="stock-code">${item.code}</span>
+                <span class="stock-name">${item.name}</span>
+              </div>
+            </td>
+            <td><span class="market-badge">${item.market}</span></td>
+            <td><strong>$${fmtNum(item.close_price, 2)}</strong></td>
+            <td style="color:var(--text-muted);">$${fmtNum(item.prev_close, 2)}</td>
+            <td style="color: ${isUp ? 'var(--color-up)' : 'var(--color-down)'};">
+              ${isUp ? '+' : ''}${fmtNum(item.change, 2)}
+            </td>
+            <td>
+              <span class="badge-pnl ${isUp ? 'up' : 'down'}">
+                ${isUp ? '+' : ''}${fmtNum(item.change_pct, 2)}%
+              </span>
+            </td>
+            <td>${fmtNum(item.volume_lots, 1)}</td>
+            <td style="text-align:center;">${item.sparkline}</td>
+            <td>
+              ${item.is_held ? '<span class="badge-pnl" style="background:rgba(2,132,199,0.15); color:#0284c7; border:1px solid rgba(2,132,199,0.3);">已買入 ' + item.lots + '張</span>' : '<span style="color:var(--text-dim); font-size:12px;">未持有</span>'}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // 繪製資產歷史走勢圖
+    function renderAssetChart() {
+      const ctx = document.getElementById('assetHistoryChart').getContext('2d');
+      const labels = DASHBOARD_DATA.history.map(h => h.date);
+      const navData = DASHBOARD_DATA.history.map(h => h.nav / 1000000); // 轉為百萬
+      const cashData = DASHBOARD_DATA.history.map(h => h.cash / 1000000);
+
+      const isDark = document.documentElement.classList.contains('theme-dark');
+      const gridColor = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
+      const textColor = isDark ? '#94a3b8' : '#64748b';
+
+      window.assetChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: '可交易淨值 NAV (百萬元)',
+              data: navData,
+              borderColor: '#0284c7',
+              backgroundColor: 'rgba(2, 132, 199, 0.12)',
+              borderWidth: 2.5,
+              tension: 0.35,
+              fill: true,
+              pointBackgroundColor: '#0284c7',
+              pointRadius: 4,
+              pointHoverRadius: 6
+            },
+            {
+              label: '現金水位 Cash (百萬元)',
+              data: cashData,
+              borderColor: '#10b981',
+              backgroundColor: 'transparent',
+              borderWidth: 2,
+              borderDash: [4, 4],
+              tension: 0.2,
+              fill: false,
+              pointBackgroundColor: '#10b981',
+              pointRadius: 3
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                color: textColor,
+                font: { family: 'Plus Jakarta Sans', size: 12, weight: '600' }
+              }
+            },
+            tooltip: {
+              backgroundColor: isDark ? 'rgba(15, 23, 42, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+              titleColor: isDark ? '#f8fafc' : '#0f172a',
+              bodyColor: isDark ? '#cbd5e1' : '#334155',
+              borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+              borderWidth: 1,
+              padding: 12,
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ': ' + Number(context.parsed.y).toLocaleString() + ' 萬元';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: gridColor },
+              ticks: { color: textColor, font: { family: 'JetBrains Mono' } }
+            },
+            y: {
+              grid: { color: gridColor },
+              ticks: {
+                color: textColor,
+                font: { family: 'JetBrains Mono' },
+                callback: function(value) {
+                  return value.toLocaleString() + 'M';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function updateChartTheme() {
+      if (!window.assetChart) return;
+      const isDark = document.documentElement.classList.contains('theme-dark');
+      const gridColor = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
+      const textColor = isDark ? '#94a3b8' : '#64748b';
+
+      window.assetChart.options.scales.x.grid.color = gridColor;
+      window.assetChart.options.scales.x.ticks.color = textColor;
+      window.assetChart.options.scales.y.grid.color = gridColor;
+      window.assetChart.options.scales.y.ticks.color = textColor;
+      window.assetChart.options.plugins.legend.labels.color = textColor;
+      window.assetChart.update();
+    }
+
+    // 初始化渲染
+    window.addEventListener('DOMContentLoaded', () => {
+      renderHoldingsTable();
+      renderAssetChart();
+    });
+  </script>
+</body>
+</html>

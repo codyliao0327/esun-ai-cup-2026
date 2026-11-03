@@ -1,0 +1,88 @@
+"""
+Daily One-Click Update Runner for 2026 玉山人工智慧挑戰賽 看板系統
+用法：
+  python run_update.py
+  python run_update.py --push   (更新完自動 git commit & push)
+"""
+import argparse
+import subprocess
+import time
+from pathlib import Path
+import sys
+
+# 確保 Windows 終端機正常輸出 UTF-8 (避免 cp950 編碼問題)
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+CURRENT_DIR = Path(__file__).resolve().parent
+CODE_DIR = CURRENT_DIR.parent
+PROJECT_ROOT = CODE_DIR.parent
+
+import sys
+if str(CURRENT_DIR) not in sys.path:
+    sys.path.insert(0, str(CURRENT_DIR))
+
+from tracker import get_latest_portfolio_summary
+from market_api import fetch_all_150_quotes
+from builder import build_dashboard_html
+
+
+def run_update(auto_push: bool = False, fetch_candles: bool = True):
+    print("=" * 65)
+    print("🚀 啟動 2026 玉山 AI 經理人投資看板 - 每日收盤數據自動更新產線")
+    print("=" * 65)
+
+    # 1. 解析後台成交資料與 DataPack
+    print("\n[Step 1/3] 正在解析後台真實成交明細與每日 DataPack 快照...")
+    summary = get_latest_portfolio_summary()
+    acc = summary["account"]
+    print(f"  基準日期: {summary['as_of_date']} (繳交對應交易日: {summary['trade_date']})")
+    print(f"  可交易淨值 (NAV): NT$ {acc['nav']:,} 元")
+    print(f"  現有現金 (Cash): NT$ {acc['cash']:,} 元 ({acc['cash_ratio_pct']}%)")
+    print(f"  累計報酬率: {acc['cum_return_pct']}% (總損益: NT$ {acc['cum_pnl']:,} 元)")
+    print(f"  目前持股檔數: {acc['holdings_count']} 檔")
+
+    # 2. 串接玉山證券行情 SDK (100% 透過玉山 API 取得所有行情)
+    print("\n[Step 2/3] 正在登入玉山證券 SDK 並抓取 150 檔標的最新收盤行情...")
+    quotes = fetch_all_150_quotes(summary["stocks_150"], fetch_candles=fetch_candles)
+
+    # 3. 渲染富果/Apple風格液態毛玻璃網頁
+    print("\n[Step 3/3] 正在生成富果 Fugle 專業版面 + Apple 毛玻璃前端網頁...")
+    out_file = build_dashboard_html(summary, quotes)
+    print(f"  ✅ 網頁生成完畢: {out_file}")
+
+    # 4. 可選 Git Push (支援 Cloudflare Pages 自動部署)
+    if auto_push:
+        print("\n[Git 部署] 正在執行 Git 提交與推送至遠端倉庫...")
+        try:
+            subprocess.run(["git", "add", str(out_file), str(CURRENT_DIR / "market_cache.json")], cwd=str(CODE_DIR), check=True)
+            commit_msg = f"chore(dashboard): update portfolio dashboard as of {summary['as_of_date']}"
+            subprocess.run(["git", "commit", "-m", commit_msg], cwd=str(CODE_DIR), check=True)
+            subprocess.run(["git", "push"], cwd=str(CODE_DIR), check=True)
+            print("  ✅ 成功推送至 GitHub！Cloudflare Pages 將於數秒內自動完成部署。")
+        except Exception as e:
+            print(f"  ⚠️ Git 推送過程中發生提示或無變動: {e}")
+    else:
+        print("\n💡 提示：若您已在 Cloudflare Pages 綁定此 Repo，可在終端機執行：")
+        print(f"   cd code")
+        print(f"   git add portfolio_dashboard/dist/index.html")
+        print(f"   git commit -m \"update dashboard {summary['as_of_date']}\"")
+        print(f"   git push")
+        print("   即可完成線上網頁即時部署！")
+        print(f"   您也可以在電腦端直接雙擊打開該檔案在本地預覽：\n   file:///{str(out_file).replace(chr(92), '/')}")
+
+    print("\n" + "=" * 65)
+    print("🎉 儀表板更新全部順利完成！")
+    print("=" * 65)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="玉山 AI 挑戰賽投資看板每日一鍵更新工具")
+    parser.add_argument("--push", action="store_true", help="完成後自動執行 git commit & push")
+    parser.add_argument("--no-candles", action="store_true", help="跳過歷史 K 線，僅抓取今日最新現價")
+    args = parser.parse_args()
+
+    run_update(auto_push=args.push, fetch_candles=not args.no_candles)
