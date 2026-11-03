@@ -117,146 +117,58 @@
     }
 
     .ambient-glow::before,
-    .ambient-glow::after {
+    .ambient-glow::after,
+    .glow-orb-green {
       content: '';
       position: absolute;
       border-radius: 50%;
-      filter: blur(90px);
-      opacity: 0.22;
-      animation: floatOrb 18s infinite alternate ease-in-out;
-    }
-
-    /* 1. 藍球專屬軌跡：在右上與右側中央斜向遊走 */
-    .ambient-glow::before {
-      width: 550px;
-      height: 550px;
-      background: radial-gradient(circle, #0284c7 0%, #38bdf8 70%);
-      top: -100px;
-      right: 5%;
-      animation: moveBlueOrb 10s infinite alternate ease-in-out;
-      /* 10 秒往返 */
-    }
-
-    /* 2. 紫球專屬軌跡：在左側與左下逆向飄移 */
-    .ambient-glow::after {
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, #6366f1 0%, #a855f7 70%);
-      top: 35%;
-      left: -80px;
-      animation: movePurpleOrb 13s infinite alternate ease-in-out;
-      /* 13 秒交錯往返 */
-    }
-
-    .theme-light .ambient-glow::before {
-      opacity: 0.18;
-      /* 藍光變淡 */
-    }
-
-    .theme-light .ambient-glow::after {
-      opacity: 0.18;
-      /* 紫光變淡 */
-    }
-
-    /* 光斑緩慢漂浮動畫
-    @keyframes floatOrb {
-      0% {
-        transform: translate(0, 0) scale(1);
-      }
-
-      50% {
-        transform: translate(60px, 40px) scale(1.08);
-      }
-
-      100% {
-        transform: translate(-40px, 80px) scale(0.95);
-      }
-    }
-
-    @keyframes floatOrb {
-      0% {
-        transform: translate(0, 0) scale(1);
-      }
-
-      50% {
-        transform: translate(60px, 40px) scale(1.1);
-      }
-
-      100% {
-        transform: translate(-40px, 80px) scale(0.95);
-      }
-    } */
-
-    /* 藍球路徑：向左下方滑動並放大 */
-    @keyframes moveBlueOrb {
-      0% {
-        transform: translate(0, 0) scale(1);
-      }
-
-      50% {
-        transform: translate(-150px, 120px) scale(1.15);
-        /* 大幅向左下移動 */
-      }
-
-      100% {
-        transform: translate(-80px, 200px) scale(0.95);
-      }
-    }
-
-    /* 紫球路徑：向右上方滑動交錯 */
-    @keyframes movePurpleOrb {
-      0% {
-        transform: translate(0, 0) scale(1);
-      }
-
-      50% {
-        transform: translate(140px, -80px) scale(1.2);
-        /* 向右上移動與藍光交會 */
-      }
-
-      100% {
-        transform: translate(60px, -140px) scale(0.9);
-      }
-    }
-
-    /* 3. 綠色微弱液態光球（右下角微幅浮動） */
-    .glow-orb-green {
-      position: absolute;
-      width: 480px;
-      height: 480px;
-      border-radius: 50%;
-      /* 採用玉山綠/金融科技綠色彩，向外漸層消散 */
-      background: radial-gradient(circle, #10b981 0%, #059669 50%, transparent 75%);
-      filter: blur(100px);
-      bottom: -120px;
-      right: -60px;
-      opacity: 0.18;
-      /* 深色模式預設微弱透明度 */
       pointer-events: none;
-      animation: moveGreenOrb 16s infinite alternate ease-in-out;
       transition: opacity 0.3s ease;
     }
 
-    /* 淺色模式下自動壓低綠光透明度，維持清爽 */
+    /* 1. 藍色光斑：固定在右上角，提供頂部毛玻璃折射 */
+    .ambient-glow::before {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(2, 132, 199, 0.28) 0%, rgba(56, 189, 248, 0.15) 50%, transparent 75%);
+      filter: blur(80px);
+      top: -150px;
+      right: 0;
+    }
+
+    /* 2. 紫色光斑：固定在左側中央，襯托 KPI 卡片質感 */
+    .ambient-glow::after {
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.22) 0%, rgba(168, 85, 247, 0.12) 50%, transparent 75%);
+      filter: blur(90px);
+      top: 25%;
+      left: -100px;
+    }
+
+    /* 3. 綠色光斑：固定在右下角，提供表格下方微弱反光 */
+    .glow-orb-green {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.22) 0%, rgba(5, 150, 105, 0.1) 50%, transparent 75%);
+      filter: blur(90px);
+      bottom: -150px;
+      right: -80px;
+    }
+
+    /* 淺色模式下自動壓低光斑亮度 */
+    .theme-light .ambient-glow::before {
+      opacity: 0.28;
+    }
+
+    .theme-light .ambient-glow::after {
+      opacity: 0.28;
+    }
+
     .theme-light .glow-orb-green {
-      opacity: 0.18;
+      opacity: 0.28;
     }
 
-    /* 綠球專屬軌跡：在右下角緩慢呼吸並微幅斜向滑移 */
-    @keyframes moveGreenOrb {
-      0% {
-        transform: translate(0, 0) scale(1);
-      }
-
-      50% {
-        transform: translate(-100px, -60px) scale(1.12);
-        /* 向左上方微微浮起 */
-      }
-
-      100% {
-        transform: translate(-40px, -110px) scale(0.92);
-      }
-    }
 
     /* 容器架構 */
     .app-container {
