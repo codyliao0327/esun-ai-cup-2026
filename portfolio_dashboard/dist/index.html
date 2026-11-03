@@ -46,8 +46,8 @@
       --text-muted: #94a3b8;
       --text-dim: #64748b;
 
-      --glass-bg: rgba(18, 24, 38, 0.65);
-      --glass-bg-hover: rgba(28, 38, 58, 0.75);
+      --glass-bg: rgba(15, 20, 32, 0.5);
+      --glass-bg-hover: rgba(24, 32, 50, 0.65);
       --glass-border: rgba(255, 255, 255, 0.08);
       --glass-border-specular: rgba(255, 255, 255, 0.18);
       --glass-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
@@ -60,21 +60,30 @@
 
     /* 淺色主題 (Apple Liquid White Glass) */
     .theme-light {
-      --bg-gradient: radial-gradient(circle at 10% 10%, #f8fafc 0%, #e2e8f0 60%, #cbd5e1 100%);
+      /* 背景稍微加入一點冷灰色調，讓白色玻璃卡片能跳出來 */
+      --bg-gradient: radial-gradient(circle at 10% 10%, #f1f5f9 0%, #e2e8f0 60%, #cbd5e1 100%);
       --text-main: #0f172a;
       --text-muted: #475569;
       --text-dim: #94a3b8;
 
-      --glass-bg: rgba(255, 255, 255, 0.7);
-      --glass-bg-hover: rgba(255, 255, 255, 0.88);
-      --glass-border: rgba(255, 255, 255, 0.6);
-      --glass-border-specular: rgba(255, 255, 255, 0.9);
-      --glass-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.08), inset 0 1px 2px 0 rgba(255, 255, 255, 0.9);
+      /* 關鍵微調：白底透明度降到 0.55~0.6，讓背後光球自然滲透 */
+      --glass-bg: rgba(255, 255, 255, 0.58);
+      --glass-bg-hover: rgba(255, 255, 255, 0.78);
 
-      --card-highlight: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.1) 100%);
+      /* 邊框改用純白半透，模擬白玻璃邊緣切面 */
+      --glass-border: rgba(255, 255, 255, 0.45);
+      --glass-border-specular: rgba(255, 255, 255, 0.85);
+
+      /* 陰影加入雙層：一層極柔和的深色立體陰影 + 一層頂部白色高光 (inset) */
+      --glass-shadow:
+        0 10px 30px -5px rgba(0, 0, 0, 0.05),
+        0 4px 12px -2px rgba(0, 0, 0, 0.02),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.8);
+
+      --card-highlight: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.1) 100%);
       --table-stripe: rgba(0, 0, 0, 0.015);
       --table-hover: rgba(0, 0, 0, 0.035);
-      --pill-bg: rgba(0, 0, 0, 0.05);
+      --pill-bg: rgba(0, 0, 0, 0.04);
     }
 
     * {
@@ -98,15 +107,155 @@
     /* 頂部光暈氛圍特效 */
     .ambient-glow {
       position: fixed;
-      top: -160px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 700px;
-      height: 380px;
-      background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.15) 0%, rgba(99, 102, 241, 0.08) 50%, transparent 80%);
-      filter: blur(60px);
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
       pointer-events: none;
       z-index: 0;
+    }
+
+    .ambient-glow::before,
+    .ambient-glow::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.22;
+      animation: floatOrb 18s infinite alternate ease-in-out;
+    }
+
+    /* 1. 藍球專屬軌跡：在右上與右側中央斜向遊走 */
+    .ambient-glow::before {
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, #0284c7 0%, #38bdf8 70%);
+      top: -100px;
+      right: 5%;
+      animation: moveBlueOrb 10s infinite alternate ease-in-out;
+      /* 10 秒往返 */
+    }
+
+    /* 2. 紫球專屬軌跡：在左側與左下逆向飄移 */
+    .ambient-glow::after {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #6366f1 0%, #a855f7 70%);
+      top: 35%;
+      left: -80px;
+      animation: movePurpleOrb 13s infinite alternate ease-in-out;
+      /* 13 秒交錯往返 */
+    }
+
+    .theme-light .ambient-glow::before {
+      opacity: 0.18;
+      /* 藍光變淡 */
+    }
+
+    .theme-light .ambient-glow::after {
+      opacity: 0.18;
+      /* 紫光變淡 */
+    }
+
+    /* 光斑緩慢漂浮動畫
+    @keyframes floatOrb {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(60px, 40px) scale(1.08);
+      }
+
+      100% {
+        transform: translate(-40px, 80px) scale(0.95);
+      }
+    }
+
+    @keyframes floatOrb {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(60px, 40px) scale(1.1);
+      }
+
+      100% {
+        transform: translate(-40px, 80px) scale(0.95);
+      }
+    } */
+
+    /* 藍球路徑：向左下方滑動並放大 */
+    @keyframes moveBlueOrb {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(-150px, 120px) scale(1.15);
+        /* 大幅向左下移動 */
+      }
+
+      100% {
+        transform: translate(-80px, 200px) scale(0.95);
+      }
+    }
+
+    /* 紫球路徑：向右上方滑動交錯 */
+    @keyframes movePurpleOrb {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(140px, -80px) scale(1.2);
+        /* 向右上移動與藍光交會 */
+      }
+
+      100% {
+        transform: translate(60px, -140px) scale(0.9);
+      }
+    }
+
+    /* 3. 綠色微弱液態光球（右下角微幅浮動） */
+    .glow-orb-green {
+      position: absolute;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      /* 採用玉山綠/金融科技綠色彩，向外漸層消散 */
+      background: radial-gradient(circle, #10b981 0%, #059669 50%, transparent 75%);
+      filter: blur(100px);
+      bottom: -120px;
+      right: -60px;
+      opacity: 0.18;
+      /* 深色模式預設微弱透明度 */
+      pointer-events: none;
+      animation: moveGreenOrb 16s infinite alternate ease-in-out;
+      transition: opacity 0.3s ease;
+    }
+
+    /* 淺色模式下自動壓低綠光透明度，維持清爽 */
+    .theme-light .glow-orb-green {
+      opacity: 0.18;
+    }
+
+    /* 綠球專屬軌跡：在右下角緩慢呼吸並微幅斜向滑移 */
+    @keyframes moveGreenOrb {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(-100px, -60px) scale(1.12);
+        /* 向左上方微微浮起 */
+      }
+
+      100% {
+        transform: translate(-40px, -110px) scale(0.92);
+      }
     }
 
     /* 容器架構 */
@@ -189,8 +338,8 @@
       padding: 7px 14px;
       border-radius: 20px;
       background: var(--glass-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
       border: 1px solid var(--glass-border-specular);
       font-size: 13px;
       font-weight: 600;
@@ -222,7 +371,7 @@
       gap: 6px;
       font-size: 13px;
       font-weight: 600;
-      backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px) saturate(180%);
       box-shadow: var(--glass-shadow);
       transition: all 0.2s ease;
     }
@@ -239,11 +388,12 @@
       margin-bottom: 28px;
     }
 
+    /* 外層膠囊凹槽底座：改回動態變數，保持透光 */
     .segmented-control {
       display: inline-flex;
       background: var(--glass-bg);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
       padding: 5px;
       border-radius: 16px;
       border: 1px solid var(--glass-border-specular);
@@ -266,36 +416,55 @@
       gap: 8px;
     }
 
+    /* 選取狀態（帳戶總覽與庫存損益）：通透的高透光 Apple 液態玻璃片 */
     .tab-btn.active {
-      background: var(--card-highlight), var(--glass-bg-hover);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.08) 100%);
       color: var(--text-main);
-      border: 1px solid var(--glass-border-specular);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(16px) saturate(200%);
+      -webkit-backdrop-filter: blur(16px) saturate(200%);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.25),
+        inset 0 1px 1.5px rgba(255, 255, 255, 0.4);
+    }
+
+    /* 淺色模式下自動切換為更透亮的乳白玻璃 */
+    .theme-light .tab-btn.active {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.6) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.95);
     }
 
     /* 毛玻璃卡片通用樣式 (Glass Card) */
     .glass-card {
       background: var(--glass-bg);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(28px) saturate(190%);
+      -webkit-backdrop-filter: blur(28px) saturate(190%);
       border-radius: 20px;
       padding: 20px;
-      box-shadow: var(--glass-shadow);
       position: relative;
       overflow: hidden;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+      /* 關鍵 1：外層微光微邊框 */
+      border: 1px solid rgba(255, 255, 255, 0.12);
+
+      /* 關鍵 2：Apple 三層光學陰影（擴散黑影 + 頂部邊緣倒角微光 + 底部極細微暗反光） */
+      box-shadow:
+        0 16px 40px -8px rgba(0, 0, 0, 0.45),
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.2),
+        inset 0 -1px 1px 0 rgba(0, 0, 0, 0.2);
     }
 
-    .glass-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: var(--card-highlight);
-      pointer-events: none;
+    /* 滑鼠懸停時微浮起，像氣墊一樣 */
+    .glass-card:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 22px 50px -10px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 2px 0 rgba(255, 255, 255, 0.3),
+        inset 0 -1px 1px 0 rgba(0, 0, 0, 0.2);
     }
 
     /* 頂部 KPI 卡片網格 */
@@ -380,6 +549,7 @@
       flex-wrap: wrap;
     }
 
+    /* 未選取狀態：微透磨砂膠囊按鈕 */
     .filter-btn {
       background: var(--pill-bg);
       border: 1px solid var(--glass-border);
@@ -389,19 +559,39 @@
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.15s ease;
+      backdrop-filter: blur(12px) saturate(180%);
+      -webkit-backdrop-filter: blur(12px) saturate(180%);
+      transition: all 0.2s ease;
+      position: relative;
     }
 
     .filter-btn:hover {
       background: var(--glass-bg-hover);
       color: var(--text-main);
+      transform: translateY(-1px);
     }
 
+    /* 深色選取狀態：改用一致的天藍微光邊框，拿掉突兀的頂部白線 */
     .filter-btn.active {
-      background: var(--primary-accent);
-      color: #fff;
-      border-color: var(--primary-accent);
-      box-shadow: 0 2px 10px var(--primary-glow);
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.45) 0%, rgba(14, 165, 233, 0.25) 100%);
+      color: #ffffff;
+      backdrop-filter: blur(16px) saturate(200%);
+      -webkit-backdrop-filter: blur(16px) saturate(200%);
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      /* 四周均勻天藍色邊框 */
+      box-shadow:
+        0 4px 14px 0 rgba(2, 132, 199, 0.35),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
+      /* 內發光調淡，不再呈線條狀 */
+      transform: translateY(-1px);
+    }
+
+    /* 淺色選取狀態：維持柔和乾淨水藍，不留亮白硬邊 */
+    .theme-light .filter-btn.active {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.18) 0%, rgba(56, 189, 248, 0.08) 100%);
+      color: #0284c7;
+      border: 1px solid rgba(2, 132, 199, 0.35);
+      box-shadow: 0 4px 12px 0 rgba(2, 132, 199, 0.12);
     }
 
     .search-box {
@@ -409,10 +599,13 @@
       min-width: 240px;
     }
 
+    /* 搜尋框 Apple 玻璃輸入框 */
     .search-input {
       width: 100%;
-      background: var(--pill-bg);
-      border: 1px solid var(--glass-border-specular);
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 9px 14px 9px 36px;
       border-radius: 12px;
       color: var(--text-main);
@@ -420,11 +613,13 @@
       font-family: var(--font-sans);
       outline: none;
       transition: all 0.2s ease;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
     }
 
     .search-input:focus {
-      border-color: var(--primary-accent);
-      box-shadow: 0 0 0 3px var(--primary-glow);
+      border-color: rgba(56, 189, 248, 0.5);
+      background: rgba(255, 255, 255, 0.07);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.25), inset 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
     .search-icon {
@@ -451,16 +646,14 @@
     }
 
     table.fugle-table th {
-      background: var(--pill-bg);
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       color: var(--text-muted);
       font-weight: 700;
       text-align: right;
       padding: 12px 14px;
-      border-bottom: 1px solid var(--glass-border);
-      white-space: nowrap;
-      cursor: pointer;
-      user-select: none;
-      transition: color 0.15s ease;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     }
 
     table.fugle-table th:first-child {
@@ -539,27 +732,33 @@
       font-family: var(--font-sans);
     }
 
-    /* 漲跌徽章 (Up/Down Badges) */
+    /* 替換 .badge-pnl 的樣式 */
     .badge-pnl {
       display: inline-flex;
       align-items: center;
-      padding: 3px 8px;
-      border-radius: 6px;
+      padding: 3px 9px;
+      border-radius: 8px;
       font-weight: 700;
       font-size: 12px;
       font-family: var(--font-mono);
+      backdrop-filter: blur(8px) saturate(160%);
+      -webkit-backdrop-filter: blur(8px) saturate(160%);
     }
 
+    /* 紅色上漲：帶發光的半透紅寶石玻璃 */
     .badge-pnl.up {
-      background: var(--color-up-bg);
-      color: var(--color-up);
-      border: 1px solid var(--color-up-border);
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.2);
     }
 
+    /* 綠色下跌：帶發光的半透翡翠玻璃 */
     .badge-pnl.down {
-      background: var(--color-down-bg);
-      color: var(--color-down);
-      border: 1px solid var(--color-down-border);
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.2);
     }
 
     .badge-pnl.flat {
@@ -637,7 +836,7 @@
 </head>
 
 <body>
-  <div class="ambient-glow"></div>
+  <div class="ambient-glow"><span class="glow-orb-green"></span></div>
 
   <div class="app-container">
     <!-- 頂部標頭 -->
