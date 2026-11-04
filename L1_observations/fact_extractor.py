@@ -33,6 +33,7 @@ if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
 from configs.date_utils import clean_date_str, prompt_trade_date  # noqa: E402
+from configs.json_utils import format_metric_value, to_compact_json  # noqa: E402
 from schemas.dplan_models import (  # noqa: E402
     ObservationDraft,
     ObservationsResponse,
@@ -56,7 +57,7 @@ class InputSpec:
     folder: str                          # data/ 底下的資料夾 (相對路徑)
     label: str                           # 在 prompt 中顯示的區塊標題
     source_id: Optional[str] = None      # 對應 L0 的 source_id (S1=FinLab, S2=CMoney)；無來源者填 None
-    patterns: tuple = ("*.parquet", "*.md")  # 要讀的副檔名
+    patterns: tuple = ("*.json", "*.parquet", "*.md")  # 要讀的副檔名 (優先 json，向下相容 parquet)
 
 
 INPUTS: List[InputSpec] = [
@@ -79,16 +80,16 @@ PROMPT_TEMPLATE = """\
 
 ## 規則
 1. 只寫事實，禁止推論、預測、建議 (「SOX 跌 1.8%」可以；「所以半導體會弱」不行)。
-2. 『市場大盤資料』(若有提供) 請產生「恰好一筆」大盤 observation：
+2. 『市場大盤資料』(若有提供) 為 JSON 格式 (格式說明為 `[數值, 日期/交易日]`)，請產生「恰好一筆」大盤 observation：
    - topic 固定使用 tw_market。
-   - statement：一到兩句話，客觀摘要加權指數收盤、均線、報酬、最大回撤、法人買賣超與市場籌碼等關鍵數字事實 (引用指標名稱與數值)。
+   - statement：一到兩句話，客觀摘要加權指數收盤、均線、報酬、最大回撤、法人買賣超、多空排列家數差與生命線等關鍵數字事實 (引用指標名稱與數值)。
    - values：只需填 statement 中提到的數字 (至少 1 筆)；系統會自動以資料原值補齊所有大盤指標。
    - source_ref：填 S1。
-3. 『個股指標資料』中，每個指標是一張表：表名為指標名稱 (檔名)，表格欄位標題為個股代碼，
-   (CMoney 情緒表則每列為一檔股票，欄位為各情緒數據)。表中出現的每一個個股代碼，
+3. 『個股指標資料』為以個股代碼為 Key 的 JSON 格式 (格式說明為 `[數值, 日期/季度]`)，包含各檔股票的基本面、技術面 (KD/MACD/布林通道等) 與籌碼面指標；
+   (CMoney 情緒表則每列為一檔股票，欄位為各情緒數據)。資料中出現的每一個個股代碼，
    必須產生「恰好一筆」observation：
    - topic 使用 stock_<個股代碼> (例如 stock_2330，一律小寫英文與數字)。
-   - statement：一到兩句話，客觀摘要該股最重要的數字事實 (引用指標名稱與數值)，數字須與資料一致。
+   - statement：一到兩句話，客觀摘要該股最重要的數字事實 (如均線/乖離、KD、MACD、布林通道動態、法人籌碼或超額報酬等，引用指標名稱與數值)，數字須與資料一致。
    - values：只需填 statement 中提到的數字 (至少 1 筆)；系統會自動以資料原值補齊該股所有指標。
    - source_ref：填 S1 或 S2。
 4. 『市場/其他資料』區塊 (若有其他非單一個股資料) 請各自產生若干筆 observation：
@@ -99,6 +100,44 @@ PROMPT_TEMPLATE = """\
 
 ## 可用資料來源
 {sources}
+
+## 技術指標定義與數值含意指引 (供精準解讀與引用)
+### 1. 市場大盤指標
+- `market_alignment_diff`：全市場均線多空排列家數差 (家) ＝ (5MA≥10MA≥30MA多頭家數) － (5MA<10MA<30MA空頭家數)。正值代表多頭排列佔優，負值代表空頭排列佔優 (如 -1304 代表全市場空頭比多頭多 1304 家)。
+- `index_vs_ma20_pct`：加權報酬指數相對生命線 (20MA/月線) 之乖離率 (%)。正值代表大盤站在月線之上，負值代表跌破月線 (如 -8.71 代表跌破生命線 8.71%)。
+- `ma20_change_5d_pct`：生命線 (20MA) 近 5 日斜率變化率 (%)。正值代表月線上揚，負值代表月線下彎走弱。
+- `market_advance_decline_ratio`：全市場股票漲跌家數比 (倍)。>1 代表上漲家數多，<1 代表下跌家數多。
+- `taiex_max_drawdown_20d`：加權指數近 20 日最大回撤 (%)，負值表示近期波段最大跌幅。
+- `listed_margin_balance_change_5d`：上市融資餘額近 5 日變化率 (%)，負值代表融資減肥/去槓桿。
+
+### 2. 個股技術面指標
+- **KD (5, 3, 3)**：
+  - `k_5` / `d_5`：最新 K 值與 D 值 (0~100)。>80 為高檔、<20 為低檔。
+  - `k_change_3d`：K 值近 3 日增減點數 (正代表快速走高、負代表轉折下彎)。
+  - `kd_above_d_days` / `kd_below_d_days`：K 連續高於 / 低於 D 的天數 (>0 代表兩線多/空領先優勢持續的天數)。
+  - `kd_cross_days_ago_20d`：近 20 日內最近一次交叉距今天數 (0＝今日、1＝前一交易日、-1＝近 20 日未交叉；若為 0 可配合連續天數確認是黃金交叉或死亡交叉)。
+- **MACD (6, 13, 5)**：
+  - `macd_dif`：快慢線差 (6EMA － 13EMA)。正值代表短期均線強於中天期均線，負值代表偏弱。
+  - `macd_hist`：最新柱狀體 (DIF － Signal)。正值代表 DIF 高於訊號線、負值代表低於訊號線。
+  - `macd_hist_change_3d`：柱狀體近 3 日增減。負值變得較不負 (正增加) 代表負差距縮小、出現改善跡象。
+  - `macd_hist_increasing_days` / `macd_hist_decreasing_days`：柱狀體連續遞增 / 連續遞減天數。
+  - `macd_cross_days_ago_20d`：近 20 日內 DIF 與 Signal 最近一次交叉距今天數 (0＝今日、-1＝近 20 日未交叉)。
+- **布林通道 (10日, 1.9個標準差)**：
+  - `bollinger_position_pct`：價格在軌道內之相對位置 (%)。0＝下軌、50＝中軌(10MA)、100＝上軌；>100 代表突破上軌、<0 代表跌破下軌。
+  - `bollinger_bandwidth_pct`：標準化帶寬 (%)，數值代表目前相對波動幅度。
+  - `bollinger_bandwidth_change_3d_pp`：帶寬近 3 日變化 (百分點 pp，正值代表通道擴張、負值代表通道收斂)。
+  - `bollinger_contraction_days` / `bollinger_expansion_days`：帶寬連續收斂 (縮小) / 連續擴張 (放大) 天數。
+  - `bollinger_bandwidth_percentile_60d`：目前帶寬在近 60 日的歷史百分位 (0~98.33%，數值越低代表相較近 60 日波動越極致壓縮)。
+- **其他核心指標**：
+  - `excess_return_20d`：近 20 日相對大盤超額報酬差 (pp，正值代表強於大盤/跑贏指數，負值代表弱於大盤)。
+  - `price_vs_ma20`：最新價相對 20MA (月線) 乖離率 (%)，正值為站上月線、負值為跌破月線。
+  - `ma20_change_5d`：20MA (月線) 近 5 日斜率變化率 (%)，反映月線趨勢方向。
+  - `volume_ma5_to_ma20`：5 日均量 / 20 日均量比值 (倍，>1 代表短線出量轉熱、<1 代表短線量縮整理)。
+  - `volatility_10d`：10 日報酬波動率 (%)，反映近期價格震盪劇烈程度。
+
+### 3. 個股籌碼面指標
+- `foreign_net_buy_intensity_5d` / `trust_net_buy_intensity_5d`：外資 / 投信近 5 日買賣超強度 (%) ＝ 5日法人淨買賣超 / 5日總成交量。正值代表法人積極加碼吸籌、負值代表法人持續減碼調節。
+- `foreign_net_buy_1d` / `trust_net_buy_1d`：最新交易日外資 / 投信單日買賣超股數 (股)。
 
 ## 資料內容
 {data}
@@ -115,20 +154,23 @@ def _files_for_target_date(
 ) -> List[Path]:
     """資料夾當層目錄內，抓取結尾為 _YYYYMMDD 且完全等於 target_date 的檔案。
 
+    若同指標同時存在 .json 與 .parquet，優先使用 .json。
     若指定日期找不到任何檔案，嚴格拋出 FileNotFoundError，絕不降級抓取其他日期。
     """
     c_target = clean_date_str(target_date)
     if not c_target or len(c_target) != 8:
         raise ValueError(f"target_date 必須為 8 碼 YYYYMMDD 格式: '{target_date}'")
 
-    matched: List[Path] = []
+    matched_by_stem: Dict[str, Path] = {}
     for pat in patterns:
-        for p in folder.glob(pat):
+        for p in sorted(folder.glob(pat)):
             m = re.match(r"^(.*)_(\d{8})$", p.stem)
             if m and m.group(2) == c_target:
-                matched.append(p)
+                stem = p.stem
+                if stem not in matched_by_stem or p.suffix == ".json":
+                    matched_by_stem[stem] = p
 
-    return sorted(matched)
+    return sorted(matched_by_stem.values())
 
 
 STOCK_CODE_RE = re.compile(r"^\d{4}$")
@@ -145,12 +187,13 @@ class LoadedInputs:
     stock_values: Dict[str, Dict[str, float]] = field(default_factory=dict)   # {"2330": {"指標名": 值}}
     stock_asof: Dict[str, Dict[str, str]] = field(default_factory=dict)       # {"2330": {"指標名": "YYYY-MM-DD"}}
     stock_sources: Dict[str, set] = field(default_factory=dict)               # {"2330": {"S1", "S2"}}
-    tables: List[str] = field(default_factory=list)                           # 個股指標表格文字
+    sentiment_tables: List[str] = field(default_factory=list)                 # CMoney 個股情緒表格文字
+    tables: List[str] = field(default_factory=list)                           # 其它個股指標表格文字 (向下相容)
     # 大盤指標數值
     market_values: Dict[str, float] = field(default_factory=dict)             # {"taiex_close_latest": 46041.43}
     market_asof: Dict[str, str] = field(default_factory=dict)                 # {"taiex_close_latest": "YYYY-MM-DD"}
     market_sources: set = field(default_factory=set)                          # {"S1"}
-    market_tables: List[str] = field(default_factory=list)                    # 大盤指標表格文字
+    market_tables: List[str] = field(default_factory=list)                    # 大盤指標表格文字 (向下相容)
 
 
 def _classify(df: pd.DataFrame) -> str:
@@ -190,38 +233,74 @@ def _add_market_value(res: LoadedInputs, key: str, value, asof: str, source_id: 
         res.market_sources.add(source_id)
 
 
+def _ingest_json(path: Path, spec: InputSpec, res: LoadedInputs, other_parts: List[str]) -> None:
+    """讀取 Compact Array JSON 檔案，解析至 market_values 或 stock_values。"""
+    data = json.loads(path.read_text(encoding="utf-8"))
+    name = _dataset_name(path)
+
+    # 1. 大盤指標
+    if spec.folder == "大盤" or "tw_market" in data:
+        market_dict = data.get("tw_market", {})
+        for metric, item in market_dict.items():
+            if isinstance(item, (list, tuple)) and len(item) >= 2:
+                val, dt = item[0], str(item[1])
+                _add_market_value(res, metric, val, dt, spec.source_id)
+            else:
+                _add_market_value(res, metric, item, "", spec.source_id)
+        return
+
+    # 2. 個股指標 (以個股代碼為 Key)
+    has_stocks = False
+    for key, metrics in data.items():
+        if key.startswith("_"):
+            continue
+        if STOCK_CODE_RE.match(str(key)) and isinstance(metrics, dict):
+            has_stocks = True
+            for metric, item in metrics.items():
+                if isinstance(item, (list, tuple)) and len(item) >= 2:
+                    val, dt = item[0], str(item[1])
+                    _add_stock_value(res, str(key), metric, val, dt, spec.source_id)
+                else:
+                    _add_stock_value(res, str(key), metric, item, "", spec.source_id)
+
+    if not has_stocks:
+        other_parts.append(f"{name}:\n" + json.dumps(data, ensure_ascii=False, indent=2))
+
+
 def _ingest_parquet(path: Path, spec: InputSpec, res: LoadedInputs, other_parts: List[str]) -> None:
-    """依檔案型態處理：大盤存入 market_values；個股資料轉成每檔股票的指標；其它直接整份轉 CSV。"""
+    """依檔案型態處理：大盤存入 market_values；個股寬表存入 stock_values；情緒表存入 sentiment_tables。"""
     df = pd.read_parquet(path)
     name = _dataset_name(path)
 
     # 1. 大盤指標資料夾：收集為大盤數值
     if spec.folder == "大盤":
-        df = df.sort_values("date")
-        res.market_tables.append(f"{name}:\n" + df.to_csv(sep="\t", index=False))
         val_cols = [c for c in df.columns if c != "date"]
         if val_cols:
             s = df.set_index("date")[val_cols[0]].dropna()
             if not s.empty:
-                _add_market_value(res, name, s.iloc[-1], str(s.index[-1])[:10], spec.source_id)
+                dt = str(s.index[-1]).strip()
+                if len(dt) > 10 and " " in dt:
+                    dt = dt.split()[0]
+                _add_market_value(res, name, s.iloc[-1], dt, spec.source_id)
         return
 
     kind = _classify(df)
 
     if kind == "stock_wide":
-        # 一個檔案 = 一個指標；prompt 放「檔名:」+ 完整表格，values 取每檔股票最新一筆非空值
-        df = df.sort_values("date")
-        res.tables.append(f"{name}:\n" + df.to_csv(sep="\t", index=False))
+        # 一個檔案 = 一個指標；values 取每檔股票最新一筆非空值
         for col in df.columns:
             if col == "date" or not STOCK_CODE_RE.match(str(col)):
                 continue
             s = df.set_index("date")[col].dropna()
             if s.empty:
                 continue
-            _add_stock_value(res, str(col), name, s.iloc[-1], str(s.index[-1])[:10], spec.source_id)
+            dt = str(s.index[-1]).strip()
+            if len(dt) > 10 and " " in dt:
+                dt = dt.split()[0]
+            _add_stock_value(res, str(col), name, s.iloc[-1], dt, spec.source_id)
     elif kind == "stock_rows":
-        # 每列一檔股票：prompt 放「檔名:」+ 完整表格；數值欄位各形成一個指標 (文字/時間欄位不進 values)
-        res.tables.append(f"{name}:\n" + df.to_csv(sep="\t", index=False))
+        # 每列一檔股票 (例如 CMoney 個股情緒)
+        res.sentiment_tables.append(f"{name}:\n" + df.to_csv(sep="\t", index=False))
         num_cols = [c for c in df.columns if c != "股票代號" and pd.api.types.is_numeric_dtype(df[c])
                     and not pd.api.types.is_bool_dtype(df[c])]
         for _, row in df.iterrows():
@@ -258,7 +337,9 @@ def load_inputs(
         parts: List[str] = []
         for p in files:
             try:
-                if p.suffix == ".parquet":
+                if p.suffix == ".json":
+                    _ingest_json(p, spec, res, parts)
+                elif p.suffix == ".parquet":
                     _ingest_parquet(p, spec, res, parts)
                 else:
                     parts.append(_read_md(p))
@@ -269,14 +350,40 @@ def load_inputs(
             other_blocks.append(f"#### {spec.label} ({src})\n" + "\n".join(parts))
         print(f"[讀入] {spec.folder}: {len(files)} 個檔案 (日期: {c_target})")
 
+    # 組裝大盤 Compact Array JSON
+    market_json = {"_format": "[value, date]"}
+    if res.market_values:
+        market_json["tw_market"] = {
+            metric: [format_metric_value(val), res.market_asof.get(metric, "")]
+            for metric, val in res.market_values.items()
+        }
+
+    # 組裝個股 Compact Array JSON (包含基本面、技術面、籌碼面等具備交易日/季度的指標)
+    stock_json = {"_format": "[value, date]"}
+    for code in sorted(res.stock_values.keys()):
+        metrics_dict = {}
+        for metric, val in res.stock_values[code].items():
+            asof_date = res.stock_asof[code].get(metric, "")
+            if asof_date:
+                metrics_dict[metric] = [format_metric_value(val), asof_date]
+        if metrics_dict:
+            stock_json[code] = metrics_dict
+
     sections = []
-    if res.market_tables:
+    if res.market_values:
         sections.append(
-            "### 市場大盤資料 (全市場與加權指數各項指標)\n" + "\n\n".join(res.market_tables)
+            "### 市場大盤資料 (JSON 格式，格式說明: [value, date])\n"
+            + to_compact_json(market_json)
         )
-    if res.tables:
+    if stock_json and len(stock_json) > 1:
         sections.append(
-            "### 個股指標資料 (每個指標一張表；表格欄位標題為個股代碼)\n" + "\n\n".join(res.tables)
+            "### 個股指標資料 (以個股代碼為 Key 的 JSON 格式，格式說明: [value, date])\n"
+            + to_compact_json(stock_json)
+        )
+    if res.sentiment_tables:
+        sections.append(
+            "### CMoney 個股情緒資料 (每列一檔股票，欄位為各情緒數據)\n"
+            + "\n\n".join(res.sentiment_tables)
         )
     if other_blocks:
         sections.append("### 市場/其他資料\n" + "\n\n".join(other_blocks))

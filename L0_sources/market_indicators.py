@@ -10,7 +10,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable, List
+from typing import Callable, List, Union
 import pandas as pd
 
 # 計算資料起始日期 (需要至少 60 交易日以計算 60MA)
@@ -21,7 +21,7 @@ START_DATE: str = "2026-07-01"
 class MarketIndicator:
     name: str                           # 指標唯一名稱 (如 'taiex_close_latest')
     folder: str                         # 存檔目錄: 固定為 '大盤'
-    func: Callable[[], pd.DataFrame]    # 計算函式，回傳單列 DataFrame (index 為 date)
+    func: Callable[[], Union[pd.DataFrame, dict]] # 計算函式，回傳單列 DataFrame 或 Compact Array JSON dict
     description: str = ""               # 中文說明與單位
 
 
@@ -128,6 +128,67 @@ def listed_margin_balance_change_5d() -> pd.DataFrame:
     return _format_result(res, "listed_margin_balance_change_5d")
 
 
+def market_alignment() -> dict:
+    """10. 全市場多空排列家數差 (單位：家)。"""
+    from finlab import data
+
+    with data.universe():
+        close = data.get("price:收盤價").sort_index()
+
+    ma5 = close.average(5)
+    ma10 = close.average(10)
+    ma30 = close.average(30)
+
+    if close.empty or not (
+        ma5.notna() & ma10.notna() & ma30.notna()
+    ).iloc[-1].any():
+        raise ValueError("最新交易日的均線資料不足")
+
+    bullish = (ma5 >= ma10) & (ma10 >= ma30)
+    bearish = (ma5 < ma10) & (ma10 < ma30)
+
+    bullish_count = int(bullish.iloc[-1].sum())
+    bearish_count = int(bearish.iloc[-1].sum())
+    alignment_count_diff = bullish_count - bearish_count
+    last_date = str(close.index[-1])[:10]
+
+    return {
+        "_format": "[value, date]",
+        "tw_market": {
+            "market_alignment_diff": [alignment_count_diff, last_date]
+        }
+    }
+
+
+def listed_market_lifeline() -> dict:
+    """11. 生命線：加權報酬指數與月線關係 (單位：%)。"""
+    from finlab import data
+    import pandas as pd
+
+    index = data.get("benchmark_return:發行量加權股價報酬指數")
+    index = index.squeeze("columns").sort_index()
+
+    if not isinstance(index, pd.Series):
+        raise ValueError("預期加權報酬指數只有一個數值欄位")
+
+    ma20 = index.rolling(20).mean()
+
+    if len(index) < 25 or index.iloc[-25:].isna().any() or (index.iloc[-25:] <= 0).any():
+        raise ValueError("計算生命線需要最近25個交易日的有效報酬指數")
+
+    index_vs_ma20_pct = round(float((index.iloc[-1] / ma20.iloc[-1] - 1) * 100), 2)
+    ma20_change_5d_pct = round(float((ma20.iloc[-1] / ma20.iloc[-6] - 1) * 100), 2)
+    last_date = str(index.index[-1])[:10]
+
+    return {
+        "_format": "[value, date]",
+        "tw_market": {
+            "index_vs_ma20_pct": [index_vs_ma20_pct, last_date],
+            "ma20_change_5d_pct": [ma20_change_5d_pct, last_date]
+        }
+    }
+
+
 # --------------------------------------------------------------------------- #
 # 大盤指標總清單登記
 # --------------------------------------------------------------------------- #
@@ -141,4 +202,6 @@ ALL_MARKET_INDICATORS: list[MarketIndicator] = [
     MarketIndicator("market_trust_net_buy_20d", "大盤", market_trust_net_buy_20d, "投信近20日上市買賣超金額 (元)"),
     MarketIndicator("market_advance_decline_ratio", "大盤", market_advance_decline_ratio, "全市場股票漲跌家數比 (倍)"),
     MarketIndicator("listed_margin_balance_change_5d", "大盤", listed_margin_balance_change_5d, "上市融資餘額近5日變化率 (%)"),
+    MarketIndicator("market_alignment", "大盤", market_alignment, "全市場多空排列家數差 (家)"),
+    MarketIndicator("market_lifeline", "大盤", listed_market_lifeline, "加權報酬指數生命線與月線關係 (%)"),
 ]

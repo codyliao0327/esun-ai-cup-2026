@@ -27,7 +27,7 @@ session.verify = False
 session.headers.update({
     'accept': 'application/json, text/plain, */*',
     'accept-language': 'zh-TW,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
-    'authorization': 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkEydWczbUIxRFQiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiI0MzYyMjYzIiwidXNlcl9ndWlkIjoiNjU3MzQ4NjUtMzQ5Yy00ZGE2LTllNmQtZmE5MzVmYWIwZjNkIiwidG9rZW5faWQiOiIwIiwiYXBwX2lkIjoiMjEiLCJpc19ndWVzdCI6dHJ1ZSwibmJmIjoxNzkzNzA2NjAwLCJleHAiOjE3OTM3OTY2MDAsImlhdCI6MTc5MzcxMDIwMCwiaXNzIjoiaHR0cHM6Ly93d3cuY21vbmV5LnR3IiwiYXVkIjoiY21vbmV5YXBpIn0.FCR8w4MtiOWxsZ9fQxFlJarYOKHg_4SZJIEb73xayl0DRN-xg6wQ9rhOakKVIsBz5SWosL4lMu_IQJDUU5rVg6bgG7M6Aq6J-Y5SisRqWFBMgWlzjaeY1cLgZBJuEUDcl62uruBzJ6Nv3LOAcBJodL3cM7QVXfPJIhltXDb-mvhwjWdmYXcHK2bDqZjGEznmezJjoTv_GdOOMxkMyosbpt5EdeILD2lPBRekKCRXQDjYhkjN-2PwV1OIixEetHmydhfHHFvWFmpipEd1CdVnEon2cwTQzmjRleo-zc_bKM9iVk6TMQ8Kfg3-lkfegWNew1ZY9QOVI1iLZaQzZVkR-w',
+    'authorization': 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkEydWczbUIxRFQiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiI0MzYyMjYzIiwidXNlcl9ndWlkIjoiNjU3MzQ4NjUtMzQ5Yy00ZGE2LTllNmQtZmE5MzVmYWIwZjNkIiwidG9rZW5faWQiOiIwIiwiYXBwX2lkIjoiMjEiLCJpc19ndWVzdCI6dHJ1ZSwibmJmIjoxNzkzODA2NTAwLCJleHAiOjE3OTM4OTY1MDAsImlhdCI6MTc5MzgxMDEwMCwiaXNzIjoiaHR0cHM6Ly93d3cuY21vbmV5LnR3IiwiYXVkIjoiY21vbmV5YXBpIn0.f7DaU4MJt-jaQCeUTQI_R2Boe45wiAxPm785t6_kBms6nx7QROLWIXgrFJ3CiQOnZ3gF8K1Ev6KM28PgizkyvxvGUvhy7hwsc5AAgfK81yyxqQtBledsuybQSpxxFCW3lPpTT1pppgjMNDFFyC57dsrHMkEOk_lxInCaDrjHd6cuu4d8xXsAiN6gXy6s40G_BxII5xB8oMAEb44UlHl_BXyxwAAqECyeOYA53ijLpireprBQwkmKwOLj1kAYcAtLTo2hVbX6ID7T88ql7tmTU2kd99yu3XBkVgWFU4D9jBCnM2LIWX6oe0keQGc_UExbOQFty7XCQk6hkZLs0reowQ',
     'cache-control': 'private max-age=5',
     'cmoneyapi-trace-context': '{"device":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36 Edg/156.0.0.0","deviceId":"daf31bb2-abd9-4d25-afd0-b71830b25c5f"}',
     'priority': 'u=1, i',
@@ -39,7 +39,7 @@ session.headers.update({
     'sec-fetch-mode': 'cors',
     'sec-fetch-site': 'same-origin',
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36 Edg/156.0.0.0',
-    # 'cookie': '_ga=GA1.1.616575418.1792862649; __lt__cid=2ee2beba-f583-41a0-92f9-63e2ffa12682; _qg_fts=1792862650; QGUserId=1385138909155198; _qg_cm=2; AspSession=qdw1vkqigvntgtfdvui1fdvl; _ga_5XLZWTV92B=GS2.1.s1793465416$o2$g0$t1793465416$j60$l0$h0; __lt__sid=31313697-6c2a4b76; FCNEC=%5B%5B%22AKsRol9UlgxQFE2eTpjhgXvOEznR22_CpTI1rt-ehC9MSw6e55mXGsMSqFBqzKtvbNTwddyvMfcD7dCmfF-ZXustsriF2RyXDw%3D%3D%22%5D%5D; g_state={"i_l":0,"i_ll":1793710423487,"i_b":"nTPJbD911SQoGV2F2rCNJVu3Qr0j41c8hfv5bEgklbg","i_e":{"enable_itp_optimization":24},"i_et":1793710423487}; _clck=1j19rpv%5E2%5Egau%5E0%5E2488; _clsk=1t1yfn4%5E1793710424475%5E1%5E0%5Es.clarity.ms%2Fcollect; _ga_SG15L0JFQ7=GS2.1.s1793710423$o17$g1$t1793710426$j60$l0$h1261254516; _ga_4JFZQM569R=GS2.1.s1793710423$o19$g0$t1793710429$j60$l0$h0; _ga_7VD5TT91L3=GS2.1.s1793710423$o19$g0$t1793710429$j60$l0$h0; _ga_H3D2MQFGQP=GS2.1.s1793710423$o18$g0$t1793710429$j60$l0$h0; _ga_32V50L7K4M=GS2.1.s1793710422$o19$g1$t1793710430$j54$l0$h0; _gcl_au=1.1.1605001415.1792862649.51776414.1793624782.1793710430.749043562.1793624782.1793710430; FCCDCF=%5Bnull%2Cnull%2Cnull%2Cnull%2Cnull%2Cnull%2C%5B%5B32%2C%22%5B%5C%2268a41f29-ee81-42d7-b5d7-eb528d8c8028%5C%22%2C%5B1792862649%2C367000000%5D%5D%22%5D%5D%5D',
+    # 'cookie': '_ga=GA1.1.616575418.1792862649; __lt__cid=2ee2beba-f583-41a0-92f9-63e2ffa12682; _qg_fts=1792862650; QGUserId=1385138909155198; _qg_cm=2; AspSession=qdw1vkqigvntgtfdvui1fdvl; _ga_5XLZWTV92B=GS2.1.s1793465416$o2$g0$t1793465416$j60$l0$h0; FCNEC=%5B%5B%22AKsRol_qHnFkUL3mE1zxYeeupZt63tIorJTXsb6h-dlqCPq3S3d2TyhXMWczFBQYuFwDnUPHV9NVP5DZl_DLaKeLrNG-gc0MgA%3D%3D%22%5D%5D; __lt__sid=31313697-1c7f399c; g_state={"i_l":0,"i_ll":1793810317101,"i_b":"g5avS/cDq+ugiwXG8T+9cQoVNxSBmAmBuf/VuEsIlUc","i_e":{"enable_itp_optimization":24},"i_et":1793810317101}; _clck=1j19rpv%5E2%5Egav%5E0%5E2488; _clsk=18tlnth%5E1793810318008%5E1%5E0%5Eo.clarity.ms%2Fcollect; _ga_4JFZQM569R=GS2.1.s1793810317$o20$g0$t1793810324$j60$l0$h0; _ga_SG15L0JFQ7=GS2.1.s1793810317$o18$g1$t1793810324$j60$l0$h1648163932; _ga_7VD5TT91L3=GS2.1.s1793810317$o20$g0$t1793810324$j60$l0$h0; _ga_H3D2MQFGQP=GS2.1.s1793810317$o19$g0$t1793810324$j60$l0$h0; _ga_32V50L7K4M=GS2.1.s1793810316$o20$g1$t1793810324$j53$l0$h0; _gcl_au=1.1.1605001415.1792862649.1972598492.1793810317.1793810324.215341849.1793810317.1793810324; FCCDCF=%5Bnull%2Cnull%2Cnull%2Cnull%2Cnull%2Cnull%2C%5B%5B32%2C%22%5B%5C%2268a41f29-ee81-42d7-b5d7-eb528d8c8028%5C%22%2C%5B1792862649%2C367000000%5D%5D%22%5D%5D%5D',
 })
 
 def get_stock_sentiment(stock_id: str = "2330") -> Dict[str, Any]:
@@ -54,10 +54,12 @@ def main(target_date: Optional[str] = None):
     # 3. 批次抓取多檔股票
     stock_list = [
         # "0050", "00631L", "00685L",
-        "1303", "4958", "6505", "8046", "3189", "4938", "1301", "3533", "1802", "6415",
-        "1326", "2603", "2368", "2891", "3034", "3037", "2409", "3044", "3653", "2379",
-        "2383", "2881", "3231", "2609", "2313", "6446", "2882", "2357", "3443", "3711",
-        "2317", "3008", "2345", "2404", "2330", "2887", "3661", "2376", "2382", "2883"
+        "1101", "1216", "1402", "1504", "1802", "1815", "2002", "2059", "2207", "2317",
+        "2330", "2379", "2382", "2412", "2449", "2451", "2603", "2609", "2610", "2615",
+        "2618", "2801", "2812", "2834", "2880", "2881", "2882", "2884", "2885", "2886",
+        "2887", "2890", "2891", "2892", "2912", "3045", "3105", "3227", "3260", "3293",
+        "3324", "3374", "3491", "4123", "4904", "4938", "5274", "5289", "5871", "5876",
+        "5880", "5903", "6023", "6121", "6415", "6446", "8069", "8415", "8932",
     ]
 
     rows = []

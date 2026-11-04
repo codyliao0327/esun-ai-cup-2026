@@ -10,18 +10,28 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable, List, Optional
+from typing import Callable, List, Optional, Union
 import pandas as pd
 
-# 計算資料起始日期
-START_DATE: str = "2026-09-01"
+# 計算資料起始日期 (確保有足夠 60 交易日計算季線與 60 日百分位)
+START_DATE: str = "2026-07-01"
+
+# 目標 59 檔個股
+STOCK_IDS: list[str] = [
+    "1101", "1216", "1402", "1504", "1802", "1815", "2002", "2059", "2207", "2317",
+    "2330", "2379", "2382", "2412", "2449", "2451", "2603", "2609", "2610", "2615",
+    "2618", "2801", "2812", "2834", "2880", "2881", "2882", "2884", "2885", "2886",
+    "2887", "2890", "2891", "2892", "2912", "3045", "3105", "3227", "3260", "3293",
+    "3324", "3374", "3491", "4123", "4904", "4938", "5274", "5289", "5871", "5876",
+    "5880", "5903", "6023", "6121", "6415", "6446", "8069", "8415", "8932",
+]
 
 
 @dataclass(frozen=True)
 class Indicator:
     name: str                           # 檔案名稱與指標 key (如 'excess_return_20d')
     folder: str                         # 存檔目錄: '基本面' | '技術面' | '籌碼面'
-    func: Callable[[], pd.DataFrame]    # 向量化計算函式，回傳 (1 x N) DataFrame
+    func: Callable[[], Union[pd.DataFrame, dict]] # 計算函式，回傳 (1 x N) DataFrame 或 Compact Array JSON dict
     description: str = ""               # 指標中文說明與單位
 
 
@@ -172,6 +182,189 @@ def rsi_14() -> pd.DataFrame:
     return (rsi.iloc[[-1]]).round(2)
 
 
+def kd_latest() -> dict:
+    """18. KD指標 (5, 3, 3) 與交叉動態 (技術面)。"""
+    from finlab import data
+
+    k, d = data.indicator(
+        "STOCH", adjust_price=True,
+        fastk_period=5,
+        slowk_period=3, slowk_matype=0,
+        slowd_period=3, slowd_matype=0
+    )
+    last_date = str(k.index[-1])[:10]
+    out = {"_format": "[value, date]"}
+
+    for sid in STOCK_IDS:
+        if sid not in k.columns:
+            continue
+        ks = k[sid].dropna()
+        ds = d[sid].reindex(ks.index).dropna()
+        common_idx = ks.index.intersection(ds.index)
+        if len(common_idx) < 21:
+            continue
+        ks = ks.loc[common_idx]
+        ds = ds.loc[common_idx]
+
+        k_val = round(float(ks.iloc[-1]), 2)
+        d_val = round(float(ds.iloc[-1]), 2)
+        k_change_3d = round(float(ks.iloc[-1] - ks.iloc[-4]), 2)
+
+        gap = ks - ds
+        above_d_days = 0
+        below_d_days = 0
+        for val in gap.iloc[::-1]:
+            if pd.isna(val) or val <= 0:
+                break
+            above_d_days += 1
+        for val in gap.iloc[::-1]:
+            if pd.isna(val) or val >= 0:
+                break
+            below_d_days += 1
+
+        cross_up = (ks.shift(1) <= ds.shift(1)) & (ks > ds)
+        cross_down = (ks.shift(1) >= ds.shift(1)) & (ks < ds)
+        crossed = cross_up | cross_down
+        cross_days_ago = -1
+        for days_ago in range(min(20, len(crossed))):
+            if crossed.iloc[-1 - days_ago]:
+                cross_days_ago = days_ago
+                break
+
+        out[sid] = {
+            "k_5": [k_val, last_date],
+            "d_5": [d_val, last_date],
+            "k_change_3d": [k_change_3d, last_date],
+            "kd_above_d_days": [above_d_days, last_date],
+            "kd_below_d_days": [below_d_days, last_date],
+            "kd_cross_days_ago_20d": [cross_days_ago, last_date]
+        }
+    return out
+
+
+def macd_latest() -> dict:
+    """19. MACD指標 (6, 13, 5) 與柱狀動態 (技術面)。"""
+    from finlab import data
+
+    dif, signal, hist = data.indicator(
+        "MACD", adjust_price=True,
+        fastperiod=6, slowperiod=13, signalperiod=5
+    )
+    last_date = str(dif.index[-1])[:10]
+    out = {"_format": "[value, date]"}
+
+    for sid in STOCK_IDS:
+        if sid not in dif.columns:
+            continue
+        dfs = dif[sid].dropna()
+        sigs = signal[sid].reindex(dfs.index).dropna()
+        hists = hist[sid].reindex(dfs.index).dropna()
+        common_idx = dfs.index.intersection(sigs.index).intersection(hists.index)
+        if len(common_idx) < 21:
+            continue
+        dfs = dfs.loc[common_idx]
+        sigs = sigs.loc[common_idx]
+        hists = hists.loc[common_idx]
+
+        dif_val = round(float(dfs.iloc[-1]), 2)
+        hist_val = round(float(hists.iloc[-1]), 2)
+        hist_change_3d = round(float(hists.iloc[-1] - hists.iloc[-4]), 2)
+
+        hist_change = hists.diff()
+        hist_increasing_days = 0
+        hist_decreasing_days = 0
+        for change in hist_change.iloc[::-1]:
+            if pd.isna(change) or change <= 0:
+                break
+            hist_increasing_days += 1
+        for change in hist_change.iloc[::-1]:
+            if pd.isna(change) or change >= 0:
+                break
+            hist_decreasing_days += 1
+
+        cross_up = (dfs.shift(1) <= sigs.shift(1)) & (dfs > sigs)
+        cross_down = (dfs.shift(1) >= sigs.shift(1)) & (dfs < sigs)
+        crossed = cross_up | cross_down
+        cross_days_ago = -1
+        for days_ago in range(min(20, len(crossed))):
+            if crossed.iloc[-1 - days_ago]:
+                cross_days_ago = days_ago
+                break
+
+        out[sid] = {
+            "macd_dif": [dif_val, last_date],
+            "macd_hist": [hist_val, last_date],
+            "macd_hist_change_3d": [hist_change_3d, last_date],
+            "macd_hist_increasing_days": [hist_increasing_days, last_date],
+            "macd_hist_decreasing_days": [hist_decreasing_days, last_date],
+            "macd_cross_days_ago_20d": [cross_days_ago, last_date]
+        }
+    return out
+
+
+def bollinger_latest() -> dict:
+    """20. 布林通道 (10日, 1.9個標準差) 與頻寬動態 (技術面)。"""
+    from finlab import data
+
+    upper, middle, lower = data.indicator(
+        "BBANDS", adjust_price=True,
+        timeperiod=10, nbdevup=1.9, nbdevdn=1.9, matype=0
+    )
+    price = data.get("etl:adj_close")
+    last_date = str(price.index[-1])[:10]
+    out = {"_format": "[value, date]"}
+
+    for sid in STOCK_IDS:
+        if sid not in price.columns:
+            continue
+        p = price[sid].dropna()
+        u = upper[sid].reindex(p.index).dropna()
+        m = middle[sid].reindex(p.index).dropna()
+        l = lower[sid].reindex(p.index).dropna()
+        common_idx = p.index.intersection(u.index).intersection(m.index).intersection(l.index)
+        if len(common_idx) < 60:
+            continue
+        p = p.loc[common_idx]
+        u = u.loc[common_idx]
+        m = m.loc[common_idx]
+        l = l.loc[common_idx]
+
+        bw = (u - l) / m.where(m != 0) * 100
+        if len(bw) < 60 or bw.iloc[-60:].isna().any():
+            continue
+
+        width = u.iloc[-1] - l.iloc[-1]
+        if width <= 0:
+            continue
+        pos_pct = round(float((p.iloc[-1] - l.iloc[-1]) / width * 100), 2)
+        bw_val = round(float(bw.iloc[-1]), 2)
+        bw_change_3d = round(float(bw.iloc[-1] - bw.iloc[-4]), 2)
+
+        bw_change = bw.diff()
+        contraction_days = 0
+        expansion_days = 0
+        for change in bw_change.iloc[::-1]:
+            if pd.isna(change) or change >= 0:
+                break
+            contraction_days += 1
+        for change in bw_change.iloc[::-1]:
+            if pd.isna(change) or change <= 0:
+                break
+            expansion_days += 1
+
+        bw_pctl_60d = round(float((bw.iloc[-60:] < bw.iloc[-1]).mean() * 100), 2)
+
+        out[sid] = {
+            "bollinger_position_pct": [pos_pct, last_date],
+            "bollinger_bandwidth_pct": [bw_val, last_date],
+            "bollinger_bandwidth_change_3d_pp": [bw_change_3d, last_date],
+            "bollinger_contraction_days": [contraction_days, last_date],
+            "bollinger_expansion_days": [expansion_days, last_date],
+            "bollinger_bandwidth_percentile_60d": [bw_pctl_60d, last_date]
+        }
+    return out
+
+
 # --------------------------------------------------------------------------- #
 # 3. 籌碼面指標 (存至 data/籌碼面/)
 # --------------------------------------------------------------------------- #
@@ -219,7 +412,7 @@ ALL_INDICATORS: list[Indicator] = [
     Indicator("roe_latest", "基本面", roe_latest, "最新季 ROE 稅後 (%)"),
     Indicator("revenue_yoy_latest", "基本面", revenue_yoy_latest, "最新月營收年增率 (%)"),
     Indicator("revenue_mom_latest", "基本面", revenue_mom_latest, "最新月營收月增率 (%)"),
-    # 技術面 (10)
+    # 技術面 (13)
     Indicator("close_latest", "技術面", close_latest, "最新收盤價 (元)"),
     Indicator("return_5d", "技術面", return_5d, "近5日報酬率 (%)"),
     Indicator("return_20d", "技術面", return_20d, "近20日報酬率 (%)"),
@@ -230,6 +423,9 @@ ALL_INDICATORS: list[Indicator] = [
     Indicator("ma20_change_5d", "技術面", ma20_change_5d, "20日均線近5日變化率 (%)"),
     Indicator("price_vs_ma20", "技術面", price_vs_ma20, "20日均線乖離率 (%)"),
     Indicator("rsi_14", "技術面", rsi_14, "14日 RSI (0~100)"),
+    Indicator("kd_latest", "技術面", kd_latest, "KD指標 (5,3,3) 與交叉動態"),
+    Indicator("macd_latest", "技術面", macd_latest, "MACD指標 (6,13,5) 與柱狀動態"),
+    Indicator("bollinger_latest", "技術面", bollinger_latest, "布林通道 (10,1.9) 與頻寬動態"),
     # 籌碼面 (4)
     Indicator("foreign_net_buy_intensity_5d", "籌碼面", foreign_net_buy_intensity_5d, "外資近5日買賣超強度 (%)"),
     Indicator("foreign_net_buy_1d", "籌碼面", foreign_net_buy_1d, "外資最新交易日買賣超 (股)"),
