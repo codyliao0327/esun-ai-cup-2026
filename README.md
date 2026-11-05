@@ -458,7 +458,7 @@ python generate_daily_report.py --dplan-path "path/to.json"   # 指定特定 D-P
    ```bash
    python run_update.py --push
    ```
-3. **查看看板**：直接於瀏覽器開啟 `code/portfolio_dashboard/dist/index.html`，或前往 Cloudflare Pages 免費專屬網址隨時查看。
+3. **查看看板**：直接於瀏覽器開啟 [https://esun-ai-cup-2026-team11402-portfolio.pages.dev](https://esun-ai-cup-2026-team11402-portfolio.pages.dev)。
 
 ---
 
