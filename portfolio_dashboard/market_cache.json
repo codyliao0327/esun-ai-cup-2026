@@ -1,17 +1,17 @@
 {
-  "updated_at": "2026-11-04 19:27:21",
+  "updated_at": "2026-11-05 20:16:05",
   "stocks": {
     "2330": {
       "code": "2330",
       "name": "台積電",
       "market": "上市",
-      "close_price": 2260.0,
-      "prev_close": 2295.0,
-      "change": -35.0,
-      "change_pct": -1.53,
-      "volume_lots": 45.3,
-      "trade_value": 102853720000,
-      "last_updated": "2026-11-04",
+      "close_price": 2240.0,
+      "prev_close": 2260.0,
+      "change": -20.0,
+      "change_pct": -0.88,
+      "volume_lots": 36.4,
+      "trade_value": 81979435000,
+      "last_updated": "2026-11-05",
       "trend": [
         2400.0,
         2425.0,
@@ -19,20 +19,21 @@
         2370.0,
         2330.0,
         2295.0,
-        2260.0
+        2260.0,
+        2240.0
       ]
     },
     "2883": {
       "code": "2883",
       "name": "凱基金",
       "market": "上市",
-      "close_price": 34.8,
-      "prev_close": 34.95,
-      "change": -0.15,
-      "change_pct": -0.43,
-      "volume_lots": 57.8,
-      "trade_value": 1992182050,
-      "last_updated": "2026-11-04",
+      "close_price": 34.35,
+      "prev_close": 34.8,
+      "change": -0.45,
+      "change_pct": -1.29,
+      "volume_lots": 48.2,
+      "trade_value": 1671272650,
+      "last_updated": "2026-11-05",
       "trend": [
         38.45,
         38.55,
@@ -40,20 +41,21 @@
         37.8,
         37.25,
         34.95,
-        34.8
+        34.8,
+        34.35
       ]
     },
     "2454": {
       "code": "2454",
       "name": "聯發科",
       "market": "上市",
-      "close_price": 3715.0,
-      "prev_close": 3675.0,
-      "change": 40.0,
-      "change_pct": 1.09,
-      "volume_lots": 13.8,
-      "trade_value": 50298260000,
-      "last_updated": "2026-11-04",
+      "close_price": 3460.0,
+      "prev_close": 3715.0,
+      "change": -255.0,
+      "change_pct": -6.86,
+      "volume_lots": 11.8,
+      "trade_value": 41851290000,
+      "last_updated": "2026-11-05",
       "trend": [
         3960.0,
         4235.0,
@@ -61,20 +63,21 @@
         3915.0,
         3970.0,
         3675.0,
-        3715.0
+        3715.0,
+        3460.0
       ]
     },
     "3443": {
       "code": "3443",
       "name": "創意",
       "market": "上市",
-      "close_price": 7115.0,
-      "prev_close": 6795.0,
-      "change": 320.0,
-      "change_pct": 4.71,
-      "volume_lots": 3.9,
-      "trade_value": 26477030000,
-      "last_updated": "2026-11-04",
+      "close_price": 6405.0,
+      "prev_close": 7115.0,
+      "change": -710.0,
+      "change_pct": -9.98,
+      "volume_lots": 3.1,
+      "trade_value": 20036635000,
+      "last_updated": "2026-11-05",
       "trend": [
         7430.0,
         8170.0,
@@ -82,20 +85,21 @@
         7635.0,
         7285.0,
         6795.0,
-        7115.0
+        7115.0,
+        6405.0
       ]
     },
     "2308": {
       "code": "2308",
       "name": "台達電",
       "market": "上市",
-      "close_price": 1220.0,
-      "prev_close": 1270.0,
-      "change": -50.0,
-      "change_pct": -3.94,
-      "volume_lots": 24.5,
-      "trade_value": 29887720000,
-      "last_updated": "2026-11-04",
+      "close_price": 1130.0,
+      "prev_close": 1220.0,
+      "change": -90.0,
+      "change_pct": -7.38,
+      "volume_lots": 18.4,
+      "trade_value": 21110340000,
+      "last_updated": "2026-11-05",
       "trend": [
         1510.0,
         1550.0,
@@ -103,20 +107,21 @@
         1335.0,
         1355.0,
         1270.0,
-        1220.0
+        1220.0,
+        1130.0
       ]
     },
     "3653": {
       "code": "3653",
       "name": "健策",
       "market": "上市",
-      "close_price": 6450.0,
-      "prev_close": 6035.0,
-      "change": 415.0,
-      "change_pct": 6.88,
-      "volume_lots": 3.1,
-      "trade_value": 19055140000,
-      "last_updated": "2026-11-04",
+      "close_price": 5805.0,
+      "prev_close": 6450.0,
+      "change": -645.0,
+      "change_pct": -10.0,
+      "volume_lots": 2.4,
+      "trade_value": 13856180000,
+      "last_updated": "2026-11-05",
       "trend": [
         5860.0,
         6375.0,
@@ -124,20 +129,21 @@
         6315.0,
         6320.0,
         6035.0,
-        6450.0
+        6450.0,
+        5805.0
       ]
     },
     "2317": {
       "code": "2317",
       "name": "鴻海",
       "market": "上市",
-      "close_price": 240.0,
-      "prev_close": 245.5,
-      "change": -5.5,
-      "change_pct": -2.24,
-      "volume_lots": 59.9,
-      "trade_value": 14404477000,
-      "last_updated": "2026-11-04",
+      "close_price": 235.0,
+      "prev_close": 240.0,
+      "change": -5.0,
+      "change_pct": -2.08,
+      "volume_lots": 47.9,
+      "trade_value": 11362680000,
+      "last_updated": "2026-11-05",
       "trend": [
         247.5,
         251.5,
@@ -145,20 +151,21 @@
         245.5,
         251.0,
         245.5,
-        240.0
+        240.0,
+        235.0
       ]
     },
     "2395": {
       "code": "2395",
       "name": "研華",
       "market": "上市",
-      "close_price": 629.0,
-      "prev_close": 620.0,
-      "change": 9.0,
-      "change_pct": 1.45,
-      "volume_lots": 2.7,
-      "trade_value": 1651039000,
-      "last_updated": "2026-11-04",
+      "close_price": 596.0,
+      "prev_close": 629.0,
+      "change": -33.0,
+      "change_pct": -5.25,
+      "volume_lots": 2.5,
+      "trade_value": 1500722000,
+      "last_updated": "2026-11-05",
       "trend": [
         687.0,
         689.0,
@@ -166,20 +173,21 @@
         680.0,
         655.0,
         620.0,
-        629.0
+        629.0,
+        596.0
       ]
     },
     "3711": {
       "code": "3711",
       "name": "日月光投控",
       "market": "上市",
-      "close_price": 627.0,
-      "prev_close": 616.0,
-      "change": 11.0,
-      "change_pct": 1.79,
-      "volume_lots": 31.1,
-      "trade_value": 19236788000,
-      "last_updated": "2026-11-04",
+      "close_price": 572.0,
+      "prev_close": 627.0,
+      "change": -55.0,
+      "change_pct": -8.77,
+      "volume_lots": 29.0,
+      "trade_value": 16875208000,
+      "last_updated": "2026-11-05",
       "trend": [
         651.0,
         695.0,
@@ -187,20 +195,21 @@
         668.0,
         674.0,
         616.0,
-        627.0
+        627.0,
+        572.0
       ]
     },
     "2301": {
       "code": "2301",
       "name": "光寶科",
       "market": "上市",
-      "close_price": 226.0,
-      "prev_close": 228.0,
-      "change": -2.0,
-      "change_pct": -0.88,
-      "volume_lots": 14.9,
-      "trade_value": 3342747500,
-      "last_updated": "2026-11-04",
+      "close_price": 211.5,
+      "prev_close": 226.0,
+      "change": -14.5,
+      "change_pct": -6.42,
+      "volume_lots": 18.9,
+      "trade_value": 4059898000,
+      "last_updated": "2026-11-05",
       "trend": [
         252.5,
         261.5,
@@ -208,20 +217,21 @@
         240.5,
         243.5,
         228.0,
-        226.0
+        226.0,
+        211.5
       ]
     },
     "2881": {
       "code": "2881",
       "name": "富邦金",
       "market": "上市",
-      "close_price": 154.5,
-      "prev_close": 154.0,
-      "change": 0.5,
-      "change_pct": 0.32,
-      "volume_lots": 22.7,
-      "trade_value": 3492597500,
-      "last_updated": "2026-11-04",
+      "close_price": 155.5,
+      "prev_close": 154.5,
+      "change": 1.0,
+      "change_pct": 0.65,
+      "volume_lots": 16.8,
+      "trade_value": 2623893500,
+      "last_updated": "2026-11-05",
       "trend": [
         162.0,
         161.0,
@@ -229,20 +239,21 @@
         161.5,
         159.5,
         154.0,
-        154.5
+        154.5,
+        155.5
       ]
     },
     "6446": {
       "code": "6446",
       "name": "藥華藥",
       "market": "上市",
-      "close_price": 1250.0,
-      "prev_close": 1225.0,
-      "change": 25.0,
-      "change_pct": 2.04,
-      "volume_lots": 3.7,
-      "trade_value": 4567710000,
-      "last_updated": "2026-11-04",
+      "close_price": 1185.0,
+      "prev_close": 1250.0,
+      "change": -65.0,
+      "change_pct": -5.2,
+      "volume_lots": 3.4,
+      "trade_value": 4103005000,
+      "last_updated": "2026-11-05",
       "trend": [
         1190.0,
         1200.0,
@@ -250,20 +261,21 @@
         1190.0,
         1190.0,
         1225.0,
-        1250.0
+        1250.0,
+        1185.0
       ]
     },
     "2383": {
       "code": "2383",
       "name": "台光電",
       "market": "上市",
-      "close_price": 4555.0,
-      "prev_close": 4395.0,
-      "change": 160.0,
-      "change_pct": 3.64,
-      "volume_lots": 5.6,
-      "trade_value": 25254135000,
-      "last_updated": "2026-11-04",
+      "close_price": 4100.0,
+      "prev_close": 4555.0,
+      "change": -455.0,
+      "change_pct": -9.99,
+      "volume_lots": 4.3,
+      "trade_value": 17716710000,
+      "last_updated": "2026-11-05",
       "trend": [
         4750.0,
         5025.0,
@@ -271,20 +283,21 @@
         4675.0,
         4705.0,
         4395.0,
-        4555.0
+        4555.0,
+        4100.0
       ]
     },
     "4958": {
       "code": "4958",
       "name": "臻鼎-KY",
       "market": "上市",
-      "close_price": 433.0,
-      "prev_close": 443.0,
-      "change": -10.0,
-      "change_pct": -2.26,
-      "volume_lots": 33.2,
-      "trade_value": 14298091500,
-      "last_updated": "2026-11-04",
+      "close_price": 394.0,
+      "prev_close": 433.0,
+      "change": -39.0,
+      "change_pct": -9.01,
+      "volume_lots": 28.9,
+      "trade_value": 11702257500,
+      "last_updated": "2026-11-05",
       "trend": [
         520.0,
         550.0,
@@ -292,20 +305,21 @@
         486.0,
         487.0,
         443.0,
-        433.0
+        433.0,
+        394.0
       ]
     },
     "2303": {
       "code": "2303",
       "name": "聯電",
       "market": "上市",
-      "close_price": 105.5,
-      "prev_close": 103.0,
-      "change": 2.5,
-      "change_pct": 2.43,
-      "volume_lots": 157.5,
-      "trade_value": 16312860000,
-      "last_updated": "2026-11-04",
+      "close_price": 98.4,
+      "prev_close": 105.5,
+      "change": -7.1,
+      "change_pct": -6.73,
+      "volume_lots": 155.1,
+      "trade_value": 15573892900,
+      "last_updated": "2026-11-05",
       "trend": [
         122.5,
         128.0,
@@ -313,20 +327,21 @@
         111.5,
         110.0,
         103.0,
-        105.5
+        105.5,
+        98.4
       ]
     },
     "2603": {
       "code": "2603",
       "name": "長榮",
       "market": "上市",
-      "close_price": 268.0,
-      "prev_close": 266.5,
-      "change": 1.5,
-      "change_pct": 0.56,
-      "volume_lots": 8.8,
-      "trade_value": 2338456500,
-      "last_updated": "2026-11-04",
+      "close_price": 259.0,
+      "prev_close": 268.0,
+      "change": -9.0,
+      "change_pct": -3.36,
+      "volume_lots": 11.8,
+      "trade_value": 3090617000,
+      "last_updated": "2026-11-05",
       "trend": [
         261.5,
         263.0,
@@ -334,20 +349,21 @@
         271.5,
         274.5,
         266.5,
-        268.0
+        268.0,
+        259.0
       ]
     },
     "2882": {
       "code": "2882",
       "name": "國泰金",
       "market": "上市",
-      "close_price": 111.0,
-      "prev_close": 113.0,
-      "change": -2.0,
-      "change_pct": -1.77,
-      "volume_lots": 27.5,
-      "trade_value": 3064562000,
-      "last_updated": "2026-11-04",
+      "close_price": 112.0,
+      "prev_close": 111.0,
+      "change": 1.0,
+      "change_pct": 0.9,
+      "volume_lots": 27.3,
+      "trade_value": 3075940500,
+      "last_updated": "2026-11-05",
       "trend": [
         114.0,
         115.5,
@@ -355,7 +371,8 @@
         116.0,
         116.0,
         113.0,
-        111.0
+        111.0,
+        112.0
       ]
     },
     "5880": {
@@ -363,12 +380,12 @@
       "name": "合庫金",
       "market": "上市",
       "close_price": 28.5,
-      "prev_close": 28.45,
-      "change": 0.05,
-      "change_pct": 0.18,
-      "volume_lots": 19.9,
-      "trade_value": 566680950,
-      "last_updated": "2026-11-04",
+      "prev_close": 28.5,
+      "change": 0.0,
+      "change_pct": 0.0,
+      "volume_lots": 20.3,
+      "trade_value": 582453500,
+      "last_updated": "2026-11-05",
       "trend": [
         28.8,
         28.45,
@@ -383,13 +400,13 @@
       "code": "3037",
       "name": "欣興",
       "market": "上市",
-      "close_price": 888.0,
-      "prev_close": 902.0,
-      "change": -14.0,
-      "change_pct": -1.55,
-      "volume_lots": 31.8,
-      "trade_value": 27745810000,
-      "last_updated": "2026-11-04",
+      "close_price": 800.0,
+      "prev_close": 888.0,
+      "change": -88.0,
+      "change_pct": -9.91,
+      "volume_lots": 27.0,
+      "trade_value": 22191938000,
+      "last_updated": "2026-11-05",
       "trend": [
         1060.0,
         1100.0,
@@ -397,7 +414,8 @@
         989.0,
         997.0,
         902.0,
-        888.0
+        888.0,
+        800.0
       ]
     },
     "1216": {
@@ -405,12 +423,12 @@
       "name": "統一",
       "market": "上市",
       "close_price": 80.9,
-      "prev_close": 81.1,
-      "change": -0.2,
-      "change_pct": -0.25,
-      "volume_lots": 10.4,
-      "trade_value": 841012800,
-      "last_updated": "2026-11-04",
+      "prev_close": 80.9,
+      "change": 0.0,
+      "change_pct": 0.0,
+      "volume_lots": 13.0,
+      "trade_value": 1053981800,
+      "last_updated": "2026-11-05",
       "trend": [
         80.2,
         78.7,
@@ -425,13 +443,13 @@
       "code": "2891",
       "name": "中信金",
       "market": "上市",
-      "close_price": 73.2,
-      "prev_close": 74.2,
-      "change": -1.0,
-      "change_pct": -1.35,
-      "volume_lots": 41.7,
-      "trade_value": 3042898300,
-      "last_updated": "2026-11-04",
+      "close_price": 74.9,
+      "prev_close": 73.2,
+      "change": 1.7,
+      "change_pct": 2.32,
+      "volume_lots": 54.2,
+      "trade_value": 4021286000,
+      "last_updated": "2026-11-05",
       "trend": [
         75.0,
         74.2,
@@ -439,20 +457,21 @@
         75.8,
         75.0,
         74.2,
-        73.2
+        73.2,
+        74.9
       ]
     },
     "3045": {
       "code": "3045",
       "name": "台灣大",
       "market": "上市",
-      "close_price": 135.0,
-      "prev_close": 133.0,
-      "change": 2.0,
-      "change_pct": 1.5,
-      "volume_lots": 11.0,
-      "trade_value": 1479262500,
-      "last_updated": "2026-11-04",
+      "close_price": 132.5,
+      "prev_close": 135.0,
+      "change": -2.5,
+      "change_pct": -1.85,
+      "volume_lots": 9.8,
+      "trade_value": 1313214000,
+      "last_updated": "2026-11-05",
       "trend": [
         134.5,
         132.5,
@@ -460,20 +479,21 @@
         133.5,
         133.0,
         133.0,
-        135.0
+        135.0,
+        132.5
       ]
     },
     "1303": {
       "code": "1303",
       "name": "南亞",
       "market": "上市",
-      "close_price": 276.5,
-      "prev_close": 271.0,
-      "change": 5.5,
-      "change_pct": 2.03,
-      "volume_lots": 117.7,
-      "trade_value": 32076111000,
-      "last_updated": "2026-11-04",
+      "close_price": 249.0,
+      "prev_close": 276.5,
+      "change": -27.5,
+      "change_pct": -9.95,
+      "volume_lots": 92.9,
+      "trade_value": 23789801000,
+      "last_updated": "2026-11-05",
       "trend": [
         297.5,
         319.0,
@@ -481,20 +501,21 @@
         296.0,
         301.0,
         271.0,
-        276.5
+        276.5,
+        249.0
       ]
     },
     "2368": {
       "code": "2368",
       "name": "金像電",
       "market": "上市",
-      "close_price": 964.0,
-      "prev_close": 970.0,
-      "change": -6.0,
-      "change_pct": -0.62,
-      "volume_lots": 13.2,
-      "trade_value": 12659048000,
-      "last_updated": "2026-11-04",
+      "close_price": 868.0,
+      "prev_close": 964.0,
+      "change": -96.0,
+      "change_pct": -9.96,
+      "volume_lots": 10.4,
+      "trade_value": 9363004000,
+      "last_updated": "2026-11-05",
       "trend": [
         1080.0,
         1185.0,
@@ -502,20 +523,21 @@
         1020.0,
         1060.0,
         970.0,
-        964.0
+        964.0,
+        868.0
       ]
     },
     "2345": {
       "code": "2345",
       "name": "智邦",
       "market": "上市",
-      "close_price": 1480.0,
-      "prev_close": 1495.0,
-      "change": -15.0,
-      "change_pct": -1.0,
-      "volume_lots": 4.3,
-      "trade_value": 6354030000,
-      "last_updated": "2026-11-04",
+      "close_price": 1380.0,
+      "prev_close": 1480.0,
+      "change": -100.0,
+      "change_pct": -6.76,
+      "volume_lots": 4.0,
+      "trade_value": 5580200000,
+      "last_updated": "2026-11-05",
       "trend": [
         1760.0,
         1815.0,
@@ -523,20 +545,21 @@
         1615.0,
         1615.0,
         1495.0,
-        1480.0
+        1480.0,
+        1380.0
       ]
     },
     "3665": {
       "code": "3665",
       "name": "貿聯-KY",
       "market": "上市",
-      "close_price": 1570.0,
-      "prev_close": 1575.0,
-      "change": -5.0,
-      "change_pct": -0.32,
-      "volume_lots": 4.5,
-      "trade_value": 7017740000,
-      "last_updated": "2026-11-04",
+      "close_price": 1470.0,
+      "prev_close": 1570.0,
+      "change": -100.0,
+      "change_pct": -6.37,
+      "volume_lots": 4.4,
+      "trade_value": 6549135000,
+      "last_updated": "2026-11-05",
       "trend": [
         1735.0,
         1810.0,
@@ -544,20 +567,21 @@
         1625.0,
         1625.0,
         1575.0,
-        1570.0
+        1570.0,
+        1470.0
       ]
     },
     "2382": {
       "code": "2382",
       "name": "廣達",
       "market": "上市",
-      "close_price": 302.5,
-      "prev_close": 311.5,
-      "change": -9.0,
-      "change_pct": -2.89,
-      "volume_lots": 18.3,
-      "trade_value": 5551661500,
-      "last_updated": "2026-11-04",
+      "close_price": 300.0,
+      "prev_close": 302.5,
+      "change": -2.5,
+      "change_pct": -0.83,
+      "volume_lots": 12.9,
+      "trade_value": 3896251500,
+      "last_updated": "2026-11-05",
       "trend": [
         327.5,
         330.0,
@@ -565,20 +589,21 @@
         318.0,
         318.0,
         311.5,
-        302.5
+        302.5,
+        300.0
       ]
     },
     "4904": {
       "code": "4904",
       "name": "遠傳",
       "market": "上市",
-      "close_price": 114.0,
-      "prev_close": 112.5,
-      "change": 1.5,
-      "change_pct": 1.33,
-      "volume_lots": 7.4,
-      "trade_value": 840472000,
-      "last_updated": "2026-11-04",
+      "close_price": 112.5,
+      "prev_close": 114.0,
+      "change": -1.5,
+      "change_pct": -1.32,
+      "volume_lots": 7.7,
+      "trade_value": 874817000,
+      "last_updated": "2026-11-05",
       "trend": [
         114.0,
         112.0,
@@ -586,20 +611,21 @@
         114.0,
         113.5,
         112.5,
-        114.0
+        114.0,
+        112.5
       ]
     },
     "2408": {
       "code": "2408",
       "name": "南亞科",
       "market": "上市",
-      "close_price": 399.5,
-      "prev_close": 411.0,
-      "change": -11.5,
-      "change_pct": -2.8,
-      "volume_lots": 67.1,
-      "trade_value": 26590687000,
-      "last_updated": "2026-11-04",
+      "close_price": 360.0,
+      "prev_close": 399.5,
+      "change": -39.5,
+      "change_pct": -9.89,
+      "volume_lots": 54.0,
+      "trade_value": 19891172500,
+      "last_updated": "2026-11-05",
       "trend": [
         441.0,
         477.0,
@@ -607,20 +633,21 @@
         454.5,
         456.5,
         411.0,
-        399.5
+        399.5,
+        360.0
       ]
     },
     "3481": {
       "code": "3481",
       "name": "群創",
       "market": "上市",
-      "close_price": 40.9,
-      "prev_close": 41.2,
-      "change": -0.3,
-      "change_pct": -0.73,
-      "volume_lots": 144.2,
-      "trade_value": 5878011600,
-      "last_updated": "2026-11-04",
+      "close_price": 38.0,
+      "prev_close": 40.9,
+      "change": -2.9,
+      "change_pct": -7.09,
+      "volume_lots": 159.5,
+      "trade_value": 6201669600,
+      "last_updated": "2026-11-05",
       "trend": [
         46.25,
         48.45,
@@ -628,20 +655,21 @@
         42.55,
         44.55,
         41.2,
-        40.9
+        40.9,
+        38.0
       ]
     },
     "7769": {
       "code": "7769",
       "name": "鴻勁",
       "market": "上市",
-      "close_price": 4365.0,
-      "prev_close": 4470.0,
-      "change": -105.0,
-      "change_pct": -2.35,
+      "close_price": 3980.0,
+      "prev_close": 4365.0,
+      "change": -385.0,
+      "change_pct": -8.82,
       "volume_lots": 1.3,
-      "trade_value": 5455305000,
-      "last_updated": "2026-11-04",
+      "trade_value": 5122675000,
+      "last_updated": "2026-11-05",
       "trend": [
         5210.0,
         5565.0,
@@ -649,20 +677,21 @@
         4950.0,
         4915.0,
         4470.0,
-        4365.0
+        4365.0,
+        3980.0
       ]
     },
     "2379": {
       "code": "2379",
       "name": "瑞昱",
       "market": "上市",
-      "close_price": 748.0,
-      "prev_close": 756.0,
-      "change": -8.0,
-      "change_pct": -1.06,
+      "close_price": 720.0,
+      "prev_close": 748.0,
+      "change": -28.0,
+      "change_pct": -3.74,
       "volume_lots": 3.5,
-      "trade_value": 2537530000,
-      "last_updated": "2026-11-04",
+      "trade_value": 2489164000,
+      "last_updated": "2026-11-05",
       "trend": [
         793.0,
         791.0,
@@ -670,7 +699,8 @@
         803.0,
         785.0,
         756.0,
-        748.0
+        748.0,
+        720.0
       ]
     },
     "2412": {
@@ -678,12 +708,12 @@
       "name": "中華電",
       "market": "上市",
       "close_price": 161.5,
-      "prev_close": 159.0,
-      "change": 2.5,
-      "change_pct": 1.57,
-      "volume_lots": 16.1,
-      "trade_value": 2585582500,
-      "last_updated": "2026-11-04",
+      "prev_close": 161.5,
+      "change": 0.0,
+      "change_pct": 0.0,
+      "volume_lots": 24.1,
+      "trade_value": 3915263500,
+      "last_updated": "2026-11-05",
       "trend": [
         158.0,
         156.5,
@@ -698,13 +728,13 @@
       "code": "1301",
       "name": "台塑",
       "market": "上市",
-      "close_price": 69.1,
-      "prev_close": 68.7,
-      "change": 0.4,
-      "change_pct": 0.58,
-      "volume_lots": 24.1,
-      "trade_value": 1650826400,
-      "last_updated": "2026-11-04",
+      "close_price": 65.1,
+      "prev_close": 69.1,
+      "change": -4.0,
+      "change_pct": -5.79,
+      "volume_lots": 25.6,
+      "trade_value": 1708907600,
+      "last_updated": "2026-11-05",
       "trend": [
         74.4,
         75.4,
@@ -712,20 +742,21 @@
         72.5,
         73.1,
         68.7,
-        69.1
+        69.1,
+        65.1
       ]
     },
     "2327": {
       "code": "2327",
       "name": "國巨",
       "market": "上市",
-      "close_price": 449.0,
-      "prev_close": 453.0,
-      "change": -4.0,
-      "change_pct": -0.88,
-      "volume_lots": 48.2,
-      "trade_value": 21314672500,
-      "last_updated": "2026-11-04",
+      "close_price": 404.5,
+      "prev_close": 449.0,
+      "change": -44.5,
+      "change_pct": -9.91,
+      "volume_lots": 51.0,
+      "trade_value": 21257279500,
+      "last_updated": "2026-11-05",
       "trend": [
         521.0,
         547.0,
@@ -733,20 +764,21 @@
         502.0,
         498.5,
         453.0,
-        449.0
+        449.0,
+        404.5
       ]
     },
     "1326": {
       "code": "1326",
       "name": "台化",
       "market": "上市",
-      "close_price": 69.2,
-      "prev_close": 68.4,
-      "change": 0.8,
-      "change_pct": 1.17,
-      "volume_lots": 21.2,
-      "trade_value": 1452172100,
-      "last_updated": "2026-11-04",
+      "close_price": 65.0,
+      "prev_close": 69.2,
+      "change": -4.2,
+      "change_pct": -6.07,
+      "volume_lots": 21.8,
+      "trade_value": 1449602100,
+      "last_updated": "2026-11-05",
       "trend": [
         74.4,
         75.5,
@@ -754,20 +786,21 @@
         72.5,
         73.6,
         68.4,
-        69.2
+        69.2,
+        65.0
       ]
     },
     "6669": {
       "code": "6669",
       "name": "緯穎",
       "market": "上市",
-      "close_price": 1785.0,
-      "prev_close": 1770.0,
-      "change": 15.0,
-      "change_pct": 0.85,
-      "volume_lots": 4.3,
-      "trade_value": 7572240000,
-      "last_updated": "2026-11-04",
+      "close_price": 1650.0,
+      "prev_close": 1785.0,
+      "change": -135.0,
+      "change_pct": -7.56,
+      "volume_lots": 5.3,
+      "trade_value": 8925040000,
+      "last_updated": "2026-11-05",
       "trend": [
         1950.0,
         1950.0,
@@ -775,20 +808,21 @@
         1810.0,
         1820.0,
         1770.0,
-        1785.0
+        1785.0,
+        1650.0
       ]
     },
     "3189": {
       "code": "3189",
       "name": "景碩",
       "market": "上市",
-      "close_price": 822.0,
-      "prev_close": 819.0,
-      "change": 3.0,
-      "change_pct": 0.37,
-      "volume_lots": 20.2,
-      "trade_value": 16237687000,
-      "last_updated": "2026-11-04",
+      "close_price": 740.0,
+      "prev_close": 822.0,
+      "change": -82.0,
+      "change_pct": -9.98,
+      "volume_lots": 17.4,
+      "trade_value": 13200105000,
+      "last_updated": "2026-11-05",
       "trend": [
         941.0,
         1035.0,
@@ -796,20 +830,21 @@
         932.0,
         910.0,
         819.0,
-        822.0
+        822.0,
+        740.0
       ]
     },
     "3017": {
       "code": "3017",
       "name": "奇鋐",
       "market": "上市",
-      "close_price": 2820.0,
-      "prev_close": 2935.0,
-      "change": -115.0,
-      "change_pct": -3.92,
-      "volume_lots": 5.6,
-      "trade_value": 15674880000,
-      "last_updated": "2026-11-04",
+      "close_price": 2565.0,
+      "prev_close": 2820.0,
+      "change": -255.0,
+      "change_pct": -9.04,
+      "volume_lots": 4.1,
+      "trade_value": 10835660000,
+      "last_updated": "2026-11-05",
       "trend": [
         3130.0,
         3215.0,
@@ -817,20 +852,21 @@
         3095.0,
         3060.0,
         2935.0,
-        2820.0
+        2820.0,
+        2565.0
       ]
     },
     "3034": {
       "code": "3034",
       "name": "聯詠",
       "market": "上市",
-      "close_price": 533.0,
-      "prev_close": 555.0,
-      "change": -22.0,
-      "change_pct": -3.96,
-      "volume_lots": 5.2,
-      "trade_value": 2737492000,
-      "last_updated": "2026-11-04",
+      "close_price": 510.0,
+      "prev_close": 533.0,
+      "change": -23.0,
+      "change_pct": -4.32,
+      "volume_lots": 2.9,
+      "trade_value": 1507058000,
+      "last_updated": "2026-11-05",
       "trend": [
         599.0,
         598.0,
@@ -838,20 +874,21 @@
         575.0,
         571.0,
         555.0,
-        533.0
+        533.0,
+        510.0
       ]
     },
     "2885": {
       "code": "2885",
       "name": "元大金",
       "market": "上市",
-      "close_price": 69.0,
-      "prev_close": 69.2,
-      "change": -0.2,
-      "change_pct": -0.29,
-      "volume_lots": 27.9,
-      "trade_value": 1908558900,
-      "last_updated": "2026-11-04",
+      "close_price": 69.1,
+      "prev_close": 69.0,
+      "change": 0.1,
+      "change_pct": 0.14,
+      "volume_lots": 22.3,
+      "trade_value": 1554161000,
+      "last_updated": "2026-11-05",
       "trend": [
         73.2,
         73.0,
@@ -859,20 +896,21 @@
         72.6,
         71.5,
         69.2,
-        69.0
+        69.0,
+        69.1
       ]
     },
     "2207": {
       "code": "2207",
       "name": "和泰車",
       "market": "上市",
-      "close_price": 534.0,
-      "prev_close": 544.0,
-      "change": -10.0,
-      "change_pct": -1.84,
-      "volume_lots": 0.4,
-      "trade_value": 189319000,
-      "last_updated": "2026-11-04",
+      "close_price": 537.0,
+      "prev_close": 534.0,
+      "change": 3.0,
+      "change_pct": 0.56,
+      "volume_lots": 0.3,
+      "trade_value": 139458000,
+      "last_updated": "2026-11-05",
       "trend": [
         551.0,
         535.0,
@@ -880,20 +918,21 @@
         534.0,
         536.0,
         544.0,
-        534.0
+        534.0,
+        537.0
       ]
     },
     "2887": {
       "code": "2887",
       "name": "台新新光金",
       "market": "上市",
-      "close_price": 40.25,
-      "prev_close": 41.25,
-      "change": -1.0,
-      "change_pct": -2.42,
-      "volume_lots": 85.8,
-      "trade_value": 3444171150,
-      "last_updated": "2026-11-04",
+      "close_price": 40.1,
+      "prev_close": 40.25,
+      "change": -0.15,
+      "change_pct": -0.37,
+      "volume_lots": 56.3,
+      "trade_value": 2267302500,
+      "last_updated": "2026-11-05",
       "trend": [
         42.2,
         42.0,
@@ -901,20 +940,21 @@
         42.25,
         41.7,
         41.25,
-        40.25
+        40.25,
+        40.1
       ]
     },
     "2002": {
       "code": "2002",
       "name": "中鋼",
       "market": "上市",
-      "close_price": 19.15,
-      "prev_close": 19.35,
+      "close_price": 18.95,
+      "prev_close": 19.15,
       "change": -0.2,
-      "change_pct": -1.03,
-      "volume_lots": 36.0,
-      "trade_value": 688977650,
-      "last_updated": "2026-11-04",
+      "change_pct": -1.04,
+      "volume_lots": 52.5,
+      "trade_value": 1009988950,
+      "last_updated": "2026-11-05",
       "trend": [
         19.75,
         19.75,
@@ -922,20 +962,21 @@
         19.25,
         19.4,
         19.35,
-        19.15
+        19.15,
+        18.95
       ]
     },
     "2360": {
       "code": "2360",
       "name": "致茂",
       "market": "上市",
-      "close_price": 1470.0,
-      "prev_close": 1545.0,
-      "change": -75.0,
-      "change_pct": -4.85,
-      "volume_lots": 7.9,
-      "trade_value": 11415515000,
-      "last_updated": "2026-11-04",
+      "close_price": 1335.0,
+      "prev_close": 1470.0,
+      "change": -135.0,
+      "change_pct": -9.18,
+      "volume_lots": 5.4,
+      "trade_value": 7333460000,
+      "last_updated": "2026-11-05",
       "trend": [
         1955.0,
         2035.0,
@@ -943,20 +984,21 @@
         1755.0,
         1715.0,
         1545.0,
-        1470.0
+        1470.0,
+        1335.0
       ]
     },
     "2801": {
       "code": "2801",
       "name": "彰銀",
       "market": "上市",
-      "close_price": 29.35,
-      "prev_close": 29.7,
-      "change": -0.35,
-      "change_pct": -1.18,
-      "volume_lots": 28.8,
-      "trade_value": 842142650,
-      "last_updated": "2026-11-04",
+      "close_price": 28.7,
+      "prev_close": 29.35,
+      "change": -0.65,
+      "change_pct": -2.21,
+      "volume_lots": 27.0,
+      "trade_value": 784601300,
+      "last_updated": "2026-11-05",
       "trend": [
         30.2,
         29.95,
@@ -964,20 +1006,21 @@
         30.7,
         30.85,
         29.7,
-        29.35
+        29.35,
+        28.7
       ]
     },
     "2886": {
       "code": "2886",
       "name": "兆豐金",
       "market": "上市",
-      "close_price": 53.5,
-      "prev_close": 53.2,
-      "change": 0.3,
-      "change_pct": 0.56,
-      "volume_lots": 29.8,
-      "trade_value": 1588411600,
-      "last_updated": "2026-11-04",
+      "close_price": 54.0,
+      "prev_close": 53.5,
+      "change": 0.5,
+      "change_pct": 0.93,
+      "volume_lots": 27.5,
+      "trade_value": 1495437000,
+      "last_updated": "2026-11-05",
       "trend": [
         55.0,
         53.9,
@@ -985,20 +1028,21 @@
         54.8,
         54.1,
         53.2,
-        53.5
+        53.5,
+        54.0
       ]
     },
     "2449": {
       "code": "2449",
       "name": "京元電子",
       "market": "上市",
-      "close_price": 248.5,
-      "prev_close": 253.5,
-      "change": -5.0,
-      "change_pct": -1.97,
-      "volume_lots": 13.0,
-      "trade_value": 3229992500,
-      "last_updated": "2026-11-04",
+      "close_price": 228.5,
+      "prev_close": 248.5,
+      "change": -20.0,
+      "change_pct": -8.05,
+      "volume_lots": 15.0,
+      "trade_value": 3494877500,
+      "last_updated": "2026-11-05",
       "trend": [
         269.0,
         277.5,
@@ -1006,20 +1050,21 @@
         253.5,
         263.0,
         253.5,
-        248.5
+        248.5,
+        228.5
       ]
     },
     "2059": {
       "code": "2059",
       "name": "川湖",
       "market": "上市",
-      "close_price": 8600.0,
-      "prev_close": 9240.0,
-      "change": -640.0,
-      "change_pct": -6.93,
-      "volume_lots": 1.5,
-      "trade_value": 13087785000,
-      "last_updated": "2026-11-04",
+      "close_price": 7995.0,
+      "prev_close": 8600.0,
+      "change": -605.0,
+      "change_pct": -7.03,
+      "volume_lots": 0.8,
+      "trade_value": 6241020000,
+      "last_updated": "2026-11-05",
       "trend": [
         9810.0,
         10150.0,
@@ -1027,7 +1072,8 @@
         9650.0,
         9420.0,
         9240.0,
-        8600.0
+        8600.0,
+        7995.0
       ]
     },
     "1590": {
@@ -1038,9 +1084,9 @@
       "prev_close": 1050.0,
       "change": 0.0,
       "change_pct": 0.0,
-      "volume_lots": 1.5,
-      "trade_value": 1526285000,
-      "last_updated": "2026-11-04",
+      "volume_lots": 1.2,
+      "trade_value": 1306965000,
+      "last_updated": "2026-11-05",
       "trend": [
         1140.0,
         1140.0,
@@ -1054,13 +1100,13 @@
       "code": "6505",
       "name": "台塑化",
       "market": "上市",
-      "close_price": 97.6,
-      "prev_close": 94.9,
-      "change": 2.7,
-      "change_pct": 2.85,
-      "volume_lots": 20.9,
-      "trade_value": 2019681500,
-      "last_updated": "2026-11-04",
+      "close_price": 87.9,
+      "prev_close": 97.6,
+      "change": -9.7,
+      "change_pct": -9.94,
+      "volume_lots": 43.4,
+      "trade_value": 3888481600,
+      "last_updated": "2026-11-05",
       "trend": [
         106.0,
         103.0,
@@ -1068,20 +1114,21 @@
         98.3,
         103.0,
         94.9,
-        97.6
+        97.6,
+        87.9
       ]
     },
     "3661": {
       "code": "3661",
       "name": "世芯-KY",
       "market": "上市",
-      "close_price": 3180.0,
-      "prev_close": 3140.0,
-      "change": 40.0,
-      "change_pct": 1.27,
-      "volume_lots": 1.8,
-      "trade_value": 5612045000,
-      "last_updated": "2026-11-04",
+      "close_price": 2960.0,
+      "prev_close": 3180.0,
+      "change": -220.0,
+      "change_pct": -6.92,
+      "volume_lots": 2.5,
+      "trade_value": 7387460000,
+      "last_updated": "2026-11-05",
       "trend": [
         3495.0,
         3800.0,
@@ -1089,20 +1136,21 @@
         3425.0,
         3395.0,
         3140.0,
-        3180.0
+        3180.0,
+        2960.0
       ]
     },
     "2884": {
       "code": "2884",
       "name": "玉山金",
       "market": "上市",
-      "close_price": 47.6,
-      "prev_close": 47.4,
-      "change": 0.2,
-      "change_pct": 0.42,
-      "volume_lots": 32.2,
-      "trade_value": 1527373950,
-      "last_updated": "2026-11-04",
+      "close_price": 47.95,
+      "prev_close": 47.6,
+      "change": 0.35,
+      "change_pct": 0.74,
+      "volume_lots": 26.8,
+      "trade_value": 1294874050,
+      "last_updated": "2026-11-05",
       "trend": [
         49.45,
         48.35,
@@ -1110,20 +1158,21 @@
         49.05,
         48.7,
         47.4,
-        47.6
+        47.6,
+        47.95
       ]
     },
     "6770": {
       "code": "6770",
       "name": "力積電",
       "market": "上市",
-      "close_price": 59.4,
-      "prev_close": 60.2,
-      "change": -0.8,
-      "change_pct": -1.33,
-      "volume_lots": 124.1,
-      "trade_value": 7347402000,
-      "last_updated": "2026-11-04",
+      "close_price": 54.8,
+      "prev_close": 59.4,
+      "change": -4.6,
+      "change_pct": -7.74,
+      "volume_lots": 96.1,
+      "trade_value": 5414126300,
+      "last_updated": "2026-11-05",
       "trend": [
         69.4,
         71.3,
@@ -1131,40 +1180,42 @@
         66.6,
         65.3,
         60.2,
-        59.4
+        59.4,
+        54.8
       ]
     },
     "2880": {
       "code": "2880",
       "name": "華南金",
       "market": "上市",
-      "close_price": 49.05,
+      "close_price": 49.6,
       "prev_close": 49.05,
-      "change": 0.0,
-      "change_pct": 0.0,
-      "volume_lots": 23.7,
-      "trade_value": 1161107850,
-      "last_updated": "2026-11-04",
+      "change": 0.55,
+      "change_pct": 1.12,
+      "volume_lots": 22.9,
+      "trade_value": 1137466600,
+      "last_updated": "2026-11-05",
       "trend": [
         50.1,
         49.3,
         50.1,
         50.4,
         49.6,
-        49.05
+        49.05,
+        49.6
       ]
     },
     "3036": {
       "code": "3036",
       "name": "文曄",
       "market": "上市",
-      "close_price": 204.5,
-      "prev_close": 201.5,
-      "change": 3.0,
-      "change_pct": 1.49,
-      "volume_lots": 13.0,
-      "trade_value": 2582784000,
-      "last_updated": "2026-11-04",
+      "close_price": 195.0,
+      "prev_close": 204.5,
+      "change": -9.5,
+      "change_pct": -4.65,
+      "volume_lots": 7.7,
+      "trade_value": 1523328500,
+      "last_updated": "2026-11-05",
       "trend": [
         215.0,
         217.0,
@@ -1172,20 +1223,21 @@
         207.0,
         204.5,
         201.5,
-        204.5
+        204.5,
+        195.0
       ]
     },
     "2357": {
       "code": "2357",
       "name": "華碩",
       "market": "上市",
-      "close_price": 877.0,
-      "prev_close": 889.0,
-      "change": -12.0,
-      "change_pct": -1.35,
-      "volume_lots": 3.9,
-      "trade_value": 3370169000,
-      "last_updated": "2026-11-04",
+      "close_price": 867.0,
+      "prev_close": 877.0,
+      "change": -10.0,
+      "change_pct": -1.14,
+      "volume_lots": 3.1,
+      "trade_value": 2673147000,
+      "last_updated": "2026-11-05",
       "trend": [
         967.0,
         988.0,
@@ -1193,40 +1245,42 @@
         906.0,
         912.0,
         889.0,
-        877.0
+        877.0,
+        867.0
       ]
     },
     "2615": {
       "code": "2615",
       "name": "萬海",
       "market": "上市",
-      "close_price": 115.5,
+      "close_price": 113.0,
       "prev_close": 115.5,
-      "change": 0.0,
-      "change_pct": 0.0,
-      "volume_lots": 17.2,
-      "trade_value": 1968825000,
-      "last_updated": "2026-11-04",
+      "change": -2.5,
+      "change_pct": -2.16,
+      "volume_lots": 14.4,
+      "trade_value": 1649317500,
+      "last_updated": "2026-11-05",
       "trend": [
         116.5,
         118.5,
         115.0,
         120.0,
         119.5,
-        115.5
+        115.5,
+        113.0
       ]
     },
     "2890": {
       "code": "2890",
       "name": "永豐金",
       "market": "上市",
-      "close_price": 43.15,
-      "prev_close": 44.4,
-      "change": -1.25,
-      "change_pct": -2.82,
-      "volume_lots": 38.3,
-      "trade_value": 1655758800,
-      "last_updated": "2026-11-04",
+      "close_price": 42.9,
+      "prev_close": 43.15,
+      "change": -0.25,
+      "change_pct": -0.58,
+      "volume_lots": 27.1,
+      "trade_value": 1175119950,
+      "last_updated": "2026-11-05",
       "trend": [
         46.25,
         46.3,
@@ -1234,20 +1288,21 @@
         46.5,
         45.8,
         44.4,
-        43.15
+        43.15,
+        42.9
       ]
     },
     "2618": {
       "code": "2618",
       "name": "長榮航",
       "market": "上市",
-      "close_price": 43.75,
-      "prev_close": 43.7,
-      "change": 0.05,
-      "change_pct": 0.11,
-      "volume_lots": 15.6,
-      "trade_value": 681126300,
-      "last_updated": "2026-11-04",
+      "close_price": 45.1,
+      "prev_close": 43.75,
+      "change": 1.35,
+      "change_pct": 3.09,
+      "volume_lots": 62.1,
+      "trade_value": 2833556000,
+      "last_updated": "2026-11-05",
       "trend": [
         42.95,
         42.4,
@@ -1255,20 +1310,21 @@
         42.7,
         43.15,
         43.7,
-        43.75
+        43.75,
+        45.1
       ]
     },
     "8046": {
       "code": "8046",
       "name": "南電",
       "market": "上市",
-      "close_price": 1080.0,
-      "prev_close": 1070.0,
-      "change": 10.0,
-      "change_pct": 0.93,
-      "volume_lots": 13.7,
-      "trade_value": 14346305000,
-      "last_updated": "2026-11-04",
+      "close_price": 972.0,
+      "prev_close": 1080.0,
+      "change": -108.0,
+      "change_pct": -10.0,
+      "volume_lots": 13.5,
+      "trade_value": 13503538000,
+      "last_updated": "2026-11-05",
       "trend": [
         1255.0,
         1300.0,
@@ -1276,20 +1332,21 @@
         1190.0,
         1185.0,
         1070.0,
-        1080.0
+        1080.0,
+        972.0
       ]
     },
     "2912": {
       "code": "2912",
       "name": "統一超",
       "market": "上市",
-      "close_price": 217.5,
-      "prev_close": 222.5,
-      "change": -5.0,
-      "change_pct": -2.25,
-      "volume_lots": 1.8,
-      "trade_value": 404560000,
-      "last_updated": "2026-11-04",
+      "close_price": 214.5,
+      "prev_close": 217.5,
+      "change": -3.0,
+      "change_pct": -1.38,
+      "volume_lots": 1.7,
+      "trade_value": 367311500,
+      "last_updated": "2026-11-05",
       "trend": [
         225.5,
         224.0,
@@ -1297,20 +1354,21 @@
         225.5,
         225.5,
         222.5,
-        217.5
+        217.5,
+        214.5
       ]
     },
     "2344": {
       "code": "2344",
       "name": "華邦電",
       "market": "上市",
-      "close_price": 141.5,
-      "prev_close": 146.0,
-      "change": -4.5,
-      "change_pct": -3.08,
-      "volume_lots": 96.0,
-      "trade_value": 13489374500,
-      "last_updated": "2026-11-04",
+      "close_price": 127.5,
+      "prev_close": 141.5,
+      "change": -14.0,
+      "change_pct": -9.89,
+      "volume_lots": 79.7,
+      "trade_value": 10391444000,
+      "last_updated": "2026-11-05",
       "trend": [
         163.0,
         172.0,
@@ -1318,40 +1376,42 @@
         164.5,
         162.0,
         146.0,
-        141.5
+        141.5,
+        127.5
       ]
     },
     "4938": {
       "code": "4938",
       "name": "和碩",
       "market": "上市",
-      "close_price": 101.5,
+      "close_price": 97.2,
       "prev_close": 101.5,
-      "change": 0.0,
-      "change_pct": 0.0,
-      "volume_lots": 10.6,
-      "trade_value": 1067411000,
-      "last_updated": "2026-11-04",
+      "change": -4.3,
+      "change_pct": -4.24,
+      "volume_lots": 9.1,
+      "trade_value": 890883800,
+      "last_updated": "2026-11-05",
       "trend": [
         105.0,
         108.0,
         104.5,
         102.5,
         102.5,
-        101.5
+        101.5,
+        97.2
       ]
     },
     "3231": {
       "code": "3231",
       "name": "緯創",
       "market": "上市",
-      "close_price": 176.0,
-      "prev_close": 176.5,
-      "change": -0.5,
-      "change_pct": -0.28,
-      "volume_lots": 30.7,
-      "trade_value": 5344979500,
-      "last_updated": "2026-11-04",
+      "close_price": 168.5,
+      "prev_close": 176.0,
+      "change": -7.5,
+      "change_pct": -4.26,
+      "volume_lots": 33.8,
+      "trade_value": 5763471000,
+      "last_updated": "2026-11-05",
       "trend": [
         190.5,
         194.5,
@@ -1359,20 +1419,21 @@
         183.5,
         181.5,
         176.5,
-        176.0
+        176.0,
+        168.5
       ]
     },
     "2376": {
       "code": "2376",
       "name": "技嘉",
       "market": "上市",
-      "close_price": 324.5,
-      "prev_close": 327.0,
-      "change": -2.5,
-      "change_pct": -0.76,
-      "volume_lots": 4.7,
-      "trade_value": 1500622000,
-      "last_updated": "2026-11-04",
+      "close_price": 313.0,
+      "prev_close": 324.5,
+      "change": -11.5,
+      "change_pct": -3.54,
+      "volume_lots": 3.2,
+      "trade_value": 1009522500,
+      "last_updated": "2026-11-05",
       "trend": [
         357.5,
         362.5,
@@ -1380,20 +1441,21 @@
         336.0,
         339.5,
         327.0,
-        324.5
+        324.5,
+        313.0
       ]
     },
     "2892": {
       "code": "2892",
       "name": "第一金",
       "market": "上市",
-      "close_price": 42.45,
-      "prev_close": 42.6,
-      "change": -0.15,
-      "change_pct": -0.35,
-      "volume_lots": 24.9,
-      "trade_value": 1055826150,
-      "last_updated": "2026-11-04",
+      "close_price": 42.25,
+      "prev_close": 42.45,
+      "change": -0.2,
+      "change_pct": -0.47,
+      "volume_lots": 23.0,
+      "trade_value": 976283700,
+      "last_updated": "2026-11-05",
       "trend": [
         43.15,
         42.8,
@@ -1401,20 +1463,21 @@
         44.6,
         43.65,
         42.6,
-        42.45
+        42.45,
+        42.25
       ]
     },
     "5876": {
       "code": "5876",
       "name": "上海商銀",
       "market": "上市",
-      "close_price": 51.8,
-      "prev_close": 52.6,
-      "change": -0.8,
-      "change_pct": -1.52,
-      "volume_lots": 9.7,
-      "trade_value": 502532900,
-      "last_updated": "2026-11-04",
+      "close_price": 51.7,
+      "prev_close": 51.8,
+      "change": -0.1,
+      "change_pct": -0.19,
+      "volume_lots": 7.2,
+      "trade_value": 376142900,
+      "last_updated": "2026-11-05",
       "trend": [
         55.4,
         53.8,
@@ -1422,20 +1485,21 @@
         54.5,
         54.3,
         52.6,
-        51.8
+        51.8,
+        51.7
       ]
     },
     "3008": {
       "code": "3008",
       "name": "大立光",
       "market": "上市",
-      "close_price": 5010.0,
-      "prev_close": 4945.0,
-      "change": 65.0,
-      "change_pct": 1.31,
-      "volume_lots": 2.5,
-      "trade_value": 12365465000,
-      "last_updated": "2026-11-04",
+      "close_price": 4525.0,
+      "prev_close": 5010.0,
+      "change": -485.0,
+      "change_pct": -9.68,
+      "volume_lots": 2.3,
+      "trade_value": 10888435000,
+      "last_updated": "2026-11-05",
       "trend": [
         6000.0,
         6335.0,
@@ -1443,20 +1507,21 @@
         5430.0,
         5490.0,
         4945.0,
-        5010.0
+        5010.0,
+        4525.0
       ]
     },
     "1519": {
       "code": "1519",
       "name": "華城",
       "market": "上市",
-      "close_price": 505.0,
-      "prev_close": 519.0,
-      "change": -14.0,
-      "change_pct": -2.7,
-      "volume_lots": 1.8,
-      "trade_value": 902437000,
-      "last_updated": "2026-11-04",
+      "close_price": 493.5,
+      "prev_close": 505.0,
+      "change": -11.5,
+      "change_pct": -2.28,
+      "volume_lots": 2.1,
+      "trade_value": 1032275000,
+      "last_updated": "2026-11-05",
       "trend": [
         585.0,
         592.0,
@@ -1464,20 +1529,21 @@
         551.0,
         555.0,
         519.0,
-        505.0
+        505.0,
+        493.5
       ]
     },
     "2356": {
       "code": "2356",
       "name": "英業達",
       "market": "上市",
-      "close_price": 56.4,
-      "prev_close": 57.2,
-      "change": -0.8,
-      "change_pct": -1.4,
-      "volume_lots": 18.4,
-      "trade_value": 1031088400,
-      "last_updated": "2026-11-04",
+      "close_price": 55.0,
+      "prev_close": 56.4,
+      "change": -1.4,
+      "change_pct": -2.48,
+      "volume_lots": 14.9,
+      "trade_value": 833281800,
+      "last_updated": "2026-11-05",
       "trend": [
         63.0,
         63.8,
@@ -1485,20 +1551,21 @@
         59.5,
         59.6,
         57.2,
-        56.4
+        56.4,
+        55.0
       ]
     },
     "6415": {
       "code": "6415",
       "name": "矽力-KY",
       "market": "上市",
-      "close_price": 457.5,
-      "prev_close": 472.5,
-      "change": -15.0,
-      "change_pct": -3.17,
-      "volume_lots": 10.7,
-      "trade_value": 4821619500,
-      "last_updated": "2026-11-04",
+      "close_price": 412.0,
+      "prev_close": 457.5,
+      "change": -45.5,
+      "change_pct": -9.95,
+      "volume_lots": 4.9,
+      "trade_value": 2067872500,
+      "last_updated": "2026-11-05",
       "trend": [
         478.0,
         525.0,
@@ -1506,20 +1573,21 @@
         502.0,
         501.0,
         472.5,
-        457.5
+        457.5,
+        412.0
       ]
     },
     "2404": {
       "code": "2404",
       "name": "漢唐",
       "market": "上市",
-      "close_price": 995.0,
-      "prev_close": 1000.0,
-      "change": -5.0,
-      "change_pct": -0.5,
-      "volume_lots": 1.2,
-      "trade_value": 1162119000,
-      "last_updated": "2026-11-04",
+      "close_price": 956.0,
+      "prev_close": 995.0,
+      "change": -39.0,
+      "change_pct": -3.92,
+      "volume_lots": 1.9,
+      "trade_value": 1877411000,
+      "last_updated": "2026-11-05",
       "trend": [
         1085.0,
         1100.0,
@@ -1527,20 +1595,21 @@
         1075.0,
         1060.0,
         1000.0,
-        995.0
+        995.0,
+        956.0
       ]
     },
     "6919": {
       "code": "6919",
       "name": "康霈",
       "market": "上市",
-      "close_price": 60.6,
-      "prev_close": 63.1,
-      "change": -2.5,
-      "change_pct": -3.96,
-      "volume_lots": 8.3,
-      "trade_value": 510543500,
-      "last_updated": "2026-11-04",
+      "close_price": 66.6,
+      "prev_close": 60.6,
+      "change": 6.0,
+      "change_pct": 9.9,
+      "volume_lots": 2.8,
+      "trade_value": 180752300,
+      "last_updated": "2026-11-05",
       "trend": [
         67.5,
         67.5,
@@ -1548,20 +1617,21 @@
         66.6,
         64.5,
         63.1,
-        60.6
+        60.6,
+        66.6
       ]
     },
     "6515": {
       "code": "6515",
       "name": "穎崴",
       "market": "上市",
-      "close_price": 4020.0,
-      "prev_close": 4075.0,
-      "change": -55.0,
-      "change_pct": -1.35,
-      "volume_lots": 1.0,
-      "trade_value": 3730975000,
-      "last_updated": "2026-11-04",
+      "close_price": 3620.0,
+      "prev_close": 4020.0,
+      "change": -400.0,
+      "change_pct": -9.95,
+      "volume_lots": 0.5,
+      "trade_value": 1738025000,
+      "last_updated": "2026-11-05",
       "trend": [
         4775.0,
         4935.0,
@@ -1569,20 +1639,21 @@
         4565.0,
         4485.0,
         4075.0,
-        4020.0
+        4020.0,
+        3620.0
       ]
     },
     "2324": {
       "code": "2324",
       "name": "仁寶",
       "market": "上市",
-      "close_price": 33.25,
-      "prev_close": 33.55,
-      "change": -0.3,
-      "change_pct": -0.89,
-      "volume_lots": 36.6,
-      "trade_value": 1203617650,
-      "last_updated": "2026-11-04",
+      "close_price": 32.45,
+      "prev_close": 33.25,
+      "change": -0.8,
+      "change_pct": -2.41,
+      "volume_lots": 24.2,
+      "trade_value": 796151000,
+      "last_updated": "2026-11-05",
       "trend": [
         37.6,
         37.95,
@@ -1590,20 +1661,21 @@
         35.2,
         34.75,
         33.55,
-        33.25
+        33.25,
+        32.45
       ]
     },
     "3533": {
       "code": "3533",
       "name": "嘉澤",
       "market": "上市",
-      "close_price": 1820.0,
-      "prev_close": 1735.0,
-      "change": 85.0,
-      "change_pct": 4.9,
-      "volume_lots": 1.5,
-      "trade_value": 2562960000,
-      "last_updated": "2026-11-04",
+      "close_price": 1660.0,
+      "prev_close": 1820.0,
+      "change": -160.0,
+      "change_pct": -8.79,
+      "volume_lots": 1.2,
+      "trade_value": 2092175000,
+      "last_updated": "2026-11-05",
       "trend": [
         1925.0,
         1955.0,
@@ -1611,20 +1683,21 @@
         1860.0,
         1820.0,
         1735.0,
-        1820.0
+        1820.0,
+        1660.0
       ]
     },
     "2347": {
       "code": "2347",
       "name": "聯強",
       "market": "上市",
-      "close_price": 90.3,
-      "prev_close": 91.4,
-      "change": -1.1,
-      "change_pct": -1.2,
-      "volume_lots": 4.2,
-      "trade_value": 373877500,
-      "last_updated": "2026-11-04",
+      "close_price": 87.2,
+      "prev_close": 90.3,
+      "change": -3.1,
+      "change_pct": -3.43,
+      "volume_lots": 1.7,
+      "trade_value": 151745000,
+      "last_updated": "2026-11-05",
       "trend": [
         102.0,
         102.5,
@@ -1632,20 +1705,21 @@
         99.5,
         94.5,
         91.4,
-        90.3
+        90.3,
+        87.2
       ]
     },
     "2313": {
       "code": "2313",
       "name": "華通",
       "market": "上市",
-      "close_price": 182.5,
-      "prev_close": 186.0,
-      "change": -3.5,
-      "change_pct": -1.88,
-      "volume_lots": 24.1,
-      "trade_value": 4377754500,
-      "last_updated": "2026-11-04",
+      "close_price": 165.5,
+      "prev_close": 182.5,
+      "change": -17.0,
+      "change_pct": -9.32,
+      "volume_lots": 23.0,
+      "trade_value": 3902646500,
+      "last_updated": "2026-11-05",
       "trend": [
         216.0,
         224.0,
@@ -1653,20 +1727,21 @@
         202.0,
         205.0,
         186.0,
-        182.5
+        182.5,
+        165.5
       ]
     },
     "1504": {
       "code": "1504",
       "name": "東元",
       "market": "上市",
-      "close_price": 65.0,
-      "prev_close": 66.2,
-      "change": -1.2,
-      "change_pct": -1.81,
-      "volume_lots": 7.8,
-      "trade_value": 507227400,
-      "last_updated": "2026-11-04",
+      "close_price": 63.4,
+      "prev_close": 65.0,
+      "change": -1.6,
+      "change_pct": -2.46,
+      "volume_lots": 7.1,
+      "trade_value": 457401700,
+      "last_updated": "2026-11-05",
       "trend": [
         69.0,
         70.2,
@@ -1674,20 +1749,21 @@
         69.1,
         69.3,
         66.2,
-        65.0
+        65.0,
+        63.4
       ]
     },
     "2337": {
       "code": "2337",
       "name": "旺宏",
       "market": "上市",
-      "close_price": 87.2,
-      "prev_close": 88.3,
-      "change": -1.1,
-      "change_pct": -1.25,
-      "volume_lots": 60.7,
-      "trade_value": 5263528200,
-      "last_updated": "2026-11-04",
+      "close_price": 79.7,
+      "prev_close": 87.2,
+      "change": -7.5,
+      "change_pct": -8.6,
+      "volume_lots": 45.6,
+      "trade_value": 3739049600,
+      "last_updated": "2026-11-05",
       "trend": [
         103.0,
         103.5,
@@ -1695,20 +1771,21 @@
         95.4,
         96.2,
         88.3,
-        87.2
+        87.2,
+        79.7
       ]
     },
     "7750": {
       "code": "7750",
       "name": "新代",
       "market": "上市",
-      "close_price": 1490.0,
-      "prev_close": 1655.0,
-      "change": -165.0,
-      "change_pct": -9.97,
-      "volume_lots": 0.5,
-      "trade_value": 838520000,
-      "last_updated": "2026-11-04",
+      "close_price": 1485.0,
+      "prev_close": 1490.0,
+      "change": -5.0,
+      "change_pct": -0.34,
+      "volume_lots": 0.8,
+      "trade_value": 1182225000,
+      "last_updated": "2026-11-05",
       "trend": [
         1990.0,
         2005.0,
@@ -1716,20 +1793,21 @@
         2035.0,
         1835.0,
         1655.0,
-        1490.0
+        1490.0,
+        1485.0
       ]
     },
     "5871": {
       "code": "5871",
       "name": "中租-KY",
       "market": "上市",
-      "close_price": 104.0,
-      "prev_close": 105.0,
-      "change": -1.0,
-      "change_pct": -0.95,
-      "volume_lots": 7.5,
-      "trade_value": 782450500,
-      "last_updated": "2026-11-04",
+      "close_price": 104.5,
+      "prev_close": 104.0,
+      "change": 0.5,
+      "change_pct": 0.48,
+      "volume_lots": 7.4,
+      "trade_value": 778500500,
+      "last_updated": "2026-11-05",
       "trend": [
         108.0,
         107.5,
@@ -1737,20 +1815,21 @@
         105.5,
         105.0,
         105.0,
-        104.0
+        104.0,
+        104.5
       ]
     },
     "1402": {
       "code": "1402",
       "name": "遠東新",
       "market": "上市",
-      "close_price": 28.05,
-      "prev_close": 28.55,
-      "change": -0.5,
-      "change_pct": -1.75,
-      "volume_lots": 8.9,
-      "trade_value": 249324500,
-      "last_updated": "2026-11-04",
+      "close_price": 28.15,
+      "prev_close": 28.05,
+      "change": 0.1,
+      "change_pct": 0.36,
+      "volume_lots": 6.0,
+      "trade_value": 169739300,
+      "last_updated": "2026-11-05",
       "trend": [
         28.8,
         28.15,
@@ -1758,20 +1837,21 @@
         28.25,
         28.55,
         28.55,
-        28.05
+        28.05,
+        28.15
       ]
     },
     "3044": {
       "code": "3044",
       "name": "健鼎",
       "market": "上市",
-      "close_price": 484.0,
-      "prev_close": 488.5,
-      "change": -4.5,
-      "change_pct": -0.92,
-      "volume_lots": 2.9,
-      "trade_value": 1393708500,
-      "last_updated": "2026-11-04",
+      "close_price": 438.5,
+      "prev_close": 484.0,
+      "change": -45.5,
+      "change_pct": -9.4,
+      "volume_lots": 3.4,
+      "trade_value": 1498865500,
+      "last_updated": "2026-11-05",
       "trend": [
         522.0,
         544.0,
@@ -1779,20 +1859,21 @@
         512.0,
         527.0,
         488.5,
-        484.0
+        484.0,
+        438.5
       ]
     },
     "1605": {
       "code": "1605",
       "name": "華新",
       "market": "上市",
-      "close_price": 34.45,
-      "prev_close": 35.0,
-      "change": -0.55,
-      "change_pct": -1.57,
-      "volume_lots": 33.5,
-      "trade_value": 1159328100,
-      "last_updated": "2026-11-04",
+      "close_price": 32.6,
+      "prev_close": 34.45,
+      "change": -1.85,
+      "change_pct": -5.37,
+      "volume_lots": 42.2,
+      "trade_value": 1415688450,
+      "last_updated": "2026-11-05",
       "trend": [
         37.05,
         37.55,
@@ -1800,20 +1881,21 @@
         35.95,
         37.6,
         35.0,
-        34.45
+        34.45,
+        32.6
       ]
     },
     "3702": {
       "code": "3702",
       "name": "大聯大",
       "market": "上市",
-      "close_price": 99.6,
-      "prev_close": 101.0,
-      "change": -1.4,
-      "change_pct": -1.39,
-      "volume_lots": 11.6,
-      "trade_value": 1151413800,
-      "last_updated": "2026-11-04",
+      "close_price": 92.1,
+      "prev_close": 99.6,
+      "change": -7.5,
+      "change_pct": -7.53,
+      "volume_lots": 17.1,
+      "trade_value": 1605634900,
+      "last_updated": "2026-11-05",
       "trend": [
         116.5,
         116.0,
@@ -1821,20 +1903,21 @@
         108.5,
         105.5,
         101.0,
-        99.6
+        99.6,
+        92.1
       ]
     },
     "2610": {
       "code": "2610",
       "name": "華航",
       "market": "上市",
-      "close_price": 20.5,
-      "prev_close": 20.7,
-      "change": -0.2,
-      "change_pct": -0.97,
-      "volume_lots": 20.1,
-      "trade_value": 413044900,
-      "last_updated": "2026-11-04",
+      "close_price": 21.65,
+      "prev_close": 20.5,
+      "change": 1.15,
+      "change_pct": 5.61,
+      "volume_lots": 89.6,
+      "trade_value": 1940315300,
+      "last_updated": "2026-11-05",
       "trend": [
         20.45,
         20.25,
@@ -1842,20 +1925,21 @@
         20.15,
         20.65,
         20.7,
-        20.5
+        20.5,
+        21.65
       ]
     },
     "1101": {
       "code": "1101",
       "name": "台泥",
       "market": "上市",
-      "close_price": 27.25,
-      "prev_close": 27.7,
-      "change": -0.45,
-      "change_pct": -1.62,
-      "volume_lots": 56.7,
-      "trade_value": 1543274250,
-      "last_updated": "2026-11-04",
+      "close_price": 27.2,
+      "prev_close": 27.25,
+      "change": -0.05,
+      "change_pct": -0.18,
+      "volume_lots": 50.0,
+      "trade_value": 1381706000,
+      "last_updated": "2026-11-05",
       "trend": [
         28.1,
         28.0,
@@ -1863,40 +1947,42 @@
         28.35,
         28.1,
         27.7,
-        27.25
+        27.25,
+        27.2
       ]
     },
     "6789": {
       "code": "6789",
       "name": "采鈺",
       "market": "上市",
-      "close_price": 390.0,
+      "close_price": 360.0,
       "prev_close": 390.0,
-      "change": 0.0,
-      "change_pct": 0.0,
-      "volume_lots": 1.6,
-      "trade_value": 596390000,
-      "last_updated": "2026-11-04",
+      "change": -30.0,
+      "change_pct": -7.69,
+      "volume_lots": 1.1,
+      "trade_value": 418257000,
+      "last_updated": "2026-11-05",
       "trend": [
         433.5,
         447.0,
         438.5,
         411.0,
         414.5,
-        390.0
+        390.0,
+        360.0
       ]
     },
     "2409": {
       "code": "2409",
       "name": "友達",
       "market": "上市",
-      "close_price": 29.1,
-      "prev_close": 28.8,
-      "change": 0.3,
-      "change_pct": 1.04,
-      "volume_lots": 191.7,
-      "trade_value": 5495937550,
-      "last_updated": "2026-11-04",
+      "close_price": 27.25,
+      "prev_close": 29.1,
+      "change": -1.85,
+      "change_pct": -6.36,
+      "volume_lots": 176.4,
+      "trade_value": 4910917850,
+      "last_updated": "2026-11-05",
       "trend": [
         33.45,
         35.55,
@@ -1904,20 +1990,21 @@
         30.65,
         30.75,
         28.8,
-        29.1
+        29.1,
+        27.25
       ]
     },
     "1802": {
       "code": "1802",
       "name": "台玻",
       "market": "上市",
-      "close_price": 66.7,
-      "prev_close": 67.7,
-      "change": -1.0,
-      "change_pct": -1.48,
-      "volume_lots": 277.5,
-      "trade_value": 18490346000,
-      "last_updated": "2026-11-04",
+      "close_price": 60.1,
+      "prev_close": 66.7,
+      "change": -6.6,
+      "change_pct": -9.9,
+      "volume_lots": 111.0,
+      "trade_value": 6834807400,
+      "last_updated": "2026-11-05",
       "trend": [
         65.2,
         65.6,
@@ -1925,20 +2012,21 @@
         62.3,
         63.7,
         67.7,
-        66.7
+        66.7,
+        60.1
       ]
     },
     "6239": {
       "code": "6239",
       "name": "力成",
       "market": "上市",
-      "close_price": 240.5,
-      "prev_close": 239.5,
-      "change": 1.0,
-      "change_pct": 0.42,
-      "volume_lots": 10.5,
-      "trade_value": 2481240000,
-      "last_updated": "2026-11-04",
+      "close_price": 220.0,
+      "prev_close": 240.5,
+      "change": -20.5,
+      "change_pct": -8.52,
+      "volume_lots": 9.0,
+      "trade_value": 2033406500,
+      "last_updated": "2026-11-05",
       "trend": [
         254.5,
         272.5,
@@ -1946,20 +2034,21 @@
         256.0,
         257.5,
         239.5,
-        240.5
+        240.5,
+        220.0
       ]
     },
     "8210": {
       "code": "8210",
       "name": "勤誠",
       "market": "上市",
-      "close_price": 634.0,
-      "prev_close": 647.0,
-      "change": -13.0,
-      "change_pct": -2.01,
-      "volume_lots": 2.2,
-      "trade_value": 1409127000,
-      "last_updated": "2026-11-04",
+      "close_price": 596.0,
+      "prev_close": 634.0,
+      "change": -38.0,
+      "change_pct": -5.99,
+      "volume_lots": 2.0,
+      "trade_value": 1202274000,
+      "last_updated": "2026-11-05",
       "trend": [
         775.0,
         781.0,
@@ -1967,20 +2056,21 @@
         716.0,
         705.0,
         647.0,
-        634.0
+        634.0,
+        596.0
       ]
     },
     "2609": {
       "code": "2609",
       "name": "陽明",
       "market": "上市",
-      "close_price": 62.3,
-      "prev_close": 62.1,
-      "change": 0.2,
-      "change_pct": 0.32,
-      "volume_lots": 15.7,
-      "trade_value": 967454900,
-      "last_updated": "2026-11-04",
+      "close_price": 60.0,
+      "prev_close": 62.3,
+      "change": -2.3,
+      "change_pct": -3.69,
+      "volume_lots": 17.8,
+      "trade_value": 1090602900,
+      "last_updated": "2026-11-05",
       "trend": [
         63.0,
         62.9,
@@ -1988,20 +2078,21 @@
         63.5,
         64.0,
         62.1,
-        62.3
+        62.3,
+        60.0
       ]
     },
     "2451": {
       "code": "2451",
       "name": "創見",
       "market": "上市",
-      "close_price": 263.0,
-      "prev_close": 273.0,
-      "change": -10.0,
-      "change_pct": -3.66,
-      "volume_lots": 3.5,
-      "trade_value": 924079000,
-      "last_updated": "2026-11-04",
+      "close_price": 254.5,
+      "prev_close": 263.0,
+      "change": -8.5,
+      "change_pct": -3.23,
+      "volume_lots": 2.8,
+      "trade_value": 731304500,
+      "last_updated": "2026-11-05",
       "trend": [
         281.5,
         293.5,
@@ -2009,20 +2100,21 @@
         284.0,
         285.0,
         273.0,
-        263.0
+        263.0,
+        254.5
       ]
     },
     "2834": {
       "code": "2834",
       "name": "臺企銀",
       "market": "上市",
-      "close_price": 17.65,
-      "prev_close": 17.7,
-      "change": -0.05,
-      "change_pct": -0.28,
-      "volume_lots": 24.7,
-      "trade_value": 435461100,
-      "last_updated": "2026-11-04",
+      "close_price": 17.5,
+      "prev_close": 17.65,
+      "change": -0.15,
+      "change_pct": -0.85,
+      "volume_lots": 19.4,
+      "trade_value": 342161650,
+      "last_updated": "2026-11-05",
       "trend": [
         17.9,
         18.0,
@@ -2030,7 +2122,8 @@
         18.05,
         18.05,
         17.7,
-        17.65
+        17.65,
+        17.5
       ]
     },
     "2812": {
@@ -2038,12 +2131,12 @@
       "name": "台中銀",
       "market": "上市",
       "close_price": 18.05,
-      "prev_close": 18.15,
-      "change": -0.1,
-      "change_pct": -0.55,
-      "volume_lots": 32.2,
-      "trade_value": 583662400,
-      "last_updated": "2026-11-04",
+      "prev_close": 18.05,
+      "change": 0.0,
+      "change_pct": 0.0,
+      "volume_lots": 12.2,
+      "trade_value": 221079300,
+      "last_updated": "2026-11-05",
       "trend": [
         18.6,
         18.6,
@@ -2058,13 +2151,13 @@
       "code": "6139",
       "name": "亞翔",
       "market": "上市",
-      "close_price": 609.0,
-      "prev_close": 608.0,
-      "change": 1.0,
-      "change_pct": 0.16,
-      "volume_lots": 3.3,
-      "trade_value": 2003666000,
-      "last_updated": "2026-11-04",
+      "close_price": 567.0,
+      "prev_close": 609.0,
+      "change": -42.0,
+      "change_pct": -6.9,
+      "volume_lots": 2.2,
+      "trade_value": 1263762000,
+      "last_updated": "2026-11-05",
       "trend": [
         652.0,
         673.0,
@@ -2072,20 +2165,21 @@
         636.0,
         637.0,
         608.0,
-        609.0
+        609.0,
+        567.0
       ]
     },
     "2377": {
       "code": "2377",
       "name": "微星",
       "market": "上市",
-      "close_price": 150.5,
-      "prev_close": 153.0,
-      "change": -2.5,
-      "change_pct": -1.63,
-      "volume_lots": 7.7,
-      "trade_value": 1142505000,
-      "last_updated": "2026-11-04",
+      "close_price": 142.5,
+      "prev_close": 150.5,
+      "change": -8.0,
+      "change_pct": -5.32,
+      "volume_lots": 5.9,
+      "trade_value": 862698500,
+      "last_updated": "2026-11-05",
       "trend": [
         166.0,
         168.5,
@@ -2093,20 +2187,21 @@
         157.5,
         156.5,
         153.0,
-        150.5
+        150.5,
+        142.5
       ]
     },
     "5274": {
       "code": "5274",
       "name": "信驊",
       "market": "上櫃",
-      "close_price": 14035.0,
-      "prev_close": 14730.0,
-      "change": -695.0,
-      "change_pct": -4.72,
+      "close_price": 12635.0,
+      "prev_close": 14035.0,
+      "change": -1400.0,
+      "change_pct": -9.98,
       "volume_lots": 0.7,
-      "trade_value": 10089550000,
-      "last_updated": "2026-11-04",
+      "trade_value": 8374910000,
+      "last_updated": "2026-11-05",
       "trend": [
         16015.0,
         17295.0,
@@ -2114,20 +2209,21 @@
         15970.0,
         15625.0,
         14730.0,
-        14035.0
+        14035.0,
+        12635.0
       ]
     },
     "3491": {
       "code": "3491",
       "name": "昇達科",
       "market": "上櫃",
-      "close_price": 1225.0,
-      "prev_close": 1260.0,
-      "change": -35.0,
-      "change_pct": -2.78,
-      "volume_lots": 1.6,
-      "trade_value": 1875120000,
-      "last_updated": "2026-11-04",
+      "close_price": 1180.0,
+      "prev_close": 1225.0,
+      "change": -45.0,
+      "change_pct": -3.67,
+      "volume_lots": 1.7,
+      "trade_value": 2106400000,
+      "last_updated": "2026-11-05",
       "trend": [
         1275.0,
         1340.0,
@@ -2135,20 +2231,21 @@
         1255.0,
         1300.0,
         1260.0,
-        1225.0
+        1225.0,
+        1180.0
       ]
     },
     "6223": {
       "code": "6223",
       "name": "旺矽",
       "market": "上櫃",
-      "close_price": 4135.0,
-      "prev_close": 4190.0,
-      "change": -55.0,
-      "change_pct": -1.31,
-      "volume_lots": 2.1,
-      "trade_value": 8346745000,
-      "last_updated": "2026-11-04",
+      "close_price": 3725.0,
+      "prev_close": 4135.0,
+      "change": -410.0,
+      "change_pct": -9.92,
+      "volume_lots": 0.7,
+      "trade_value": 2800750000,
+      "last_updated": "2026-11-05",
       "trend": [
         4790.0,
         5115.0,
@@ -2156,20 +2253,21 @@
         4610.0,
         4655.0,
         4190.0,
-        4135.0
+        4135.0,
+        3725.0
       ]
     },
     "6121": {
       "code": "6121",
       "name": "新普",
       "market": "上櫃",
-      "close_price": 365.0,
-      "prev_close": 369.0,
-      "change": -4.0,
-      "change_pct": -1.08,
-      "volume_lots": 0.8,
-      "trade_value": 296132500,
-      "last_updated": "2026-11-04",
+      "close_price": 356.0,
+      "prev_close": 365.0,
+      "change": -9.0,
+      "change_pct": -2.47,
+      "volume_lots": 0.3,
+      "trade_value": 115622500,
+      "last_updated": "2026-11-05",
       "trend": [
         375.0,
         382.0,
@@ -2177,20 +2275,21 @@
         372.5,
         373.0,
         369.0,
-        365.0
+        365.0,
+        356.0
       ]
     },
     "6488": {
       "code": "6488",
       "name": "環球晶",
       "market": "上櫃",
-      "close_price": 619.0,
-      "prev_close": 685.0,
-      "change": -66.0,
-      "change_pct": -9.64,
-      "volume_lots": 23.6,
-      "trade_value": 14906489000,
-      "last_updated": "2026-11-04",
+      "close_price": 564.0,
+      "prev_close": 619.0,
+      "change": -55.0,
+      "change_pct": -8.89,
+      "volume_lots": 18.1,
+      "trade_value": 10534967000,
+      "last_updated": "2026-11-05",
       "trend": [
         814.0,
         849.0,
@@ -2198,20 +2297,21 @@
         756.0,
         760.0,
         685.0,
-        619.0
+        619.0,
+        564.0
       ]
     },
     "6548": {
       "code": "6548",
       "name": "長科",
       "market": "上櫃",
-      "close_price": 64.0,
-      "prev_close": 63.2,
-      "change": 0.8,
-      "change_pct": 1.27,
-      "volume_lots": 2.8,
-      "trade_value": 171529500,
-      "last_updated": "2026-11-04",
+      "close_price": 60.0,
+      "prev_close": 64.0,
+      "change": -4.0,
+      "change_pct": -6.25,
+      "volume_lots": 2.0,
+      "trade_value": 122169300,
+      "last_updated": "2026-11-05",
       "trend": [
         72.8,
         77.9,
@@ -2219,20 +2319,21 @@
         67.1,
         66.8,
         63.2,
-        64.0
+        64.0,
+        60.0
       ]
     },
     "8299": {
       "code": "8299",
       "name": "群聯",
       "market": "上櫃",
-      "close_price": 1710.0,
-      "prev_close": 1690.0,
-      "change": 20.0,
-      "change_pct": 1.18,
-      "volume_lots": 4.0,
-      "trade_value": 6744120000,
-      "last_updated": "2026-11-04",
+      "close_price": 1560.0,
+      "prev_close": 1710.0,
+      "change": -150.0,
+      "change_pct": -8.77,
+      "volume_lots": 4.5,
+      "trade_value": 7107760000,
+      "last_updated": "2026-11-05",
       "trend": [
         1910.0,
         2040.0,
@@ -2240,20 +2341,21 @@
         1930.0,
         1875.0,
         1690.0,
-        1710.0
+        1710.0,
+        1560.0
       ]
     },
     "1785": {
       "code": "1785",
       "name": "光洋科",
       "market": "上櫃",
-      "close_price": 81.0,
-      "prev_close": 78.6,
-      "change": 2.4,
-      "change_pct": 3.05,
-      "volume_lots": 21.5,
-      "trade_value": 1707723000,
-      "last_updated": "2026-11-04",
+      "close_price": 77.4,
+      "prev_close": 81.0,
+      "change": -3.6,
+      "change_pct": -4.44,
+      "volume_lots": 12.5,
+      "trade_value": 1000148400,
+      "last_updated": "2026-11-05",
       "trend": [
         91.7,
         95.0,
@@ -2261,20 +2363,21 @@
         88.0,
         87.3,
         78.6,
-        81.0
+        81.0,
+        77.4
       ]
     },
     "6274": {
       "code": "6274",
       "name": "台燿",
       "market": "上櫃",
-      "close_price": 1115.0,
-      "prev_close": 1090.0,
-      "change": 25.0,
-      "change_pct": 2.29,
-      "volume_lots": 18.6,
-      "trade_value": 20278770000,
-      "last_updated": "2026-11-04",
+      "close_price": 1005.0,
+      "prev_close": 1115.0,
+      "change": -110.0,
+      "change_pct": -9.87,
+      "volume_lots": 10.2,
+      "trade_value": 10375505000,
+      "last_updated": "2026-11-05",
       "trend": [
         1280.0,
         1375.0,
@@ -2282,20 +2385,21 @@
         1265.0,
         1210.0,
         1090.0,
-        1115.0
+        1115.0,
+        1005.0
       ]
     },
     "3363": {
       "code": "3363",
       "name": "上詮",
       "market": "上櫃",
-      "close_price": 421.0,
-      "prev_close": 415.5,
-      "change": 5.5,
-      "change_pct": 1.32,
-      "volume_lots": 3.4,
-      "trade_value": 1398544500,
-      "last_updated": "2026-11-04",
+      "close_price": 400.5,
+      "prev_close": 421.0,
+      "change": -20.5,
+      "change_pct": -4.87,
+      "volume_lots": 3.8,
+      "trade_value": 1567491000,
+      "last_updated": "2026-11-05",
       "trend": [
         499.5,
         533.0,
@@ -2303,20 +2407,21 @@
         474.5,
         458.0,
         415.5,
-        421.0
+        421.0,
+        400.5
       ]
     },
     "5347": {
       "code": "5347",
       "name": "世界",
       "market": "上櫃",
-      "close_price": 137.0,
-      "prev_close": 134.0,
-      "change": 3.0,
-      "change_pct": 2.24,
-      "volume_lots": 16.4,
-      "trade_value": 2174482000,
-      "last_updated": "2026-11-04",
+      "close_price": 126.0,
+      "prev_close": 137.0,
+      "change": -11.0,
+      "change_pct": -8.03,
+      "volume_lots": 14.5,
+      "trade_value": 1861072500,
+      "last_updated": "2026-11-05",
       "trend": [
         161.5,
         167.5,
@@ -2324,20 +2429,21 @@
         144.0,
         145.0,
         134.0,
-        137.0
+        137.0,
+        126.0
       ]
     },
     "7828": {
       "code": "7828",
       "name": "創新服務",
       "market": "上櫃",
-      "close_price": 1215.0,
-      "prev_close": 1200.0,
-      "change": 15.0,
-      "change_pct": 1.25,
+      "close_price": 1125.0,
+      "prev_close": 1215.0,
+      "change": -90.0,
+      "change_pct": -7.41,
       "volume_lots": 0.1,
-      "trade_value": 170525000,
-      "last_updated": "2026-11-04",
+      "trade_value": 121505000,
+      "last_updated": "2026-11-05",
       "trend": [
         1370.0,
         1410.0,
@@ -2345,20 +2451,21 @@
         1240.0,
         1250.0,
         1200.0,
-        1215.0
+        1215.0,
+        1125.0
       ]
     },
     "3293": {
       "code": "3293",
       "name": "鈊象",
       "market": "上櫃",
-      "close_price": 778.0,
-      "prev_close": 777.0,
-      "change": 1.0,
-      "change_pct": 0.13,
-      "volume_lots": 0.9,
-      "trade_value": 696899000,
-      "last_updated": "2026-11-04",
+      "close_price": 760.0,
+      "prev_close": 778.0,
+      "change": -18.0,
+      "change_pct": -2.31,
+      "volume_lots": 1.1,
+      "trade_value": 841266000,
+      "last_updated": "2026-11-05",
       "trend": [
         796.0,
         800.0,
@@ -2366,20 +2473,21 @@
         810.0,
         797.0,
         777.0,
-        778.0
+        778.0,
+        760.0
       ]
     },
     "4979": {
       "code": "4979",
       "name": "華星光",
       "market": "上櫃",
-      "close_price": 376.0,
-      "prev_close": 383.5,
-      "change": -7.5,
-      "change_pct": -1.96,
-      "volume_lots": 8.9,
-      "trade_value": 3306197500,
-      "last_updated": "2026-11-04",
+      "close_price": 346.5,
+      "prev_close": 376.0,
+      "change": -29.5,
+      "change_pct": -7.85,
+      "volume_lots": 6.8,
+      "trade_value": 2427168500,
+      "last_updated": "2026-11-05",
       "trend": [
         467.5,
         488.5,
@@ -2387,20 +2495,21 @@
         447.0,
         426.0,
         383.5,
-        376.0
+        376.0,
+        346.5
       ]
     },
     "8069": {
       "code": "8069",
       "name": "元太",
       "market": "上櫃",
-      "close_price": 144.5,
-      "prev_close": 143.5,
-      "change": 1.0,
-      "change_pct": 0.7,
-      "volume_lots": 6.4,
-      "trade_value": 920887500,
-      "last_updated": "2026-11-04",
+      "close_price": 141.0,
+      "prev_close": 144.5,
+      "change": -3.5,
+      "change_pct": -2.42,
+      "volume_lots": 5.9,
+      "trade_value": 842077000,
+      "last_updated": "2026-11-05",
       "trend": [
         157.0,
         156.0,
@@ -2408,20 +2517,21 @@
         149.0,
         152.5,
         143.5,
-        144.5
+        144.5,
+        141.0
       ]
     },
     "6182": {
       "code": "6182",
       "name": "合晶",
       "market": "上櫃",
-      "close_price": 82.8,
-      "prev_close": 85.3,
-      "change": -2.5,
-      "change_pct": -2.93,
-      "volume_lots": 42.8,
-      "trade_value": 3504285100,
-      "last_updated": "2026-11-04",
+      "close_price": 74.7,
+      "prev_close": 82.8,
+      "change": -8.1,
+      "change_pct": -9.78,
+      "volume_lots": 28.2,
+      "trade_value": 2183758500,
+      "last_updated": "2026-11-05",
       "trend": [
         102.0,
         105.0,
@@ -2429,40 +2539,42 @@
         93.9,
         94.1,
         85.3,
-        82.8
+        82.8,
+        74.7
       ]
     },
     "3529": {
       "code": "3529",
       "name": "力旺",
       "market": "上櫃",
-      "close_price": 2160.0,
+      "close_price": 2025.0,
       "prev_close": 2160.0,
-      "change": 0.0,
-      "change_pct": 0.0,
-      "volume_lots": 1.9,
-      "trade_value": 3888550000,
-      "last_updated": "2026-11-04",
+      "change": -135.0,
+      "change_pct": -6.25,
+      "volume_lots": 0.9,
+      "trade_value": 1929260000,
+      "last_updated": "2026-11-05",
       "trend": [
         2515.0,
         2655.0,
         2540.0,
         2490.0,
         2395.0,
-        2160.0
+        2160.0,
+        2025.0
       ]
     },
     "3163": {
       "code": "3163",
       "name": "波若威",
       "market": "上櫃",
-      "close_price": 465.5,
-      "prev_close": 462.0,
-      "change": 3.5,
-      "change_pct": 0.76,
-      "volume_lots": 2.9,
-      "trade_value": 1314213000,
-      "last_updated": "2026-11-04",
+      "close_price": 429.5,
+      "prev_close": 465.5,
+      "change": -36.0,
+      "change_pct": -7.73,
+      "volume_lots": 2.5,
+      "trade_value": 1113709500,
+      "last_updated": "2026-11-05",
       "trend": [
         538.0,
         569.0,
@@ -2470,20 +2582,21 @@
         509.0,
         510.0,
         462.0,
-        465.5
+        465.5,
+        429.5
       ]
     },
     "3081": {
       "code": "3081",
       "name": "聯亞",
       "market": "上櫃",
-      "close_price": 2100.0,
-      "prev_close": 2175.0,
-      "change": -75.0,
-      "change_pct": -3.45,
-      "volume_lots": 5.2,
-      "trade_value": 10829885000,
-      "last_updated": "2026-11-04",
+      "close_price": 1890.0,
+      "prev_close": 2100.0,
+      "change": -210.0,
+      "change_pct": -10.0,
+      "volume_lots": 4.7,
+      "trade_value": 9104865000,
+      "last_updated": "2026-11-05",
       "trend": [
         2500.0,
         2580.0,
@@ -2491,20 +2604,21 @@
         2370.0,
         2415.0,
         2175.0,
-        2100.0
+        2100.0,
+        1890.0
       ]
     },
     "3211": {
       "code": "3211",
       "name": "順達",
       "market": "上櫃",
-      "close_price": 270.0,
-      "prev_close": 279.5,
-      "change": -9.5,
-      "change_pct": -3.4,
-      "volume_lots": 4.4,
-      "trade_value": 1183392000,
-      "last_updated": "2026-11-04",
+      "close_price": 250.0,
+      "prev_close": 270.0,
+      "change": -20.0,
+      "change_pct": -7.41,
+      "volume_lots": 3.7,
+      "trade_value": 942388000,
+      "last_updated": "2026-11-05",
       "trend": [
         327.0,
         337.0,
@@ -2512,40 +2626,42 @@
         297.5,
         302.0,
         279.5,
-        270.0
+        270.0,
+        250.0
       ]
     },
     "3260": {
       "code": "3260",
       "name": "威剛",
       "market": "上櫃",
-      "close_price": 318.0,
+      "close_price": 299.5,
       "prev_close": 318.0,
-      "change": 0.0,
-      "change_pct": 0.0,
-      "volume_lots": 6.5,
-      "trade_value": 2022889000,
-      "last_updated": "2026-11-04",
+      "change": -18.5,
+      "change_pct": -5.82,
+      "volume_lots": 7.3,
+      "trade_value": 2204669000,
+      "last_updated": "2026-11-05",
       "trend": [
         330.5,
         363.5,
         362.0,
         346.5,
         340.5,
-        318.0
+        318.0,
+        299.5
       ]
     },
     "4966": {
       "code": "4966",
       "name": "譜瑞-KY",
       "market": "上櫃",
-      "close_price": 445.5,
-      "prev_close": 450.5,
-      "change": -5.0,
-      "change_pct": -1.11,
-      "volume_lots": 0.8,
-      "trade_value": 356610500,
-      "last_updated": "2026-11-04",
+      "close_price": 420.5,
+      "prev_close": 445.5,
+      "change": -25.0,
+      "change_pct": -5.61,
+      "volume_lots": 0.7,
+      "trade_value": 283658500,
+      "last_updated": "2026-11-05",
       "trend": [
         522.0,
         525.0,
@@ -2553,20 +2669,21 @@
         469.5,
         485.0,
         450.5,
-        445.5
+        445.5,
+        420.5
       ]
     },
     "3105": {
       "code": "3105",
       "name": "穩懋",
       "market": "上櫃",
-      "close_price": 501.0,
-      "prev_close": 530.0,
-      "change": -29.0,
-      "change_pct": -5.47,
-      "volume_lots": 31.8,
-      "trade_value": 15748225500,
-      "last_updated": "2026-11-04",
+      "close_price": 451.0,
+      "prev_close": 501.0,
+      "change": -50.0,
+      "change_pct": -9.98,
+      "volume_lots": 24.1,
+      "trade_value": 11298202500,
+      "last_updated": "2026-11-05",
       "trend": [
         491.0,
         540.0,
@@ -2574,20 +2691,21 @@
         578.0,
         588.0,
         530.0,
-        501.0
+        501.0,
+        451.0
       ]
     },
     "4991": {
       "code": "4991",
       "name": "環宇-KY",
       "market": "上櫃",
-      "close_price": 357.0,
-      "prev_close": 367.5,
-      "change": -10.5,
-      "change_pct": -2.86,
-      "volume_lots": 5.8,
-      "trade_value": 2066035000,
-      "last_updated": "2026-11-04",
+      "close_price": 321.5,
+      "prev_close": 357.0,
+      "change": -35.5,
+      "change_pct": -9.94,
+      "volume_lots": 2.7,
+      "trade_value": 884037500,
+      "last_updated": "2026-11-05",
       "trend": [
         416.5,
         441.5,
@@ -2595,20 +2713,21 @@
         388.0,
         391.5,
         367.5,
-        357.0
+        357.0,
+        321.5
       ]
     },
     "5289": {
       "code": "5289",
       "name": "宜鼎",
       "market": "上櫃",
-      "close_price": 1010.0,
-      "prev_close": 1020.0,
-      "change": -10.0,
-      "change_pct": -0.98,
-      "volume_lots": 2.0,
-      "trade_value": 2016535000,
-      "last_updated": "2026-11-04",
+      "close_price": 945.0,
+      "prev_close": 1010.0,
+      "change": -65.0,
+      "change_pct": -6.44,
+      "volume_lots": 1.7,
+      "trade_value": 1630260000,
+      "last_updated": "2026-11-05",
       "trend": [
         1095.0,
         1160.0,
@@ -2616,20 +2735,21 @@
         1120.0,
         1110.0,
         1020.0,
-        1010.0
+        1010.0,
+        945.0
       ]
     },
     "5903": {
       "code": "5903",
       "name": "全家",
       "market": "上櫃",
-      "close_price": 183.5,
-      "prev_close": 185.5,
-      "change": -2.0,
-      "change_pct": -1.08,
+      "close_price": 184.5,
+      "prev_close": 183.5,
+      "change": 1.0,
+      "change_pct": 0.54,
       "volume_lots": 0.0,
-      "trade_value": 4244500,
-      "last_updated": "2026-11-04",
+      "trade_value": 4042500,
+      "last_updated": "2026-11-05",
       "trend": [
         186.0,
         185.5,
@@ -2637,20 +2757,21 @@
         184.5,
         184.5,
         185.5,
-        183.5
+        183.5,
+        184.5
       ]
     },
     "5536": {
       "code": "5536",
       "name": "聖暉",
       "market": "上櫃",
-      "close_price": 722.0,
-      "prev_close": 732.0,
-      "change": -10.0,
-      "change_pct": -1.37,
-      "volume_lots": 0.9,
-      "trade_value": 609545000,
-      "last_updated": "2026-11-04",
+      "close_price": 688.0,
+      "prev_close": 722.0,
+      "change": -34.0,
+      "change_pct": -4.71,
+      "volume_lots": 0.7,
+      "trade_value": 512714000,
+      "last_updated": "2026-11-05",
       "trend": [
         753.0,
         788.0,
@@ -2658,20 +2779,21 @@
         760.0,
         770.0,
         732.0,
-        722.0
+        722.0,
+        688.0
       ]
     },
     "1815": {
       "code": "1815",
       "name": "富喬",
       "market": "上櫃",
-      "close_price": 135.0,
-      "prev_close": 131.0,
-      "change": 4.0,
-      "change_pct": 3.05,
-      "volume_lots": 200.8,
-      "trade_value": 27041420500,
-      "last_updated": "2026-11-04",
+      "close_price": 121.5,
+      "prev_close": 135.0,
+      "change": -13.5,
+      "change_pct": -10.0,
+      "volume_lots": 98.5,
+      "trade_value": 12372814500,
+      "last_updated": "2026-11-05",
       "trend": [
         131.0,
         144.0,
@@ -2679,20 +2801,21 @@
         126.5,
         139.0,
         131.0,
-        135.0
+        135.0,
+        121.5
       ]
     },
     "5483": {
       "code": "5483",
       "name": "中美晶",
       "market": "上櫃",
-      "close_price": 160.5,
-      "prev_close": 162.5,
-      "change": -2.0,
-      "change_pct": -1.23,
-      "volume_lots": 10.9,
-      "trade_value": 1724961500,
-      "last_updated": "2026-11-04",
+      "close_price": 148.0,
+      "prev_close": 160.5,
+      "change": -12.5,
+      "change_pct": -7.79,
+      "volume_lots": 10.1,
+      "trade_value": 1560906500,
+      "last_updated": "2026-11-05",
       "trend": [
         184.5,
         188.5,
@@ -2700,20 +2823,21 @@
         174.0,
         174.5,
         162.5,
-        160.5
+        160.5,
+        148.0
       ]
     },
     "3680": {
       "code": "3680",
       "name": "家登",
       "market": "上櫃",
-      "close_price": 442.5,
-      "prev_close": 440.5,
-      "change": 2.0,
-      "change_pct": 0.45,
+      "close_price": 408.5,
+      "prev_close": 442.5,
+      "change": -34.0,
+      "change_pct": -7.68,
       "volume_lots": 1.0,
-      "trade_value": 443117000,
-      "last_updated": "2026-11-04",
+      "trade_value": 430165000,
+      "last_updated": "2026-11-05",
       "trend": [
         505.0,
         532.0,
@@ -2721,20 +2845,21 @@
         492.5,
         489.0,
         440.5,
-        442.5
+        442.5,
+        408.5
       ]
     },
     "6147": {
       "code": "6147",
       "name": "頎邦",
       "market": "上櫃",
-      "close_price": 175.0,
-      "prev_close": 172.5,
-      "change": 2.5,
-      "change_pct": 1.45,
-      "volume_lots": 25.1,
-      "trade_value": 4241622000,
-      "last_updated": "2026-11-04",
+      "close_price": 157.5,
+      "prev_close": 175.0,
+      "change": -17.5,
+      "change_pct": -10.0,
+      "volume_lots": 18.6,
+      "trade_value": 3008625000,
+      "last_updated": "2026-11-05",
       "trend": [
         207.0,
         222.5,
@@ -2742,20 +2867,21 @@
         196.0,
         191.5,
         172.5,
-        175.0
+        175.0,
+        157.5
       ]
     },
     "8415": {
       "code": "8415",
       "name": "大國鋼",
       "market": "上櫃",
-      "close_price": 36.45,
-      "prev_close": 36.2,
-      "change": 0.25,
-      "change_pct": 0.69,
-      "volume_lots": 0.8,
-      "trade_value": 28569900,
-      "last_updated": "2026-11-04",
+      "close_price": 36.1,
+      "prev_close": 36.45,
+      "change": -0.35,
+      "change_pct": -0.96,
+      "volume_lots": 0.7,
+      "trade_value": 25467050,
+      "last_updated": "2026-11-05",
       "trend": [
         36.6,
         36.3,
@@ -2763,20 +2889,21 @@
         35.9,
         36.65,
         36.2,
-        36.45
+        36.45,
+        36.1
       ]
     },
     "7734": {
       "code": "7734",
       "name": "印能科技",
       "market": "上櫃",
-      "close_price": 1845.0,
-      "prev_close": 1850.0,
-      "change": -5.0,
-      "change_pct": -0.27,
-      "volume_lots": 0.4,
-      "trade_value": 629600000,
-      "last_updated": "2026-11-04",
+      "close_price": 1680.0,
+      "prev_close": 1845.0,
+      "change": -165.0,
+      "change_pct": -8.94,
+      "volume_lots": 0.3,
+      "trade_value": 524105000,
+      "last_updated": "2026-11-05",
       "trend": [
         2235.0,
         2375.0,
@@ -2784,20 +2911,21 @@
         2065.0,
         2015.0,
         1850.0,
-        1845.0
+        1845.0,
+        1680.0
       ]
     },
     "6290": {
       "code": "6290",
       "name": "良維",
       "market": "上櫃",
-      "close_price": 203.5,
-      "prev_close": 205.5,
-      "change": -2.0,
-      "change_pct": -0.97,
-      "volume_lots": 3.3,
-      "trade_value": 668926000,
-      "last_updated": "2026-11-04",
+      "close_price": 184.0,
+      "prev_close": 203.5,
+      "change": -19.5,
+      "change_pct": -9.58,
+      "volume_lots": 4.2,
+      "trade_value": 796540000,
+      "last_updated": "2026-11-05",
       "trend": [
         238.5,
         254.0,
@@ -2805,20 +2933,21 @@
         226.0,
         227.0,
         205.5,
-        203.5
+        203.5,
+        184.0
       ]
     },
     "6187": {
       "code": "6187",
       "name": "萬潤",
       "market": "上櫃",
-      "close_price": 1065.0,
-      "prev_close": 1080.0,
-      "change": -15.0,
-      "change_pct": -1.39,
-      "volume_lots": 3.7,
-      "trade_value": 3881293000,
-      "last_updated": "2026-11-04",
+      "close_price": 959.0,
+      "prev_close": 1065.0,
+      "change": -106.0,
+      "change_pct": -9.95,
+      "volume_lots": 2.4,
+      "trade_value": 2319760000,
+      "last_updated": "2026-11-05",
       "trend": [
         1285.0,
         1345.0,
@@ -2826,20 +2955,21 @@
         1190.0,
         1195.0,
         1080.0,
-        1065.0
+        1065.0,
+        959.0
       ]
     },
     "7751": {
       "code": "7751",
       "name": "竑騰",
       "market": "上櫃",
-      "close_price": 1235.0,
-      "prev_close": 1125.0,
-      "change": 110.0,
-      "change_pct": 9.78,
-      "volume_lots": 0.4,
-      "trade_value": 514480000,
-      "last_updated": "2026-11-04",
+      "close_price": 1115.0,
+      "prev_close": 1235.0,
+      "change": -120.0,
+      "change_pct": -9.72,
+      "volume_lots": 0.3,
+      "trade_value": 388045000,
+      "last_updated": "2026-11-05",
       "trend": [
         1335.0,
         1430.0,
@@ -2847,20 +2977,21 @@
         1305.0,
         1250.0,
         1125.0,
-        1235.0
+        1235.0,
+        1115.0
       ]
     },
     "3264": {
       "code": "3264",
       "name": "欣銓",
       "market": "上櫃",
-      "close_price": 197.0,
-      "prev_close": 195.0,
-      "change": 2.0,
-      "change_pct": 1.03,
-      "volume_lots": 12.1,
-      "trade_value": 2330993500,
-      "last_updated": "2026-11-04",
+      "close_price": 179.5,
+      "prev_close": 197.0,
+      "change": -17.5,
+      "change_pct": -8.88,
+      "volume_lots": 10.3,
+      "trade_value": 1905171500,
+      "last_updated": "2026-11-05",
       "trend": [
         248.0,
         237.5,
@@ -2868,20 +2999,21 @@
         220.5,
         216.5,
         195.0,
-        197.0
+        197.0,
+        179.5
       ]
     },
     "6023": {
       "code": "6023",
       "name": "元大期",
       "market": "上櫃",
-      "close_price": 81.0,
-      "prev_close": 81.4,
-      "change": -0.4,
-      "change_pct": -0.49,
-      "volume_lots": 0.8,
-      "trade_value": 61259500,
-      "last_updated": "2026-11-04",
+      "close_price": 80.0,
+      "prev_close": 81.0,
+      "change": -1.0,
+      "change_pct": -1.23,
+      "volume_lots": 0.7,
+      "trade_value": 53788800,
+      "last_updated": "2026-11-05",
       "trend": [
         82.5,
         82.5,
@@ -2889,20 +3021,21 @@
         82.5,
         81.9,
         81.4,
-        81.0
+        81.0,
+        80.0
       ]
     },
     "3324": {
       "code": "3324",
       "name": "雙鴻",
       "market": "上櫃",
-      "close_price": 1300.0,
-      "prev_close": 1320.0,
-      "change": -20.0,
-      "change_pct": -1.52,
-      "volume_lots": 6.6,
-      "trade_value": 8342190000,
-      "last_updated": "2026-11-04",
+      "close_price": 1170.0,
+      "prev_close": 1300.0,
+      "change": -130.0,
+      "change_pct": -10.0,
+      "volume_lots": 3.0,
+      "trade_value": 3526505000,
+      "last_updated": "2026-11-05",
       "trend": [
         1335.0,
         1435.0,
@@ -2910,20 +3043,21 @@
         1330.0,
         1395.0,
         1320.0,
-        1300.0
+        1300.0,
+        1170.0
       ]
     },
     "4772": {
       "code": "4772",
       "name": "台特化",
       "market": "上櫃",
-      "close_price": 216.0,
-      "prev_close": 214.0,
-      "change": 2.0,
-      "change_pct": 0.93,
-      "volume_lots": 0.7,
-      "trade_value": 149718500,
-      "last_updated": "2026-11-04",
+      "close_price": 207.5,
+      "prev_close": 216.0,
+      "change": -8.5,
+      "change_pct": -3.94,
+      "volume_lots": 0.5,
+      "trade_value": 114457000,
+      "last_updated": "2026-11-05",
       "trend": [
         247.0,
         253.0,
@@ -2931,20 +3065,21 @@
         231.5,
         227.0,
         214.0,
-        216.0
+        216.0,
+        207.5
       ]
     },
     "6510": {
       "code": "6510",
       "name": "精測",
       "market": "上櫃",
-      "close_price": 2770.0,
-      "prev_close": 2625.0,
-      "change": 145.0,
-      "change_pct": 5.52,
-      "volume_lots": 0.8,
-      "trade_value": 2224225000,
-      "last_updated": "2026-11-04",
+      "close_price": 2495.0,
+      "prev_close": 2770.0,
+      "change": -275.0,
+      "change_pct": -9.93,
+      "volume_lots": 0.6,
+      "trade_value": 1579375000,
+      "last_updated": "2026-11-05",
       "trend": [
         2910.0,
         3200.0,
@@ -2952,20 +3087,21 @@
         2820.0,
         2850.0,
         2625.0,
-        2770.0
+        2770.0,
+        2495.0
       ]
     },
     "8932": {
       "code": "8932",
       "name": "智通",
       "market": "上櫃",
-      "close_price": 83.2,
-      "prev_close": 84.6,
-      "change": -1.4,
-      "change_pct": -1.65,
-      "volume_lots": 2.1,
-      "trade_value": 171523400,
-      "last_updated": "2026-11-04",
+      "close_price": 78.6,
+      "prev_close": 83.2,
+      "change": -4.6,
+      "change_pct": -5.53,
+      "volume_lots": 1.2,
+      "trade_value": 98437400,
+      "last_updated": "2026-11-05",
       "trend": [
         87.6,
         89.2,
@@ -2973,20 +3109,21 @@
         88.7,
         89.2,
         84.6,
-        83.2
+        83.2,
+        78.6
       ]
     },
     "8358": {
       "code": "8358",
       "name": "金居",
       "market": "上櫃",
-      "close_price": 366.5,
-      "prev_close": 376.0,
-      "change": -9.5,
-      "change_pct": -2.53,
-      "volume_lots": 16.7,
-      "trade_value": 6059857500,
-      "last_updated": "2026-11-04",
+      "close_price": 334.0,
+      "prev_close": 366.5,
+      "change": -32.5,
+      "change_pct": -8.87,
+      "volume_lots": 19.1,
+      "trade_value": 6660526500,
+      "last_updated": "2026-11-05",
       "trend": [
         420.5,
         460.0,
@@ -2994,20 +3131,21 @@
         405.0,
         417.5,
         376.0,
-        366.5
+        366.5,
+        334.0
       ]
     },
     "6584": {
       "code": "6584",
       "name": "南俊國際",
       "market": "上櫃",
-      "close_price": 363.0,
-      "prev_close": 375.0,
-      "change": -12.0,
-      "change_pct": -3.2,
-      "volume_lots": 1.1,
-      "trade_value": 396747000,
-      "last_updated": "2026-11-04",
+      "close_price": 327.0,
+      "prev_close": 363.0,
+      "change": -36.0,
+      "change_pct": -9.92,
+      "volume_lots": 0.8,
+      "trade_value": 272344000,
+      "last_updated": "2026-11-05",
       "trend": [
         429.0,
         441.5,
@@ -3015,20 +3153,21 @@
         409.0,
         402.5,
         375.0,
-        363.0
+        363.0,
+        327.0
       ]
     },
     "3374": {
       "code": "3374",
       "name": "精材",
       "market": "上櫃",
-      "close_price": 447.0,
-      "prev_close": 430.0,
-      "change": 17.0,
-      "change_pct": 3.95,
-      "volume_lots": 3.7,
-      "trade_value": 1522543500,
-      "last_updated": "2026-11-04",
+      "close_price": 402.5,
+      "prev_close": 447.0,
+      "change": -44.5,
+      "change_pct": -9.96,
+      "volume_lots": 2.3,
+      "trade_value": 947644000,
+      "last_updated": "2026-11-05",
       "trend": [
         463.5,
         500.0,
@@ -3036,20 +3175,21 @@
         488.0,
         471.5,
         430.0,
-        447.0
+        447.0,
+        402.5
       ]
     },
     "3227": {
       "code": "3227",
       "name": "原相",
       "market": "上櫃",
-      "close_price": 177.5,
-      "prev_close": 175.0,
-      "change": 2.5,
-      "change_pct": 1.43,
-      "volume_lots": 0.9,
-      "trade_value": 163273000,
-      "last_updated": "2026-11-04",
+      "close_price": 174.0,
+      "prev_close": 177.5,
+      "change": -3.5,
+      "change_pct": -1.97,
+      "volume_lots": 0.7,
+      "trade_value": 114523500,
+      "last_updated": "2026-11-05",
       "trend": [
         185.0,
         186.5,
@@ -3057,20 +3197,21 @@
         180.5,
         180.5,
         175.0,
-        177.5
+        177.5,
+        174.0
       ]
     },
     "3131": {
       "code": "3131",
       "name": "弘塑",
       "market": "上櫃",
-      "close_price": 1700.0,
-      "prev_close": 1750.0,
-      "change": -50.0,
-      "change_pct": -2.86,
-      "volume_lots": 0.6,
-      "trade_value": 975950000,
-      "last_updated": "2026-11-04",
+      "close_price": 1555.0,
+      "prev_close": 1700.0,
+      "change": -145.0,
+      "change_pct": -8.53,
+      "volume_lots": 0.4,
+      "trade_value": 681345000,
+      "last_updated": "2026-11-05",
       "trend": [
         2015.0,
         2080.0,
@@ -3078,20 +3219,21 @@
         1880.0,
         1905.0,
         1750.0,
-        1700.0
+        1700.0,
+        1555.0
       ]
     },
     "4123": {
       "code": "4123",
       "name": "晟德",
       "market": "上櫃",
-      "close_price": 28.55,
-      "prev_close": 28.1,
-      "change": 0.45,
-      "change_pct": 1.6,
-      "volume_lots": 1.6,
-      "trade_value": 44711600,
-      "last_updated": "2026-11-04",
+      "close_price": 28.9,
+      "prev_close": 28.55,
+      "change": 0.35,
+      "change_pct": 1.23,
+      "volume_lots": 1.9,
+      "trade_value": 54670800,
+      "last_updated": "2026-11-05",
       "trend": [
         29.8,
         29.5,
@@ -3099,20 +3241,21 @@
         28.55,
         28.4,
         28.1,
-        28.55
+        28.55,
+        28.9
       ]
     },
     "4749": {
       "code": "4749",
       "name": "新應材",
       "market": "上櫃",
-      "close_price": 642.0,
-      "prev_close": 625.0,
-      "change": 17.0,
-      "change_pct": 2.72,
-      "volume_lots": 0.8,
-      "trade_value": 523867000,
-      "last_updated": "2026-11-04",
+      "close_price": 605.0,
+      "prev_close": 642.0,
+      "change": -37.0,
+      "change_pct": -5.76,
+      "volume_lots": 0.7,
+      "trade_value": 436500000,
+      "last_updated": "2026-11-05",
       "trend": [
         697.0,
         720.0,
@@ -3120,20 +3263,21 @@
         678.0,
         680.0,
         625.0,
-        642.0
+        642.0,
+        605.0
       ]
     },
     "3718": {
       "code": "3718",
       "name": "中光電投控",
       "market": "上櫃",
-      "close_price": 49.25,
-      "prev_close": 48.85,
-      "change": 0.4,
-      "change_pct": 0.82,
-      "volume_lots": 3.0,
-      "trade_value": 145593400,
-      "last_updated": "2026-11-04",
+      "close_price": 46.55,
+      "prev_close": 49.25,
+      "change": -2.7,
+      "change_pct": -5.48,
+      "volume_lots": 2.4,
+      "trade_value": 117674400,
+      "last_updated": "2026-11-05",
       "trend": [
         56.4,
         56.1,
@@ -3141,7 +3285,8 @@
         52.9,
         51.8,
         48.85,
-        49.25
+        49.25,
+        46.55
       ]
     }
   },
@@ -3153,7 +3298,8 @@
       2370.0,
       2330.0,
       2295.0,
-      2260.0
+      2260.0,
+      2240.0
     ],
     "2883": [
       38.45,
@@ -3162,7 +3308,8 @@
       37.8,
       37.25,
       34.95,
-      34.8
+      34.8,
+      34.35
     ],
     "2454": [
       3960.0,
@@ -3171,7 +3318,8 @@
       3915.0,
       3970.0,
       3675.0,
-      3715.0
+      3715.0,
+      3460.0
     ],
     "3443": [
       7430.0,
@@ -3180,7 +3328,8 @@
       7635.0,
       7285.0,
       6795.0,
-      7115.0
+      7115.0,
+      6405.0
     ],
     "2308": [
       1510.0,
@@ -3189,7 +3338,8 @@
       1335.0,
       1355.0,
       1270.0,
-      1220.0
+      1220.0,
+      1130.0
     ],
     "3653": [
       5860.0,
@@ -3198,7 +3348,8 @@
       6315.0,
       6320.0,
       6035.0,
-      6450.0
+      6450.0,
+      5805.0
     ],
     "2317": [
       247.5,
@@ -3207,7 +3358,8 @@
       245.5,
       251.0,
       245.5,
-      240.0
+      240.0,
+      235.0
     ],
     "2395": [
       687.0,
@@ -3216,7 +3368,8 @@
       680.0,
       655.0,
       620.0,
-      629.0
+      629.0,
+      596.0
     ],
     "3711": [
       651.0,
@@ -3225,7 +3378,8 @@
       668.0,
       674.0,
       616.0,
-      627.0
+      627.0,
+      572.0
     ],
     "2301": [
       252.5,
@@ -3234,7 +3388,8 @@
       240.5,
       243.5,
       228.0,
-      226.0
+      226.0,
+      211.5
     ],
     "2881": [
       162.0,
@@ -3243,7 +3398,8 @@
       161.5,
       159.5,
       154.0,
-      154.5
+      154.5,
+      155.5
     ],
     "6446": [
       1190.0,
@@ -3252,7 +3408,8 @@
       1190.0,
       1190.0,
       1225.0,
-      1250.0
+      1250.0,
+      1185.0
     ],
     "2383": [
       4750.0,
@@ -3261,7 +3418,8 @@
       4675.0,
       4705.0,
       4395.0,
-      4555.0
+      4555.0,
+      4100.0
     ],
     "4958": [
       520.0,
@@ -3270,7 +3428,8 @@
       486.0,
       487.0,
       443.0,
-      433.0
+      433.0,
+      394.0
     ],
     "2303": [
       122.5,
@@ -3279,7 +3438,8 @@
       111.5,
       110.0,
       103.0,
-      105.5
+      105.5,
+      98.4
     ],
     "2603": [
       261.5,
@@ -3288,7 +3448,8 @@
       271.5,
       274.5,
       266.5,
-      268.0
+      268.0,
+      259.0
     ],
     "2882": [
       114.0,
@@ -3297,7 +3458,8 @@
       116.0,
       116.0,
       113.0,
-      111.0
+      111.0,
+      112.0
     ],
     "5880": [
       28.8,
@@ -3315,7 +3477,8 @@
       989.0,
       997.0,
       902.0,
-      888.0
+      888.0,
+      800.0
     ],
     "1216": [
       80.2,
@@ -3333,7 +3496,8 @@
       75.8,
       75.0,
       74.2,
-      73.2
+      73.2,
+      74.9
     ],
     "3045": [
       134.5,
@@ -3342,7 +3506,8 @@
       133.5,
       133.0,
       133.0,
-      135.0
+      135.0,
+      132.5
     ],
     "1303": [
       297.5,
@@ -3351,7 +3516,8 @@
       296.0,
       301.0,
       271.0,
-      276.5
+      276.5,
+      249.0
     ],
     "2368": [
       1080.0,
@@ -3360,7 +3526,8 @@
       1020.0,
       1060.0,
       970.0,
-      964.0
+      964.0,
+      868.0
     ],
     "2345": [
       1760.0,
@@ -3369,7 +3536,8 @@
       1615.0,
       1615.0,
       1495.0,
-      1480.0
+      1480.0,
+      1380.0
     ],
     "3665": [
       1735.0,
@@ -3378,7 +3546,8 @@
       1625.0,
       1625.0,
       1575.0,
-      1570.0
+      1570.0,
+      1470.0
     ],
     "2382": [
       327.5,
@@ -3387,7 +3556,8 @@
       318.0,
       318.0,
       311.5,
-      302.5
+      302.5,
+      300.0
     ],
     "4904": [
       114.0,
@@ -3396,7 +3566,8 @@
       114.0,
       113.5,
       112.5,
-      114.0
+      114.0,
+      112.5
     ],
     "2408": [
       441.0,
@@ -3405,7 +3576,8 @@
       454.5,
       456.5,
       411.0,
-      399.5
+      399.5,
+      360.0
     ],
     "3481": [
       46.25,
@@ -3414,7 +3586,8 @@
       42.55,
       44.55,
       41.2,
-      40.9
+      40.9,
+      38.0
     ],
     "7769": [
       5210.0,
@@ -3423,7 +3596,8 @@
       4950.0,
       4915.0,
       4470.0,
-      4365.0
+      4365.0,
+      3980.0
     ],
     "2379": [
       793.0,
@@ -3432,7 +3606,8 @@
       803.0,
       785.0,
       756.0,
-      748.0
+      748.0,
+      720.0
     ],
     "2412": [
       158.0,
@@ -3450,7 +3625,8 @@
       72.5,
       73.1,
       68.7,
-      69.1
+      69.1,
+      65.1
     ],
     "2327": [
       521.0,
@@ -3459,7 +3635,8 @@
       502.0,
       498.5,
       453.0,
-      449.0
+      449.0,
+      404.5
     ],
     "1326": [
       74.4,
@@ -3468,7 +3645,8 @@
       72.5,
       73.6,
       68.4,
-      69.2
+      69.2,
+      65.0
     ],
     "6669": [
       1950.0,
@@ -3477,7 +3655,8 @@
       1810.0,
       1820.0,
       1770.0,
-      1785.0
+      1785.0,
+      1650.0
     ],
     "3189": [
       941.0,
@@ -3486,7 +3665,8 @@
       932.0,
       910.0,
       819.0,
-      822.0
+      822.0,
+      740.0
     ],
     "3017": [
       3130.0,
@@ -3495,7 +3675,8 @@
       3095.0,
       3060.0,
       2935.0,
-      2820.0
+      2820.0,
+      2565.0
     ],
     "3034": [
       599.0,
@@ -3504,7 +3685,8 @@
       575.0,
       571.0,
       555.0,
-      533.0
+      533.0,
+      510.0
     ],
     "2885": [
       73.2,
@@ -3513,7 +3695,8 @@
       72.6,
       71.5,
       69.2,
-      69.0
+      69.0,
+      69.1
     ],
     "2207": [
       551.0,
@@ -3522,7 +3705,8 @@
       534.0,
       536.0,
       544.0,
-      534.0
+      534.0,
+      537.0
     ],
     "2887": [
       42.2,
@@ -3531,7 +3715,8 @@
       42.25,
       41.7,
       41.25,
-      40.25
+      40.25,
+      40.1
     ],
     "2002": [
       19.75,
@@ -3540,7 +3725,8 @@
       19.25,
       19.4,
       19.35,
-      19.15
+      19.15,
+      18.95
     ],
     "2360": [
       1955.0,
@@ -3549,7 +3735,8 @@
       1755.0,
       1715.0,
       1545.0,
-      1470.0
+      1470.0,
+      1335.0
     ],
     "2801": [
       30.2,
@@ -3558,7 +3745,8 @@
       30.7,
       30.85,
       29.7,
-      29.35
+      29.35,
+      28.7
     ],
     "2886": [
       55.0,
@@ -3567,7 +3755,8 @@
       54.8,
       54.1,
       53.2,
-      53.5
+      53.5,
+      54.0
     ],
     "2449": [
       269.0,
@@ -3576,7 +3765,8 @@
       253.5,
       263.0,
       253.5,
-      248.5
+      248.5,
+      228.5
     ],
     "2059": [
       9810.0,
@@ -3585,7 +3775,8 @@
       9650.0,
       9420.0,
       9240.0,
-      8600.0
+      8600.0,
+      7995.0
     ],
     "1590": [
       1140.0,
@@ -3602,7 +3793,8 @@
       98.3,
       103.0,
       94.9,
-      97.6
+      97.6,
+      87.9
     ],
     "3661": [
       3495.0,
@@ -3611,7 +3803,8 @@
       3425.0,
       3395.0,
       3140.0,
-      3180.0
+      3180.0,
+      2960.0
     ],
     "2884": [
       49.45,
@@ -3620,7 +3813,8 @@
       49.05,
       48.7,
       47.4,
-      47.6
+      47.6,
+      47.95
     ],
     "6770": [
       69.4,
@@ -3629,7 +3823,8 @@
       66.6,
       65.3,
       60.2,
-      59.4
+      59.4,
+      54.8
     ],
     "2880": [
       50.1,
@@ -3637,7 +3832,8 @@
       50.1,
       50.4,
       49.6,
-      49.05
+      49.05,
+      49.6
     ],
     "3036": [
       215.0,
@@ -3646,7 +3842,8 @@
       207.0,
       204.5,
       201.5,
-      204.5
+      204.5,
+      195.0
     ],
     "2357": [
       967.0,
@@ -3655,7 +3852,8 @@
       906.0,
       912.0,
       889.0,
-      877.0
+      877.0,
+      867.0
     ],
     "2615": [
       116.5,
@@ -3663,7 +3861,8 @@
       115.0,
       120.0,
       119.5,
-      115.5
+      115.5,
+      113.0
     ],
     "2890": [
       46.25,
@@ -3672,7 +3871,8 @@
       46.5,
       45.8,
       44.4,
-      43.15
+      43.15,
+      42.9
     ],
     "2618": [
       42.95,
@@ -3681,7 +3881,8 @@
       42.7,
       43.15,
       43.7,
-      43.75
+      43.75,
+      45.1
     ],
     "8046": [
       1255.0,
@@ -3690,7 +3891,8 @@
       1190.0,
       1185.0,
       1070.0,
-      1080.0
+      1080.0,
+      972.0
     ],
     "2912": [
       225.5,
@@ -3699,7 +3901,8 @@
       225.5,
       225.5,
       222.5,
-      217.5
+      217.5,
+      214.5
     ],
     "2344": [
       163.0,
@@ -3708,7 +3911,8 @@
       164.5,
       162.0,
       146.0,
-      141.5
+      141.5,
+      127.5
     ],
     "4938": [
       105.0,
@@ -3716,7 +3920,8 @@
       104.5,
       102.5,
       102.5,
-      101.5
+      101.5,
+      97.2
     ],
     "3231": [
       190.5,
@@ -3725,7 +3930,8 @@
       183.5,
       181.5,
       176.5,
-      176.0
+      176.0,
+      168.5
     ],
     "2376": [
       357.5,
@@ -3734,7 +3940,8 @@
       336.0,
       339.5,
       327.0,
-      324.5
+      324.5,
+      313.0
     ],
     "2892": [
       43.15,
@@ -3743,7 +3950,8 @@
       44.6,
       43.65,
       42.6,
-      42.45
+      42.45,
+      42.25
     ],
     "5876": [
       55.4,
@@ -3752,7 +3960,8 @@
       54.5,
       54.3,
       52.6,
-      51.8
+      51.8,
+      51.7
     ],
     "3008": [
       6000.0,
@@ -3761,7 +3970,8 @@
       5430.0,
       5490.0,
       4945.0,
-      5010.0
+      5010.0,
+      4525.0
     ],
     "1519": [
       585.0,
@@ -3770,7 +3980,8 @@
       551.0,
       555.0,
       519.0,
-      505.0
+      505.0,
+      493.5
     ],
     "2356": [
       63.0,
@@ -3779,7 +3990,8 @@
       59.5,
       59.6,
       57.2,
-      56.4
+      56.4,
+      55.0
     ],
     "6415": [
       478.0,
@@ -3788,7 +4000,8 @@
       502.0,
       501.0,
       472.5,
-      457.5
+      457.5,
+      412.0
     ],
     "2404": [
       1085.0,
@@ -3797,7 +4010,8 @@
       1075.0,
       1060.0,
       1000.0,
-      995.0
+      995.0,
+      956.0
     ],
     "6919": [
       67.5,
@@ -3806,7 +4020,8 @@
       66.6,
       64.5,
       63.1,
-      60.6
+      60.6,
+      66.6
     ],
     "6515": [
       4775.0,
@@ -3815,7 +4030,8 @@
       4565.0,
       4485.0,
       4075.0,
-      4020.0
+      4020.0,
+      3620.0
     ],
     "2324": [
       37.6,
@@ -3824,7 +4040,8 @@
       35.2,
       34.75,
       33.55,
-      33.25
+      33.25,
+      32.45
     ],
     "3533": [
       1925.0,
@@ -3833,7 +4050,8 @@
       1860.0,
       1820.0,
       1735.0,
-      1820.0
+      1820.0,
+      1660.0
     ],
     "2347": [
       102.0,
@@ -3842,7 +4060,8 @@
       99.5,
       94.5,
       91.4,
-      90.3
+      90.3,
+      87.2
     ],
     "2313": [
       216.0,
@@ -3851,7 +4070,8 @@
       202.0,
       205.0,
       186.0,
-      182.5
+      182.5,
+      165.5
     ],
     "1504": [
       69.0,
@@ -3860,7 +4080,8 @@
       69.1,
       69.3,
       66.2,
-      65.0
+      65.0,
+      63.4
     ],
     "2337": [
       103.0,
@@ -3869,7 +4090,8 @@
       95.4,
       96.2,
       88.3,
-      87.2
+      87.2,
+      79.7
     ],
     "7750": [
       1990.0,
@@ -3878,7 +4100,8 @@
       2035.0,
       1835.0,
       1655.0,
-      1490.0
+      1490.0,
+      1485.0
     ],
     "5871": [
       108.0,
@@ -3887,7 +4110,8 @@
       105.5,
       105.0,
       105.0,
-      104.0
+      104.0,
+      104.5
     ],
     "1402": [
       28.8,
@@ -3896,7 +4120,8 @@
       28.25,
       28.55,
       28.55,
-      28.05
+      28.05,
+      28.15
     ],
     "3044": [
       522.0,
@@ -3905,7 +4130,8 @@
       512.0,
       527.0,
       488.5,
-      484.0
+      484.0,
+      438.5
     ],
     "1605": [
       37.05,
@@ -3914,7 +4140,8 @@
       35.95,
       37.6,
       35.0,
-      34.45
+      34.45,
+      32.6
     ],
     "3702": [
       116.5,
@@ -3923,7 +4150,8 @@
       108.5,
       105.5,
       101.0,
-      99.6
+      99.6,
+      92.1
     ],
     "2610": [
       20.45,
@@ -3932,7 +4160,8 @@
       20.15,
       20.65,
       20.7,
-      20.5
+      20.5,
+      21.65
     ],
     "1101": [
       28.1,
@@ -3941,7 +4170,8 @@
       28.35,
       28.1,
       27.7,
-      27.25
+      27.25,
+      27.2
     ],
     "6789": [
       433.5,
@@ -3949,7 +4179,8 @@
       438.5,
       411.0,
       414.5,
-      390.0
+      390.0,
+      360.0
     ],
     "2409": [
       33.45,
@@ -3958,7 +4189,8 @@
       30.65,
       30.75,
       28.8,
-      29.1
+      29.1,
+      27.25
     ],
     "1802": [
       65.2,
@@ -3967,7 +4199,8 @@
       62.3,
       63.7,
       67.7,
-      66.7
+      66.7,
+      60.1
     ],
     "6239": [
       254.5,
@@ -3976,7 +4209,8 @@
       256.0,
       257.5,
       239.5,
-      240.5
+      240.5,
+      220.0
     ],
     "8210": [
       775.0,
@@ -3985,7 +4219,8 @@
       716.0,
       705.0,
       647.0,
-      634.0
+      634.0,
+      596.0
     ],
     "2609": [
       63.0,
@@ -3994,7 +4229,8 @@
       63.5,
       64.0,
       62.1,
-      62.3
+      62.3,
+      60.0
     ],
     "2451": [
       281.5,
@@ -4003,7 +4239,8 @@
       284.0,
       285.0,
       273.0,
-      263.0
+      263.0,
+      254.5
     ],
     "2834": [
       17.9,
@@ -4012,7 +4249,8 @@
       18.05,
       18.05,
       17.7,
-      17.65
+      17.65,
+      17.5
     ],
     "2812": [
       18.6,
@@ -4030,7 +4268,8 @@
       636.0,
       637.0,
       608.0,
-      609.0
+      609.0,
+      567.0
     ],
     "2377": [
       166.0,
@@ -4039,7 +4278,8 @@
       157.5,
       156.5,
       153.0,
-      150.5
+      150.5,
+      142.5
     ],
     "5274": [
       16015.0,
@@ -4048,7 +4288,8 @@
       15970.0,
       15625.0,
       14730.0,
-      14035.0
+      14035.0,
+      12635.0
     ],
     "3491": [
       1275.0,
@@ -4057,7 +4298,8 @@
       1255.0,
       1300.0,
       1260.0,
-      1225.0
+      1225.0,
+      1180.0
     ],
     "6223": [
       4790.0,
@@ -4066,7 +4308,8 @@
       4610.0,
       4655.0,
       4190.0,
-      4135.0
+      4135.0,
+      3725.0
     ],
     "6121": [
       375.0,
@@ -4075,7 +4318,8 @@
       372.5,
       373.0,
       369.0,
-      365.0
+      365.0,
+      356.0
     ],
     "6488": [
       814.0,
@@ -4084,7 +4328,8 @@
       756.0,
       760.0,
       685.0,
-      619.0
+      619.0,
+      564.0
     ],
     "6548": [
       72.8,
@@ -4093,7 +4338,8 @@
       67.1,
       66.8,
       63.2,
-      64.0
+      64.0,
+      60.0
     ],
     "8299": [
       1910.0,
@@ -4102,7 +4348,8 @@
       1930.0,
       1875.0,
       1690.0,
-      1710.0
+      1710.0,
+      1560.0
     ],
     "1785": [
       91.7,
@@ -4111,7 +4358,8 @@
       88.0,
       87.3,
       78.6,
-      81.0
+      81.0,
+      77.4
     ],
     "6274": [
       1280.0,
@@ -4120,7 +4368,8 @@
       1265.0,
       1210.0,
       1090.0,
-      1115.0
+      1115.0,
+      1005.0
     ],
     "3363": [
       499.5,
@@ -4129,7 +4378,8 @@
       474.5,
       458.0,
       415.5,
-      421.0
+      421.0,
+      400.5
     ],
     "5347": [
       161.5,
@@ -4138,7 +4388,8 @@
       144.0,
       145.0,
       134.0,
-      137.0
+      137.0,
+      126.0
     ],
     "7828": [
       1370.0,
@@ -4147,7 +4398,8 @@
       1240.0,
       1250.0,
       1200.0,
-      1215.0
+      1215.0,
+      1125.0
     ],
     "3293": [
       796.0,
@@ -4156,7 +4408,8 @@
       810.0,
       797.0,
       777.0,
-      778.0
+      778.0,
+      760.0
     ],
     "4979": [
       467.5,
@@ -4165,7 +4418,8 @@
       447.0,
       426.0,
       383.5,
-      376.0
+      376.0,
+      346.5
     ],
     "8069": [
       157.0,
@@ -4174,7 +4428,8 @@
       149.0,
       152.5,
       143.5,
-      144.5
+      144.5,
+      141.0
     ],
     "6182": [
       102.0,
@@ -4183,7 +4438,8 @@
       93.9,
       94.1,
       85.3,
-      82.8
+      82.8,
+      74.7
     ],
     "3529": [
       2515.0,
@@ -4191,7 +4447,8 @@
       2540.0,
       2490.0,
       2395.0,
-      2160.0
+      2160.0,
+      2025.0
     ],
     "3163": [
       538.0,
@@ -4200,7 +4457,8 @@
       509.0,
       510.0,
       462.0,
-      465.5
+      465.5,
+      429.5
     ],
     "3081": [
       2500.0,
@@ -4209,7 +4467,8 @@
       2370.0,
       2415.0,
       2175.0,
-      2100.0
+      2100.0,
+      1890.0
     ],
     "3211": [
       327.0,
@@ -4218,7 +4477,8 @@
       297.5,
       302.0,
       279.5,
-      270.0
+      270.0,
+      250.0
     ],
     "3260": [
       330.5,
@@ -4226,7 +4486,8 @@
       362.0,
       346.5,
       340.5,
-      318.0
+      318.0,
+      299.5
     ],
     "4966": [
       522.0,
@@ -4235,7 +4496,8 @@
       469.5,
       485.0,
       450.5,
-      445.5
+      445.5,
+      420.5
     ],
     "3105": [
       491.0,
@@ -4244,7 +4506,8 @@
       578.0,
       588.0,
       530.0,
-      501.0
+      501.0,
+      451.0
     ],
     "4991": [
       416.5,
@@ -4253,7 +4516,8 @@
       388.0,
       391.5,
       367.5,
-      357.0
+      357.0,
+      321.5
     ],
     "5289": [
       1095.0,
@@ -4262,7 +4526,8 @@
       1120.0,
       1110.0,
       1020.0,
-      1010.0
+      1010.0,
+      945.0
     ],
     "5903": [
       186.0,
@@ -4271,7 +4536,8 @@
       184.5,
       184.5,
       185.5,
-      183.5
+      183.5,
+      184.5
     ],
     "5536": [
       753.0,
@@ -4280,7 +4546,8 @@
       760.0,
       770.0,
       732.0,
-      722.0
+      722.0,
+      688.0
     ],
     "1815": [
       131.0,
@@ -4289,7 +4556,8 @@
       126.5,
       139.0,
       131.0,
-      135.0
+      135.0,
+      121.5
     ],
     "5483": [
       184.5,
@@ -4298,7 +4566,8 @@
       174.0,
       174.5,
       162.5,
-      160.5
+      160.5,
+      148.0
     ],
     "3680": [
       505.0,
@@ -4307,7 +4576,8 @@
       492.5,
       489.0,
       440.5,
-      442.5
+      442.5,
+      408.5
     ],
     "6147": [
       207.0,
@@ -4316,7 +4586,8 @@
       196.0,
       191.5,
       172.5,
-      175.0
+      175.0,
+      157.5
     ],
     "8415": [
       36.6,
@@ -4325,7 +4596,8 @@
       35.9,
       36.65,
       36.2,
-      36.45
+      36.45,
+      36.1
     ],
     "7734": [
       2235.0,
@@ -4334,7 +4606,8 @@
       2065.0,
       2015.0,
       1850.0,
-      1845.0
+      1845.0,
+      1680.0
     ],
     "6290": [
       238.5,
@@ -4343,7 +4616,8 @@
       226.0,
       227.0,
       205.5,
-      203.5
+      203.5,
+      184.0
     ],
     "6187": [
       1285.0,
@@ -4352,7 +4626,8 @@
       1190.0,
       1195.0,
       1080.0,
-      1065.0
+      1065.0,
+      959.0
     ],
     "7751": [
       1335.0,
@@ -4361,7 +4636,8 @@
       1305.0,
       1250.0,
       1125.0,
-      1235.0
+      1235.0,
+      1115.0
     ],
     "3264": [
       248.0,
@@ -4370,7 +4646,8 @@
       220.5,
       216.5,
       195.0,
-      197.0
+      197.0,
+      179.5
     ],
     "6023": [
       82.5,
@@ -4379,7 +4656,8 @@
       82.5,
       81.9,
       81.4,
-      81.0
+      81.0,
+      80.0
     ],
     "3324": [
       1335.0,
@@ -4388,7 +4666,8 @@
       1330.0,
       1395.0,
       1320.0,
-      1300.0
+      1300.0,
+      1170.0
     ],
     "4772": [
       247.0,
@@ -4397,7 +4676,8 @@
       231.5,
       227.0,
       214.0,
-      216.0
+      216.0,
+      207.5
     ],
     "6510": [
       2910.0,
@@ -4406,7 +4686,8 @@
       2820.0,
       2850.0,
       2625.0,
-      2770.0
+      2770.0,
+      2495.0
     ],
     "8932": [
       87.6,
@@ -4415,7 +4696,8 @@
       88.7,
       89.2,
       84.6,
-      83.2
+      83.2,
+      78.6
     ],
     "8358": [
       420.5,
@@ -4424,7 +4706,8 @@
       405.0,
       417.5,
       376.0,
-      366.5
+      366.5,
+      334.0
     ],
     "6584": [
       429.0,
@@ -4433,7 +4716,8 @@
       409.0,
       402.5,
       375.0,
-      363.0
+      363.0,
+      327.0
     ],
     "3374": [
       463.5,
@@ -4442,7 +4726,8 @@
       488.0,
       471.5,
       430.0,
-      447.0
+      447.0,
+      402.5
     ],
     "3227": [
       185.0,
@@ -4451,7 +4736,8 @@
       180.5,
       180.5,
       175.0,
-      177.5
+      177.5,
+      174.0
     ],
     "3131": [
       2015.0,
@@ -4460,7 +4746,8 @@
       1880.0,
       1905.0,
       1750.0,
-      1700.0
+      1700.0,
+      1555.0
     ],
     "4123": [
       29.8,
@@ -4469,7 +4756,8 @@
       28.55,
       28.4,
       28.1,
-      28.55
+      28.55,
+      28.9
     ],
     "4749": [
       697.0,
@@ -4478,7 +4766,8 @@
       678.0,
       680.0,
       625.0,
-      642.0
+      642.0,
+      605.0
     ],
     "3718": [
       56.4,
@@ -4487,7 +4776,8 @@
       52.9,
       51.8,
       48.85,
-      49.25
+      49.25,
+      46.55
     ]
   }
 }
