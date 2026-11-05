@@ -11,7 +11,8 @@ BASE_DIR = CONFIGS_DIR.parent
 CREDENTIALS_FILE = BASE_DIR / "credentials.json"
 
 # 預設模型名稱
-DEFAULT_GEMINI_MODEL = "gemini-3.8-flash"
+# DEFAULT_GEMINI_MODEL = "gemini-3.8-flash"
+DEFAULT_GEMINI_MODEL = "gemini-4-argon"
 
 
 def load_credentials(file_path: Optional[Path] = None) -> Dict[str, Any]:
