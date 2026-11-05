@@ -19,55 +19,228 @@
       --font-sans: 'Plus Jakarta Sans', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
       
-      /* 台股習慣色彩：紅漲綠跌 */
-      --color-up: #ef4444;
-      --color-up-bg: rgba(239, 68, 68, 0.12);
-      --color-up-border: rgba(239, 68, 68, 0.25);
-      --color-down: #10b981;
-      --color-down-bg: rgba(16, 185, 129, 0.12);
-      --color-down-border: rgba(16, 185, 129, 0.25);
+      /* 台股習慣色彩：紅漲綠跌 (Apple Liquid Tinted Droplets) */
+      --color-up: #ff453a;
+      --color-up-bg: linear-gradient(180deg, rgba(255, 69, 58, 0.22) 0%, rgba(239, 68, 68, 0.08) 100%);
+      --color-up-border: rgba(255, 110, 100, 0.38);
+      --color-up-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.35), 0 2px 8px -2px rgba(239, 68, 68, 0.25);
+
+      --color-down: #30d158;
+      --color-down-bg: linear-gradient(180deg, rgba(48, 209, 88, 0.22) 0%, rgba(16, 185, 129, 0.08) 100%);
+      --color-down-border: rgba(74, 222, 128, 0.38);
+      --color-down-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.35), 0 2px 8px -2px rgba(16, 185, 129, 0.25);
+
       --color-flat: #94a3b8;
 
-      --primary-accent: #0284c7;
-      --primary-glow: rgba(2, 132, 199, 0.25);
+      --primary-accent: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.34);
+      --spring-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --glass-alpha-scale: 1;
+      --glass-blur-px: 26px;
     }
 
-    /* 深色主題 (Apple Liquid Dark Glass) */
+    /* 深色主題 (Apple iOS 27 Second-Gen Refined Liquid Dark Glass) */
     .theme-dark {
-      --bg-gradient: radial-gradient(circle at 10% 20%, #0d121d 0%, #090c13 50%, #05070a 100%);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-dim: #64748b;
-      
-      --glass-bg: rgba(18, 24, 38, 0.65);
-      --glass-bg-hover: rgba(28, 38, 58, 0.75);
-      --glass-border: rgba(255, 255, 255, 0.08);
-      --glass-border-specular: rgba(255, 255, 255, 0.18);
-      --glass-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
-      
-      --card-highlight: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
-      --table-stripe: rgba(255, 255, 255, 0.015);
-      --table-hover: rgba(255, 255, 255, 0.04);
-      --pill-bg: rgba(255, 255, 255, 0.06);
-    }
+      --bg-gradient:
+        radial-gradient(ellipse 62% 46% at 12% 8%, rgba(6, 182, 212, 0.38) 0%, transparent 65%),
+        radial-gradient(ellipse 58% 48% at 88% 12%, rgba(139, 92, 246, 0.36) 0%, transparent 65%),
+        radial-gradient(ellipse 55% 45% at 20% 50%, rgba(244, 63, 94, 0.24) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 82% 55%, rgba(16, 185, 129, 0.25) 0%, transparent 65%),
+        radial-gradient(ellipse 65% 45% at 28% 92%, rgba(245, 158, 11, 0.20) 0%, transparent 65%),
+        radial-gradient(ellipse 65% 50% at 82% 92%, rgba(37, 99, 235, 0.32) 0%, transparent 70%),
+        linear-gradient(160deg, #040710 0%, #080d1a 48%, #050811 100%);
+      --ambient-orb-1:
+        radial-gradient(380px circle at 18% 22%, rgba(56, 189, 248, 0.30) 0%, rgba(56, 189, 248, 0.06) 45%, transparent 70%),
+        radial-gradient(420px circle at 82% 28%, rgba(168, 85, 247, 0.28) 0%, rgba(168, 85, 247, 0.05) 45%, transparent 70%),
+        radial-gradient(360px circle at 32% 68%, rgba(244, 63, 94, 0.22) 0%, transparent 70%),
+        radial-gradient(400px circle at 74% 72%, rgba(16, 185, 129, 0.22) 0%, transparent 70%);
+      --ambient-orb-2:
+        linear-gradient(125deg, transparent 18%, rgba(56, 189, 248, 0.11) 36%, rgba(236, 72, 153, 0.10) 52%, rgba(16, 185, 129, 0.10) 68%, transparent 84%);
+      --silk-opacity: 0.68;
 
-    /* 淺色主題 (Apple Liquid White Glass) */
-    .theme-light {
-      --bg-gradient: radial-gradient(circle at 10% 10%, #f8fafc 0%, #e2e8f0 60%, #cbd5e1 100%);
-      --text-main: #0f172a;
-      --text-muted: #475569;
+      --text-main: #f8fafc;
+      --text-muted: #cbd5e1;
       --text-dim: #94a3b8;
       
-      --glass-bg: rgba(255, 255, 255, 0.7);
-      --glass-bg-hover: rgba(255, 255, 255, 0.88);
-      --glass-border: rgba(255, 255, 255, 0.6);
-      --glass-border-specular: rgba(255, 255, 255, 0.9);
-      --glass-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.08), inset 0 1px 2px 0 rgba(255, 255, 255, 0.9);
+      /* iOS 27 二代液態玻璃：雙層稜鏡折射邊框 + 高對比光學景深 */
+      --glass-backdrop: blur(var(--glass-blur-px, 26px)) saturate(215%) contrast(104%);
+      --glass-bg:
+        radial-gradient(120% 95% at 50% 0%, rgba(255, 255, 255, calc(0.14 * var(--glass-alpha-scale, 1))) 0%, transparent 60%),
+        linear-gradient(135deg, rgba(30, 43, 72, calc(0.50 * var(--glass-alpha-scale, 1))) 0%, rgba(13, 20, 38, calc(0.32 * var(--glass-alpha-scale, 1))) 52%, rgba(24, 37, 64, calc(0.46 * var(--glass-alpha-scale, 1))) 100%);
+      --glass-bg-hover:
+        radial-gradient(120% 95% at 50% 0%, rgba(255, 255, 255, calc(0.20 * var(--glass-alpha-scale, 1))) 0%, transparent 62%),
+        linear-gradient(135deg, rgba(40, 56, 92, calc(0.58 * var(--glass-alpha-scale, 1))) 0%, rgba(18, 28, 52, calc(0.38 * var(--glass-alpha-scale, 1))) 52%, rgba(32, 48, 82, calc(0.52 * var(--glass-alpha-scale, 1))) 100%);
+      --glass-border: rgba(255, 255, 255, 0.15);
+      --glass-border-specular: rgba(255, 255, 255, 0.42);
+      --prismatic-rim: linear-gradient(135deg, rgba(255, 255, 255, 0.58) 0%, rgba(56, 189, 248, 0.28) 28%, rgba(255, 255, 255, 0.05) 50%, rgba(168, 85, 247, 0.30) 76%, rgba(255, 255, 255, 0.45) 100%);
+      --glass-shadow:
+        0 24px 52px -12px rgba(0, 0, 0, 0.72),
+        0 4px 16px -2px rgba(0, 0, 0, 0.45),
+        0 0 0 1px rgba(0, 0, 0, 0.48),
+        inset 0 1.75px 1.2px 0 rgba(255, 255, 255, 0.46),
+        inset 0 -1.75px 2.5px 0 rgba(56, 189, 248, 0.18),
+        inset 1.25px 0 1.5px 0 rgba(255, 255, 255, 0.22),
+        inset -1.25px 0 2px 0 rgba(168, 85, 247, 0.16);
       
-      --card-highlight: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.1) 100%);
-      --table-stripe: rgba(0, 0, 0, 0.015);
-      --table-hover: rgba(0, 0, 0, 0.035);
-      --pill-bg: rgba(0, 0, 0, 0.05);
+      --meniscus-sheen:
+        radial-gradient(92% 75% at 50% -2%, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0.05) 45%, transparent 72%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.11) 0%, transparent 16%);
+      --cursor-glint: radial-gradient(360px circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, 0.16) 0%, rgba(56, 189, 248, 0.05) 42%, transparent 70%);
+
+      /* iOS 27 3D 凸透鏡水滴膠囊按鈕 (Convex Droplet Capsule) */
+      --btn-glass-bg:
+        radial-gradient(110% 90% at 50% 8%, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.06) 52%, transparent 80%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(15, 23, 42, 0.22) 58%, rgba(56, 189, 248, 0.14) 100%);
+      --btn-glass-hover:
+        radial-gradient(110% 90% at 50% 8%, rgba(255, 255, 255, 0.38) 0%, rgba(255, 255, 255, 0.10) 52%, transparent 80%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(15, 23, 42, 0.18) 58%, rgba(56, 189, 248, 0.22) 100%);
+      --btn-glass-border: rgba(255, 255, 255, 0.24);
+      --btn-glass-shadow:
+        0 8px 18px -4px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(0, 0, 0, 0.35),
+        inset 0 1.75px 1.2px 0 rgba(255, 255, 255, 0.52),
+        inset 0 -1.5px 2px 0 rgba(56, 189, 248, 0.22);
+
+      /* 激活態 iOS 27 液態寶石膠囊 (Tinted Aqua Gem Droplet) */
+      --btn-active-bg:
+        radial-gradient(110% 90% at 50% 6%, rgba(255, 255, 255, 0.45) 0%, transparent 58%),
+        linear-gradient(180deg, rgba(56, 189, 248, 0.62) 0%, rgba(2, 132, 199, 0.42) 55%, rgba(14, 165, 233, 0.56) 100%);
+      --btn-active-border: rgba(186, 230, 253, 0.75);
+      --btn-active-shadow:
+        0 10px 24px -4px rgba(14, 165, 233, 0.52),
+        0 0 0 1px rgba(2, 132, 199, 0.4),
+        inset 0 2px 1.5px 0 rgba(255, 255, 255, 0.82),
+        inset 0 -2px 2.5px 0 rgba(2, 132, 199, 0.55);
+      --btn-active-text: #ffffff;
+
+      --tab-active-shadow:
+        0 8px 22px -4px rgba(0, 0, 0, 0.5),
+        0 0 20px -4px var(--primary-glow),
+        inset 0 2px 1.2px 0 rgba(255, 255, 255, 0.72),
+        inset 0 -1.75px 2px 0 rgba(56, 189, 248, 0.30);
+
+      /* 凹槽軌道與輸入框 (Recessed Liquid Well) */
+      --well-bg: rgba(5, 9, 20, 0.52);
+      --well-border: rgba(255, 255, 255, 0.15);
+      --well-shadow:
+        inset 0 2.5px 6px rgba(0, 0, 0, 0.65),
+        inset 0 -1px 0.8px rgba(255, 255, 255, 0.20),
+        0 1px 0 rgba(255, 255, 255, 0.08);
+
+      --table-header-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.03) 100%);
+      --table-hover: linear-gradient(90deg, rgba(56, 189, 248, 0.08) 0%, rgba(255, 255, 255, 0.09) 50%, rgba(168, 85, 247, 0.08) 100%);
+      --pill-bg: rgba(255, 255, 255, 0.09);
+    }
+
+    /* 淺色主題 (Apple iOS 27 Second-Gen Prismatic Daylight Crystal Glass) */
+    .theme-light {
+      --color-up: #dc2626;
+      --color-up-bg:
+        radial-gradient(100% 80% at 50% 8%, rgba(255, 255, 255, 0.85) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(254, 202, 202, 0.72) 0%, rgba(254, 226, 226, 0.38) 100%);
+      --color-up-border: rgba(239, 68, 68, 0.42);
+      --color-up-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 1), 0 3px 8px -2px rgba(239, 68, 68, 0.22);
+
+      --color-down: #059669;
+      --color-down-bg:
+        radial-gradient(100% 80% at 50% 8%, rgba(255, 255, 255, 0.85) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(167, 243, 208, 0.72) 0%, rgba(209, 250, 229, 0.38) 100%);
+      --color-down-border: rgba(16, 185, 129, 0.42);
+      --color-down-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 1), 0 3px 8px -2px rgba(16, 185, 129, 0.22);
+
+      --primary-accent: #0284c7;
+      --primary-glow: rgba(14, 165, 233, 0.35);
+
+      /* iOS 27 淺色流光絲綢底色 + 高飽和彩帶，讓玻璃折射產生強烈透鏡對比 */
+      --bg-gradient:
+        radial-gradient(ellipse 60% 45% at 12% 8%, rgba(14, 165, 233, 0.52) 0%, transparent 62%),
+        radial-gradient(ellipse 58% 48% at 88% 12%, rgba(139, 92, 246, 0.46) 0%, transparent 62%),
+        radial-gradient(ellipse 55% 45% at 18% 52%, rgba(244, 63, 94, 0.38) 0%, transparent 62%),
+        radial-gradient(ellipse 60% 50% at 84% 54%, rgba(16, 185, 129, 0.42) 0%, transparent 62%),
+        radial-gradient(ellipse 62% 46% at 28% 92%, rgba(245, 158, 11, 0.35) 0%, transparent 65%),
+        radial-gradient(ellipse 65% 50% at 82% 94%, rgba(59, 130, 246, 0.45) 0%, transparent 68%),
+        linear-gradient(145deg, #dbeafe 0%, #ede9fe 34%, #fce7f3 66%, #d1fae5 100%);
+      --ambient-orb-1:
+        radial-gradient(350px circle at 20% 20%, rgba(14, 165, 233, 0.48) 0%, rgba(56, 189, 248, 0.12) 48%, transparent 70%),
+        radial-gradient(390px circle at 80% 24%, rgba(139, 92, 246, 0.46) 0%, rgba(167, 139, 250, 0.12) 48%, transparent 70%),
+        radial-gradient(340px circle at 28% 66%, rgba(244, 63, 94, 0.38) 0%, rgba(251, 113, 133, 0.10) 48%, transparent 70%),
+        radial-gradient(370px circle at 75% 70%, rgba(16, 185, 129, 0.40) 0%, rgba(45, 212, 191, 0.10) 48%, transparent 70%);
+      --ambient-orb-2:
+        linear-gradient(125deg, rgba(255, 255, 255, 0.25) 0%, rgba(14, 165, 233, 0.20) 30%, rgba(236, 72, 153, 0.18) 52%, rgba(16, 185, 129, 0.18) 74%, rgba(255, 255, 255, 0.25) 100%);
+      --silk-opacity: 0.92;
+
+      --text-main: #0f172a;
+      --text-muted: #1e293b;
+      --text-dim: #475569;
+      
+      /* iOS 27 淺色高通透冰晶玻璃：超清透中層 + 銳利深色微外框 + 135° 鑽石稜鏡切邊 */
+      --glass-backdrop: blur(var(--glass-blur-px, 26px)) saturate(235%) contrast(106%);
+      --glass-bg:
+        radial-gradient(120% 90% at 50% 0%, rgba(255, 255, 255, calc(0.66 * var(--glass-alpha-scale, 1))) 0%, transparent 56%),
+        linear-gradient(135deg, rgba(255, 255, 255, calc(0.38 * var(--glass-alpha-scale, 1))) 0%, rgba(255, 255, 255, calc(0.14 * var(--glass-alpha-scale, 1))) 48%, rgba(224, 242, 254, calc(0.28 * var(--glass-alpha-scale, 1))) 100%);
+      --glass-bg-hover:
+        radial-gradient(120% 90% at 50% 0%, rgba(255, 255, 255, calc(0.76 * var(--glass-alpha-scale, 1))) 0%, transparent 58%),
+        linear-gradient(135deg, rgba(255, 255, 255, calc(0.48 * var(--glass-alpha-scale, 1))) 0%, rgba(255, 255, 255, calc(0.22 * var(--glass-alpha-scale, 1))) 48%, rgba(224, 242, 254, calc(0.38 * var(--glass-alpha-scale, 1))) 100%);
+      --glass-border: rgba(255, 255, 255, 0.85);
+      --glass-border-specular: rgba(255, 255, 255, 1);
+      --prismatic-rim: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(56, 189, 248, 0.55) 28%, rgba(255, 255, 255, 0.35) 50%, rgba(168, 85, 247, 0.50) 76%, rgba(255, 255, 255, 0.98) 100%);
+      --glass-shadow:
+        0 22px 48px -12px rgba(15, 23, 42, 0.17),
+        0 6px 18px -4px rgba(2, 132, 199, 0.10),
+        0 0 0 1px rgba(15, 23, 42, 0.08),
+        inset 0 2.5px 2px 0 rgba(255, 255, 255, 1),
+        inset 0 -2.5px 4px 0 rgba(14, 165, 233, 0.24),
+        inset 1.75px 0 2px 0 rgba(255, 255, 255, 0.96),
+        inset -1.75px 0 3px 0 rgba(139, 92, 246, 0.18);
+      
+      --meniscus-sheen:
+        radial-gradient(92% 72% at 50% -2%, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.14) 45%, transparent 72%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, transparent 15%);
+      --cursor-glint: radial-gradient(360px circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, 0.85) 0%, rgba(56, 189, 248, 0.12) 45%, transparent 70%);
+
+      /* iOS 27 淺色 3D 凸透鏡水滴按鈕：飽滿水滴弧頂 + 底部天藍焦散光 (Caustic Glow) */
+      --btn-glass-bg:
+        radial-gradient(110% 95% at 50% 8%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.25) 55%, transparent 82%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.52) 0%, rgba(255, 255, 255, 0.16) 55%, rgba(186, 230, 253, 0.44) 100%);
+      --btn-glass-hover:
+        radial-gradient(110% 95% at 50% 8%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.42) 55%, transparent 82%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.30) 55%, rgba(186, 230, 253, 0.62) 100%);
+      --btn-glass-border: rgba(255, 255, 255, 0.95);
+      --btn-glass-shadow:
+        0 8px 18px -4px rgba(15, 23, 42, 0.14),
+        0 2px 5px rgba(2, 132, 199, 0.08),
+        0 0 0 1px rgba(15, 23, 42, 0.08),
+        inset 0 2.2px 1.2px 0 rgba(255, 255, 255, 1),
+        inset 0 -2px 2.5px 0 rgba(2, 132, 199, 0.24);
+
+      --btn-active-bg:
+        radial-gradient(110% 90% at 50% 6%, rgba(255, 255, 255, 0.62) 0%, transparent 55%),
+        linear-gradient(180deg, rgba(56, 189, 248, 0.92) 0%, rgba(2, 132, 199, 0.78) 55%, rgba(3, 105, 161, 0.88) 100%);
+      --btn-active-border: rgba(224, 242, 254, 1);
+      --btn-active-shadow:
+        0 10px 22px -4px rgba(2, 132, 199, 0.42),
+        0 0 0 1px rgba(2, 132, 199, 0.32),
+        inset 0 2.2px 1.5px 0 rgba(255, 255, 255, 0.95),
+        inset 0 -2px 2.5px 0 rgba(3, 105, 161, 0.52);
+      --btn-active-text: #ffffff;
+
+      --tab-active-shadow:
+        0 10px 24px -4px rgba(15, 23, 42, 0.18),
+        0 3px 8px rgba(2, 132, 199, 0.15),
+        0 0 0 1px rgba(15, 23, 42, 0.07),
+        inset 0 2.5px 1.5px 0 rgba(255, 255, 255, 1),
+        inset 0 -2px 2.5px 0 rgba(14, 165, 233, 0.26);
+
+      --well-bg: rgba(15, 23, 42, 0.08);
+      --well-border: rgba(255, 255, 255, 0.85);
+      --well-shadow:
+        inset 0 2.5px 5px rgba(15, 23, 42, 0.13),
+        inset 0 -1.5px 1px rgba(255, 255, 255, 0.98),
+        0 1px 2px rgba(255, 255, 255, 0.9);
+
+      --table-header-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.58) 0%, rgba(255, 255, 255, 0.20) 100%);
+      --table-hover: linear-gradient(90deg, rgba(14, 165, 233, 0.10) 0%, rgba(255, 255, 255, 0.62) 50%, rgba(139, 92, 246, 0.10) 100%);
+      --pill-bg: rgba(255, 255, 255, 0.42);
     }
 
     * {
@@ -81,25 +254,41 @@
     body {
       font-family: var(--font-sans);
       background: var(--bg-gradient);
+      background-attachment: fixed;
       color: var(--text-main);
       min-height: 100vh;
       overflow-x: hidden;
       padding-bottom: 48px;
-      transition: background 0.3s ease, color 0.3s ease;
+      transition: color 0.25s ease;
     }
 
-    /* 頂部光暈氛圍特效 */
+    /* iOS 27 零耗能 3D 流光絲綢折射光場 (靜態 GPU 圖層，讓液態玻璃產生明顯邊緣透鏡彎曲與色散) */
     .ambient-glow {
       position: fixed;
-      top: -160px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 700px;
-      height: 380px;
-      background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.15) 0%, rgba(99, 102, 241, 0.08) 50%, transparent 80%);
-      filter: blur(60px);
+      inset: 0;
+      background: var(--ambient-orb-1);
       pointer-events: none;
       z-index: 0;
+      transform: translateZ(0);
+      overflow: hidden;
+    }
+
+    .ambient-glow::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--ambient-orb-2);
+      pointer-events: none;
+    }
+
+    .ambient-silk-svg {
+      position: absolute;
+      inset: -4%;
+      width: 108%;
+      height: 108%;
+      opacity: var(--silk-opacity, 0.85);
+      pointer-events: none;
+      transform: translateZ(0);
     }
 
     /* 容器架構 */
@@ -129,18 +318,33 @@
       gap: 14px;
     }
 
+    /* Apple 液態玻璃寶石徽章 */
     .logo-badge {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+      width: 46px;
+      height: 46px;
+      border-radius: 15px;
+      background: linear-gradient(145deg, rgba(56, 189, 248, 0.92) 0%, rgba(2, 132, 199, 0.78) 55%, rgba(3, 105, 161, 0.9) 100%);
+      border: 1px solid rgba(186, 230, 253, 0.65);
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
       font-weight: 800;
       font-size: 20px;
-      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.4);
+      position: relative;
+      overflow: hidden;
+      box-shadow:
+        0 8px 20px -4px rgba(2, 132, 199, 0.5),
+        inset 0 2px 1.5px 0 rgba(255, 255, 255, 0.75),
+        inset 0 -2px 3px 0 rgba(3, 105, 161, 0.6);
+    }
+
+    .logo-badge::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(90% 70% at 30% 0%, rgba(255, 255, 255, 0.55) 0%, transparent 65%);
+      pointer-events: none;
     }
 
     .header-title-box h1 {
@@ -149,47 +353,95 @@
       letter-spacing: -0.02em;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .header-title-box .team-pill {
       font-size: 12px;
-      padding: 3px 8px;
-      border-radius: 6px;
-      background: var(--pill-bg);
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--btn-glass-bg);
       color: var(--primary-accent);
       font-weight: 700;
       font-family: var(--font-mono);
-      border: 1px solid var(--glass-border-specular);
+      border: 1px solid var(--btn-glass-border);
+      box-shadow: var(--btn-glass-shadow);
     }
 
     .header-subtitle {
       font-size: 13px;
       color: var(--text-muted);
-      margin-top: 2px;
+      margin-top: 3px;
     }
 
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
+    /* iOS 27 專屬：液態玻璃通透度調節器 (Liquid Glass Transparency Slider) */
+    .ios27-slider-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--btn-glass-bg);
+      backdrop-filter: blur(18px) saturate(200%);
+      -webkit-backdrop-filter: blur(18px) saturate(200%);
+      border: 1px solid var(--btn-glass-border);
+      box-shadow: var(--btn-glass-shadow);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .ios27-slider-pill input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 72px;
+      height: 5px;
+      border-radius: 999px;
+      background: var(--well-bg);
+      box-shadow: var(--well-shadow);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .ios27-slider-pill input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #ffffff 0%, #bae6fd 55%, #0284c7 100%);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.45), inset 0 1px 1px rgba(255, 255, 255, 1);
+      transition: transform 0.18s var(--spring-ease);
+    }
+
+    .ios27-slider-pill input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.18);
+    }
+
+    /* 頂部膠囊狀態標籤與液態按鈕 */
     .date-pill {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 7px 14px;
-      border-radius: 20px;
-      background: var(--glass-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--glass-border-specular);
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: var(--btn-glass-bg);
+      backdrop-filter: blur(18px) saturate(200%);
+      -webkit-backdrop-filter: blur(18px) saturate(200%);
+      border: 1px solid var(--btn-glass-border);
       font-size: 13px;
       font-weight: 600;
       font-family: var(--font-mono);
       color: var(--text-main);
-      box-shadow: var(--glass-shadow);
+      box-shadow: var(--btn-glass-shadow);
     }
 
     .date-pill::before {
@@ -197,34 +449,41 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #10b981;
+      background: #30d158;
       display: inline-block;
-      box-shadow: 0 0 8px #10b981;
+      box-shadow: 0 0 8px #30d158, inset 0 1px 1px rgba(255, 255, 255, 0.8);
     }
 
-    /* 主題切換按鈕 */
+    /* 主題切換按鈕 (Apple iOS 27 3D Convex Droplet Button) */
     .theme-toggle-btn {
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border-specular);
+      background: var(--btn-glass-bg);
+      border: 1px solid var(--btn-glass-border);
       color: var(--text-main);
-      border-radius: 20px;
-      padding: 7px 14px;
+      border-radius: 999px;
+      padding: 8px 16px;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       font-size: 13px;
-      font-weight: 600;
-      backdrop-filter: blur(16px);
-      box-shadow: var(--glass-shadow);
-      transition: all 0.2s ease;
+      font-weight: 700;
+      font-family: var(--font-sans);
+      backdrop-filter: blur(18px) saturate(200%);
+      -webkit-backdrop-filter: blur(18px) saturate(200%);
+      box-shadow: var(--btn-glass-shadow);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s var(--spring-ease), background 0.2s ease, box-shadow 0.2s ease;
     }
     .theme-toggle-btn:hover {
-      background: var(--glass-bg-hover);
-      transform: translateY(-1px);
+      background: var(--btn-glass-hover);
+      transform: translateY(-1px) scale(1.02);
+    }
+    .theme-toggle-btn:active {
+      transform: translateY(0) scale(0.96);
     }
 
-    /* 主選單分頁切換 (Tabs) - Apple 膠囊控制器 */
+    /* 主選單分頁切換 (Tabs) - Apple iOS 27 二代液態玻璃膠囊控制器 */
     .tab-nav-container {
       display: flex;
       justify-content: center;
@@ -233,61 +492,100 @@
 
     .segmented-control {
       display: inline-flex;
-      background: var(--glass-bg);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      padding: 5px;
-      border-radius: 16px;
-      border: 1px solid var(--glass-border-specular);
-      box-shadow: var(--glass-shadow);
+      background: var(--well-bg);
+      backdrop-filter: blur(22px) saturate(200%);
+      -webkit-backdrop-filter: blur(22px) saturate(200%);
+      padding: 6px;
+      border-radius: 999px;
+      border: 1px solid var(--well-border);
+      box-shadow: var(--well-shadow), 0 14px 34px -8px rgba(0, 0, 0, 0.22);
       gap: 6px;
+      position: relative;
     }
 
     .tab-btn {
-      border: none;
+      border: 1px solid transparent;
       background: transparent;
       color: var(--text-muted);
-      padding: 10px 22px;
+      padding: 10px 24px;
       font-size: 14px;
       font-weight: 700;
-      border-radius: 12px;
+      font-family: var(--font-sans);
+      border-radius: 999px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.28s var(--spring-ease);
       display: flex;
       align-items: center;
       gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tab-btn:hover:not(.active) {
+      color: var(--text-main);
+      background: var(--pill-bg);
+    }
+
+    .tab-btn:active {
+      transform: scale(0.96);
     }
 
     .tab-btn.active {
-      background: var(--card-highlight), var(--glass-bg-hover);
+      background: var(--btn-glass-hover);
       color: var(--text-main);
       border: 1px solid var(--glass-border-specular);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      box-shadow: var(--tab-active-shadow);
     }
 
-    /* 毛玻璃卡片通用樣式 (Glass Card) */
+    /* 液態玻璃卡片通用樣式 (Apple iOS 27 Second-Gen Liquid Glass Card) */
     .glass-card {
       background: var(--glass-bg);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      backdrop-filter: var(--glass-backdrop);
+      -webkit-backdrop-filter: var(--glass-backdrop);
       border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      padding: 20px;
+      border-radius: 26px;
+      padding: 22px;
       box-shadow: var(--glass-shadow);
       position: relative;
       overflow: hidden;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.28s var(--spring-ease), box-shadow 0.28s ease, border-color 0.28s ease;
     }
 
+    /* iOS 27 135° 對角稜鏡折射高光邊框 + 頂部水滴張力光暈 (Prismatic Rim & Meniscus Lens) */
     .glass-card::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: var(--card-highlight);
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.25px;
+      background: var(--prismatic-rim);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
       pointer-events: none;
+      z-index: 2;
+    }
+
+    /* 滑鼠懸停動態微光折射 + 頂部水滴張力曲面 (平時靜態零消耗，Hover 觸發焦散微光) */
+    .glass-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: var(--cursor-glint), var(--meniscus-sheen);
+      opacity: 0.65;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .glass-card:hover::after {
+      opacity: 1;
+    }
+
+    .glass-card > * {
+      position: relative;
+      z-index: 1;
     }
 
     /* 頂部 KPI 卡片網格 */
@@ -299,10 +597,15 @@
     }
 
     .kpi-card {
-      padding: 18px 20px;
+      padding: 20px 22px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--glass-border-specular);
     }
 
     .kpi-label {
@@ -363,76 +666,102 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 14px;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
 
     .filter-pills {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
+      padding: 4px;
+      border-radius: 999px;
+      background: var(--well-bg);
+      border: 1px solid var(--well-border);
+      box-shadow: var(--well-shadow);
     }
 
+    /* 液態玻璃膠囊按鈕 (Filter & Sort Liquid Buttons) */
     .filter-btn {
-      background: var(--pill-bg);
-      border: 1px solid var(--glass-border);
+      background: var(--btn-glass-bg);
+      border: 1px solid var(--btn-glass-border);
       color: var(--text-muted);
-      padding: 8px 16px;
-      border-radius: 12px;
+      padding: 8px 18px;
+      border-radius: 999px;
       font-size: 13px;
       font-weight: 700;
+      font-family: var(--font-sans);
       cursor: pointer;
-      transition: all 0.15s ease;
+      box-shadow: var(--btn-glass-shadow);
+      transition: transform 0.22s var(--spring-ease), background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
     .filter-btn:hover {
-      background: var(--glass-bg-hover);
+      background: var(--btn-glass-hover);
       color: var(--text-main);
+      transform: translateY(-1px) scale(1.015);
+    }
+
+    .filter-btn:active {
+      transform: translateY(0) scale(0.96);
     }
 
     .filter-btn.active {
-      background: var(--primary-accent);
-      color: #fff;
-      border-color: var(--primary-accent);
-      box-shadow: 0 2px 10px var(--primary-glow);
+      background: var(--btn-active-bg);
+      color: var(--btn-active-text);
+      border-color: var(--btn-active-border);
+      box-shadow: var(--btn-active-shadow);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
     .search-box {
       position: relative;
-      min-width: 240px;
+      min-width: 248px;
     }
 
+    /* 液態玻璃內凹搜尋框 */
     .search-input {
       width: 100%;
-      background: var(--pill-bg);
-      border: 1px solid var(--glass-border-specular);
-      padding: 9px 14px 9px 36px;
-      border-radius: 12px;
+      background: var(--well-bg);
+      border: 1px solid var(--well-border);
+      box-shadow: var(--well-shadow);
+      padding: 9px 16px 9px 38px;
+      border-radius: 999px;
       color: var(--text-main);
       font-size: 13px;
       font-family: var(--font-sans);
       outline: none;
-      transition: all 0.2s ease;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    .search-input::placeholder {
+      color: var(--text-dim);
     }
 
     .search-input:focus {
       border-color: var(--primary-accent);
-      box-shadow: 0 0 0 3px var(--primary-glow);
+      background: var(--btn-glass-bg);
+      box-shadow:
+        0 0 0 3px var(--primary-glow),
+        inset 0 1px 1px rgba(255, 255, 255, 0.35);
     }
 
     .search-icon {
       position: absolute;
-      left: 12px;
+      left: 14px;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-dim);
       pointer-events: none;
     }
 
-    /* 專業表格樣式 (Table) - 富果風格高密度 */
+    /* 專業表格樣式 (Table) - 富果高密度 + 液態玻璃質感 */
     .table-container {
       overflow-x: auto;
-      border-radius: 16px;
+      border-radius: 18px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.01);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 
     table.fugle-table {
@@ -443,37 +772,48 @@
     }
 
     table.fugle-table th {
-      background: var(--pill-bg);
+      background: var(--table-header-bg);
       color: var(--text-muted);
       font-weight: 700;
       text-align: right;
-      padding: 12px 14px;
+      padding: 13px 14px;
       border-bottom: 1px solid var(--glass-border);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
       white-space: nowrap;
       cursor: pointer;
       user-select: none;
-      transition: color 0.15s ease;
+      transition: color 0.18s ease, background 0.18s ease;
     }
 
     table.fugle-table th:first-child {
       text-align: left;
-      border-top-left-radius: 12px;
+      border-top-left-radius: 16px;
     }
     table.fugle-table th:nth-child(2) {
       text-align: left;
     }
     table.fugle-table th:last-child {
-      border-top-right-radius: 12px;
+      border-top-right-radius: 16px;
     }
 
     table.fugle-table th:hover {
       color: var(--text-main);
+      background: var(--btn-glass-hover);
+    }
+
+    table.fugle-table th:active {
+      transform: scale(0.98);
     }
 
     table.fugle-table th .sort-icon {
       margin-left: 4px;
       font-size: 11px;
-      opacity: 0.5;
+      opacity: 0.55;
+      display: inline-block;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    table.fugle-table th:hover .sort-icon {
+      opacity: 0.9;
     }
     table.fugle-table th.sorted .sort-icon {
       opacity: 1;
@@ -487,6 +827,10 @@
       font-family: var(--font-mono);
       white-space: nowrap;
       transition: background 0.15s ease;
+    }
+
+    table.fugle-table tbody tr:last-child td {
+      border-bottom: none;
     }
 
     table.fugle-table td:first-child,
@@ -519,21 +863,25 @@
       color: var(--text-main);
     }
 
+    /* 市場微型液態膠囊 */
     .market-badge {
       font-size: 11px;
-      padding: 2px 6px;
-      border-radius: 4px;
-      background: var(--pill-bg);
-      color: var(--text-dim);
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: var(--btn-glass-bg);
+      border: 1px solid var(--btn-glass-border);
+      box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.25);
+      color: var(--text-muted);
       font-family: var(--font-sans);
+      font-weight: 600;
     }
 
-    /* 漲跌徽章 (Up/Down Badges) */
+    /* 漲跌與部位液態玻璃徽章 (Liquid Glass Micro-Capsules) */
     .badge-pnl {
       display: inline-flex;
       align-items: center;
-      padding: 3px 8px;
-      border-radius: 6px;
+      padding: 3.5px 10px;
+      border-radius: 999px;
       font-weight: 700;
       font-size: 12px;
       font-family: var(--font-mono);
@@ -543,19 +891,30 @@
       background: var(--color-up-bg);
       color: var(--color-up);
       border: 1px solid var(--color-up-border);
+      box-shadow: var(--color-up-shadow);
     }
 
     .badge-pnl.down {
       background: var(--color-down-bg);
       color: var(--color-down);
       border: 1px solid var(--color-down-border);
+      box-shadow: var(--color-down-shadow);
     }
 
     .badge-pnl.flat {
       color: var(--color-flat);
     }
 
-    /* 權重進度條 */
+    .badge-held {
+      background: var(--btn-active-bg);
+      color: var(--btn-active-text);
+      border: 1px solid var(--btn-active-border);
+      box-shadow:
+        inset 0 1px 0.5px rgba(255, 255, 255, 0.6),
+        0 2px 8px -2px var(--primary-glow);
+    }
+
+    /* 權重液態光條 */
     .weight-bar-wrapper {
       display: flex;
       align-items: center;
@@ -564,17 +923,19 @@
     }
 
     .weight-progress {
-      width: 50px;
-      height: 6px;
-      border-radius: 3px;
-      background: var(--pill-bg);
+      width: 54px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--well-bg);
+      box-shadow: var(--well-shadow);
       overflow: hidden;
     }
 
     .weight-fill {
       height: 100%;
       background: linear-gradient(90deg, #38bdf8, #0284c7);
-      border-radius: 3px;
+      border-radius: 999px;
+      box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.65);
     }
 
     /* 頁腳 */
@@ -588,7 +949,13 @@
       gap: 6px;
     }
 
-    /* RWD 適應 */
+    /* RWD 適應與動態減敏支援 */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+      }
+    }
+
     @media (max-width: 768px) {
       .app-header {
         flex-direction: column;
@@ -612,6 +979,10 @@
         flex-direction: column;
         align-items: stretch;
       }
+      .filter-pills {
+        border-radius: 18px;
+        justify-content: center;
+      }
       .search-box {
         width: 100%;
       }
@@ -619,7 +990,31 @@
   </style>
 </head>
 <body>
-  <div class="ambient-glow"></div>
+  <!-- iOS 27 3D 稜鏡流光絲綢背景：靜態向量彩帶穿過卡片後方，讓 backdrop-filter 折射出清晰的光學透鏡感且 0 效能負擔 -->
+  <div class="ambient-glow">
+    <svg class="ambient-silk-svg" viewBox="0 0 1600 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="ios27SilkCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.45"/>
+          <stop offset="50%" stop-color="#3b82f6" stop-opacity="0.32"/>
+          <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.42"/>
+        </linearGradient>
+        <linearGradient id="ios27SilkRose" x1="100%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#ec4899" stop-opacity="0.38"/>
+          <stop offset="50%" stop-color="#f43f5e" stop-opacity="0.28"/>
+          <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.35"/>
+        </linearGradient>
+        <linearGradient id="ios27SilkEmerald" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#10b981" stop-opacity="0.38"/>
+          <stop offset="50%" stop-color="#14b8a6" stop-opacity="0.28"/>
+          <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.40"/>
+        </linearGradient>
+      </defs>
+      <path d="M-120,160 C320,-40 620,420 1060,180 C1340,30 1520,240 1720,110 L1720,390 C1420,510 1120,220 740,430 C380,620 140,340 -120,460 Z" fill="url(#ios27SilkCyan)"/>
+      <path d="M-100,520 C280,690 680,290 1120,540 C1380,680 1540,490 1720,610 L1720,860 C1400,720 1040,960 620,740 C260,550 80,790 -100,710 Z" fill="url(#ios27SilkRose)"/>
+      <path d="M180,-80 C540,180 880,-40 1260,260 C1480,430 1620,290 1740,440 L1740,640 C1460,480 1140,680 780,380 C440,100 160,310 -80,140 Z" fill="url(#ios27SilkEmerald)"/>
+    </svg>
+  </div>
 
   <div class="app-container">
     <!-- 頂部標頭 -->
@@ -636,6 +1031,10 @@
       </div>
       <div class="header-actions">
         <div class="date-pill" id="dateBadge">基準日: 2026-11-05</div>
+        <div class="ios27-slider-pill" title="iOS 27 液態玻璃通透度調節 (左：極致冰晶 / 右：溫潤凝霜)">
+          <span>💧 通透度</span>
+          <input type="range" id="glassAlphaSlider" min="35" max="145" value="100" oninput="setGlassTransparency(this.value)">
+        </div>
         <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()">
           <span id="themeIcon">☀️</span>
           <span id="themeLabel">淺色模式</span>
@@ -832,7 +1231,15 @@
       }
     }
 
-    // 初始化主題
+    // 初始化主題與 iOS 27 通透度滑桿
+    function setGlassTransparency(val) {
+      const scale = (Number(val) / 100).toFixed(2);
+      const blurPx = Math.round(14 + (Number(val) / 100) * 12);
+      document.documentElement.style.setProperty('--glass-alpha-scale', scale);
+      document.documentElement.style.setProperty('--glass-blur-px', blurPx + 'px');
+      localStorage.setItem('esun_dashboard_glass_alpha', val);
+    }
+
     (function initTheme() {
       const saved = localStorage.getItem('esun_dashboard_theme');
       if (saved === 'light') {
@@ -840,6 +1247,12 @@
         document.documentElement.classList.add('theme-light');
         document.getElementById('themeIcon').textContent = '🌙';
         document.getElementById('themeLabel').textContent = '深色模式';
+      }
+      const savedAlpha = localStorage.getItem('esun_dashboard_glass_alpha');
+      if (savedAlpha !== null) {
+        const slider = document.getElementById('glassAlphaSlider');
+        if (slider) slider.value = savedAlpha;
+        setGlassTransparency(savedAlpha);
       }
     })();
 
@@ -1026,7 +1439,7 @@
             <td>${fmtNum(item.volume_lots, 1)}</td>
             <td style="text-align:center;">${item.sparkline}</td>
             <td>
-              ${item.is_held ? '<span class="badge-pnl" style="background:rgba(2,132,199,0.15); color:#0284c7; border:1px solid rgba(2,132,199,0.3);">已買入 ' + item.lots + '張</span>' : '<span style="color:var(--text-dim); font-size:12px;">未持有</span>'}
+              ${item.is_held ? '<span class="badge-pnl badge-held">已買入 ' + item.lots + '張</span>' : '<span style="color:var(--text-dim); font-size:12px;">未持有</span>'}
             </td>
           </tr>
         `;
@@ -1138,10 +1551,23 @@
       window.assetChart.update();
     }
 
+    // 輕量級液態玻璃表面微光追蹤 (Passive 事件且僅更新當前卡片 CSS 變數，無背景常駐運算)
+    function initLiquidSpecularGlint() {
+      if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
+      document.querySelectorAll('.glass-card').forEach(card => {
+        card.addEventListener('pointermove', (e) => {
+          const rect = card.getBoundingClientRect();
+          card.style.setProperty('--mx', `${(e.clientX - rect.left).toFixed(0)}px`);
+          card.style.setProperty('--my', `${(e.clientY - rect.top).toFixed(0)}px`);
+        }, { passive: true });
+      });
+    }
+
     // 初始化渲染
     window.addEventListener('DOMContentLoaded', () => {
       renderHoldingsTable();
       renderAssetChart();
+      initLiquidSpecularGlint();
     });
   </script>
 </body>
