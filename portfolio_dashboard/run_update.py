@@ -26,11 +26,11 @@ if str(CURRENT_DIR) not in sys.path:
     sys.path.insert(0, str(CURRENT_DIR))
 
 from tracker import get_latest_portfolio_summary
-from market_api import fetch_all_150_quotes
+from market_api import fetch_all_150_quotes, rebuild_full_candles
 from builder import build_dashboard_html
 
 
-def run_update(auto_push: bool = False, fetch_candles: bool = True):
+def run_update(auto_push: bool = False, fetch_candles: bool = True, rebuild_candles: bool = False):
     print("=" * 65)
     print("🚀 啟動 2026 玉山 AI 經理人投資看板 - 每日收盤數據自動更新產線")
     print("=" * 65)
@@ -46,8 +46,12 @@ def run_update(auto_push: bool = False, fetch_candles: bool = True):
     print(f"  目前持股檔數: {acc['holdings_count']} 檔")
 
     # 2. 串接玉山證券行情 SDK (100% 透過玉山 API 取得所有行情)
-    print("\n[Step 2/3] 正在登入玉山證券 SDK 並抓取 150 檔標的最新收盤行情...")
-    quotes = fetch_all_150_quotes(summary["stocks_150"], fetch_candles=fetch_candles)
+    if rebuild_candles:
+        print("\n[Step 2/3] [強制完整重建模式] 正在調用玉山 historical.candles 完整拉取官方 150 檔日 K 線...")
+        quotes = rebuild_full_candles(summary["stocks_150"])
+    else:
+        print("\n[Step 2/3] 正在登入玉山證券 SDK 並抓取 150 檔標的最新收盤行情...")
+        quotes = fetch_all_150_quotes(summary["stocks_150"], fetch_candles=fetch_candles)
 
     # 3. 渲染富果/Apple風格液態毛玻璃網頁
     print("\n[Step 3/3] 正在生成富果 Fugle 專業版面 + Apple 毛玻璃前端網頁...")
@@ -83,6 +87,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="玉山 AI 挑戰賽投資看板每日一鍵更新工具")
     parser.add_argument("--push", action="store_true", help="完成後自動執行 git commit & push")
     parser.add_argument("--no-candles", action="store_true", help="跳過歷史 K 線，僅抓取今日最新現價")
+    parser.add_argument("--rebuild-candles", action="store_true", help="強制重新自玉山 API historical.candles 完整拉取自 10/27 起官方歷史 K 線")
     args = parser.parse_args()
 
-    run_update(auto_push=args.push, fetch_candles=not args.no_candles)
+    run_update(auto_push=args.push, fetch_candles=not args.no_candles, rebuild_candles=args.rebuild_candles)

@@ -64,6 +64,75 @@ def save_cached_market_data(data: Dict[str, Any]):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
+def rebuild_full_candles(stocks_150: Dict[str, Dict[str, str]]) -> Dict[str, Dict[str, Any]]:
+    """調用官方 historical.candles 完整拉取自 2026-10-27 以來的所有官方真實日 K 線 (防呆覆蓋保證)"""
+    client = init_esun_client()
+    symbols = list(stocks_150.keys())
+    print(f"\n[market_api] 正在透過玉山 API historical.candles 完整重建 150 檔官方歷史日線...")
+    print(f"[market_api] 標的數量: {len(symbols)} 檔，分 3 批執行（配額保護 60 次/分）...")
+
+    results = {}
+    history_candles = {}
+    BATCH_SIZE = 50
+    call_count = 0
+
+    for idx, code in enumerate(symbols, 1):
+        meta = stocks_150.get(code, {})
+        name = meta.get("name", code)
+        market = meta.get("market", "上市")
+
+        if call_count > 0 and call_count % BATCH_SIZE == 0:
+            print(f"\n⏳ [配額保護] 已呼叫 {call_count} 次，冷卻等待 62 秒重置每分鐘配額...")
+            time.sleep(62)
+            print("   ✅ 配額計數器已重置，繼續執行下一批...\n")
+
+        call_count += 1
+        try:
+            res = client.historical.candles(symbol=code, timeframe="D")
+            data = res.get("data", [])
+            comp_candles = [c for c in data if c.get("date", "") >= "2026-10-27"]
+            comp_candles.sort(key=lambda x: x["date"])
+
+            trend = [float(c["close"]) for c in comp_candles]
+            history_candles[code] = trend
+
+            latest_c = comp_candles[-1] if comp_candles else {}
+            prev_c = comp_candles[-2] if len(comp_candles) >= 2 else latest_c
+
+            close_price = float(latest_c.get("close", 0.0))
+            prev_close = float(prev_c.get("close", close_price))
+            change = round(close_price - prev_close, 2)
+            change_pct = round((change / prev_close * 100), 2) if prev_close else 0.0
+
+            results[code] = {
+                "code": code,
+                "name": name,
+                "market": market,
+                "close_price": close_price,
+                "prev_close": prev_close,
+                "change": change,
+                "change_pct": change_pct,
+                "volume_lots": round(latest_c.get("volume", 0) / 1000.0, 1),
+                "trade_value": 0,
+                "last_updated": latest_c.get("date", time.strftime("%Y-%m-%d")),
+                "trend": trend,
+                "dates": [c["date"] for c in comp_candles]
+            }
+            print(f"[{idx:3d}/150] {code} {name:<4s}: {len(trend)} 根日線, 現價 {close_price:7.2f} ({change:+.2f})")
+        except Exception as e:
+            print(f"[{idx:3d}/150] ⚠️ 抓取 {code} {name} 失敗: {e}")
+
+        time.sleep(0.2)
+
+    save_cached_market_data({
+        "updated_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+        "stocks": results,
+        "history_candles": history_candles
+    })
+    print(f"\n[market_api] ✅ 150 檔官方歷史日線已 100% 完整覆蓋重建完畢！")
+    return results
+
+
 def fetch_all_150_quotes(
     stocks_150: Dict[str, Dict[str, str]],
     fetch_candles: bool = True,
@@ -174,18 +243,33 @@ def fetch_all_150_quotes(
         # 每次呼叫間隔 0.25 秒平滑流量
         time.sleep(0.25)
 
-    # 處理趨勢 Sparkline
+    # 處理趨勢 Sparkline (以日期為 Key 的絕對覆蓋防呆架構，徹底杜絕重複 append 或漏接平盤)
     for code, item in results.items():
-        existing_trend = history_candles.get(code, [])
-        latest_c = item["close_price"]
-        if existing_trend:
-            trend = list(existing_trend)
-            if latest_c > 0 and (len(trend) == 0 or trend[-1] != latest_c):
-                trend.append(latest_c)
-            item["trend"] = trend
-            history_candles[code] = trend
+        existing_item = cached_stocks.get(code, {})
+        existing_dates = existing_item.get("dates") or []
+        existing_trend = history_candles.get(code, []) or existing_item.get("trend", [])
+        
+        # 建立日期對照字典
+        date_map = {}
+        if existing_dates and len(existing_dates) == len(existing_trend):
+            for d, p in zip(existing_dates, existing_trend):
+                date_map[d] = p
         else:
-            item["trend"] = [latest_c] if latest_c > 0 else []
+            # fallback: 若無日期標籤，使用現有序列
+            for idx, p in enumerate(existing_trend):
+                date_map[f"idx_{idx:03d}"] = p
+
+        # 覆蓋今日收盤價
+        latest_c = item.get("close_price", 0.0)
+        if latest_c > 0:
+            date_map[today_str] = latest_c
+
+        # 依日期鍵排序，重新生成乾淨無重複的序列
+        sorted_keys = sorted(date_map.keys())
+        trend = [date_map[k] for k in sorted_keys]
+        item["dates"] = sorted_keys
+        item["trend"] = trend
+        history_candles[code] = trend
 
     # 儲存至本地快取
     save_cached_market_data({

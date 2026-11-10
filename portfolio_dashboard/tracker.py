@@ -68,10 +68,6 @@ def parse_backend_reports() -> List[Dict[str, Any]]:
             continue
         try:
             content = f.read_text(encoding="utf-8", errors="ignore")
-            # 提取交易日
-            m_date = re.search(r"(\d{4}-\d{2}-\d{2})", content)
-            file_date = m_date.group(1) if m_date else None
-            
             # 提取手續費與證交稅
             fee_m = re.search(r"手續費\s*([0-9,]+)\s*元", content)
             tax_m = re.search(r"證交稅\s*([0-9,]+)\s*元", content)
@@ -84,7 +80,6 @@ def parse_backend_reports() -> List[Dict[str, Any]]:
             for r in rows:
                 cells = [re.sub(r"<[^>]+>", "", c).strip() for c in re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", r, re.DOTALL)]
                 if len(cells) >= 7 and cells[1] in ["買進", "賣出"]:
-                    # ['2026-11-02', '賣出', '2368', '金像電', '6', '1,037.90', '623', '已成交']
                     t_date = cells[0]
                     t_action = cells[1] # 買進 / 賣出
                     t_code = cells[2]
@@ -102,10 +97,17 @@ def parse_backend_reports() -> List[Dict[str, Any]]:
                         "price": t_price,
                         "amount": t_price * t_lots * 1000
                     })
-            if trades:
+
+            # 優先從表格第一筆成交交易日，或頂部下拉選單 option value 提取精確日期
+            m_opt = re.search(r'option\s+value="(\d{4}-\d{2}-\d{2})"', content)
+            real_date = trades[0]["date"] if trades else (m_opt.group(1) if m_opt else None)
+            if not real_date:
+                m_date = re.search(r"(\d{4}-\d{2}-\d{2})", content)
+                real_date = m_date.group(1) if m_date else None
+            if trades and real_date:
                 reports.append({
                     "file": f.name,
-                    "date": trades[0]["date"] if trades else file_date,
+                    "date": real_date,
                     "fee": fee,
                     "tax": tax,
                     "trades": trades
@@ -113,9 +115,12 @@ def parse_backend_reports() -> List[Dict[str, Any]]:
         except Exception as e:
             print(f"[警告] 解析後台檔案 {f.name} 失敗: {e}")
 
-    # 依日期排序
+    # 依真實交易日期排序，並以交易日去重防呆 (若有同日多檔，保留最新/完整的一份)
     reports.sort(key=lambda x: x["date"])
-    return reports
+    dedup_reports = {}
+    for rep in reports:
+        dedup_reports[rep["date"]] = rep
+    return list(dedup_reports.values())
 
 
 def calculate_portfolio_costs(backend_reports: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
