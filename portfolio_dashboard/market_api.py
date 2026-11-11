@@ -28,7 +28,7 @@ from esun_marketdata import EsunMarketdata
 
 DASHBOARD_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = DASHBOARD_DIR.parent.parent
-CONFIG_PATH = PROJECT_ROOT / "esun api說明" / "config.simulation.ini"
+CONFIG_PATH = PROJECT_ROOT / "docs" / "API說明" / "esun api說明" / "config.simulation.ini"
 CACHE_FILE = DASHBOARD_DIR / "market_cache.json"
 
 
