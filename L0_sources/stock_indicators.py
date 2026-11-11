@@ -3,7 +3,7 @@
 此模組專門維護所有指標的計算演算法與公式：
 1. 設定全域 START_DATE = "2026-09-01"。
 2. 每個指標為一個向量化函式，在 FinLab universe 範圍內一次計算所有股票。
-3. 回傳格式為 pd.DataFrame，單列（最新一筆），index 為日期/季度，columns 為各股票代碼。
+3. 回傳格式為 pd.DataFrame（單列最新一筆）或 Compact Array JSON dict（各股最新一筆，如 KD/MACD/布林/基本面）。
 4. 登記於 ALL_INDICATORS 清單供 finlab_market_loader.py 批次排程與存檔。
 """
 
@@ -38,51 +38,76 @@ class Indicator:
 # --------------------------------------------------------------------------- #
 # 1. 基本面指標 (存至 data/基本面/)
 # --------------------------------------------------------------------------- #
-def roe_latest() -> pd.DataFrame:
-    """最新季 ROE 稅後 (基本面，單位：%)。"""
+def roe_latest() -> dict:
+    """最新季 ROE 稅後 (基本面，單位：%)。
+
+    依每檔股票取最新一筆非空值之季度與數值 (若有 Q3 則取 Q3，無 Q3 則向前遞補取 Q2)。
+    回傳 Compact Array JSON 字典。
+    """
     from finlab import data
 
-    # 取得全體股票季ROE資料
     roe = data.get("fundamental_features:ROE稅後")
-    # 優先取 2026-Q2，若無則取最新一季
-    if "2026-Q2" in roe.index:
-        return roe.loc[["2026-Q2"]].round(2)
-    return roe.iloc[[-1]].round(2)
+    out = {"_format": "[value, date]"}
 
-# def revenue_yoy_latest() -> pd.DataFrame:
-#     """最新月營收年增率 (基本面，單位：%)。"""
-#     from finlab import data
+    for sid in STOCK_IDS:
+        if sid not in roe.columns:
+            continue
+        s = roe[sid].dropna()
+        if s.empty:
+            continue
+        dt = str(s.index[-1]).strip()
+        if len(dt) > 10 and " " in dt:
+            dt = dt.split()[0]
+        out[sid] = {"roe_latest": [round(float(s.iloc[-1]), 2), dt]}
+    return out
 
-#     revenue = data.get("monthly_revenue:去年同月增減(%)", start=START_DATE)
-#     return revenue.iloc[[-1]].round(2)
 
+def revenue_yoy_latest() -> dict:
+    """最新月營收年增率 (基本面，單位：%)。
 
-# def revenue_mom_latest() -> pd.DataFrame:
-#     """最新月營收月增率 (基本面，單位：%)。"""
-#     from finlab import data
-
-#     revenue = data.get("monthly_revenue:上月比較增減(%)", start=START_DATE)
-#     return revenue.iloc[[-1]].round(2)
-
-def revenue_yoy_latest() -> pd.DataFrame:
-    """指定2026-10-12月營收年增率 (基本面，單位：%)。"""
+    依每檔股票取最新一筆非空值之營收發布日與數值 (若有 11 月則取 11 月，無 11 月則向前遞補取 10 月)。
+    回傳 Compact Array JSON 字典。
+    """
     from finlab import data
 
     revenue = data.get("monthly_revenue:去年同月增減(%)", start=START_DATE)
-    target_date = "2026-10-12"
-    if target_date in revenue.index:
-        return revenue.loc[[target_date]].round(2)
-    return revenue.iloc[[-1]].round(2)
+    out = {"_format": "[value, date]"}
 
-def revenue_mom_latest() -> pd.DataFrame:
-    """指定2026-10-12月營收月增率 (基本面，單位：%)。"""
+    for sid in STOCK_IDS:
+        if sid not in revenue.columns:
+            continue
+        s = revenue[sid].dropna()
+        if s.empty:
+            continue
+        dt = str(s.index[-1]).strip()
+        if len(dt) > 10 and " " in dt:
+            dt = dt.split()[0]
+        out[sid] = {"revenue_yoy_latest": [round(float(s.iloc[-1]), 2), dt]}
+    return out
+
+
+def revenue_mom_latest() -> dict:
+    """最新月營收月增率 (基本面，單位：%)。
+
+    依每檔股票取最新一筆非空值之營收發布日與數值 (若有 11 月則取 11 月，無 11 月則向前遞補取 10 月)。
+    回傳 Compact Array JSON 字典。
+    """
     from finlab import data
 
     revenue = data.get("monthly_revenue:上月比較增減(%)", start=START_DATE)
-    target_date = "2026-10-12"
-    if target_date in revenue.index:
-        return revenue.loc[[target_date]].round(2)
-    return revenue.iloc[[-1]].round(2)
+    out = {"_format": "[value, date]"}
+
+    for sid in STOCK_IDS:
+        if sid not in revenue.columns:
+            continue
+        s = revenue[sid].dropna()
+        if s.empty:
+            continue
+        dt = str(s.index[-1]).strip()
+        if len(dt) > 10 and " " in dt:
+            dt = dt.split()[0]
+        out[sid] = {"revenue_mom_latest": [round(float(s.iloc[-1]), 2), dt]}
+    return out
 
 
 # --------------------------------------------------------------------------- #
