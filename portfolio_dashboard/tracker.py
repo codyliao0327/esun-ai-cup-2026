@@ -23,16 +23,48 @@ PROJECT_ROOT = CODE_DIR.parent
 
 BACKEND_REPORTS_DIR = PROJECT_ROOT / "data" / "backend_reports"
 DATAPACK_RAW_DIR = PROJECT_ROOT / "data" / "Datapack" / "Raw"
-STOCKS_150_FILE = PROJECT_ROOT / "玉山挑戰賽_投資組合及交易標的_150檔清單_v1.md"
+STOCKS_150_FILE = PROJECT_ROOT / "docs" / "官方參考文件" / "玉山挑戰賽_投資組合及交易標的_150檔清單_v1.md"
+
+
+def get_stocks_150_file() -> Optional[Path]:
+    """多路徑自動尋找 150 檔標的清單檔案"""
+    candidates = [
+        STOCKS_150_FILE,
+        PROJECT_ROOT / "玉山挑戰賽_投資組合及交易標的_150檔清單_v1.md",
+        *list(PROJECT_ROOT.glob("**/玉山挑戰賽_投資組合及交易標的_150檔清單*.md"))
+    ]
+    for c in candidates:
+        if c.is_file():
+            return c
+    return None
 
 
 def load_150_stocks() -> Dict[str, Dict[str, str]]:
-    """讀取 150 檔官方競賽標的清單 (上市 100 檔、上櫃 50 檔)"""
+    """讀取 150 檔官方競賽標的清單 (上市 100 檔、上櫃 50 檔)，具備快取回退防呆"""
     stocks = {}
-    if not STOCKS_150_FILE.exists():
+    target_file = get_stocks_150_file()
+    if not target_file:
+        print("[警告] 找不到 150 檔標的清單 markdown 檔案！嘗試自快取恢復...")
+        cache_file = DASHBOARD_DIR / "market_cache.json"
+        if cache_file.exists():
+            try:
+                with open(cache_file, "r", encoding="utf-8") as f:
+                    cdata = json.load(f)
+                cached = cdata.get("stocks", {})
+                for code, item in cached.items():
+                    stocks[code] = {
+                        "code": code,
+                        "name": item.get("name", code),
+                        "market": item.get("market", "上市")
+                    }
+                if stocks:
+                    print(f"[提示] 已自快取成功恢復 {len(stocks)} 檔標的清單！")
+                    return stocks
+            except Exception:
+                pass
         return stocks
 
-    content = STOCKS_150_FILE.read_text(encoding="utf-8", errors="ignore")
+    content = target_file.read_text(encoding="utf-8", errors="ignore")
     current_market = "上市"
     for line in content.splitlines():
         line = line.strip()

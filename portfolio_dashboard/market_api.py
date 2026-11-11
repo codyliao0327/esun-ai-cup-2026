@@ -145,6 +145,10 @@ def fetch_all_150_quotes(
     history_candles = cache.get("history_candles", {})
 
     symbols = list(stocks_150.keys())
+    if not symbols:
+        print("[market_api] ⚠️ 警告：傳入的 150 檔標的清單為空！終止抓取以防止清空本地快取。")
+        return cached_stocks
+
     today_str = time.strftime("%Y-%m-%d")
 
     print(f"\n[market_api] 正在透過玉山 API 統一抓取 150 檔收盤行情...")
@@ -243,7 +247,15 @@ def fetch_all_150_quotes(
         # 每次呼叫間隔 0.25 秒平滑流量
         time.sleep(0.25)
 
-    # 處理趨勢 Sparkline (以日期為 Key 的絕對覆蓋防呆架構，徹底杜絕重複 append 或漏接平盤)
+    # 取得歷史所有已知交易日列表作為基準 (防呆對齊)
+    ref_dates = []
+    try:
+        from tracker import load_datapack_history
+        ref_dates = [h["date"] for h in load_datapack_history()]
+    except Exception:
+        pass
+
+    # 處理趨勢 Sparkline (以真實交易日為 Key 的絕對覆蓋防呆架構，徹底杜絕重複 append 或漏接平盤)
     for code, item in results.items():
         existing_item = cached_stocks.get(code, {})
         existing_dates = existing_item.get("dates") or []
@@ -254,10 +266,14 @@ def fetch_all_150_quotes(
         if existing_dates and len(existing_dates) == len(existing_trend):
             for d, p in zip(existing_dates, existing_trend):
                 date_map[d] = p
+        elif ref_dates and len(ref_dates) >= len(existing_trend):
+            # 若快取無日期，自動取官方 DataPack 歷史交易日精確對齊
+            matched_dates = [d for d in ref_dates if d < today_str][-len(existing_trend):] if len(existing_trend) > 0 else []
+            for d, p in zip(matched_dates, existing_trend):
+                date_map[d] = p
         else:
-            # fallback: 若無日期標籤，使用現有序列
             for idx, p in enumerate(existing_trend):
-                date_map[f"idx_{idx:03d}"] = p
+                date_map[f"day_{idx:03d}"] = p
 
         # 覆蓋今日收盤價
         latest_c = item.get("close_price", 0.0)
