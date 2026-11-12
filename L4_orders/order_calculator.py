@@ -432,23 +432,27 @@ def run_order_calculator(
     no_stream: bool = False,
     stream: bool = False,
     no_code_exec: bool = False,
+    input_date: Optional[str] = None,
+    model: Optional[str] = None,
 ) -> Path:
-    """執行委託單計算與 Gemini 覆核主流程。"""
+    """執行委託單計算與 LiteLLM Router (stage-l4) 覆核主流程。"""
     now_dt = datetime.now(TW_TZ)
     now_str = now_dt.strftime("%Y-%m-%dT%H:%M:%S+08:00")
     t_date = target_date or now_dt.strftime("%Y%m%d")
     c_date = _clean_date_str(t_date)
+    in_date = _clean_date_str(input_date) if input_date else c_date
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    print(f"\n{'='*65}\n [OrderCalculator] 啟動 L4 委託層計算流程 (日期: {c_date})\n{'='*65}")
+    print(f"\n{'='*65}\n [OrderCalculator] 啟動 L4 委託層計算流程 (輸出日期: {c_date}, 輸入日期: {in_date})\n{'='*65}")
 
     # 1. 讀入 L3 投資組合決策
-    decisions, no_trades, dec_file = load_l3_decisions(c_date)
+    l3_target = c_date if (L3_DEC_DIR / f"l3_decisions_{c_date}.json").exists() else in_date
+    decisions, no_trades, dec_file = load_l3_decisions(l3_target)
     print(f"[OrderCalculator] 載入 L3 決策: {dec_file} | 異動決策: {len(decisions)} 筆, 續抱: {len(no_trades)} 筆")
 
     # 2. 讀入 DataPack 帳戶資料
-    account_info, dp_file = load_account_datapack(c_date)
+    account_info, dp_file = load_account_datapack(in_date)
     nav = account_info["nav_tradable"]
     cash = account_info["cash"]
     holdings = account_info["holdings"]
@@ -460,12 +464,13 @@ def run_order_calculator(
     print(f"[OrderCalculator] 載入 DataPack: {dp_file} | NAV: {nav:,.0f} 元, 現有持股: {len(current_holdings_dict)} 檔")
 
     # 3. 讀入個股前日收盤價
-    stock_prices = load_stock_prices(c_date)
+    stock_prices = load_stock_prices(in_date)
     print(f"[OrderCalculator] 載入個股收盤價資料: 共 {len(stock_prices)} 檔")
 
     # 4. 讀入 L2M 目標現金區間與 Active ETF 前 15 大
-    cash_range = load_l2m_target_cash_range(c_date)
-    active_etf_df = load_active_etf_holdings(c_date)
+    l2m_target = c_date if (L2M_VIEW_DIR / f"l2m_market_view_{c_date}.json").exists() else in_date
+    cash_range = load_l2m_target_cash_range(l2m_target)
+    active_etf_df = load_active_etf_holdings(in_date)
     if active_etf_df is not None:
         print(f"[OrderCalculator] 載入主動式 ETF 持股標竿: 共 {len(active_etf_df)} 筆持股紀錄")
 
@@ -587,11 +592,11 @@ def run_order_calculator(
         print(f"\n[OrderCalculator] --dry-run 已啟用：Prompt 已輸出至 {prompt_file}，不呼叫 API。")
         return prompt_file
 
-    # 8. 連接 Gemini Client 進行審核
-    print(f"\n{'='*65}\n [OrderCalculator] 連接 Gemini Client 進行委託單審查與覆核...\n{'='*65}")
+    # 8. 連接 Gemini Client (LiteLLM Router / stage-l4) 進行審核
+    print(f"\n{'='*65}\n [OrderCalculator] 連接 LiteLLM Router (stage-l4) 進行委託單審查與覆核...\n{'='*65}")
     if not no_code_exec:
-        print(" (已啟用 Code Execution 程式碼自動執行工具)")
-    client = GeminiClient()
+        print(" (已啟用 Gemini 原生 Code Execution 沙盒工具)")
+    client = GeminiClient(model=model, stage="l4", target_date=c_date)
 
     if stream:
         stream_enabled = True
@@ -608,8 +613,10 @@ def run_order_calculator(
             response_model=OrdersResponse,
             stream=stream_enabled,
             enable_code_execution=not no_code_exec,
+            stage="l4",
+            target_date=c_date,
         )
-        # 輸出 Gemini Usage 統計至 OUTPUT_DIR / "usage" / "l4_usage_YYYYMMDD.json"
+        # 輸出 LiteLLM Usage 統計至 OUTPUT_DIR / "usage" / "l4_usage_YYYYMMDD.json"
         client.save_usage_metadata(
             output_dir=OUTPUT_DIR,
             stage_prefix="l4",
@@ -676,7 +683,9 @@ def run_order_calculator(
 # =============================================================================
 def main():
     parser = argparse.ArgumentParser(description="【L4】委託層計算與審核 Agent (order_calculator)")
-    parser.add_argument("--date", type=str, default=None, help="指定交易日期 (格式如 20261027 或 2026-10-27)")
+    parser.add_argument("--date", type=str, default=None, help="指定輸出交易日期 (格式如 20261027 或 2026-10-27)")
+    parser.add_argument("--input-date", type=str, default=None, help="指定讀取輸入資料之日期 (預設同 --date)")
+    parser.add_argument("--model", type=str, default=None, help="手動指定模型或路由別名 (預設 stage-l4)")
     parser.add_argument("--dry-run", action="store_true", help="僅組裝 Prompt 並儲存至 txt，不實際呼叫 Gemini API")
     parser.add_argument("--no-gemini", action="store_true", help="僅執行 Python 官方公式算單，不呼叫 Gemini API")
     parser.add_argument("--stream", action="store_true", help="強制開啟串流印出模式")
@@ -694,6 +703,8 @@ def main():
         no_stream=args.no_stream,
         stream=args.stream,
         no_code_exec=args.no_code_exec,
+        input_date=args.input_date,
+        model=args.model,
     )
 
 

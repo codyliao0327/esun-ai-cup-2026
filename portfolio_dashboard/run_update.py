@@ -58,11 +58,26 @@ def run_update(auto_push: bool = False, fetch_candles: bool = True, rebuild_cand
     out_file = build_dashboard_html(summary, quotes)
     print(f"  ✅ 網頁生成完畢: {out_file}")
 
+    # 3.5 結算並合併所有 LiteLLM Usage 紀錄至本地歷史 usage_history.json
+    usage_history_file = CURRENT_DIR / "usage_history.json"
+    try:
+        if str(CODE_DIR) not in sys.path:
+            sys.path.insert(0, str(CODE_DIR))
+        from configs.gemini_client import settle_usage_history
+
+        settle_usage_history()
+        print(f"  ✅ LiteLLM Usage 歷史紀錄已結算更新: {usage_history_file}")
+    except Exception as e:
+        print(f"  ⚠️ 結算 Usage 歷史紀錄時發生提示: {e}")
+
     # 4. 可選 Git Push (支援 Cloudflare Pages 自動部署)
     if auto_push:
         print("\n[Git 部署] 正在執行 Git 提交與推送至遠端倉庫...")
         try:
-            subprocess.run(["git", "add", str(out_file), str(CURRENT_DIR / "market_cache.json")], cwd=str(CODE_DIR), check=True)
+            git_files = [str(out_file), str(CURRENT_DIR / "market_cache.json")]
+            if usage_history_file.is_file():
+                git_files.append(str(usage_history_file))
+            subprocess.run(["git", "add", *git_files], cwd=str(CODE_DIR), check=True)
             commit_msg = f"chore(dashboard): update portfolio dashboard as of {summary['as_of_date']}"
             subprocess.run(["git", "commit", "-m", commit_msg], cwd=str(CODE_DIR), check=True)
             subprocess.run(["git", "push"], cwd=str(CODE_DIR), check=True)

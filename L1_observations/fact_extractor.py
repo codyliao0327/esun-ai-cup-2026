@@ -314,11 +314,13 @@ def _ingest_parquet(path: Path, spec: InputSpec, res: LoadedInputs, other_parts:
 def load_inputs(
     inputs: List[InputSpec] = INPUTS,
     target_date: Optional[str] = None,
+    max_stocks: Optional[int] = None,
 ) -> LoadedInputs:
     """依 INPUTS 讀入所有指定日期結尾的資料。
 
     - 嚴格比對檔名結尾為 _YYYYMMDD，完全等於 target_date。
     - 若特定資料夾找不到該日期檔案，直接拋出 FileNotFoundError。
+    - 若指定 max_stocks，僅保留前 max_stocks 檔個股資料（供快速測試使用）。
     """
     if not target_date:
         raise ValueError("load_inputs 必須指定 target_date (格式 YYYYMMDD)")
@@ -349,6 +351,24 @@ def load_inputs(
         if parts:
             other_blocks.append(f"#### {spec.label} ({src})\n" + "\n".join(parts))
         print(f"[讀入] {spec.folder}: {len(files)} 個檔案 (日期: {c_target})")
+
+    if max_stocks and max_stocks > 0:
+        keep_codes = set(sorted(res.stock_values.keys())[:max_stocks])
+        res.stock_values = {k: v for k, v in res.stock_values.items() if k in keep_codes}
+        res.stock_asof = {k: v for k, v in res.stock_asof.items() if k in keep_codes}
+        res.stock_sources = {k: v for k, v in res.stock_sources.items() if k in keep_codes}
+        # 同步過濾 sentiment_tables 只保留 keep_codes
+        filtered_tables: List[str] = []
+        for tbl in res.sentiment_tables:
+            lines = tbl.splitlines()
+            if len(lines) <= 2:
+                filtered_tables.append(tbl)
+                continue
+            header = lines[:2]
+            body = [ln for ln in lines[2:] if any(ln.startswith(f"{c}\t") for c in keep_codes)]
+            filtered_tables.append("\n".join(header + body))
+        res.sentiment_tables = filtered_tables
+        print(f"[抽樣測試] 已限制僅保留前 {len(keep_codes)} 檔個股: {sorted(keep_codes)}")
 
     # 組裝大盤 Compact Array JSON
     market_json = {"_format": "[value, date]"}
@@ -493,19 +513,26 @@ def extract_observations(
     valid_source_ids: Optional[set],
     target_date: str,
     stream: bool = True,
+    model: Optional[str] = None,
 ) -> list:
     from configs.gemini_client import GeminiClient
 
-    client = GeminiClient()
+    client = GeminiClient(model=model, stage="l1", target_date=target_date)
     if stream:
         print("\n" + "=" * 60)
-        print(" [Gemini 串流模式啟動] 正在即時生成 Observations...")
+        print(" [LiteLLM Router / stage-l1 串流模式啟動] 正在即時生成 Observations...")
         print(" (提示：若發現輸出內容方向不符，可隨時按 Ctrl + C 中斷以節省費用)")
         print("=" * 60 + "\n")
 
-    resp = client.generate_structured(prompt, ObservationsResponse, stream=stream)
+    resp = client.generate_structured(
+        prompt,
+        ObservationsResponse,
+        stream=stream,
+        stage="l1",
+        target_date=target_date,
+    )
 
-    # 輸出 Gemini Usage 統計
+    # 輸出 LiteLLM Usage 統計
     client.save_usage_metadata(
         output_dir=OUTPUT_DIR,
         stage_prefix="l1",
@@ -531,20 +558,24 @@ def save_observations(observations: list, target_date_str: Optional[str] = None)
 
 
 def main(argv: Optional[List[str]] = None) -> int:
-    parser = argparse.ArgumentParser(description="以 Gemini 擷取 D-Plan L1 observations")
-    parser.add_argument("--date", type=str, default=None, help="指定交易日期 (格式 YYYYMMDD 或 YYYY-MM-DD)")
-    parser.add_argument("--dry-run", action="store_true", help="只輸出 prompt 文字檔，不呼叫 Gemini")
+    parser = argparse.ArgumentParser(description="以 LiteLLM Router (stage-l1) 擷取 D-Plan L1 observations")
+    parser.add_argument("--date", type=str, default=None, help="指定輸出交易日期 (格式 YYYYMMDD 或 YYYY-MM-DD)")
+    parser.add_argument("--input-date", type=str, default=None, help="指定讀取 L0 輸入資料之日期 (預設同 --date)")
+    parser.add_argument("--max-stocks", type=int, default=None, help="限制僅抽樣前 N 檔個股進行測試")
+    parser.add_argument("--model", type=str, default=None, help="指定模型或路由別名 (預設使用 stage-l1)")
+    parser.add_argument("--dry-run", action="store_true", help="只輸出 prompt 文字檔，不呼叫 LLM")
     parser.add_argument("--no-stream", action="store_true", help="關閉串流顯示，改用傳統非串流批次等待")
     args = parser.parse_args(argv)
 
     # 取得交易日期 (若無命令列參數則在終端機提示輸入)
     target_date = prompt_trade_date(args.date, prompt_text="L1 事實擷取 - 交易日期")
     clean_date = clean_date_str(target_date)
+    input_clean_date = clean_date_str(args.input_date) if args.input_date else clean_date
 
-    sources = load_sources(target_date=clean_date)
-    loaded = load_inputs(target_date=clean_date)
+    sources = load_sources(target_date=input_clean_date)
+    loaded = load_inputs(target_date=input_clean_date, max_stocks=args.max_stocks)
     prompt = build_prompt(loaded.text, sources)
-    print(f"交易日期: {clean_date} | 大盤指標數: {len(loaded.market_values)} | 個股數: {len(loaded.stock_values)} | Prompt 字元數: {len(prompt):,}")
+    print(f"輸出日期: {clean_date} (輸入日期: {input_clean_date}) | 大盤指標數: {len(loaded.market_values)} | 個股數: {len(loaded.stock_values)} | Prompt 字元數: {len(prompt):,}")
 
     # 無論 dry-run 或正式執行，皆儲存 Prompt 供排查與回溯
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -557,7 +588,14 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 0
 
     valid_ids = {s["source_id"] for s in sources} or None
-    observations = extract_observations(prompt, loaded, valid_ids, target_date=clean_date, stream=not args.no_stream)
+    observations = extract_observations(
+        prompt,
+        loaded,
+        valid_ids,
+        target_date=clean_date,
+        stream=not args.no_stream,
+        model=args.model,
+    )
     path = save_observations(observations, target_date_str=clean_date)
     print(f"完成：{len(observations)} 筆 observations -> {path}")
     return 0

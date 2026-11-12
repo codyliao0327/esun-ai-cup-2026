@@ -140,7 +140,7 @@ CUSTOM_STOCK_ANALYSIS_LOGIC = """\
    - 簡明總結該個股之操作建議、組合角色與目標權重 (300 字內)。
 4. 反向證據 (counter_evidence)：
    - 誠實揭露不利數據、訊號背離、潛在風險或不確定性 (500 字內)；若無反向訊號則明確填 null。
-5. 筆數要求：產生所有個股的個股推論，涵蓋投資組合核心關注與欲納入/調整之標的。
+5. 筆數要求：最多只能產生 60 個股推論，涵蓋投資組合核心關注與欲納入/調整之標的。
 """
 
 
@@ -246,7 +246,7 @@ PROMPT_TEMPLATE = """\
 1. 【防範現金比被動飆升破 25% 天花板】：每日結算後現金比率不得超過 25.0%（超過記警告、整批作廢，累計 3 次取消資格）。股市下跌時持股市值縮水會使固定現金比率在盤後「被動飆升」！因每日皆會交易且台股單日跌幅上限為 10%，現金維持在 22% 以下即可確保即便遭遇極端跌幅，盤後現金比仍安全落在 23.86% 內。因此當 DataPack 現金水位超過 20% (cash_ratio_tradable > 0.20) 時，個股推論請積極提出加碼/建倉之目標權重建議，促使現金比維持在 22% 以下安全線，拉開與 25% 天花板的緩衝空間。
 2. premise_refs 內引用的每個 ID 必須真實存在於上方事實清單中，未通過檢核將整份退回。
 3. logic 內必須提及引用的事實 ID (如 O2, O8) 並列出實際數據對照。
-4. 產生所有個股的個股推論，涵蓋投資組合核心關注標的。
+4. 最多只能產生 60 個股推論，涵蓋投資組合核心關注標的。
 5. 若無反向訊號，counter_evidence 請填 null。
 6. 程式碼執行功能 (Code Execution)：系統已為你開啟 Python Code Execution 工具。如需計算個股指標、綜合得分、權重試算、估算交易成本與手續費/稅賦扣除、或對帳驗證時，請主動撰寫並執行 Python 程式碼，確保所有數據與結論精確無誤。
 """
@@ -421,17 +421,18 @@ def generate_inferences(
     target_date: Optional[str] = None,
     stream: bool = False,
     code_execution: bool = True,
+    model: Optional[str] = None,
 ) -> List[Inference]:
-    """呼叫 Gemini Client 進行結構化生成與嚴格檢核。"""
-    client = GeminiClient()
+    """呼叫 Gemini Client (LiteLLM Router / stage-l2) 進行結構化生成與嚴格檢核。"""
+    client = GeminiClient(model=model, stage="l2", target_date=target_date)
 
     print("\n" + "=" * 65)
     if stream:
-        print(" [Gemini 串流模式啟動] 正在即時生成 L2 inferences (個股推論)...")
+        print(" [LiteLLM Router / stage-l2 串流模式啟動] 正在即時生成 L2 inferences (個股推論)...")
     else:
-        print(" [Gemini 批次模式啟動] 正在生成 L2 inferences (啟用完整 Steps 與 Code Execution 監聽)...")
+        print(" [LiteLLM Router / stage-l2 批次模式啟動] 正在生成 L2 inferences...")
     if code_execution:
-        print(" (已啟用 Code Execution 程式碼自動執行工具)")
+        print(" (已啟用 Gemini 原生 Code Execution 沙盒工具)")
     print("=" * 65 + "\n")
 
     resp: InferencesResponse = client.generate_structured(
@@ -439,9 +440,11 @@ def generate_inferences(
         response_model=InferencesResponse,
         stream=stream,
         enable_code_execution=code_execution,
+        stage="l2",
+        target_date=target_date,
     )
 
-    # 輸出 Gemini Usage 統計至 OUTPUT_DIR / "usage" / "l2_usage_YYYYMMDD.json"
+    # 輸出 LiteLLM Usage 統計至 OUTPUT_DIR / "usage" / "l2_usage_YYYYMMDD.json"
     if target_date:
         client.save_usage_metadata(
             output_dir=OUTPUT_DIR,
@@ -488,7 +491,25 @@ def main(argv: Optional[List[str]] = None) -> int:
         "--date",
         type=str,
         default=None,
-        help="目標日期 (格式如 20261027 或 2026-10-27)",
+        help="目標輸出日期 (格式如 20261027 或 2026-10-27)",
+    )
+    parser.add_argument(
+        "--input-date",
+        type=str,
+        default=None,
+        help="指定讀取輸入資料之日期 (預設同 --date)",
+    )
+    parser.add_argument(
+        "--max-stocks",
+        type=int,
+        default=None,
+        help="限制僅抽樣前 N 檔個股進行測試",
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default=None,
+        help="手動指定模型或路由別名 (預設 stage-l2)",
     )
     parser.add_argument(
         "--dry-run",
@@ -521,15 +542,25 @@ def main(argv: Optional[List[str]] = None) -> int:
     # 取得交易日期 (若無命令列參數則在終端機提示輸入)
     target_date = prompt_trade_date(args.date, prompt_text="L2 個股推論 - 交易日期")
     clean_date = _clean_date_str(target_date)
+    input_clean_date = _clean_date_str(args.input_date) if args.input_date else clean_date
 
-    # 1. 讀入資料
+    # 1. 讀入資料 (若 target_date 的前置檔案已產生則優先使用，否則使用 input_clean_date)
+    l1_target = clean_date if (L1_OBS_DIRS[0] / f"l1_observations_{clean_date}.json").exists() else input_clean_date
     observations, all_obs_ids, l1_path = load_all_observations(
-        target_date=clean_date,
+        target_date=l1_target,
         custom_path=args.l1_path,
     )
+    if args.max_stocks and args.max_stocks > 0:
+        market_items = [o for o in observations if str(o.get("topic", "")).lower() == "tw_market"]
+        stock_items = [o for o in observations if str(o.get("topic", "")).lower() != "tw_market"][: args.max_stocks]
+        observations = market_items + stock_items
+        all_obs_ids = {str(o.get("obs_id")) for o in observations if o.get("obs_id")}
+        print(f"[StockInferenceAgent] 抽樣測試：限制為 {len(stock_items)} 檔個股推論")
+
     etf_strategy_content = load_etf_strategy()
-    market_view_context = load_optional_market_view(clean_date)
-    datapack_context = load_optional_datapack(clean_date)
+    mv_target = clean_date if (L2M_VIEW_DIR / f"l2m_market_view_{clean_date}.json").exists() else input_clean_date
+    market_view_context = load_optional_market_view(mv_target)
+    datapack_context = load_optional_datapack(input_clean_date)
 
     # 2. 組裝 Prompt
     prompt = build_prompt(
@@ -565,13 +596,14 @@ def main(argv: Optional[List[str]] = None) -> int:
     else:
         use_stream = False if not args.no_code_exec else True
 
-    # 4. 呼叫 Gemini 進行結構化生成
+    # 4. 呼叫 LiteLLM Router 進行結構化生成
     inferences = generate_inferences(
         prompt=prompt,
         valid_obs_ids=all_obs_ids,
         target_date=clean_date,
         stream=use_stream,
         code_execution=not args.no_code_exec,
+        model=args.model,
     )
 
     # 5. 輸出存檔

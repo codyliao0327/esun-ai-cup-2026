@@ -1,0 +1,75 @@
+# =============================================================================
+# LiteLLM Multi-Model Router 設定檔 (models_config.yaml)
+# =============================================================================
+# 說明：
+# - 依 D-Plan 任務階段 (stage) 將 LLM 呼叫路由至對應的 Google Gemini 模型別名。
+# - 當主力模型遭遇 Rate Limit、配額耗盡或超時錯誤時，透過 fallbacks 自動無縫降級備援。
+# - API 金鑰統一由環境變數 GEMINI_API_KEY (定義於 .env) 動態注入。
+# =============================================================================
+
+model_list:
+  # ---------------------------------------------------------------------------
+  # 主力任務階段模型 (Primary Stage Deployments)
+  # ---------------------------------------------------------------------------
+
+  # L1: 客觀事實萃取 (輕量快速模型，純文字結構化擷取、不啟用 Code Execution)
+  - model_name: stage-l1
+    litellm_params:
+      model: gemini/gemini-3.8-flash
+      api_key: os.environ/GEMINI_API_KEY
+
+  # L2M: 大盤觀點與多空環境推論 (高階推理 + Gemini 原生 Code Execution)
+  - model_name: stage-l2m
+    litellm_params:
+      model: gemini/gemini-4-argon
+      api_key: os.environ/GEMINI_API_KEY
+
+  # L2: 個股多空推論與評分 (高階推理 + Gemini 原生 Code Execution)
+  - model_name: stage-l2
+    litellm_params:
+      model: gemini/gemini-4-argon
+      api_key: os.environ/GEMINI_API_KEY
+
+  # L3: 投資組合權重決策 (高階推理 + Gemini 原生 Code Execution)
+  - model_name: stage-l3
+    litellm_params:
+      model: gemini/gemini-4-argon
+      api_key: os.environ/GEMINI_API_KEY
+
+  # L4: 委託單數量與現金流試算 (高階推理 + Gemini 原生 Code Execution)
+  - model_name: stage-l4
+    litellm_params:
+      model: gemini/gemini-4-argon
+      api_key: os.environ/GEMINI_API_KEY
+
+  # ---------------------------------------------------------------------------
+  # 備援降級模型 (Fallback Deployments)
+  # ---------------------------------------------------------------------------
+
+  # L1 專屬輕量備援模型
+  - model_name: stage-l1-fallback
+    litellm_params:
+      model: gemini/gemini-3.5-flash-lite
+      api_key: os.environ/GEMINI_API_KEY
+
+  # L2M / L2 / L3 / L4 高階推理階段備援模型
+  - model_name: stage-pro-fallback
+    litellm_params:
+      model: gemini/gemini-3.6-flash
+      api_key: os.environ/GEMINI_API_KEY
+
+router_settings:
+  num_retries: 2
+  timeout: 600
+  cooldown_time: 30
+  fallbacks:
+    - stage-l1:
+        - stage-l1-fallback
+    - stage-l2m:
+        - stage-pro-fallback
+    - stage-l2:
+        - stage-pro-fallback
+    - stage-l3:
+        - stage-pro-fallback
+    - stage-l4:
+        - stage-pro-fallback

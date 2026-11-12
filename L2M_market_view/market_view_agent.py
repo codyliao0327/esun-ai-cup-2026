@@ -350,17 +350,18 @@ def generate_market_view(
     target_date: Optional[str] = None,
     stream: bool = False,
     code_execution: bool = True,
+    model: Optional[str] = None,
 ) -> MarketView:
-    """呼叫 Gemini Client 進行結構化生成與嚴格檢核。"""
-    client = GeminiClient()
+    """呼叫 Gemini Client (LiteLLM Router / stage-l2m) 進行結構化生成與嚴格檢核。"""
+    client = GeminiClient(model=model, stage="l2m", target_date=target_date)
 
     print("\n" + "=" * 65)
     if stream:
-        print(" [Gemini 串流模式啟動] 正在即時生成 L2M market_view...")
+        print(" [LiteLLM Router / stage-l2m 串流模式啟動] 正在即時生成 L2M market_view...")
     else:
-        print(" [Gemini 批次模式啟動] 正在生成 L2M market_view (啟用完整 Steps 與 Code Execution 監聽)...")
+        print(" [LiteLLM Router / stage-l2m 批次模式啟動] 正在生成 L2M market_view...")
     if code_execution:
-        print(" (已啟用 Code Execution 程式碼自動執行工具)")
+        print(" (已啟用 Gemini 原生 Code Execution 沙盒工具)")
     print("=" * 65 + "\n")
 
     resp: MarketViewResponse = client.generate_structured(
@@ -368,9 +369,11 @@ def generate_market_view(
         response_model=MarketViewResponse,
         stream=stream,
         enable_code_execution=code_execution,
+        stage="l2m",
+        target_date=target_date,
     )
 
-    # 輸出 Gemini Usage 統計至 OUTPUT_DIR / "usage" / "l2m_usage_YYYYMMDD.json"
+    # 輸出 LiteLLM Usage 統計至 OUTPUT_DIR / "usage" / "l2m_usage_YYYYMMDD.json"
     if target_date:
         client.save_usage_metadata(
             output_dir=OUTPUT_DIR,
@@ -417,7 +420,19 @@ def main(argv: Optional[List[str]] = None) -> int:
         "--date",
         type=str,
         default=None,
-        help="目標日期 (格式如 20261027 或 2026-10-27)",
+        help="目標輸出日期 (格式如 20261027 或 2026-10-27)",
+    )
+    parser.add_argument(
+        "--input-date",
+        type=str,
+        default=None,
+        help="指定讀取輸入資料之日期 (預設同 --date)",
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default=None,
+        help="手動指定模型或路由別名 (預設 stage-l2m)",
     )
     parser.add_argument(
         "--dry-run",
@@ -456,14 +471,16 @@ def main(argv: Optional[List[str]] = None) -> int:
     # 取得交易日期 (若無命令列參數則在終端機提示輸入)
     target_date = prompt_trade_date(args.date, prompt_text="L2M 市場研判 - 交易日期")
     clean_date = _clean_date_str(target_date)
+    input_clean_date = _clean_date_str(args.input_date) if args.input_date else clean_date
 
-    # 1. 讀入資料
+    # 1. 讀入資料 (若 target_date 的 L1 檔案存在則優先使用，否則使用 input_clean_date)
+    l1_target = clean_date if (L1_OBS_DIRS[0] / f"l1_observations_{clean_date}.json").exists() else input_clean_date
     market_obs, all_obs_ids, l1_path = load_l1_market_observation(
-        target_date=clean_date,
+        target_date=l1_target,
         custom_path=args.l1_path,
     )
     datapack_text, dp_path = load_datapack_processed(
-        target_date=clean_date,
+        target_date=input_clean_date,
         custom_path=args.datapack_path,
     )
 
@@ -492,7 +509,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         print(f"[MarketViewAgent] --dry-run 已啟用：Prompt 已輸出至 {prompt_file}，不呼叫 API。")
         return 0
 
-    # 決定串流模式：若有明確傳入 --stream / --no-stream 則遵照；否則 Code Execution 預設為批次 (False)
+    # 決定串流模式：若有明確傳入 --stream / --no-stream 則遵照；否則預設為串流 (True)
     if args.stream:
         use_stream = True
     elif args.no_stream:
@@ -500,13 +517,14 @@ def main(argv: Optional[List[str]] = None) -> int:
     else:
         use_stream = False if not args.no_code_exec else True
 
-    # 4. 呼叫 Gemini 進行結構化生成
+    # 4. 呼叫 LiteLLM Router 進行結構化生成
     market_view = generate_market_view(
         prompt=prompt,
         valid_obs_ids=all_obs_ids,
         target_date=clean_date,
         stream=use_stream,
         code_execution=not args.no_code_exec,
+        model=args.model,
     )
 
     # 5. 輸出存檔

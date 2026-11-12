@@ -118,13 +118,36 @@ def get_git_code_version() -> str:
     return "git:main"
 
 
-def get_model_version() -> str:
-    """動態取得 Gemini 模型確切名稱。"""
+def get_model_version(target_date: Optional[str] = None) -> str:
+    """動態取得實際執行的 Gemini 模型確切名稱 (優先由當日 Usage JSON 讀取，次選 Router 設定)。"""
+    if target_date:
+        c_date = _clean_date_str(target_date)
+        for stage_dir, prefix in (
+            (L3_DIR, "l3"),
+            (L2_DIR, "l2"),
+            (L2M_DIR, "l2m"),
+            (L4_DIR, "l4"),
+            (L1_DIR, "l1"),
+        ):
+            u_file = stage_dir / "usage" / f"{prefix}_usage_{c_date}.json"
+            if u_file.is_file():
+                try:
+                    u_data = json.loads(u_file.read_text(encoding="utf-8"))
+                    m_name = str(u_data.get("model") or "").strip()
+                    if m_name:
+                        return m_name.split("/", 1)[-1]
+                except Exception:
+                    pass
     try:
-        client = GeminiClient()
-        return client.default_model
+        client = GeminiClient(stage="l2")
+        for m in client.router_config.get("model_list", []):
+            if m.get("model_name") == client.default_model:
+                raw_m = str(m.get("litellm_params", {}).get("model", ""))
+                if raw_m:
+                    return raw_m.split("/", 1)[-1]
+        return client.default_model.split("/", 1)[-1]
     except Exception:
-        return "gemini-2.5-flash"
+        return "gemini-4-argon"
 
 
 # =============================================================================
@@ -307,7 +330,7 @@ def assemble_dplan(
 
     run_started_at_str = started_dt.strftime("%Y-%m-%dT%H:%M:%S+08:00")
     code_ver = get_git_code_version()
-    model_ver = get_model_version()
+    model_ver = get_model_version(c_date)
 
     print(f"[Assembler] L0 來源筆數:        {len(sources_data):>2} 筆")
     print(f"[Assembler] L1 事實筆數:        {len(observations_data):>2} 筆")

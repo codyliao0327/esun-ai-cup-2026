@@ -164,6 +164,15 @@ def run_pipeline(
     else:
         print("\n>>> [Step 7/7] 跳過每日決策回顧報告產出")
 
+    # 結算並合併寫入本地歷史 Usage JSON (usage_history.json)
+    try:
+        from configs.gemini_client import USAGE_HISTORY_PATHS, settle_usage_history
+
+        settle_usage_history()
+        print(f" -> 本地歷史 Usage 已合併結算至: {USAGE_HISTORY_PATHS[0]}")
+    except Exception as exc:
+        print(f" ⚠️ 結算歷史 Usage 時發生提示: {exc}")
+
     print("\n" + "=" * 80)
     print(f" 🎉 [Pipeline 成功完成] 每日自動化產線全部成功！")
     print(f" -> 最終繳交檔: {final_file}")

@@ -455,17 +455,18 @@ def generate_decisions(
     target_date: Optional[str] = None,
     stream: bool = False,
     code_execution: bool = True,
+    model: Optional[str] = None,
 ) -> DecisionsResult:
-    """呼叫 Gemini Client 進行結構化生成與嚴格檢核。"""
-    client = GeminiClient()
+    """呼叫 Gemini Client (LiteLLM Router / stage-l3) 進行結構化生成與嚴格檢核。"""
+    client = GeminiClient(model=model, stage="l3", target_date=target_date)
 
     print("\n" + "=" * 65)
     if stream:
-        print(" [Gemini 串流模式啟動] 正在即時生成 L3 decisions (投資組合決策)...")
+        print(" [LiteLLM Router / stage-l3 串流模式啟動] 正在即時生成 L3 decisions (投資組合決策)...")
     else:
-        print(" [Gemini 批次模式啟動] 正在生成 L3 decisions (啟用完整 Steps 與 Code Execution 監聽)...")
+        print(" [LiteLLM Router / stage-l3 批次模式啟動] 正在生成 L3 decisions...")
     if code_execution:
-        print(" (已啟用 Code Execution 程式碼自動執行工具)")
+        print(" (已啟用 Gemini 原生 Code Execution 沙盒工具)")
     print("=" * 65 + "\n")
 
     resp: DecisionsResponse = client.generate_structured(
@@ -473,9 +474,11 @@ def generate_decisions(
         response_model=DecisionsResponse,
         stream=stream,
         enable_code_execution=code_execution,
+        stage="l3",
+        target_date=target_date,
     )
 
-    # 輸出 Gemini Usage 統計至 OUTPUT_DIR / "usage" / "l3_usage_YYYYMMDD.json"
+    # 輸出 LiteLLM Usage 統計至 OUTPUT_DIR / "usage" / "l3_usage_YYYYMMDD.json"
     if target_date:
         client.save_usage_metadata(
             output_dir=OUTPUT_DIR,
@@ -524,7 +527,19 @@ def main(argv: Optional[List[str]] = None) -> int:
         "--date",
         type=str,
         default=None,
-        help="目標日期 (格式如 20261027 或 2026-10-27)",
+        help="目標輸出日期 (格式如 20261027 或 2026-10-27)",
+    )
+    parser.add_argument(
+        "--input-date",
+        type=str,
+        default=None,
+        help="指定讀取輸入資料之日期 (預設同 --date)",
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default=None,
+        help="手動指定模型或路由別名 (預設 stage-l3)",
     )
     parser.add_argument(
         "--dry-run",
@@ -557,16 +572,19 @@ def main(argv: Optional[List[str]] = None) -> int:
     # 取得交易日期 (若無命令列參數則在終端機提示輸入)
     target_date = prompt_trade_date(args.date, prompt_text="L3 投資決策 - 交易日期")
     clean_date = _clean_date_str(target_date)
+    input_clean_date = _clean_date_str(args.input_date) if args.input_date else clean_date
 
     # 1. 讀入所有資料
+    l2_target = clean_date if (L2_INF_DIR / f"l2_inferences_{clean_date}.json").exists() else input_clean_date
     inferences, all_inf_ids, l2_path = load_l2_inferences(
-        target_date=clean_date,
+        target_date=l2_target,
         custom_path=args.l2_path,
     )
-    datapack_text, prev_holdings_codes, prev_holdings_count = load_datapack_info(clean_date)
+    datapack_text, prev_holdings_codes, prev_holdings_count = load_datapack_info(input_clean_date)
     etf_strategy_content = load_etf_strategy()
-    active_etf_holdings_summary = load_active_etf_holdings(clean_date)
-    market_view_context = load_optional_market_view(clean_date)
+    active_etf_holdings_summary = load_active_etf_holdings(input_clean_date)
+    mv_target = clean_date if (L2M_VIEW_DIR / f"l2m_market_view_{clean_date}.json").exists() else input_clean_date
+    market_view_context = load_optional_market_view(mv_target)
 
     # 2. 組裝 Prompt
     prompt = build_prompt(
@@ -606,7 +624,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     else:
         use_stream = False if not args.no_code_exec else True
 
-    # 4. 呼叫 Gemini 進行結構化生成
+    # 4. 呼叫 LiteLLM Router 進行結構化生成
     decisions_result = generate_decisions(
         prompt=prompt,
         valid_inf_ids=all_inf_ids,
@@ -614,6 +632,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         target_date=clean_date,
         stream=use_stream,
         code_execution=not args.no_code_exec,
+        model=args.model,
     )
 
     # 5. 輸出存檔
