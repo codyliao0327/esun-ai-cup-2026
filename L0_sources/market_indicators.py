@@ -48,62 +48,116 @@ def taiex_close_latest() -> pd.DataFrame:
     return _format_result(res, "taiex_close_latest")
 
 
-def taiex_return_20d() -> pd.DataFrame:
-    """加權指數近 20 日報酬率 (單位：%)。"""
+def taiex_return_5d() -> pd.DataFrame:
+    """加權指數近 5 日報酬率 (單位：%)。"""
     from finlab import data
 
     p = data.get("taiex_total_index:收盤指數", start=START_DATE)
-    res = ((p.iloc[[-1]] / p.iloc[[-21]] - 1) * 100).round(2)
-    return _format_result(res, "taiex_return_20d")
+    res = ((p.iloc[[-1]] / p.iloc[[-6]] - 1) * 100).round(2)
+    return _format_result(res, "taiex_return_5d")
 
 
-def taiex_ma20_latest() -> pd.DataFrame:
-    """加權指數 20 日均線 (單位：點)。"""
+def taiex_vs_ma10_pct() -> pd.DataFrame:
+    """加權指數相對 10 日均線乖離率 (單位：%)。"""
     from finlab import data
 
     p = data.get("taiex_total_index:收盤指數", start=START_DATE)
-    res = (p.rolling(20).mean().iloc[[-1]]).round(2)
-    return _format_result(res, "taiex_ma20_latest")
+    ma10 = p.rolling(10).mean().iloc[[-1]]
+    res = ((p.iloc[[-1]] / ma10 - 1) * 100).round(2)
+    return _format_result(res, "taiex_vs_ma10_pct")
 
 
-def taiex_ma60_latest() -> pd.DataFrame:
-    """加權指數 60 日均線 (單位：點)。"""
+def taiex_vs_ma20_pct() -> pd.DataFrame:
+    """加權指數相對 20 日均線乖離率 (單位：%)。"""
     from finlab import data
 
     p = data.get("taiex_total_index:收盤指數", start=START_DATE)
-    res = (p.rolling(60).mean().iloc[[-1]]).round(2)
-    return _format_result(res, "taiex_ma60_latest")
+    ma20 = p.rolling(20).mean().iloc[[-1]]
+    res = ((p.iloc[[-1]] / ma20 - 1) * 100).round(2)
+    return _format_result(res, "taiex_vs_ma20_pct")
 
 
-def taiex_max_drawdown_20d() -> pd.DataFrame:
-    """加權指數近 20 日最大回撤，負值表示跌幅 (單位：%)。"""
+def taiex_range_pos_10d() -> pd.DataFrame:
+    """加權指數 10 日價格區間相對位置 (單位：%)。0% 位於區間最低點，100% 位於最高點。"""
     from finlab import data
 
     p = data.get("taiex_total_index:收盤指數", start=START_DATE)
-    recent = p.iloc[-20:]
+    high_10 = p.rolling(10).max().iloc[[-1]]
+    low_10 = p.rolling(10).min().iloc[[-1]]
+    diff = high_10 - low_10
+    pos = (p.iloc[[-1]] - low_10) / diff.where(diff != 0) * 100
+    res = pos.round(2)
+    return _format_result(res, "taiex_range_pos_10d")
+
+
+def taiex_max_drawdown_5d() -> pd.DataFrame:
+    """加權指數近 5 日最大回撤，負值表示跌幅 (單位：%)。"""
+    from finlab import data
+
+    p = data.get("taiex_total_index:收盤指數", start=START_DATE)
+    recent = p.iloc[-5:]
     running_high = recent.cummax()
     drawdown = (recent / running_high - 1) * 100
     res = drawdown.min().to_frame().T.round(2)
     res.index = [p.index[-1]]
-    return _format_result(res, "taiex_max_drawdown_20d")
+    return _format_result(res, "taiex_max_drawdown_5d")
 
 
-def market_foreign_net_buy_20d() -> pd.DataFrame:
-    """外資近 20 日全市場(上市)淨買賣超金額 (單位：元)。"""
+def otc_vs_taiex_return_5d() -> pd.DataFrame:
+    """櫃買指數(OTC)近 5 日報酬 － 加權指數近 5 日報酬 (單位：百分點 pp)。>0 代表中小型動能股強於權值股。"""
+    from finlab import data
+
+    otc = data.get("stock_index_price:收盤指數", start=START_DATE)["上櫃櫃買指數:指數"]
+    taiex = data.get("taiex_total_index:收盤指數", start=START_DATE)
+    if isinstance(taiex, pd.DataFrame):
+        taiex = taiex.squeeze("columns")
+
+    common_idx = otc.index.intersection(taiex.index)
+    otc = otc.loc[common_idx]
+    taiex = taiex.loc[common_idx]
+
+    otc_ret_5d = (otc.iloc[-1] / otc.iloc[-6] - 1) * 100
+    taiex_ret_5d = (taiex.iloc[-1] / taiex.iloc[-6] - 1) * 100
+    diff = round(float(otc_ret_5d - taiex_ret_5d), 2)
+
+    res = pd.Series([diff], index=[otc.index[-1]])
+    return _format_result(res, "otc_vs_taiex_return_5d")
+
+
+def market_foreign_net_buy_5d() -> pd.DataFrame:
+    """外資近 5 日全市場(上市)淨買賣超金額 (單位：元)。"""
     from finlab import data
 
     foreign = data.get("institutional_investors_trading_all_market_summary:買賣超", start=START_DATE)["上市外資及陸資(不含外資自營商)"]
-    res = (foreign.rolling(20).sum().iloc[[-1]]).round(2)
-    return _format_result(res, "market_foreign_net_buy_20d")
+    res = (foreign.rolling(5).sum().iloc[[-1]]).round(2)
+    return _format_result(res, "market_foreign_net_buy_5d")
 
 
-def market_trust_net_buy_20d() -> pd.DataFrame:
-    """投信近 20 日全市場(上市)淨買賣超金額 (單位：元)。"""
+def market_foreign_net_buy_1d() -> pd.DataFrame:
+    """外資最新交易日全市場(上市)淨買賣超金額 (單位：元)。"""
+    from finlab import data
+
+    foreign = data.get("institutional_investors_trading_all_market_summary:買賣超", start=START_DATE)["上市外資及陸資(不含外資自營商)"]
+    res = (foreign.iloc[[-1]]).round(2)
+    return _format_result(res, "market_foreign_net_buy_1d")
+
+
+def market_trust_net_buy_5d() -> pd.DataFrame:
+    """投信近 5 日全市場(上市)淨買賣超金額 (單位：元)。"""
     from finlab import data
 
     trust = data.get("institutional_investors_trading_all_market_summary:買賣超", start=START_DATE)["上市投信"]
-    res = (trust.rolling(20).sum().iloc[[-1]]).round(2)
-    return _format_result(res, "market_trust_net_buy_20d")
+    res = (trust.rolling(5).sum().iloc[[-1]]).round(2)
+    return _format_result(res, "market_trust_net_buy_5d")
+
+
+def market_trust_net_buy_1d() -> pd.DataFrame:
+    """投信最新交易日全市場(上市)淨買賣超金額 (單位：元)。"""
+    from finlab import data
+
+    trust = data.get("institutional_investors_trading_all_market_summary:買賣超", start=START_DATE)["上市投信"]
+    res = (trust.iloc[[-1]]).round(2)
+    return _format_result(res, "market_trust_net_buy_1d")
 
 
 def market_advance_decline_ratio() -> pd.DataFrame:
@@ -161,7 +215,7 @@ def market_alignment() -> dict:
 
 
 def listed_market_lifeline() -> dict:
-    """11. 生命線：加權報酬指數與月線關係 (單位：%)。"""
+    """11. 生命線：加權報酬指數與均線關係 (單位：%)。"""
     from finlab import data
     import pandas as pd
 
@@ -171,20 +225,25 @@ def listed_market_lifeline() -> dict:
     if not isinstance(index, pd.Series):
         raise ValueError("預期加權報酬指數只有一個數值欄位")
 
+    ma5 = index.rolling(5).mean()
     ma20 = index.rolling(20).mean()
 
     if len(index) < 25 or index.iloc[-25:].isna().any() or (index.iloc[-25:] <= 0).any():
         raise ValueError("計算生命線需要最近25個交易日的有效報酬指數")
 
+    index_vs_ma5_pct = round(float((index.iloc[-1] / ma5.iloc[-1] - 1) * 100), 2)
     index_vs_ma20_pct = round(float((index.iloc[-1] / ma20.iloc[-1] - 1) * 100), 2)
+    ma5_change_3d_pct = round(float((ma5.iloc[-1] / ma5.iloc[-4] - 1) * 100), 2)
     ma20_change_5d_pct = round(float((ma20.iloc[-1] / ma20.iloc[-6] - 1) * 100), 2)
     last_date = str(index.index[-1])[:10]
 
     return {
         "_format": "[value, date]",
         "tw_market": {
+            "index_vs_ma5_pct": [index_vs_ma5_pct, last_date],
             "index_vs_ma20_pct": [index_vs_ma20_pct, last_date],
-            "ma20_change_5d_pct": [ma20_change_5d_pct, last_date]
+            "ma5_change_3d_pct": [ma5_change_3d_pct, last_date],
+            "ma20_change_5d_pct": [ma20_change_5d_pct, last_date],
         }
     }
 
@@ -194,14 +253,18 @@ def listed_market_lifeline() -> dict:
 # --------------------------------------------------------------------------- #
 ALL_MARKET_INDICATORS: list[MarketIndicator] = [
     MarketIndicator("taiex_close_latest", "大盤", taiex_close_latest, "加權指數最新收盤價 (點)"),
-    MarketIndicator("taiex_return_20d", "大盤", taiex_return_20d, "加權指數近20日報酬率 (%)"),
-    MarketIndicator("taiex_ma20_latest", "大盤", taiex_ma20_latest, "加權指數20日均線 (點)"),
-    MarketIndicator("taiex_ma60_latest", "大盤", taiex_ma60_latest, "加權指數60日均線 (點)"),
-    MarketIndicator("taiex_max_drawdown_20d", "大盤", taiex_max_drawdown_20d, "加權指數近20日最大回撤 (%)"),
-    MarketIndicator("market_foreign_net_buy_20d", "大盤", market_foreign_net_buy_20d, "外資近20日上市買賣超金額 (元)"),
-    MarketIndicator("market_trust_net_buy_20d", "大盤", market_trust_net_buy_20d, "投信近20日上市買賣超金額 (元)"),
+    MarketIndicator("taiex_return_5d", "大盤", taiex_return_5d, "加權指數近5日報酬率 (%)"),
+    MarketIndicator("taiex_vs_ma10_pct", "大盤", taiex_vs_ma10_pct, "加權指數相對10日均線乖離率 (%)"),
+    MarketIndicator("taiex_vs_ma20_pct", "大盤", taiex_vs_ma20_pct, "加權指數相對20日均線乖離率 (%)"),
+    MarketIndicator("taiex_range_pos_10d", "大盤", taiex_range_pos_10d, "加權指數10日價格區間位置 (%)"),
+    MarketIndicator("taiex_max_drawdown_5d", "大盤", taiex_max_drawdown_5d, "加權指數近5日最大回撤 (%)"),
+    MarketIndicator("otc_vs_taiex_return_5d", "大盤", otc_vs_taiex_return_5d, "櫃買近5日相對加權超額報酬 (pp)"),
+    MarketIndicator("market_foreign_net_buy_5d", "大盤", market_foreign_net_buy_5d, "外資近5日上市買賣超金額 (元)"),
+    MarketIndicator("market_foreign_net_buy_1d", "大盤", market_foreign_net_buy_1d, "外資最新交易日上市買賣超金額 (元)"),
+    MarketIndicator("market_trust_net_buy_5d", "大盤", market_trust_net_buy_5d, "投信近5日上市買賣超金額 (元)"),
+    MarketIndicator("market_trust_net_buy_1d", "大盤", market_trust_net_buy_1d, "投信最新交易日上市買賣超金額 (元)"),
     MarketIndicator("market_advance_decline_ratio", "大盤", market_advance_decline_ratio, "全市場股票漲跌家數比 (倍)"),
     MarketIndicator("listed_margin_balance_change_5d", "大盤", listed_margin_balance_change_5d, "上市融資餘額近5日變化率 (%)"),
     MarketIndicator("market_alignment", "大盤", market_alignment, "全市場多空排列家數差 (家)"),
-    MarketIndicator("market_lifeline", "大盤", listed_market_lifeline, "加權報酬指數生命線與月線關係 (%)"),
+    MarketIndicator("market_lifeline", "大盤", listed_market_lifeline, "加權報酬指數生命線與均線關係 (%)"),
 ]

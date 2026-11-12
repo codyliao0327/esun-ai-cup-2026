@@ -70,16 +70,18 @@ CUSTOM_STOCK_ANALYSIS_LOGIC = """\
    - 營收成長：評估最新月營收年增率 (revenue_yoy_latest) 與月增率 (revenue_mom_latest) 的變化，雙成長為營運向上訊號，動能放緩需提防營運轉折。
 
 2. 價格趨勢與相對強弱（技術動能與結構）
-   - 報酬表現：比較近 5 日報酬 (return_5d) 與近 20 日報酬 (return_20d)，觀察短期及較長期間的價格方向。
-   - 相對大盤：檢視近 20 日相對大盤超額報酬 (excess_return_20d)。若個股絕對報酬為負，但相對報酬為正，可客觀判斷為該期間相對大盤抗跌。
-   - 均線結構與動能：結合價格相對 20 日均線位置 (price_vs_ma20) 以及 20 日均線近 5 日升降變化 (ma20_change_5d) 研判價格結構；搭配 14 日 RSI (rsi_14) 與近 10 日報酬波動率 (volatility_10d)，評估近期動能、超買超賣與波動風險。
+   - 報酬表現：檢視當日報酬 (return_1d)、近 5 日報酬 (return_5d) 與近 20 日報酬 (return_20d)，觀察短中期的價格方向與動能。
+   - 相對大盤：檢視近 5 日相對大盤超額報酬 (excess_return_5d)。若個股絕對報酬為負，但相對報酬為正，可客觀判斷為該期間相對大盤抗跌。
+   - 均線結構與動能：結合價格相對 5 日線 (price_vs_ma5) 與 20 日線位置 (price_vs_ma20) 以及 10 日均線近 3 日斜率變化 (ma10_change_3d) 研判短中期價格結構；搭配 7 日 RSI (rsi_7) 與近 10 日報酬波動率 (volatility_10d)，評估近期動能、超買超賣與波動風險。
+   - 區間位置與停損防守：參考 10 日價格區間位置 (price_range_pos_10d)、距離 10 日高點/低點幅度 (price_dist_to_high_10d, price_dist_to_low_10d) 以及距前 10 日最低收盤價幅度 (price_vs_min_close_10d，負值代表跌破前 10 日支撐低點)，作為進出場與停損防守參考。
    - KD 動能與短線轉折 (5, 3, 3)：檢視最新 K 值 (k_5) 與 D 值 (d_5)、K 值近 3 日增減點數 (k_change_3d)、連續高於/低於天數 (kd_above_d_days, kd_below_d_days) 與交叉距今天數 (kd_cross_days_ago_20d)。>80 留意高檔鈍化或過熱拉回，<20 留意超賣低檔轉折或弱勢破底，剛黃金交叉 (kd_cross_days_ago_20d 為 0 或 1 且 K>D) 為關鍵短線轉折訊號。
    - MACD 中期趨勢與強弱 (6, 13, 5)：檢視快慢線差 (macd_dif)、柱狀體 (macd_hist)、柱狀體近 3 日增減 (macd_hist_change_3d)、連續遞增/遞減天數 (macd_hist_increasing_days, macd_hist_decreasing_days) 與交叉距今天數 (macd_cross_days_ago_20d)。柱狀體負值若開始由負轉正或負差距大幅縮小 (macd_hist_change_3d > 0)，代表中期下跌動能衰竭、買盤轉強跡象；柱狀體由正翻負或連續遞減則提示趨勢轉弱。
    - 布林通道波動與軌道型態 (10日, 1.9標準差)：檢視價格在軌道內之相對位置百分比 (bollinger_position_pct)、帶寬 (bollinger_bandwidth_pct)、帶寬近 3 日變化 (bollinger_bandwidth_change_3d_pp)、連續收斂/擴張天數 (bollinger_contraction_days, bollinger_expansion_days)，以及近 60 日帶寬歷史百分位 (bollinger_bandwidth_percentile_60d)。帶寬極度收斂 (歷史百分位低) 往往預示即將發生方向性大波動；價格突破上軌 (bollinger_position_pct > 100) 伴隨通道擴張代表強勢噴出，跌破下軌 (bollinger_position_pct < 0) 則提示加速破底或極度超賣。
+   - ADX 趨勢強度與方向 (7日)：檢視平均趨向指數 (adx)、ADX 近 3 日增減 (adx_change_3d)、正負力道差 (di_diff ＝ plus_di － minus_di)。adx > 25 且持續增強 (adx_change_3d > 0) 代表存在強烈單邊趨勢；配合 di_diff > 0 確認多頭主導，di_diff < 0 則為空頭壓制。
    - 交叉判斷：比較上述訊號是否一致，釐清價格表現、相對強弱及技術訊號之間的一致性或分歧。
 
 3. 交易活躍度與法人籌碼（籌碼與流動性）
-   - 量價配合：比較近 5 日與近 20 日均量比 (volume_ma5_to_ma20) 及 20 日日均成交值 (amount_ma20)，結合價格方向與成交量變化，觀察量價是否配合（如價漲量增、量縮價穩），並評估其對短期走勢的流動性與延續性意義。
+   - 量價配合：檢視當日量比 (volume_ratio_1d)、近 3 日量比 (volume_ratio_3d)、近 5 日與 20 日均量比 (volume_ma5_to_ma20) 及 5 日日均成交值 (amount_ma5)，結合價格方向與成交量變化，觀察量價是否配合（如價漲量增、爆量長紅或量縮價穩），並評估其流動性與延續性意義。
    - 法人動向：觀察外資 (foreign_net_buy_1d, foreign_net_buy_intensity_5d) 與投信 (trust_net_buy_1d, trust_net_buy_intensity_5d) 買賣超方向是否一致；若法人資金流向與價格走勢出現分歧（例如股價跌但法人連續逆勢買超，或股價漲但法人大幅調節），應明確說明該分歧可能影響短期動能之機制。
 
 4. 情緒與討論風向（市場心理與預期）
@@ -194,28 +196,45 @@ PROMPT_TEMPLATE = """\
   - `bollinger_bandwidth_change_3d_pp`：帶寬近 3 日變化 (百分點 pp，正值代表通道擴張、負值代表通道收斂)。
   - `bollinger_contraction_days` / `bollinger_expansion_days`：帶寬連續收斂 (縮小) / 連續擴張 (放大) 天數。
   - `bollinger_bandwidth_percentile_60d`：目前帶寬在近 60 日的歷史百分位 (0~100%，數值越低代表相較近 60 日波動越極致壓縮、醞釀大變盤)。
-- **均線、趨勢與動能指標**：
-  - `price_vs_ma20`：最新價相對 20MA (月線) 乖離率 (%)，正值為站上月線、負值為跌破月線。
-  - `ma20_change_5d`：20MA (月線) 近 5 日斜率變化率 (%)，反映月線趨勢走向。
-  - `return_5d` / `return_20d`：近 5 日 / 近 20 日漲跌幅 (%)。
-  - `excess_return_20d`：近 20 日相對大盤超額報酬 (pp，正值代表強於大盤/抗跌領漲，負值代表弱於大盤)。
-  - `volume_ma5_to_ma20`：5 日均量 / 20 日均量比值 (倍，>1 代表短線出量轉熱、<1 代表短線量縮整理)。
-  - `amount_ma20`：近 20 日日均成交金額 (元)，評估市場流動性。
-  - `rsi_14`：14 日相對強弱指標 (0~100)，用於觀察價格動能及超買超賣狀態；高值代表上漲力道較強，低值代表下跌力道較強，常以 70 以上、30 以下作為超買、超賣參考，但不代表必然反轉。
+- **ADX 趨向指標 (7日)**：
+  - `plus_di` / `minus_di`：正趨向 (+DI) / 負趨向 (-DI) 指標，分別衡量上漲推升與下跌壓制力道。
+  - `di_diff`：正負方向力道差 (plus_di － minus_di)，正值多方佔優、負值空方佔優。
+  - `adx`：平均趨向指數 (0~100)，>25 代表存在明確單邊趨勢，<20 代表盤整無趨勢。
+  - `adx_change_3d`：今日 ADX 相對 3 日前變化量，>0 代表趨勢力道正在增強。
+- **均線、趨勢與價格動能指標**：
+  - `close_latest`：最新收盤市價 (元)。
+  - `return_1d` / `return_5d` / `return_20d`：當日 / 近 5 日 / 近 20 日還原報酬率 (%)。
+  - `excess_return_5d`：近 5 日相對大盤超額報酬差 (pp，正值代表強於大盤/跑贏指數，負值代表弱於大盤)。
+  - `price_vs_ma5` / `price_vs_ma20`：最新價相對 5MA (週線) / 20MA (月線) 之乖離率 (%)。
+  - `ma10_change_3d`：10MA (雙週線) 近 3 日斜率變化率 (%)，反映短中期均線動能走向。
+  - `price_range_pos_10d`：10 日價格區間相對位置 (%，0% 位於區間最低點、100% 位於最高點)。
+  - `price_dist_to_high_10d` / `price_dist_to_low_10d`：距離 10 日最高點 / 最低點幅度 (%)。
+  - `price_vs_min_close_10d`：距前 10 日最低收盤價幅度 (%，負值代表跌破前 10 日支撐低點)。
+  - `rsi_7`：7 日相對強弱指標 (0~100)，用於觀察短線動能與超買超賣狀態。
   - `volatility_10d`：近 10 日報酬波動率 (%)。
+- **成交量與量比指標**：
+  - `volume_ratio_1d`：當日量比 (倍) ＝ 今日成交量 / 近 10 日均量 (不含今日)，>1 代表今日放量。
+  - `volume_ratio_3d`：近 3 日量比 (倍) ＝ 近 3 日均量 / 近 3 日之前 10 日均量，反映近日活躍度。
+  - `volume_ma5_to_ma20`：5 日均量 / 20 日均量比值 (倍，>1 代表短線出量轉熱、<1 代表短線量縮整理)。
+  - `amount_ma5`：近 5 日日均成交金額 (元)，評估個股流動性。
 
 ### 2. 個股基本面與籌碼面指標
 - `roe_latest`：最新季度股東權益報酬率 (%)。
 - `revenue_yoy_latest` / `revenue_mom_latest`：最新月營收年增率 / 月增率 (%)。
 - `foreign_net_buy_intensity_5d` / `trust_net_buy_intensity_5d`：外資 / 投信近 5 日買賣超強度 (%) ＝ 5日法人淨買賣超 / 5日總成交量。正值代表法人積極加碼吸籌、負值代表法人持續減碼調節。
-- `foreign_net_buy_1d` / `trust_net_buy_1d`：最新交易日外資 / 投信單日買賣超股數 (股)。
+- `foreign_net_buy_1d` / `trust_net_buy_1d`：最新交易日外資 / 投信單日買賣超佔成交量比重 (%) ＝ 單日法人淨買賣超 / 當日總成交量。正值代表當日積極買超佔比高。
 
 ### 3. 市場大盤背景指標 (引用 O1 大盤事實時參考)
 - `market_alignment_diff`：全市場均線多空排列家數差 (家，>0 多頭佔優，<0 空頭佔優)。
-- `index_vs_ma20_pct`：加權報酬指數相對生命線 (20MA) 乖離率 (%)。
-- `ma20_change_5d_pct`：生命線 (20MA) 近 5 日斜率變化率 (%)。
-- `market_advance_decline_ratio`：全市場漲跌家數比。
-
+- `index_vs_ma5_pct` / `index_vs_ma20_pct`：加權報酬指數相對 5MA / 20MA (生命線) 之乖離率 (%)。
+- `ma5_change_3d_pct` / `ma20_change_5d_pct`：5MA 近 3 日 / 20MA 近 5 日斜率變化率 (%)。
+- `taiex_vs_ma10_pct` / `taiex_vs_ma20_pct`：加權指數相對 10MA / 20MA 之乖離率 (%)。
+- `taiex_range_pos_10d`：加權指數近 10 日價格區間位置 (0% ~ 100%)。
+- `otc_vs_taiex_return_5d`：櫃買指數 (OTC) 近 5 日報酬 － 加權近 5 日報酬 (百分點 pp，>0 代表中小型題材飆股熱度高)。
+- `taiex_return_5d` / `taiex_max_drawdown_5d`：加權指數近 5 日報酬率 (%) 與近 5 日最大回撤 (%)。
+- `market_foreign_net_buy_5d` / `market_foreign_net_buy_1d`：外資近 5 日累計與昨日單日淨買賣超金額 (元)。
+- `market_trust_net_buy_5d` / `market_trust_net_buy_1d`：投信近 5 日累計與昨日單日淨買賣超金額 (元)。
+- `market_advance_decline_ratio`：全市場股票漲跌家數比 (倍)。
 ## 交易成本與成交估價規則
 - 個股當日交易成交價格採收盤後該個股的當日成交均價。
 - 決策時尚未知當日成交均價；以 DataPack 前一交易日收盤價估算調整金額與成本。
