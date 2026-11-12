@@ -5,24 +5,42 @@
 - **競賽主題**：2026 Agent 基金經理人公開挑戰賽
 - **核心架構**：階層式因果推論 Multi-Agent 產線 (L0 ➔ L1 ➔ L2M ➔ L2 ➔ L3 ➔ L4 ➔ D-Plan 總組裝 ➔ 每日決策回顧報告) + 即時資產與持股監控看板 (Portfolio Dashboard)
 - **規範標準**：嚴格遵循官方 **D-Plan Schema v4.3** 與 **D-Plan 撰寫指南 v4.3**
-- **模型核心**：Google Gemini 3.8 Flash (Interactions API / Structured Outputs / 內建 Code Execution 程式碼執行器)
+- **模型核心**：LiteLLM Router + Google Gemini 雙軌分流架構 (`stage-l1` 採用 `gemini-3.8-flash`，其餘核心決策採用 `gemini-4-argon`，並配置自動 Fallback 降級備援機制與 Gemini 原生 Code Execution 程式碼執行器)
 
 ---
 
 ## 📌 近期系統重大更新 (Recent Updates)
 
-1. **基本面指標動態回補演算法 (自適應各公司公告時間)**：
+1. **全面接入 LiteLLM Router 與 Multi-Model 動態路由架構**：
+   - 建立集中式路由設定檔 `models_config.yaml`，透過 `litellm.Router` 統一大模型調用與例外降級。
+   - 依任務階層分流規則：
+     - `stage-l1`：預設主力 `gemini/gemini-3.8-flash`（Fallback 備援：`gemini/gemini-3.5-flash-lite`）。
+     - `stage-l2m`、`stage-l2`、`stage-l3`、`stage-l4`：預設主力高階推理模型 `gemini/gemini-4-argon`（Fallback 備援：`gemini/gemini-3.6-flash`）。
+   - 具備自動重試 (`num_retries=2`) 與遇異常時無縫降級切換至備援模型之高可用架構。
+2. **升級 19 項標準 LiteLLM Usage 指標與歷史自動結算**：
+   - 淘汰舊版自訂命名，全面對齊 LiteLLM 原生標準欄位：`timestamp`, `date`, `provider`, `model`, `model_group`, `stage`, `status`, `finish_reason`, `duration_seconds`, `prompt_tokens`, `completion_tokens`, `total_tokens`, `cached_tokens`, `tool_use_tokens`, `reasoning_tokens`, `response_cost`, `code_execution_used`, `code_execution_call_count`, `executed_codes`。
+   - 各模組執行完畢自動產出獨立用量檔，產線尾端自動結算匯總至 `data/D-Paln_Output/usage/usage_history.json` 與 `code/portfolio_dashboard/usage_history.json`。
+3. **現代化環境變數管理與憑證安全提升 (.env)**：
+   - 正式廢除舊版 `credentials.json`，改用產業標準的 `.env` 檔案載入 `GEMINI_API_KEY` 與 `TEAM_ID`，並提供 `.env.example` 範本以避免私密金鑰誤入版本控制。
+4. **多層 JSON 解析防禦與最新 json-repair 整合**：
+   - 在串流模式原生傳遞 Pydantic `response_format` 結構模型，由模型解碼底層直接保證 JSON 語法精確。
+   - 整合最新版 `json-repair>=0.64.9`，實作 `model_validate_json` $\rightarrow$ `json.loads` $\rightarrow$ `json_repair.loads` 三層容錯防禦鏈，徹底消除超長輸出下的微小格式瑕疵。
+5. **產線抽樣除錯指令支援 (`--input-date`, `--max-stocks`)**：
+   - 在 `run_daily_dplan.py` 與 `fact_extractor.py` 中支援自訂讀取特定日期輸入與限制測試個股數量（例如抽樣 2~3 檔），大幅節省測試時的 Token 成本與等待時間。
+6. **Gemini 3+ / 4 取樣參數規範與 DeprecationWarning 防護**：
+   - 遵循 Google 與 LiteLLM 最新規範，針對具備深度思考機制之模型（Gemini 3+ 與 Gemini 4），自動省略傳統 `temperature` / `top_p` 參數，改由提示詞導引取樣，避免終端出現警告訊息。
+7. **基本面指標動態回補演算法 (自適應各公司公告時間)**：
    - 針對上市櫃公司季報與月營收公告日期不一的實務挑戰，全面改寫 `stock_indicators.py` 中的三項基本面指標（`roe_latest`、`revenue_yoy_latest`、`revenue_mom_latest`）：
      - **動態回溯最新非空值 (Not-NaN)**：每檔股票獨立檢驗歷史序列，有 Q3 則取 Q3，尚未公布則自動往前遞補取 Q2；有當月營收（如 11 月）則取當月，尚未公布則向前遞補取前一月（如 10 月）。
      - **Compact Array JSON 字典輸出**：回傳 `{"_format": "[value, date]", "個股代碼": {"指標名稱": [數值, 日期/季度]}}`，完整保留每檔股票真實數據對應的發布時間戳。
      - **L1 自動對齊**：由 `fact_extractor.py` 自動提取各自的日期/季度標籤並注入 Prompt，徹底消除過去鎖定單一歷史日期或因空值導致特徵缺失的瓶頸。
-2. **候選股票池確立為精選 58 檔**：
+8. **候選股票池確立為精選 58 檔**：
    - 依據 `58檔股票池.csv`，將全產線候選標的池精確校準為 58 檔龍頭標的（涵蓋 2330 台積電、2454 聯發科、2383 台光電、2376 技嘉、2603 長榮等），全量同步至 L0 資料爬取、L1 客觀事實、L2 個股推論與 L3 投組決策。
-3. **L2 自訂分析邏輯專區升級 (CUSTOM_STOCK_ANALYSIS_LOGIC)**：
+9. **L2 自訂分析邏輯專區升級 (CUSTOM_STOCK_ANALYSIS_LOGIC)**：
    - 在 `stock_inference_agent.py` 確立兩階段推論標準規範：
      - **第一階段（個股深入分析）**：多維度考量企業品質 (ROE/營收)、技術動能結構 (均線/KD/MACD/布林通道)、法人籌碼強度 (外資/投信) 與市場社群討論熱度，並強制產出客觀的反面證據思考 (`counter_evidence`)。
      - **第二階段（選股與組合決策）**：落實主動式 ETF「兼顧企業品質、營運改善與潛在成長動能」之投資理念，進行多維度取捨與權重規劃。
-4. **26 檔量化寬表全面 Compact Array JSON 快取**：
+10. **26 檔量化寬表全面 Compact Array JSON 快取**：
    - 大盤 9 檔 + 個股 17 檔指標全面優化為精簡 Compact Array JSON，大幅降低檔案體積與 L1 Prompt Token 消耗。
 
 ---
@@ -128,9 +146,11 @@ flowchart TD
 
 ```text
 code/
+├── models_config.yaml                    # LiteLLM Multi-Model 路由群組與 Fallback 設定檔
+├── .env.example                          # 環境變數安全範本 (GEMINI_API_KEY, TEAM_ID)
 ├── configs/                              # 專案環境與共用工具
-│   ├── settings.py                       # 隊伍 ID、credentials 憑證讀取、全域路徑常數
-│   ├── gemini_client.py                  # Google GenAI SDK 封裝 (支援串流、結構化輸出、Code Execution 與 Usage 統計)
+│   ├── settings.py                       # 環境變數 (.env) 載入、路徑常數與金鑰管理
+│   ├── gemini_client.py                  # LiteLLM Router 封裝 (支援串流、結構化輸出、Code Execution 與 19 項標準 Usage 統計)
 │   ├── date_utils.py                     # 終端機互動式日期提示、標準化 (YYYYMMDD) 與格式轉換工具
 │   └── json_utils.py                     # 精簡 Compact JSON 序列化工具
 │
@@ -307,11 +327,12 @@ Step 7: 每日投資決策與投資組合回顧報告生成 (generate_daily_repo
 
 ## 六、Gemini 內建 Code Execution (程式碼執行) 機制
 
-在量化投資與資產配置中，LLM 對多位數四則運算、累積權重加總、取整偏差計算極易出現隨機數值幻覺。本系統在 `gemini_client.py` 中完整實作 Google GenAI 的 **Code Execution** 功能：
+在量化投資與資產配置中，LLM 對多位數四則運算、累積權重加總、取整偏差計算極易出現隨機數值幻覺。本系統在 `gemini_client.py` 中完整實作 Google Gemini 原生 **Code Execution** 工具：
 
-1. **核心原理**：向 Gemini 注入 `code_execution` 工具宣告。當模型在 L2 進行因子權重加權、在 L3 進行 20~30 檔持股權重百分比配比、或在 L4 覆核千股整股與剩餘現金時，模型會**自主生成 Python 程式碼並在 Google 沙盒環境中執行**，直接以執行回傳的精確數值作為結構化 JSON 的填值依據。
-2. **預設啟用**：`stock_inference_agent.py`、`portfolio_decision_agent.py`、`order_calculator.py` 均預設開啟 Code Execution。
-3. **靈活開關**：若需關閉或進行離線測試，各腳本皆支援傳入 `--no-code-exec` 旗標以傳統純推論模式運行。
+1. **核心原理**：向 LiteLLM Router 注入 `tools=[{"code_execution": {}}]` 工具宣告。當模型在 L2 進行因子權重加權、在 L3 進行 20~30 檔持股權重百分比配比、或在 L4 覆核千股整股與剩餘現金時，模型會**自主生成 Python 程式碼並在 Google 沙盒環境中執行**，直接以執行回傳的精確數值作為結構化 JSON 的填值依據。
+2. **串流與非串流原始程式碼捕捉**：底層包裝 `ModelResponseIterator` 與 `completion_response._hidden_params`，完整捕捉沙盒執行的程式碼片段與次數，並存入 Usage 記錄的 `executed_codes`。
+3. **預設啟用**：`stock_inference_agent.py`、`portfolio_decision_agent.py`、`order_calculator.py` 均預設開啟 Code Execution。
+4. **靈活開關**：若需關閉或進行離線測試，各腳本皆支援傳入 `--no-code-exec` 旗標以傳統純推論模式運行。
 
 ---
 
@@ -319,7 +340,7 @@ Step 7: 每日投資決策與投資組合回顧報告生成 (generate_daily_repo
 
 為了解決手動測試與每日自動化執行時的除錯與審計需求，系統對所有 LLM 環節實施了**無條件 Prompt 自動存檔機制**：
 
-1. **存檔時機**：無論是透過 `--dry-run` 執行、正常單獨執行、或經由 `run_daily_dplan.py` 調度，在呼叫 Gemini API 之前，系統皆會**第一時間將組裝完成的完整 Prompt 輸出至磁碟**。
+1. **存檔時機**：無論是透過 `--dry-run` 執行、正常單獨執行、或經由 `run_daily_dplan.py` 調度，在呼叫大模型之前，系統皆會**第一時間將組裝完成的完整 Prompt 輸出至磁碟**。
 2. **存檔路徑一覽**：
    - `data/D-Paln_Output/l1_observations/l1_observations_prompt_YYYYMMDD.txt`
    - `data/D-Paln_Output/l2m_market_view/l2m_market_view_prompt_YYYYMMDD.txt`
@@ -330,17 +351,24 @@ Step 7: 每日投資決策與投資組合回顧報告生成 (generate_daily_repo
 
 ---
 
-## 八、Gemini Usage 監控與 Token 統計機制
+## 八、LiteLLM 原生 19 項標準 Usage 監控與本地結算機制
 
-為了精確掌握 API 調用成本與 Token 消耗量，所有調用 Gemini API 的程式皆內建 Usage 自動統計：
+為了精確掌握多模型調用成本、Token 消耗量與代碼執行細節，本系統全面對齊 LiteLLM 原生標準欄位：
 
-1. **儲存位置**：位於各階段輸出資料夾下的 **`usage/`** 子目錄中：
+1. **各階段單獨用量記錄**：位於各階段輸出資料夾下的 **`usage/`** 子目錄中：
    - `data/D-Paln_Output/l1_observations/usage/l1_usage_YYYYMMDD.json`
    - `data/D-Paln_Output/l2m_market_view/usage/l2m_usage_YYYYMMDD.json`
    - `data/D-Paln_Output/l2_inferences/usage/l2_usage_YYYYMMDD.json`
    - `data/D-Paln_Output/l3_decisions/usage/l3_usage_YYYYMMDD.json`
    - `data/D-Paln_Output/l4_orders/usage/l4_usage_YYYYMMDD.json`
-2. **統計內容結構**：包含時間戳記、日期、模型版本、`prompt_tokens`、`candidates_tokens`、`total_tokens` 及耗時秒數。
+2. **19 項標準欄位結構**：
+   - **時間與路由識別**：`timestamp`, `date`, `provider`, `model`, `model_group`, `stage`, `status`, `finish_reason`, `duration_seconds`
+   - **LiteLLM 原生 Token 與成本**：`prompt_tokens`, `completion_tokens`, `total_tokens`, `cached_tokens`, `tool_use_tokens`, `reasoning_tokens`, `response_cost`
+   - **Code Execution 追蹤**：`code_execution_used`, `code_execution_call_count`, `executed_codes`
+3. **本地歷史結算中心**：
+   產線在每日結束時會自動呼叫 `settle_usage_history()`，將當日所有階段的調用記錄匯總合併至：
+   - `data/D-Paln_Output/usage/usage_history.json`
+   - `code/portfolio_dashboard/usage_history.json`
 
 ---
 
@@ -349,7 +377,7 @@ Step 7: 每日投資決策與投資組合回顧報告生成 (generate_daily_repo
 考量到競賽實務上「執行程式的日期不一定是實際交易日」（例如週日盤前預先試算週一的 D-Plan），所有入口均支援兩種日期指定模式：
 
 1. **互動式終端輸入 (預設)**：直接執行命令時（不帶 `--date`），終端機會跳出提示，按 Enter 直接帶入今日，或手動鍵入目標日期。
-2. **命令列明確指定 (自動化排程)**：排程腳本直接傳入 `--date 20261028` 即可靜默執行。
+2. **命令列明確指定 (自動化排程)**：排程腳本直接傳入 `--date 20261113` 即可靜默執行。
 
 ---
 
@@ -363,16 +391,40 @@ conda activate esunaicup2026_py311
 pip install -r requirements.txt
 ```
 
-### 2. 憑證設定 (`code/credentials.json`)
-在 `code/` 目錄下建立 `credentials.json` 配置隊伍金鑰（已由 `.gitignore` 排除）：
-```json
-{
-  "team_id": "TEAM_11402",
-  "gemini_api_key": "AIzaSy..."
-}
+### 2. 環境變數設定 (`.env`)
+複製 `.env.example` 建立 `.env`（由 `.gitignore` 排除，嚴禁提交真實金鑰）：
+```bash
+cp .env.example .env
+```
+`.env` 內容格式：
+```ini
+GEMINI_API_KEY="AIzaSy..."
+TEAM_ID="TEAM_11402"
 ```
 
-### 3. FinLab 登入認證
+### 3. LiteLLM 路由設定 (`models_config.yaml`)
+系統在專案根目錄與 `code/` 目錄下維護 `models_config.yaml`，可自由指定各任務階段的模型別名與降級備援清單：
+```yaml
+model_list:
+  - model_name: stage-l1
+    litellm_params:
+      model: gemini/gemini-3.8-flash
+  - model_name: stage-l1-fallback
+    litellm_params:
+      model: gemini/gemini-3.5-flash-lite
+  - model_name: stage-l2
+    litellm_params:
+      model: gemini/gemini-4-argon
+  - model_name: stage-l2-fallback
+    litellm_params:
+      model: gemini/gemini-3.6-flash
+router_settings:
+  fallbacks:
+    - stage-l1: ["stage-l1-fallback"]
+    - stage-l2: ["stage-l2-fallback"]
+```
+
+### 4. FinLab 登入認證
 在終端機執行認證指令：
 ```bash
 python -m finlab login
@@ -388,7 +440,14 @@ python -m finlab login
 python run_daily_dplan.py
 
 # 明確指定交易日期
-python run_daily_dplan.py --date 20261028
+python run_daily_dplan.py --date 20261113
+
+# 抽樣測試模式 (讀取 20261112 輸入、測試輸出至 20261113，並僅抽樣前 3 檔標的)
+python run_daily_dplan.py --date 20261113 --input-date 20261112 --max-stocks 3 --skip-l0
+
+# 指定特定交易日並跳過已完成之階段 (例如重跑 L3 至報告)
+python run_daily_dplan.py --date 20261113 --skip-l0 --skip-l1 --skip-l2m --skip-l2
+```
 
 # 指定特定交易日並跳過已完成之階段 (例如重跑 L3 至報告)
 python run_daily_dplan.py --date 20261028 --skip-l0 --skip-l1 --skip-l2m --skip-l2
@@ -420,7 +479,8 @@ python L0_sources/finlab_active_etf_loader.py --date 20261027  # 指定日期快
 ```bash
 # --- L1 客觀事實擷取 ---
 python L1_observations/fact_extractor.py                       # 互動式輸入日期 + 串流生成
-python L1_observations/fact_extractor.py --date 20261027      # 指定特定日期
+python L1_observations/fact_extractor.py --date 20261113      # 指定特定輸出日期
+python L1_observations/fact_extractor.py --date 20261113 --input-date 20261112 --max-stocks 3 # 抽樣測試模式
 python L1_observations/fact_extractor.py --dry-run            # 僅組裝 Prompt 輸出 txt，不呼叫 API
 
 # --- L2M 市場整體研判 ---

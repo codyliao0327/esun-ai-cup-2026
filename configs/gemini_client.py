@@ -909,6 +909,16 @@ def extract_and_clean_json(raw_text: str) -> str:
     return text
 
 
+def _should_omit_temperature(model_name: str) -> bool:
+    """判斷是否應省略 temperature 參數以相容 Gemini 3+ / Gemini 4 等新世代推理模型。
+    
+    官方與 LiteLLM 規範：Gemini 3+ 與 Gemini 4 等具備深度思考機制之模型已廢棄
+    外部 temperature / top_p / top_k 取樣參數，建議改由 system 指令導引取樣。
+    """
+    lowered = (model_name or "").lower()
+    return any(k in lowered for k in ("gemini-3", "gemini-4", "argon", "stage-"))
+
+
 # =============================================================================
 # LiteLLM Router 單例管理
 # =============================================================================
@@ -1101,7 +1111,6 @@ class GeminiClient:
         call_kwargs: Dict[str, Any] = {
             "model": router_model,
             "messages": messages,
-            "temperature": temperature,
             "metadata": {
                 "stage": eff_stage,
                 "model_group": model_group,
@@ -1109,6 +1118,8 @@ class GeminiClient:
                 "target_date": eff_date,
             },
         }
+        if not _should_omit_temperature(router_model) and temperature is not None:
+            call_kwargs["temperature"] = temperature
         if enable_code_execution:
             call_kwargs["tools"] = [{"code_execution": {}}]
 
@@ -1144,7 +1155,6 @@ class GeminiClient:
         call_kwargs: Dict[str, Any] = {
             "model": router_model,
             "messages": messages,
-            "temperature": temperature,
             "stream": True,
             "stream_options": {"include_usage": True},
             "metadata": {
@@ -1154,6 +1164,8 @@ class GeminiClient:
                 "target_date": eff_date,
             },
         }
+        if not _should_omit_temperature(router_model) and temperature is not None:
+            call_kwargs["temperature"] = temperature
         if enable_code_execution:
             call_kwargs["tools"] = [{"code_execution": {}}]
         elif response_format is not None:
@@ -1291,7 +1303,6 @@ class GeminiClient:
         call_kwargs: Dict[str, Any] = {
             "model": router_model,
             "messages": messages,
-            "temperature": temperature,
             "metadata": {
                 "stage": eff_stage,
                 "model_group": model_group,
@@ -1299,6 +1310,8 @@ class GeminiClient:
                 "target_date": eff_date,
             },
         }
+        if not _should_omit_temperature(router_model) and temperature is not None:
+            call_kwargs["temperature"] = temperature
         if enable_code_execution:
             # Gemini 原生沙盒與 response_format (application/json) 不可同時開啟，透過 Schema Prompt 與 JSON 解析驗證
             call_kwargs["tools"] = [{"code_execution": {}}]
