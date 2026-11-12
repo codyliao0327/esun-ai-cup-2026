@@ -26,6 +26,11 @@ import yaml
 from litellm import Router
 from pydantic import BaseModel, ValidationError
 
+try:
+    import json_repair
+except ImportError:
+    json_repair = None
+
 if __package__ in (None, ""):
     _CODE_DIR = Path(__file__).resolve().parents[1]
     if str(_CODE_DIR) not in sys.path:
@@ -1128,6 +1133,7 @@ class GeminiClient:
         enable_code_execution: bool = False,
         stage: Optional[str] = None,
         target_date: Optional[str] = None,
+        response_format: Optional[Any] = None,
     ) -> str:
         """透過 `router.completion(..., stream=True)` 即時串流印出回應（包含思考過程與 Code Execution），最後回傳完整文字。"""
         router_model, eff_stage, model_group, eff_date = self._resolve_routing_target(
@@ -1140,6 +1146,7 @@ class GeminiClient:
             "messages": messages,
             "temperature": temperature,
             "stream": True,
+            "stream_options": {"include_usage": True},
             "metadata": {
                 "stage": eff_stage,
                 "model_group": model_group,
@@ -1149,8 +1156,11 @@ class GeminiClient:
         }
         if enable_code_execution:
             call_kwargs["tools"] = [{"code_execution": {}}]
+        elif response_format is not None:
+            call_kwargs["response_format"] = response_format
 
         full_text: List[str] = []
+        collected_chunks: List[Any] = []
         is_thinking = False
         is_answering = False
 
@@ -1161,6 +1171,7 @@ class GeminiClient:
         try:
             stream_response = self.router.completion(**call_kwargs)
             for chunk in stream_response:
+                collected_chunks.append(chunk)
                 if not getattr(chunk, "choices", None):
                     continue
                 delta = getattr(chunk.choices[0], "delta", None)
@@ -1188,19 +1199,28 @@ class GeminiClient:
 
         print()  # 換行
 
-        # 等待 LiteLLM CustomStreamWrapper 的非同步 success_handler 完成回呼
-        if not _CALLBACK_EVENT.wait(timeout=2.5) and stream_response is not None:
-            # 若背景執行緒尚未觸發回呼，主動建立回應並觸發一次
+        end_dt = datetime.now(timezone.utc)
+        rebuilt = None
+        if collected_chunks:
             try:
-                end_dt = datetime.now(timezone.utc)
-                rebuilt = litellm.stream_chunk_builder(chunks=getattr(stream_response, "chunks", []))
-                if rebuilt is not None:
-                    litellm_success_callback(call_kwargs, rebuilt, start_dt, end_dt)
+                rebuilt = litellm.stream_chunk_builder(chunks=collected_chunks)
+            except Exception:
+                pass
+
+        # 若背景 callback 未能設定 Usage，或記錄到的 total_tokens 為 0，以 rebuilt 重建結果主動更新
+        with _CALLBACK_LOCK:
+            curr_tokens = LAST_USAGE_RECORD.get("total_tokens", 0) if LAST_USAGE_RECORD else 0
+
+        if (not _CALLBACK_EVENT.wait(timeout=1.0) or curr_tokens == 0) and rebuilt is not None:
+            try:
+                litellm_success_callback(call_kwargs, rebuilt, start_dt, end_dt)
             except Exception:
                 pass
 
         with _CALLBACK_LOCK:
             self.last_usage = dict(LAST_USAGE_RECORD) if LAST_USAGE_RECORD else {}
+
+        return "".join(full_text)
 
         return "".join(full_text)
 
@@ -1229,22 +1249,42 @@ class GeminiClient:
         )
         effective_sys = (system_instruction or "") + schema_prompt
 
+        def _parse_and_validate(target_text: str) -> T:
+            cleaned = extract_and_clean_json(target_text)
+            try:
+                return response_model.model_validate_json(cleaned)
+            except Exception:
+                pass
+
+            try:
+                parsed = json.loads(cleaned, strict=False)
+                return response_model.model_validate(parsed)
+            except Exception:
+                pass
+
+            if json_repair is not None:
+                try:
+                    repaired = json_repair.loads(cleaned)
+                    if isinstance(repaired, dict):
+                        return response_model.model_validate(repaired)
+                except Exception:
+                    pass
+
+            # 若仍失敗，直接執行一次嚴格驗證以拋出標準 ValidationError 或 JSONDecodeError
+            return response_model.model_validate_json(cleaned)
+
         if stream:
             raw_text = self.generate_stream(
                 prompt=prompt,
-                system_instruction=effective_sys,
+                system_instruction=effective_sys if enable_code_execution else system_instruction,
                 model=router_model,
                 temperature=temperature,
                 enable_code_execution=enable_code_execution,
                 stage=eff_stage,
                 target_date=eff_date,
+                response_format=None if enable_code_execution else response_model,
             )
-            cleaned_text = extract_and_clean_json(raw_text)
-            try:
-                return response_model.model_validate_json(cleaned_text)
-            except ValidationError:
-                parsed_dict = json.loads(cleaned_text, strict=False)
-                return response_model.model_validate(parsed_dict)
+            return _parse_and_validate(raw_text)
 
         # 非串流模式
         messages = self._build_messages(prompt, effective_sys if enable_code_execution else system_instruction)
@@ -1279,12 +1319,7 @@ class GeminiClient:
         if not raw_text:
             raise RuntimeError(f"LiteLLM Router ({router_model}) 未回傳有效內容: {response}")
 
-        cleaned_text = extract_and_clean_json(raw_text)
-        try:
-            return response_model.model_validate_json(cleaned_text)
-        except ValidationError:
-            parsed_dict = json.loads(cleaned_text, strict=False)
-            return response_model.model_validate(parsed_dict)
+        return _parse_and_validate(raw_text)
 
 
 # =============================================================================

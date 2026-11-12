@@ -604,13 +604,17 @@ def build_daily_report(
             md_lines.append(f"- **目標權重配置**：**{o['target_weight']*100:.2f}%** (委託計算：`{o['derivation']}`)")
             if o["inf_refs"]:
                 md_lines.append(f"- **關聯 L2 推論依據**：`{', '.join(o['inf_refs'])}`")
+            conc_text = str(o['l2_conclusion']).replace(' <br> ', '  \n> ')
+            logic_text = str(o['l2_logic']).replace(' <br> ', '  \n> ')
+            counter_text = str(o['l2_counter']).replace(' <br> ', '  \n> ')
+
             md_lines.append(f"- **🧠 L2 推論結論 (Conclusion)**：")
-            md_lines.append(f"  > {o['l2_conclusion'].replace(' <br> ', '  \n> ')}")
+            md_lines.append(f"  > {conc_text}")
             md_lines.append(f"- **📖 L2 核心推論邏輯 (Logic)**：")
-            md_lines.append(f"  > {o['l2_logic'].replace(' <br> ', '  \n> ')}")
+            md_lines.append(f"  > {logic_text}")
             if o["l2_counter"] and o["l2_counter"] != "-":
                 md_lines.append(f"- **⚠️ L2 反向證據與風險 (Counter Evidence)**：")
-                md_lines.append(f"  > {o['l2_counter'].replace(' <br> ', '  \n> ')}")
+                md_lines.append(f"  > {counter_text}")
             md_lines.append(f"- **🛡️ L3 風控檢核與決策動機 (Risk Check)**：")
             md_lines.append(f"  > {o['risk_check'] or o['rationale']}")
             md_lines.append("")

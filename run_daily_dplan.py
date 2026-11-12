@@ -54,6 +54,8 @@ def run_pipeline(
     target_date: str = None,
     trade_date: str = None,
     team_id: str = "TEAM_11402",
+    input_date: str = None,
+    max_stocks: int = None,
     skip_l0: bool = False,
     skip_l1: bool = False,
     skip_l2m: bool = False,
@@ -100,7 +102,12 @@ def run_pipeline(
     # -------------------------------------------------------------------------
     if not skip_l1:
         print("\n>>> [Step 1/7] 執行 L1 客觀事實擷取 Agent (fact_extractor)...")
-        _run_substage("L1_observations/fact_extractor.py", ["--date", t_date])
+        l1_args = ["--date", t_date]
+        if input_date:
+            l1_args.extend(["--input-date", input_date])
+        if max_stocks:
+            l1_args.extend(["--max-stocks", str(max_stocks)])
+        _run_substage("L1_observations/fact_extractor.py", l1_args)
     else:
         print("\n>>> [Step 1/7] 跳過 L1 (使用既有快照)")
 
@@ -185,6 +192,8 @@ def run_pipeline(
 def main():
     parser = argparse.ArgumentParser(description="每日排程執行的 D-Plan 端到端主程式")
     parser.add_argument("--date", type=str, default=None, help="指定資料日期 (格式 YYYYMMDD)")
+    parser.add_argument("--input-date", type=str, default=None, help="指定讀取輸入之日期 (例如拿 20261112 輸入測試 20261113 輸出)")
+    parser.add_argument("--max-stocks", type=int, default=None, help="限制測試個股數量 (例如 2 或 3 檔，節省時間與 token)")
     parser.add_argument("--trade-date", type=str, default=None, help="指定 D-Plan 交易日 (格式 YYYY-MM-DD)")
     parser.add_argument("--team-id", type=str, default="TEAM_11402", help="指定隊伍代號 (預設 TEAM_11402)")
     parser.add_argument("--skip-l0", action="store_true", help="跳過 L0 資料收集步驟")
@@ -200,6 +209,8 @@ def main():
         target_date=args.date,
         trade_date=args.trade_date,
         team_id=args.team_id,
+        input_date=args.input_date,
+        max_stocks=args.max_stocks,
         skip_l0=args.skip_l0,
         skip_l1=args.skip_l1,
         skip_l2m=args.skip_l2m,
