@@ -8,7 +8,9 @@ Dashboard HTML Builder for 2026 玉山人工智慧挑戰賽
   - 淺色 / 深色主題切換、完全響應式 (RWD) 手機與電腦極致優化
 """
 import json
+import re
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, List
 
@@ -20,8 +22,55 @@ if sys.platform == "win32":
         pass
 
 DASHBOARD_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = DASHBOARD_DIR.parent.parent
+REPORTS_DIR = PROJECT_ROOT / "data" / "D-Paln_Output" / "reports"
 DIST_DIR = DASHBOARD_DIR / "dist"
 DIST_HTML = DIST_DIR / "index.html"
+
+
+def load_decision_reports() -> List[Dict[str, Any]]:
+    """掃描並載入所有歷史與最新每日決策 Markdown 報告（不綁定固定格式，由前端動態渲染）。"""
+    if not REPORTS_DIR.is_dir():
+        return []
+
+    reports: List[Dict[str, Any]] = []
+    for path in REPORTS_DIR.glob("Daily_Decision_Report_*.md"):
+        try:
+            md_text = path.read_text(encoding="utf-8")
+        except Exception as exc:
+            print(f"[builder] 讀取報告失敗 ({path.name}): {exc}")
+            continue
+
+        m = re.search(r"(\d{8})", path.stem)
+        raw_date = m.group(1) if m else path.stem
+        iso_date = (
+            f"{raw_date[:4]}-{raw_date[4:6]}-{raw_date[6:8]}"
+            if len(raw_date) == 8 and raw_date.isdigit()
+            else raw_date
+        )
+
+        # 從首個一級標題擷取報告名稱，無則回退檔名
+        title = path.stem
+        for line in md_text.splitlines():
+            stripped = line.strip()
+            if stripped.startswith("# "):
+                title = stripped[2:].strip()
+                break
+
+        updated_at = datetime.fromtimestamp(path.stat().st_mtime).strftime("%Y-%m-%d %H:%M")
+        reports.append({
+            "raw_date": raw_date,
+            "date": iso_date,
+            "filename": path.name,
+            "title": title,
+            "size_bytes": len(md_text.encode("utf-8")),
+            "updated_at": updated_at,
+            "markdown": md_text,
+        })
+
+    # 依日期由新到舊排序
+    reports.sort(key=lambda r: r["raw_date"], reverse=True)
+    return reports
 
 
 def generate_sparkline_svg(trend: List[float], width: int = 100, height: int = 28) -> str:
@@ -109,14 +158,29 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
             "trend": trend
         })
 
+    # 讀取 LiteLLM Usage 歷史結算資料
+    usage_history_path = DASHBOARD_DIR / "usage_history.json"
+    usage_data: Dict[str, Any] = {"summary": {}, "daily_summary": {}, "records": []}
+    if usage_history_path.exists():
+        try:
+            usage_data = json.loads(usage_history_path.read_text(encoding="utf-8"))
+        except Exception as exc:
+            print(f"[builder] 讀取 usage_history.json 失敗: {exc}")
+
+    # 讀取所有每日決策報告 (歷史 + 最新)
+    decision_reports = load_decision_reports()
+
     # 轉為 JSON 注入前端以利動態排序與篩選
     json_data_payload = {
         "as_of_date": summary_data["as_of_date"],
         "trade_date": summary_data["trade_date"],
         "account": account,
         "history": history,
-        "stocks": all_stocks_list
+        "stocks": all_stocks_list,
+        "usage": usage_data,
+        "reports": decision_reports
     }
+    safe_json_payload = json.dumps(json_data_payload, ensure_ascii=False).replace("</", "<\\/")
 
     html_template = f"""<!DOCTYPE html>
 <html lang="zh-TW" class="theme-dark">
@@ -133,6 +197,9 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
   
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- Marked.js & DOMPurify (每日決策報告 Markdown 動態渲染與 XSS 防護) -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
 
   <style>
     :root {{
@@ -1106,6 +1173,488 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       .search-box {{
         width: 100%;
       }}
+      .usage-charts-grid {{
+        grid-template-columns: 1fr !important;
+      }}
+    }}
+
+    /* ================= AI 模型用量與成本監控 (Tab 3) ================= */
+    .usage-charts-grid {{
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }}
+
+    .usage-chart-card {{
+      padding: 20px 24px;
+    }}
+
+    .usage-chart-title {{
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--text-primary);
+    }}
+
+    .usage-chart-subtitle {{
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-dim);
+    }}
+
+    .routing-card {{
+      padding: 18px 22px;
+      margin-bottom: 24px;
+    }}
+
+    .routing-pills-grid {{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }}
+
+    .routing-pill {{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 14px;
+      background: var(--glass-pill-bg);
+      border: 1px solid var(--glass-border-subtle);
+      font-size: 12px;
+      font-weight: 600;
+    }}
+
+    .model-badge {{
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+    }}
+
+    .model-badge.flash {{
+      background: rgba(16, 185, 129, 0.16);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }}
+
+    .model-badge.argon {{
+      background: rgba(56, 189, 248, 0.16);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+    }}
+
+    .model-badge.fallback {{
+      background: rgba(245, 158, 11, 0.16);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }}
+
+    .code-exec-badge {{
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(139, 92, 246, 0.16);
+      color: #a78bfa;
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+    }}
+
+    .usage-day-row {{
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }}
+
+    .usage-day-row:hover {{
+      background: rgba(255, 255, 255, 0.05);
+    }}
+
+    .usage-chevron {{
+      display: inline-block;
+      transition: transform 0.2s ease;
+      font-size: 11px;
+      margin-right: 6px;
+      color: var(--text-dim);
+    }}
+
+    .usage-day-row.expanded .usage-chevron {{
+      transform: rotate(90deg);
+      color: var(--accent-primary);
+    }}
+
+    .usage-stages-row td {{
+      padding: 0 !important;
+      border-bottom: 1px solid var(--glass-border-subtle);
+    }}
+
+    .usage-stages-drawer {{
+      padding: 14px 20px;
+      background: rgba(0, 0, 0, 0.16);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }}
+
+    html.theme-light .usage-stages-drawer {{
+      background: rgba(0, 0, 0, 0.03);
+    }}
+
+    .stage-mini-card {{
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: var(--glass-pill-bg);
+      border: 1px solid var(--glass-border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }}
+
+    .stage-mini-header {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+    }}
+
+    .stage-mini-metrics {{
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }}
+
+    /* ================= 每日決策報告瀏覽器 (Tab 4) ================= */
+    .report-toolbar {{
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 20px;
+      margin-bottom: 18px;
+    }}
+
+    .report-controls-left {{
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }}
+
+    .report-controls-right {{
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }}
+
+    .report-select {{
+      appearance: none;
+      background: var(--glass-pill-bg);
+      color: var(--text-main);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 8px 34px 8px 14px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }}
+
+    .report-select:hover, .report-select:focus {{
+      border-color: var(--primary-accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18);
+    }}
+
+    .report-select option {{
+      background: #0f172a;
+      color: #f8fafc;
+    }}
+
+    html.theme-light .report-select option {{
+      background: #ffffff;
+      color: #0f172a;
+    }}
+
+    .report-action-btn {{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 13px;
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+      background: var(--glass-pill-bg);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s var(--spring-ease), border-color 0.2s, background 0.2s;
+    }}
+
+    .report-action-btn:hover:not(:disabled) {{
+      border-color: var(--primary-accent);
+      transform: translateY(-1px);
+    }}
+
+    .report-action-btn:disabled {{
+      opacity: 0.4;
+      cursor: not-allowed;
+    }}
+
+    .report-meta-pill {{
+      font-size: 12px;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      padding: 6px 12px;
+      border-radius: 10px;
+      background: var(--glass-pill-bg);
+      border: 1px solid var(--glass-border-subtle);
+    }}
+
+    .report-layout {{
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }}
+
+    .report-toc-card {{
+      position: sticky;
+      top: 18px;
+      max-height: calc(100vh - 36px);
+      overflow-y: auto;
+      padding: 18px 16px;
+    }}
+
+    .report-toc-title {{
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }}
+
+    .report-toc-list {{
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }}
+
+    .report-toc-item {{
+      display: block;
+      text-align: left;
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-radius: 9px;
+      padding: 6px 10px;
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      line-height: 1.4;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }}
+
+    .report-toc-item:hover {{
+      background: var(--glass-pill-bg);
+      color: var(--text-main);
+    }}
+
+    .report-toc-item.toc-h3 {{
+      padding-left: 22px;
+      font-size: 12px;
+      color: var(--text-dim);
+    }}
+
+    .report-body-card {{
+      padding: 28px 32px;
+      min-width: 0;
+    }}
+
+    .markdown-body {{
+      color: var(--text-main);
+      font-size: 14.5px;
+      line-height: 1.75;
+      word-wrap: break-word;
+    }}
+
+    .markdown-body h1 {{
+      font-size: 22px;
+      font-weight: 800;
+      margin: 0 0 16px 0;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--glass-border-subtle);
+      letter-spacing: -0.01em;
+    }}
+
+    .markdown-body h2 {{
+      font-size: 18px;
+      font-weight: 700;
+      margin: 28px 0 12px 0;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--glass-border-subtle);
+      scroll-margin-top: 20px;
+    }}
+
+    .markdown-body h3 {{
+      font-size: 15.5px;
+      font-weight: 700;
+      margin: 20px 0 10px 0;
+      color: var(--primary-accent);
+      scroll-margin-top: 20px;
+    }}
+
+    .markdown-body h4 {{
+      font-size: 14.5px;
+      font-weight: 700;
+      margin: 18px 0 8px 0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: var(--glass-pill-bg);
+      border: 1px solid var(--glass-border-subtle);
+    }}
+
+    .markdown-body p {{
+      margin: 10px 0;
+    }}
+
+    .markdown-body ul, .markdown-body ol {{
+      margin: 8px 0;
+      padding-left: 22px;
+    }}
+
+    .markdown-body li {{
+      margin: 4px 0;
+    }}
+
+    .markdown-body hr {{
+      border: none;
+      border-top: 1px solid var(--glass-border-subtle);
+      margin: 22px 0;
+    }}
+
+    .markdown-body blockquote {{
+      margin: 10px 0 14px 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--primary-accent);
+      border-radius: 0 12px 12px 0;
+      background: rgba(56, 189, 248, 0.08);
+      color: var(--text-muted);
+    }}
+
+    html.theme-light .markdown-body blockquote {{
+      background: rgba(14, 165, 233, 0.07);
+    }}
+
+    .markdown-body blockquote p {{
+      margin: 4px 0;
+    }}
+
+    .markdown-body code {{
+      font-family: var(--font-mono);
+      font-size: 0.86em;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: rgba(148, 163, 184, 0.16);
+      border: 1px solid var(--glass-border-subtle);
+    }}
+
+    .markdown-body pre {{
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid var(--glass-border-subtle);
+      overflow-x: auto;
+      margin: 12px 0;
+    }}
+
+    html.theme-light .markdown-body pre {{
+      background: rgba(241, 245, 249, 0.9);
+    }}
+
+    .markdown-body pre code {{
+      padding: 0;
+      background: transparent;
+      border: none;
+      font-size: 12.5px;
+    }}
+
+    .report-table-wrap {{
+      width: 100%;
+      overflow-x: auto;
+      margin: 14px 0 18px 0;
+      border-radius: 14px;
+      border: 1px solid var(--glass-border-subtle);
+    }}
+
+    .markdown-body table {{
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }}
+
+    .markdown-body th {{
+      background: var(--table-header-bg);
+      color: var(--text-muted);
+      font-weight: 700;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--glass-border);
+      white-space: nowrap;
+    }}
+
+    .markdown-body td {{
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--glass-border-subtle);
+      vertical-align: top;
+      min-width: 72px;
+    }}
+
+    .markdown-body tbody tr:last-child td {{
+      border-bottom: none;
+    }}
+
+    .markdown-body tbody tr:hover td {{
+      background: var(--table-hover);
+    }}
+
+    @media (max-width: 960px) {{
+      .report-layout {{
+        grid-template-columns: 1fr;
+      }}
+      .report-toc-card {{
+        position: static;
+        max-height: 260px;
+      }}
+      .report-body-card {{
+        padding: 18px 16px;
+      }}
     }}
   </style>
 </head>
@@ -1170,6 +1719,12 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
         </button>
         <button class="tab-btn" id="tabBtn2" onclick="switchTab('tab2')">
           <span>📈</span> 自選行情觀察群組
+        </button>
+        <button class="tab-btn" id="tabBtn3" onclick="switchTab('tab3')">
+          <span>🤖</span> AI 模型用量與成本監控
+        </button>
+        <button class="tab-btn" id="tabBtn4" onclick="switchTab('tab4')">
+          <span>📄</span> 每日決策報告
         </button>
       </div>
     </div>
@@ -1306,6 +1861,143 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       </div>
     </div>
 
+    <!-- ================= 頁籤 3: AI 模型用量與成本監控 ================= -->
+    <div id="tab3Content" style="display: none;">
+      <!-- 區塊 A: 5 大核心 KPI 卡片 (由 JS 動態渲染) -->
+      <div class="kpi-grid" id="usageKpiGrid"></div>
+
+      <!-- 區塊 B: 3 組 Chart.js 互動圖表 -->
+      <div class="usage-charts-grid">
+        <div class="glass-card usage-chart-card">
+          <div class="usage-chart-title">
+            <span>📈 每日花費 (USD) 與 Token 消耗雙軸趨勢</span>
+            <span class="usage-chart-subtitle" id="usageUpdatedAtBadge"></span>
+          </div>
+          <div style="height: 290px; position: relative;">
+            <canvas id="usageTrendChart"></canvas>
+          </div>
+        </div>
+
+        <div class="glass-card usage-chart-card">
+          <div class="usage-chart-title">
+            <span>🍩 各任務階段費用佔比</span>
+            <span class="usage-chart-subtitle">L1 ~ L4 算力分佈</span>
+          </div>
+          <div style="height: 290px; position: relative;">
+            <canvas id="usageStageDonutChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card usage-chart-card" style="margin-bottom: 24px;">
+        <div class="usage-chart-title">
+          <span>📊 每日 Token 細部構成分析 (Prompt / Completion / Code Execution / Thinking)</span>
+          <span class="usage-chart-subtitle">單位：Tokens</span>
+        </div>
+        <div style="height: 260px; position: relative;">
+          <canvas id="usageTokenStackChart"></canvas>
+        </div>
+      </div>
+
+      <!-- 區塊 C: LiteLLM Multi-Model 路由架構速覽 -->
+      <div class="glass-card routing-card">
+        <div class="usage-chart-title" style="margin-bottom: 4px;">
+          <span>🧭 LiteLLM Multi-Model 動態路由與自動降級備援架構</span>
+          <span class="usage-chart-subtitle">models_config.yaml</span>
+        </div>
+        <div class="routing-pills-grid">
+          <div class="routing-pill">
+            <span>L1 事實擷取</span>
+            <span class="model-badge flash">gemini-3.8-flash</span>
+            <span style="color:var(--text-dim); font-size:11px;">備援: gemini-3.5-flash-lite</span>
+          </div>
+          <div class="routing-pill">
+            <span>L2M 市場走向</span>
+            <span class="model-badge argon">gemini-4-argon</span>
+            <span style="color:var(--text-dim); font-size:11px;">備援: gemini-3.6-flash</span>
+          </div>
+          <div class="routing-pill">
+            <span>L2 個股推論</span>
+            <span class="model-badge argon">gemini-4-argon</span>
+            <span class="code-exec-badge">🐍 Code Exec</span>
+          </div>
+          <div class="routing-pill">
+            <span>L3 投組決策</span>
+            <span class="model-badge argon">gemini-4-argon</span>
+            <span class="code-exec-badge">🐍 Code Exec</span>
+          </div>
+          <div class="routing-pill">
+            <span>L4 委託計算</span>
+            <span class="model-badge argon">gemini-4-argon</span>
+            <span class="code-exec-badge">🐍 Code Exec</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 區塊 D: 每日歷史用量下鑽折疊表 -->
+      <div class="glass-card">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="font-size:16px; font-weight:700; margin:0;">📅 每日歷史用量與 5 階段執行明細</h3>
+            <div style="font-size:12px; color:var(--text-dim); margin-top:4px;">點擊任一交易日即可展開該日 L1 ～ L4 各階段模型、Token 結構、Code Execution 次數與耗時明細</div>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="fugle-table" id="usageDailyTable">
+            <thead>
+              <tr>
+                <th>交易日期</th>
+                <th>呼叫數</th>
+                <th>輸入 Prompt</th>
+                <th>輸出 Completion</th>
+                <th>工具 Code Exec</th>
+                <th>思考 Thinking</th>
+                <th>總 Tokens</th>
+                <th>Python 沙盒</th>
+                <th>當日總耗時</th>
+                <th>當日花費 (USD)</th>
+              </tr>
+            </thead>
+            <tbody id="usageDailyTableBody">
+              <!-- JS 動態渲染 -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 頁籤 4: 每日決策報告瀏覽器 ================= -->
+    <div id="tab4Content" style="display: none;">
+      <div class="glass-card report-toolbar">
+        <div class="report-controls-left">
+          <button class="report-action-btn" id="reportPrevBtn" onclick="stepReport(1)" title="上一期 (較舊報告)">⬅️ 較舊</button>
+          <select class="report-select" id="reportDateSelect" onchange="selectReportByIndex(Number(this.value))"></select>
+          <button class="report-action-btn" id="reportNextBtn" onclick="stepReport(-1)" title="下一期 (較新報告)">較新 ➡️</button>
+        </div>
+        <div class="report-controls-right">
+          <span class="report-meta-pill" id="reportMetaPill">--</span>
+          <button class="report-action-btn" id="reportCopyBtn" onclick="copyCurrentReportMarkdown()">📋 複製 Markdown</button>
+        </div>
+      </div>
+
+      <div class="report-layout">
+        <aside class="glass-card report-toc-card">
+          <div class="report-toc-title">
+            <span>📑 報告章節目錄</span>
+            <span id="reportTocCount" style="font-size:11px; color:var(--text-dim);"></span>
+          </div>
+          <nav class="report-toc-list" id="reportTocList">
+            <!-- JS 動態從渲染後標題生成 -->
+          </nav>
+        </aside>
+        <article class="glass-card report-body-card">
+          <div class="markdown-body" id="reportMarkdownBody">
+            <!-- JS 動態渲染 Markdown -->
+          </div>
+        </article>
+      </div>
+    </div>
+
     <!-- 頁尾 -->
     <footer class="app-footer">
       <div>AI CUP 2026 玉山人工智慧公開挑戰賽 · 隊伍 TEAM_11402 專用看板</div>
@@ -1315,7 +2007,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
 
   <!-- 資料 Payload 注入 -->
   <script>
-    const DASHBOARD_DATA = {json.dumps(json_data_payload, ensure_ascii=False)};
+    const DASHBOARD_DATA = {safe_json_payload};
   </script>
 
   <!-- 核心互動邏輯腳本 -->
@@ -1381,10 +2073,18 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       currentTab = tabId;
       document.getElementById('tabBtn1').classList.toggle('active', tabId === 'tab1');
       document.getElementById('tabBtn2').classList.toggle('active', tabId === 'tab2');
+      document.getElementById('tabBtn3').classList.toggle('active', tabId === 'tab3');
+      document.getElementById('tabBtn4').classList.toggle('active', tabId === 'tab4');
       document.getElementById('tab1Content').style.display = tabId === 'tab1' ? 'block' : 'none';
       document.getElementById('tab2Content').style.display = tabId === 'tab2' ? 'block' : 'none';
+      document.getElementById('tab3Content').style.display = tabId === 'tab3' ? 'block' : 'none';
+      document.getElementById('tab4Content').style.display = tabId === 'tab4' ? 'block' : 'none';
       if (tabId === 'tab2') {{
         renderWatchTable();
+      }} else if (tabId === 'tab3') {{
+        renderUsageTab();
+      }} else if (tabId === 'tab4') {{
+        renderReportsTab();
       }}
     }}
 
@@ -1658,17 +2358,475 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
     }}
 
     function updateChartTheme() {{
-      if (!window.assetChart) return;
       const isDark = document.documentElement.classList.contains('theme-dark');
       const gridColor = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
       const textColor = isDark ? '#94a3b8' : '#64748b';
 
-      window.assetChart.options.scales.x.grid.color = gridColor;
-      window.assetChart.options.scales.x.ticks.color = textColor;
-      window.assetChart.options.scales.y.grid.color = gridColor;
-      window.assetChart.options.scales.y.ticks.color = textColor;
-      window.assetChart.options.plugins.legend.labels.color = textColor;
-      window.assetChart.update();
+      [window.assetChart, window.usageTrendChartInst, window.usageTokenStackChartInst].forEach(ch => {{
+        if (!ch || typeof ch.update !== 'function') return;
+        if (ch.options.scales) {{
+          Object.values(ch.options.scales).forEach(s => {{
+            if (s.grid) s.grid.color = gridColor;
+            if (s.ticks) s.ticks.color = textColor;
+          }});
+        }}
+        if (ch.options.plugins && ch.options.plugins.legend && ch.options.plugins.legend.labels) {{
+          ch.options.plugins.legend.labels.color = textColor;
+        }}
+        ch.update();
+      }});
+
+      if (window.usageStageDonutChartInst && typeof window.usageStageDonutChartInst.update === 'function') {{
+        window.usageStageDonutChartInst.options.plugins.legend.labels.color = textColor;
+        window.usageStageDonutChartInst.update();
+      }}
+    }}
+
+    // ================= 頁籤 3: AI 模型用量與成本監控邏輯 =================
+    let usageTabRendered = false;
+
+    function fmtCompactTokens(n) {{
+      const val = Number(n || 0);
+      if (val >= 1000000) return (val / 1000000).toFixed(2) + ' M';
+      if (val >= 1000) return (val / 1000).toFixed(1) + ' K';
+      return val.toLocaleString('en-US');
+    }}
+
+    function fmtDuration(sec) {{
+      const s = Math.round(Number(sec || 0));
+      const h = Math.floor(s / 3600);
+      const m = Math.floor((s % 3600) / 60);
+      const rem = s % 60;
+      if (h > 0) return `${{h}}h ${{m}}m`;
+      if (m > 0) return `${{m}}m ${{rem}}s`;
+      return `${{rem}}s`;
+    }}
+
+    function fmtDateDash(d8) {{
+      const str = String(d8 || '');
+      if (str.length === 8) return `${{str.slice(0, 4)}}-${{str.slice(4, 6)}}-${{str.slice(6, 8)}}`;
+      return str;
+    }}
+
+    function getModelBadgeClass(modelName) {{
+      const m = String(modelName || '').toLowerCase();
+      if (m.includes('argon')) return 'argon';
+      if (m.includes('lite')) return 'fallback';
+      return 'flash';
+    }}
+
+    function renderUsageTab() {{
+      const usage = DASHBOARD_DATA.usage || {{ summary: {{}}, daily_summary: {{}} }};
+      renderUsageKpis(usage);
+      renderUsageDailyTable(usage);
+      requestAnimationFrame(() => {{
+        renderUsageCharts(usage);
+      }});
+      if (!usageTabRendered) {{
+        usageTabRendered = true;
+        initLiquidSpecularGlint();
+      }}
+    }}
+
+    function renderUsageKpis(usage) {{
+      const s = usage.summary || {{}};
+      const daily = usage.daily_summary || {{}};
+      const numDays = Math.max(1, Object.keys(daily).length);
+      const totalCost = Number(s.response_cost || 0);
+      const twdCost = Math.round(totalCost * 32);
+      const avgDailyCost = totalCost / numDays;
+      const totalCalls = Number(s.total_calls || 0);
+      const successCalls = Number(s.success_calls || 0);
+      const successRate = totalCalls > 0 ? ((successCalls / totalCalls) * 100).toFixed(1) : '100.0';
+      const avgDailyMin = (Number(s.duration_seconds || 0) / numDays / 60).toFixed(1);
+
+      const updBadge = document.getElementById('usageUpdatedAtBadge');
+      if (updBadge && usage.updated_at) {{
+        updBadge.textContent = '更新時間: ' + usage.updated_at.replace('T', ' ').slice(0, 19);
+      }}
+
+      const grid = document.getElementById('usageKpiGrid');
+      if (!grid) return;
+      grid.innerHTML = `
+        <div class="glass-card kpi-card">
+          <div class="kpi-label">💵 累計調用花費</div>
+          <div class="kpi-value">$${{totalCost.toFixed(2)}} <span style="font-size:13px; color:var(--text-dim);">USD</span></div>
+          <div class="kpi-subtext">約 NT$ ${{twdCost.toLocaleString('en-US')}} 元 · 日均 $${{avgDailyCost.toFixed(2)}}</div>
+        </div>
+        <div class="glass-card kpi-card">
+          <div class="kpi-label">🪙 總 Token 消耗</div>
+          <div class="kpi-value">${{fmtCompactTokens(s.total_tokens)}}</div>
+          <div class="kpi-subtext">輸入 ${{fmtCompactTokens(s.prompt_tokens)}} · 輸出 ${{fmtCompactTokens(s.completion_tokens)}} · 沙盒 ${{fmtCompactTokens(s.tool_use_tokens)}}</div>
+        </div>
+        <div class="glass-card kpi-card">
+          <div class="kpi-label">⚡ 模型調用次數</div>
+          <div class="kpi-value">${{totalCalls}} 次</div>
+          <div class="kpi-subtext"><span class="badge-pnl up" style="padding:2px 8px; font-size:11px;">成功率 ${{successRate}}% (${{successCalls}}/${{totalCalls}})</span></div>
+        </div>
+        <div class="glass-card kpi-card">
+          <div class="kpi-label">🐍 Python 代碼執行</div>
+          <div class="kpi-value">${{Number(s.code_execution_call_count || 0).toLocaleString('en-US')}} 次</div>
+          <div class="kpi-subtext">Gemini 原生沙盒運算 (無數值幻覺)</div>
+        </div>
+        <div class="glass-card kpi-card">
+          <div class="kpi-label">⏱️ 累計推論耗時</div>
+          <div class="kpi-value">${{fmtDuration(s.duration_seconds)}}</div>
+          <div class="kpi-subtext">涵蓋 ${{numDays}} 交易日 · 日均 ${{avgDailyMin}} 分鐘</div>
+        </div>
+      `;
+    }}
+
+    function renderUsageCharts(usage) {{
+      const dailyMap = usage.daily_summary || {{}};
+      const dates = Object.keys(dailyMap).sort();
+      const labels = dates.map(d => `${{d.slice(4, 6)}}/${{d.slice(6, 8)}}`);
+
+      const isDark = document.documentElement.classList.contains('theme-dark');
+      const gridColor = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
+      const textColor = isDark ? '#94a3b8' : '#64748b';
+      const tooltipBg = isDark ? 'rgba(15, 23, 42, 0.92)' : 'rgba(255, 255, 255, 0.95)';
+      const tooltipTitle = isDark ? '#f8fafc' : '#0f172a';
+      const tooltipBody = isDark ? '#cbd5e1' : '#334155';
+
+      // 1. 每日花費與 Token 雙軸趨勢圖
+      const costArr = dates.map(d => Number((dailyMap[d].response_cost || 0).toFixed(4)));
+      const tokenMArr = dates.map(d => Number(((dailyMap[d].total_tokens || 0) / 1000000).toFixed(3)));
+
+      if (window.usageTrendChartInst && typeof window.usageTrendChartInst.destroy === 'function') {{
+        window.usageTrendChartInst.destroy();
+      }}
+      const ctx1 = document.getElementById('usageTrendChart').getContext('2d');
+      window.usageTrendChartInst = new Chart(ctx1, {{
+        type: 'bar',
+        data: {{
+          labels: labels,
+          datasets: [
+            {{
+              label: '每日花費 (USD)',
+              data: costArr,
+              backgroundColor: 'rgba(56, 189, 248, 0.55)',
+              borderColor: '#38bdf8',
+              borderWidth: 1.5,
+              borderRadius: 6,
+              yAxisID: 'y'
+            }},
+            {{
+              label: '總 Tokens (百萬)',
+              data: tokenMArr,
+              type: 'line',
+              borderColor: '#f43f5e',
+              backgroundColor: 'rgba(244, 63, 94, 0.15)',
+              borderWidth: 2.5,
+              tension: 0.35,
+              pointRadius: 4,
+              yAxisID: 'y1'
+            }}
+          ]
+        }},
+        options: {{
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {{ mode: 'index', intersect: false }},
+          plugins: {{
+            legend: {{ labels: {{ color: textColor, font: {{ family: 'Plus Jakarta Sans', size: 12, weight: '600' }} }} }},
+            tooltip: {{ backgroundColor: tooltipBg, titleColor: tooltipTitle, bodyColor: tooltipBody }}
+          }},
+          scales: {{
+            x: {{ grid: {{ color: gridColor }}, ticks: {{ color: textColor, font: {{ family: 'JetBrains Mono' }} }} }},
+            y: {{
+              type: 'linear',
+              position: 'left',
+              grid: {{ color: gridColor }},
+              ticks: {{ color: textColor, font: {{ family: 'JetBrains Mono' }}, callback: v => '$' + v.toFixed(2) }}
+            }},
+            y1: {{
+              type: 'linear',
+              position: 'right',
+              grid: {{ drawOnChartArea: false }},
+              ticks: {{ color: textColor, font: {{ family: 'JetBrains Mono' }}, callback: v => v.toFixed(2) + 'M' }}
+            }}
+          }}
+        }}
+      }});
+
+      // 2. 各任務階段費用佔比圓環圖
+      const stageOrder = ['l1', 'l2m', 'l2', 'l3', 'l4'];
+      const stageNames = {{ l1: 'L1 事實擷取', l2m: 'L2M 市場走向', l2: 'L2 個股推論', l3: 'L3 投組決策', l4: 'L4 委託計算' }};
+      const stageTotals = {{ l1: 0, l2m: 0, l2: 0, l3: 0, l4: 0 }};
+      dates.forEach(d => {{
+        const stg = dailyMap[d].stages || {{}};
+        stageOrder.forEach(k => {{
+          if (stg[k]) stageTotals[k] += Number(stg[k].response_cost || 0);
+        }});
+      }});
+
+      if (window.usageStageDonutChartInst && typeof window.usageStageDonutChartInst.destroy === 'function') {{
+        window.usageStageDonutChartInst.destroy();
+      }}
+      const ctx2 = document.getElementById('usageStageDonutChart').getContext('2d');
+      window.usageStageDonutChartInst = new Chart(ctx2, {{
+        type: 'doughnut',
+        data: {{
+          labels: stageOrder.map(k => stageNames[k]),
+          datasets: [{{
+            data: stageOrder.map(k => Number(stageTotals[k].toFixed(4))),
+            backgroundColor: ['#10b981', '#06b6d4', '#3b82f6', '#8b5cf6', '#f59e0b'],
+            borderWidth: 0,
+            hoverOffset: 8
+          }}]
+        }},
+        options: {{
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '64%',
+          plugins: {{
+            legend: {{
+              position: 'bottom',
+              labels: {{ color: textColor, padding: 14, font: {{ family: 'Plus Jakarta Sans', size: 12, weight: '600' }} }}
+            }},
+            tooltip: {{
+              backgroundColor: tooltipBg, titleColor: tooltipTitle, bodyColor: tooltipBody,
+              callbacks: {{
+                label: (ctx) => `${{ctx.label}}: $${{Number(ctx.parsed).toFixed(4)}} USD`
+              }}
+            }}
+          }}
+        }}
+      }});
+
+      // 3. 每日 Token 細部構成堆疊長條圖
+      if (window.usageTokenStackChartInst && typeof window.usageTokenStackChartInst.destroy === 'function') {{
+        window.usageTokenStackChartInst.destroy();
+      }}
+      const ctx3 = document.getElementById('usageTokenStackChart').getContext('2d');
+      window.usageTokenStackChartInst = new Chart(ctx3, {{
+        type: 'bar',
+        data: {{
+          labels: labels,
+          datasets: [
+            {{ label: 'Prompt (輸入)', data: dates.map(d => dailyMap[d].prompt_tokens || 0), backgroundColor: '#38bdf8' }},
+            {{ label: 'Completion (輸出)', data: dates.map(d => dailyMap[d].completion_tokens || 0), backgroundColor: '#10b981' }},
+            {{ label: 'Tool Use (代碼沙盒)', data: dates.map(d => dailyMap[d].tool_use_tokens || 0), backgroundColor: '#8b5cf6' }},
+            {{ label: 'Reasoning (深度思考)', data: dates.map(d => dailyMap[d].reasoning_tokens || 0), backgroundColor: '#f59e0b' }}
+          ]
+        }},
+        options: {{
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {{ mode: 'index', intersect: false }},
+          plugins: {{
+            legend: {{ labels: {{ color: textColor, font: {{ family: 'Plus Jakarta Sans', size: 12, weight: '600' }} }} }},
+            tooltip: {{ backgroundColor: tooltipBg, titleColor: tooltipTitle, bodyColor: tooltipBody }}
+          }},
+          scales: {{
+            x: {{ stacked: true, grid: {{ color: gridColor }}, ticks: {{ color: textColor, font: {{ family: 'JetBrains Mono' }} }} }},
+            y: {{
+              stacked: true,
+              grid: {{ color: gridColor }},
+              ticks: {{ color: textColor, font: {{ family: 'JetBrains Mono' }}, callback: v => fmtCompactTokens(v) }}
+            }}
+          }}
+        }}
+      }});
+    }}
+
+    function renderUsageDailyTable(usage) {{
+      const tbody = document.getElementById('usageDailyTableBody');
+      if (!tbody) return;
+      const dailyMap = usage.daily_summary || {{}};
+      const datesDesc = Object.keys(dailyMap).sort((a, b) => b.localeCompare(a));
+
+      const stageOrder = ['l1', 'l2m', 'l2', 'l3', 'l4'];
+      const stageLabels = {{
+        l1: 'L1 事實擷取',
+        l2m: 'L2M 市場走向',
+        l2: 'L2 個股推論',
+        l3: 'L3 投組決策',
+        l4: 'L4 委託計算'
+      }};
+
+      if (datesDesc.length === 0) {{
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding:32px; color:var(--text-dim);">尚無模型用量紀錄</td></tr>';
+        return;
+      }}
+
+      tbody.innerHTML = datesDesc.map(d => {{
+        const day = dailyMap[d];
+        const stages = day.stages || {{}};
+        const execCount = Number(day.code_execution_call_count || 0);
+
+        const stageCardsHtml = stageOrder.filter(k => stages[k]).map(k => {{
+          const st = stages[k];
+          const badgeCls = getModelBadgeClass(st.model);
+          const stExec = Number(st.code_execution_call_count || 0);
+          return `
+            <div class="stage-mini-card">
+              <div class="stage-mini-header">
+                <span>${{stageLabels[k]}}</span>
+                <span class="model-badge ${{badgeCls}}">${{st.model}}</span>
+              </div>
+              <div class="stage-mini-metrics">
+                <span>Tokens: ${{fmtCompactTokens(st.total_tokens)}}</span>
+                <span>耗時: ${{fmtDuration(st.duration_seconds)}}</span>
+              </div>
+              <div class="stage-mini-metrics">
+                <span>輸入 ${{fmtCompactTokens(st.prompt_tokens)}} / 輸出 ${{fmtCompactTokens(st.completion_tokens)}}</span>
+                <span style="color:var(--text-primary); font-weight:700;">$${{Number(st.response_cost || 0).toFixed(4)}}</span>
+              </div>
+              ${{stExec > 0 ? `<div style="margin-top:2px;"><span class="code-exec-badge">🐍 Code Exec: ${{stExec}} 次</span></div>` : ''}}
+            </div>
+          `;
+        }}).join('');
+
+        return `
+          <tr class="usage-day-row" id="usageRow_${{d}}" onclick="toggleUsageDay('${{d}}')">
+            <td style="font-weight:700; font-family:var(--font-mono);">
+              <span class="usage-chevron">▶</span>${{fmtDateDash(d)}}
+            </td>
+            <td>${{day.calls}} 次</td>
+            <td>${{fmtCompactTokens(day.prompt_tokens)}}</td>
+            <td>${{fmtCompactTokens(day.completion_tokens)}}</td>
+            <td>${{fmtCompactTokens(day.tool_use_tokens)}}</td>
+            <td>${{fmtCompactTokens(day.reasoning_tokens)}}</td>
+            <td style="font-weight:700;">${{fmtCompactTokens(day.total_tokens)}}</td>
+            <td>${{execCount > 0 ? `<span class="code-exec-badge">🐍 ${{execCount}} 次</span>` : '<span style="color:var(--text-dim);">--</span>'}}</td>
+            <td>${{fmtDuration(day.duration_seconds)}}</td>
+            <td style="font-weight:800; color:#38bdf8;">$${{Number(day.response_cost || 0).toFixed(4)}}</td>
+          </tr>
+          <tr class="usage-stages-row" id="usageDrawer_${{d}}" style="display: none;">
+            <td colspan="10">
+              <div class="usage-stages-drawer">
+                ${{stageCardsHtml}}
+              </div>
+            </td>
+          </tr>
+        `;
+      }}).join('');
+    }}
+
+    function toggleUsageDay(d) {{
+      const row = document.getElementById(`usageRow_${{d}}`);
+      const drawer = document.getElementById(`usageDrawer_${{d}}`);
+      if (!row || !drawer) return;
+      const isHidden = drawer.style.display === 'none';
+      drawer.style.display = isHidden ? 'table-row' : 'none';
+      row.classList.toggle('expanded', isHidden);
+    }}
+
+    // ================= 每日決策報告瀏覽器 (Tab 4) =================
+    let currentReportIndex = 0;
+    let reportsTabInitialized = false;
+
+    function renderReportsTab() {{
+      const reports = DASHBOARD_DATA.reports || [];
+      const select = document.getElementById('reportDateSelect');
+      const bodyEl = document.getElementById('reportMarkdownBody');
+      const tocEl = document.getElementById('reportTocList');
+
+      if (!reports.length) {{
+        select.innerHTML = '<option value="0">尚無決策報告</option>';
+        select.disabled = true;
+        document.getElementById('reportPrevBtn').disabled = true;
+        document.getElementById('reportNextBtn').disabled = true;
+        document.getElementById('reportCopyBtn').disabled = true;
+        document.getElementById('reportMetaPill').textContent = '0 份報告';
+        tocEl.innerHTML = '<div style="font-size:12px; color:var(--text-dim);">無目錄</div>';
+        bodyEl.innerHTML = '<p style="color:var(--text-dim);">目前在 <code>data/D-Paln_Output/reports/</code> 找不到任何每日決策報告。</p>';
+        return;
+      }}
+
+      if (!reportsTabInitialized) {{
+        select.innerHTML = reports.map((r, idx) => {{
+          const tag = idx === 0 ? ' (最新)' : '';
+          return `<option value="${{idx}}">${{r.date}}${{tag}} · ${{r.filename}}</option>`;
+        }}).join('');
+        reportsTabInitialized = true;
+      }}
+      selectReportByIndex(currentReportIndex);
+    }}
+
+    function selectReportByIndex(idx) {{
+      const reports = DASHBOARD_DATA.reports || [];
+      if (!reports.length) return;
+      currentReportIndex = Math.max(0, Math.min(idx, reports.length - 1));
+
+      const report = reports[currentReportIndex];
+      const select = document.getElementById('reportDateSelect');
+      if (select) select.value = String(currentReportIndex);
+
+      document.getElementById('reportPrevBtn').disabled = (currentReportIndex >= reports.length - 1);
+      document.getElementById('reportNextBtn').disabled = (currentReportIndex <= 0);
+
+      const kb = (report.size_bytes / 1024).toFixed(1);
+      document.getElementById('reportMetaPill').textContent = `${{report.date}} · ${{kb}} KB · 更新於 ${{report.updated_at}}`;
+
+      const bodyEl = document.getElementById('reportMarkdownBody');
+      const mdText = report.markdown || '';
+
+      if (window.marked && typeof window.marked.parse === 'function') {{
+        window.marked.setOptions({{ gfm: true, breaks: true }});
+        const rawHtml = window.marked.parse(mdText);
+        bodyEl.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(rawHtml) : rawHtml;
+      }} else {{
+        // 離線或 CDN 無法載入時的純文字安全回退
+        const pre = document.createElement('pre');
+        pre.style.whiteSpace = 'pre-wrap';
+        pre.textContent = mdText;
+        bodyEl.innerHTML = '';
+        bodyEl.appendChild(pre);
+      }}
+
+      // 為所有表格包覆水平捲動容器，防止寬表格破版
+      bodyEl.querySelectorAll('table').forEach((tbl) => {{
+        const wrap = document.createElement('div');
+        wrap.className = 'report-table-wrap';
+        tbl.parentNode.insertBefore(wrap, tbl);
+        wrap.appendChild(tbl);
+      }});
+
+      // 動態從渲染後標題生成目錄 (完全相容任何報告格式)
+      const tocEl = document.getElementById('reportTocList');
+      const headings = Array.from(bodyEl.querySelectorAll('h2, h3'));
+      document.getElementById('reportTocCount').textContent = headings.length ? `${{headings.length}} 節` : '';
+
+      if (!headings.length) {{
+        tocEl.innerHTML = '<div style="font-size:12px; color:var(--text-dim);">此報告無子章節</div>';
+      }} else {{
+        tocEl.innerHTML = '';
+        headings.forEach((h, i) => {{
+          const targetId = `report-sec-${{i}}`;
+          h.id = targetId;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'report-toc-item ' + (h.tagName === 'H3' ? 'toc-h3' : 'toc-h2');
+          btn.textContent = h.textContent.trim();
+          btn.title = h.textContent.trim();
+          btn.onclick = () => {{
+            const el = document.getElementById(targetId);
+            if (el) el.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
+          }};
+          tocEl.appendChild(btn);
+        }});
+      }}
+    }}
+
+    function stepReport(delta) {{
+      selectReportByIndex(currentReportIndex + delta);
+    }}
+
+    function copyCurrentReportMarkdown() {{
+      const reports = DASHBOARD_DATA.reports || [];
+      const report = reports[currentReportIndex];
+      if (!report) return;
+      const btn = document.getElementById('reportCopyBtn');
+      const done = () => {{
+        const orig = btn.textContent;
+        btn.textContent = '✅ 已複製原文';
+        setTimeout(() => {{ btn.textContent = orig; }}, 1800);
+      }};
+      if (navigator.clipboard && navigator.clipboard.writeText) {{
+        navigator.clipboard.writeText(report.markdown).then(done).catch(() => {{}});
+      }}
     }}
 
     // 輕量級液態玻璃表面微光追蹤 (Passive 事件且僅更新當前卡片 CSS 變數，無背景常駐運算)

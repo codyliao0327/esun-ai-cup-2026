@@ -5,6 +5,7 @@ Daily One-Click Update Runner for 2026 玉山人工智慧挑戰賽 看板系統
   python run_update.py --push   (更新完自動 git commit & push)
 """
 import argparse
+import json
 import subprocess
 import time
 from pathlib import Path
@@ -26,11 +27,24 @@ if str(CURRENT_DIR) not in sys.path:
     sys.path.insert(0, str(CURRENT_DIR))
 
 from tracker import get_latest_portfolio_summary
-from market_api import fetch_all_150_quotes, rebuild_full_candles
 from builder import build_dashboard_html
 
 
+def refresh_dashboard_with_cached_quotes() -> Path:
+    """使用本地快取行情 (market_cache.json) 與最新報告/持股快照，快速重建 dist/index.html（不呼叫玉山行情 SDK）。"""
+    summary = get_latest_portfolio_summary()
+    cache_file = CURRENT_DIR / "market_cache.json"
+    quotes = {}
+    if cache_file.is_file():
+        try:
+            quotes = json.loads(cache_file.read_text(encoding="utf-8")).get("stocks", {})
+        except Exception:
+            quotes = {}
+    return build_dashboard_html(summary, quotes)
+
+
 def run_update(auto_push: bool = False, fetch_candles: bool = True, rebuild_candles: bool = False):
+    from market_api import fetch_all_150_quotes, rebuild_full_candles
     print("=" * 65)
     print("🚀 啟動 2026 玉山 AI 經理人投資看板 - 每日收盤數據自動更新產線")
     print("=" * 65)
@@ -53,12 +67,7 @@ def run_update(auto_push: bool = False, fetch_candles: bool = True, rebuild_cand
         print("\n[Step 2/3] 正在登入玉山證券 SDK 並抓取 150 檔標的最新收盤行情...")
         quotes = fetch_all_150_quotes(summary["stocks_150"], fetch_candles=fetch_candles)
 
-    # 3. 渲染富果/Apple風格液態毛玻璃網頁
-    print("\n[Step 3/3] 正在生成富果 Fugle 專業版面 + Apple 毛玻璃前端網頁...")
-    out_file = build_dashboard_html(summary, quotes)
-    print(f"  ✅ 網頁生成完畢: {out_file}")
-
-    # 3.5 結算並合併所有 LiteLLM Usage 紀錄至本地歷史 usage_history.json
+    # 2.5 先結算並合併所有 LiteLLM Usage 紀錄至本地歷史 usage_history.json，確保網頁讀取最新數據
     usage_history_file = CURRENT_DIR / "usage_history.json"
     try:
         if str(CODE_DIR) not in sys.path:
@@ -69,6 +78,11 @@ def run_update(auto_push: bool = False, fetch_candles: bool = True, rebuild_cand
         print(f"  ✅ LiteLLM Usage 歷史紀錄已結算更新: {usage_history_file}")
     except Exception as e:
         print(f"  ⚠️ 結算 Usage 歷史紀錄時發生提示: {e}")
+
+    # 3. 渲染富果/Apple風格液態毛玻璃網頁
+    print("\n[Step 3/3] 正在生成富果 Fugle 專業版面 + Apple 毛玻璃前端網頁...")
+    out_file = build_dashboard_html(summary, quotes)
+    print(f"  ✅ 網頁生成完畢: {out_file}")
 
     # 4. 可選 Git Push (支援 Cloudflare Pages 自動部署)
     if auto_push:
@@ -103,6 +117,11 @@ if __name__ == "__main__":
     parser.add_argument("--push", action="store_true", help="完成後自動執行 git commit & push")
     parser.add_argument("--no-candles", action="store_true", help="跳過歷史 K 線，僅抓取今日最新現價")
     parser.add_argument("--rebuild-candles", action="store_true", help="強制重新自玉山 API historical.candles 完整拉取自 10/27 起官方歷史 K 線")
+    parser.add_argument("--reports-only", action="store_true", help="僅使用本地快取行情快速重新生成網頁（同步最新每日決策報告）")
     args = parser.parse_args()
 
-    run_update(auto_push=args.push, fetch_candles=not args.no_candles, rebuild_candles=args.rebuild_candles)
+    if args.reports_only:
+        out_file = refresh_dashboard_with_cached_quotes()
+        print(f"✅ 已使用快取行情同步最新報告至網頁: {out_file}")
+    else:
+        run_update(auto_push=args.push, fetch_candles=not args.no_candles, rebuild_candles=args.rebuild_candles)

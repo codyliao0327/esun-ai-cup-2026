@@ -166,6 +166,13 @@ def run_pipeline(
         try:
             _, report_file = build_daily_report(target_date=t_date, dplan_path=final_file)
             print(f" -> 決策回顧報告已產出：{report_file}")
+            try:
+                from portfolio_dashboard.run_update import refresh_dashboard_with_cached_quotes
+
+                dashboard_html = refresh_dashboard_with_cached_quotes()
+                print(f" -> 已同步更新投資看板網頁 (含所有歷史決策報告)：{dashboard_html}")
+            except Exception as dash_exc:
+                print(f" ⚠️ 同步更新看板網頁時發生提示: {dash_exc} (可稍後手動執行 portfolio_dashboard/run_update.py --reports-only)")
         except Exception as exc:
             print(f" ⚠️ 決策回顧報告產出遇到警示: {exc} (主 D-Plan 檔案已順利產出)")
     else:

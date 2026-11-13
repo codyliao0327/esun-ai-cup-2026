@@ -42,6 +42,10 @@
      - **第二階段（選股與組合決策）**：落實主動式 ETF「兼顧企業品質、營運改善與潛在成長動能」之投資理念，進行多維度取捨與權重規劃。
 10. **26 檔量化寬表全面 Compact Array JSON 快取**：
    - 大盤 9 檔 + 個股 17 檔指標全面優化為精簡 Compact Array JSON，大幅降低檔案體積與 L1 Prompt Token 消耗。
+11. **DataPack 帳戶路徑演變與持倉移動停利追蹤 (`datapack_loader.py`)**：
+   - 結合歷史 `DataPack/Raw/*.json` 與 `backend_reports/*.htm` 實際成交價，新增賽期進度、帳戶淨值演變（累計報酬、MDD、1D/3D/5D 變化率、連虧天數、近 5 日走勢），並將 `holdings` 合併為每檔單行 Compact JSON（含 `entry_date`、`holding_days`、`avg_cost`、`pnl_pct`、`peak_price`、`peak_pnl_pct`、`dd_from_peak_pct`），同步強化 L2M / L2 / L3 Prompt。
+12. **CMoney 個股情緒合併進個股 Compact Array JSON 與確切日期追蹤**：
+   - `cmoney_sentiment_crawler.py` 恢復 `統計開始時間` / `統計結束時間`；`fact_extractor.py` 新增情緒三占比計算（含樣本數為 0 防護）並併入個股指標 JSON，同時於 L1 / L2 Prompt 補充數值含意指引。
 
 ---
 
