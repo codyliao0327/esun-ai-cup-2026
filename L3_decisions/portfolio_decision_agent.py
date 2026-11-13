@@ -80,6 +80,9 @@ CUSTOM_PORTFOLIO_DECISION_LOGIC = """\
    - 建議持有的股票，目前是否已有部位（前期持股清單）。
    - 目標配置與目前部位之間的差距（計算需加碼或減碼之幅度）。
    - 既有持股是否有明確的調整（異動）或續抱（維持不動）結論。
+   - 檢視 DataPack「賽期進度」、「帳戶淨值演變」（`cum_return_pct`、`drawdown_from_peak_pct`、`nav_return_3d_pct`、`consecutive_loss_days`）與 `holdings` 中的移動停利追蹤欄位（`entry_date`、`holding_days`、`avg_cost`、`pnl_pct`、`peak_pnl_pct`、`dd_from_peak_pct`）：
+     * 進入衝刺期（`remaining_trading_days <= 5`）時，避免新建倉慢吞吞的低波動防禦股。
+     * 若既有持股曾大賺但自高點明顯回落（例如 `peak_pnl_pct >= 10%` 且 `dd_from_peak_pct <= -4%`），配合 L2 推論積極執行減碼 (`TRIM`) 或出清 (`SELL_ALL`) 以鎖住利潤。
 
 ### 二、判斷當日交易動作與覆蓋原則
 依照投資推論與前一交易日的實際持股狀況，逐檔判斷：

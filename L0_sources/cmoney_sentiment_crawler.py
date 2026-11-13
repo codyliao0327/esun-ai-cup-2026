@@ -80,8 +80,8 @@ def main(target_date: Optional[str] = None):
                 "中立": dist.get("neutral", 0),
                 "謹慎": dist.get("bear", 0),
                 "極度謹慎": dist.get("strongBear", 0),
-                # "統計開始時間": ms_to_tw_str(data.get("startTime")),
-                # "統計結束時間": ms_to_tw_str(data.get("endTime")),
+                "統計開始時間": ms_to_tw_str(data.get("startTime")),
+                "統計結束時間": ms_to_tw_str(data.get("endTime")),
             })
             print(f"✅ 成功抓取 {sid}")
         except Exception as e:

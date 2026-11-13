@@ -32,7 +32,7 @@ CODE_DIR = Path(__file__).resolve().parents[1]
 if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
-from configs.date_utils import clean_date_str, prompt_trade_date  # noqa: E402
+from configs.date_utils import clean_date_str, format_iso_trade_date, prompt_trade_date  # noqa: E402
 from configs.json_utils import format_metric_value, to_compact_json  # noqa: E402
 from schemas.dplan_models import (  # noqa: E402
     ObservationDraft,
@@ -85,13 +85,12 @@ PROMPT_TEMPLATE = """\
    - statement：一到兩句話，客觀摘要加權指數收盤、均線、報酬、最大回撤、法人買賣超、多空排列家數差與生命線等關鍵數字事實 (引用指標名稱與數值)。
    - values：只需填 statement 中提到的數字 (至少 1 筆)；系統會自動以資料原值補齊所有大盤指標。
    - source_ref：填 S1。
-3. 『個股指標資料』為以個股代碼為 Key 的 JSON 格式 (格式說明為 `[數值, 日期/季度]`)，包含各檔股票的基本面、技術面 (KD/MACD/布林通道等) 與籌碼面指標；
-   (CMoney 情緒表則每列為一檔股票，欄位為各情緒數據)。資料中出現的每一個個股代碼，
+3. 『個股指標資料』為以個股代碼為 Key 的 JSON 格式 (格式說明為 `[數值, 日期/季度]`)，包含各檔股票的基本面、技術面 (KD/MACD/布林通道等)、籌碼面指標以及 CMoney 個股情緒數據 (`cmoney_sentiment_*`)。資料中出現的每一個個股代碼，
    必須產生「恰好一筆」observation：
    - topic 使用 stock_<個股代碼> (例如 stock_2330，一律小寫英文與數字)。
-   - statement：一到兩句話，客觀摘要該股最重要的數字事實 (如均線/乖離、KD、MACD、布林通道動態、法人籌碼或超額報酬等，引用指標名稱與數值)，數字須與資料一致。
+   - statement：一到兩句話，客觀摘要該股最重要的數字事實 (如均線/乖離、KD、MACD、布林通道動態、法人籌碼、超額報酬或 CMoney 情緒等，引用指標名稱與數值)，數字須與資料一致。
    - values：只需填 statement 中提到的數字 (至少 1 筆)；系統會自動以資料原值補齊該股所有指標。
-   - source_ref：填 S1 或 S2。
+   - source_ref：填 S1 或 S2 (若同時引用則皆填)。
 4. 『市場/其他資料』區塊 (若有其他非單一個股資料) 請各自產生若干筆 observation：
    - topic 用小寫英文 snake_case，例如 etf_holdings、sentiment。
    - values 的數字必須與資料完全一致，單位寫在 key 名稱內。
@@ -161,6 +160,12 @@ PROMPT_TEMPLATE = """\
 - `foreign_net_buy_intensity_5d` / `trust_net_buy_intensity_5d`：外資 / 投信近 5 日買賣超強度 (%) ＝ 5日法人淨買賣超 / 5日總成交量。正值代表法人積極加碼吸籌、負值代表法人持續減碼調節。
 - `foreign_net_buy_1d` / `trust_net_buy_1d`：最新交易日外資 / 投信單日買賣超佔成交量比重 (%) ＝ 單日法人淨買賣超 / 當日總成交量。正值代表當日積極買超佔比高。
 
+### 4. CMoney 個股情緒指標
+- `cmoney_sentiment_情緒分數`：CMoney 討論區情緒分數 (0~100)。0~25 代表極度謹慎、25~50 代表謹慎、50 代表中立、50~75 代表樂觀、75~100 代表極度樂觀；當樣本數為 0 時亦為 50 (中立)。
+- `cmoney_sentiment_樣本數`：該統計區間內的討論樣本數 (則)。需達一定樣本數才會產出情緒風向；若該指標的資料日期 (`date`) 停留在過去日期，代表該日後皆因樣本數不足而未產出新風向，可能反映近期沒什麼人在討論。
+- `cmoney_sentiment_極度樂觀` / `cmoney_sentiment_樂觀` / `cmoney_sentiment_中立` / `cmoney_sentiment_謹慎` / `cmoney_sentiment_極度謹慎`：各情緒分類之討論則數。
+- `cmoney_sentiment_樂觀占比` / `cmoney_sentiment_中立占比` / `cmoney_sentiment_謹慎占比`：各情緒分類佔總樣本數之比例 (0~1，分別為 `(極度樂觀+樂觀)/樣本數`、`中立/樣本數`、`(極度謹慎+謹慎)/樣本數`；當 `樣本數` 為 0 時略過不輸出)。
+
 ## 資料內容
 {data}
 """
@@ -209,7 +214,6 @@ class LoadedInputs:
     stock_values: Dict[str, Dict[str, float]] = field(default_factory=dict)   # {"2330": {"指標名": 值}}
     stock_asof: Dict[str, Dict[str, str]] = field(default_factory=dict)       # {"2330": {"指標名": "YYYY-MM-DD"}}
     stock_sources: Dict[str, set] = field(default_factory=dict)               # {"2330": {"S1", "S2"}}
-    sentiment_tables: List[str] = field(default_factory=list)                 # CMoney 個股情緒表格文字
     tables: List[str] = field(default_factory=list)                           # 其它個股指標表格文字 (向下相容)
     # 大盤指標數值
     market_values: Dict[str, float] = field(default_factory=dict)             # {"taiex_close_latest": 46041.43}
@@ -290,7 +294,7 @@ def _ingest_json(path: Path, spec: InputSpec, res: LoadedInputs, other_parts: Li
 
 
 def _ingest_parquet(path: Path, spec: InputSpec, res: LoadedInputs, other_parts: List[str]) -> None:
-    """依檔案型態處理：大盤存入 market_values；個股寬表存入 stock_values；情緒表存入 sentiment_tables。"""
+    """依檔案型態處理：大盤存入 market_values；個股寬表與列式表 (如 CMoney 個股情緒) 皆存入 stock_values。"""
     df = pd.read_parquet(path)
     name = _dataset_name(path)
 
@@ -321,14 +325,37 @@ def _ingest_parquet(path: Path, spec: InputSpec, res: LoadedInputs, other_parts:
                 dt = dt.split()[0]
             _add_stock_value(res, str(col), name, s.iloc[-1], dt, spec.source_id)
     elif kind == "stock_rows":
-        # 每列一檔股票 (例如 CMoney 個股情緒)
-        res.sentiment_tables.append(f"{name}:\n" + df.to_csv(sep="\t", index=False))
-        num_cols = [c for c in df.columns if c != "股票代號" and pd.api.types.is_numeric_dtype(df[c])
+        # 每列一檔股票 (例如 CMoney 個股情緒)，併入 stock_values 以 Compact Array JSON 呈現
+        m = re.match(r"^(.*)_(\d{8})$", path.stem)
+        default_asof = format_iso_trade_date(m.group(2)) if m else ""
+        date_col = next((c for c in ("統計結束時間", "date") if c in df.columns), None)
+        num_cols = [c for c in df.columns if c not in ("股票代號", "date", "統計開始時間", "統計結束時間")
+                    and pd.api.types.is_numeric_dtype(df[c])
                     and not pd.api.types.is_bool_dtype(df[c])]
+        has_sentiment_ratio_cols = {
+            "樣本數", "極度樂觀", "樂觀", "中立", "謹慎", "極度謹慎",
+        }.issubset(df.columns)
         for _, row in df.iterrows():
             code = str(row["股票代號"])
+            row_asof = default_asof
+            if date_col and pd.notna(row[date_col]):
+                dt = str(row[date_col]).strip()
+                if dt:
+                    if len(dt) > 10 and " " in dt:
+                        dt = dt.split()[0]
+                    row_asof = dt
             for c in num_cols:
-                _add_stock_value(res, code, f"{name}_{c}", row[c], "", spec.source_id)
+                _add_stock_value(res, code, f"{name}_{c}", row[c], row_asof, spec.source_id)
+            if has_sentiment_ratio_cols:
+                sample_cnt = row["樣本數"]
+                if pd.notna(sample_cnt) and float(sample_cnt) > 0:
+                    denom = float(sample_cnt)
+                    bull = float(row["極度樂觀"] or 0) + float(row["樂觀"] or 0)
+                    neutral = float(row["中立"] or 0)
+                    bear = float(row["極度謹慎"] or 0) + float(row["謹慎"] or 0)
+                    _add_stock_value(res, code, f"{name}_樂觀占比", round(bull / denom, 4), row_asof, spec.source_id)
+                    _add_stock_value(res, code, f"{name}_中立占比", round(neutral / denom, 4), row_asof, spec.source_id)
+                    _add_stock_value(res, code, f"{name}_謹慎占比", round(bear / denom, 4), row_asof, spec.source_id)
     else:
         other_parts.append(f"{name}:\n" + df.to_csv(sep="\t", index=False))
 
@@ -379,17 +406,6 @@ def load_inputs(
         res.stock_values = {k: v for k, v in res.stock_values.items() if k in keep_codes}
         res.stock_asof = {k: v for k, v in res.stock_asof.items() if k in keep_codes}
         res.stock_sources = {k: v for k, v in res.stock_sources.items() if k in keep_codes}
-        # 同步過濾 sentiment_tables 只保留 keep_codes
-        filtered_tables: List[str] = []
-        for tbl in res.sentiment_tables:
-            lines = tbl.splitlines()
-            if len(lines) <= 2:
-                filtered_tables.append(tbl)
-                continue
-            header = lines[:2]
-            body = [ln for ln in lines[2:] if any(ln.startswith(f"{c}\t") for c in keep_codes)]
-            filtered_tables.append("\n".join(header + body))
-        res.sentiment_tables = filtered_tables
         print(f"[抽樣測試] 已限制僅保留前 {len(keep_codes)} 檔個股: {sorted(keep_codes)}")
 
     # 組裝大盤 Compact Array JSON
@@ -400,7 +416,7 @@ def load_inputs(
             for metric, val in res.market_values.items()
         }
 
-    # 組裝個股 Compact Array JSON (包含基本面、技術面、籌碼面等具備交易日/季度的指標)
+    # 組裝個股 Compact Array JSON (包含基本面、技術面、籌碼面及 CMoney 個股情緒等具備交易日/季度的指標)
     stock_json = {"_format": "[value, date]"}
     for code in sorted(res.stock_values.keys()):
         metrics_dict = {}
@@ -421,11 +437,6 @@ def load_inputs(
         sections.append(
             "### 個股指標資料 (以個股代碼為 Key 的 JSON 格式，格式說明: [value, date])\n"
             + to_compact_json(stock_json)
-        )
-    if res.sentiment_tables:
-        sections.append(
-            "### CMoney 個股情緒資料 (每列一檔股票，欄位為各情緒數據)\n"
-            + "\n\n".join(res.sentiment_tables)
         )
     if other_blocks:
         sections.append("### 市場/其他資料\n" + "\n\n".join(other_blocks))

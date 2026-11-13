@@ -18,8 +18,10 @@ import argparse
 import json
 import re
 import sys
+from datetime import date, timedelta
+from html.parser import HTMLParser
 from pathlib import Path
-from typing import Optional
+from typing import Dict, List, Optional, Tuple
 
 # 設定 code/ 為匯入路徑
 CODE_DIR = Path(__file__).resolve().parents[1]
@@ -35,6 +37,12 @@ from configs.date_utils import (  # noqa: E402
 ROOT = Path(__file__).resolve().parents[2]
 RAW_DIR = ROOT / "data" / "Datapack" / "Raw"
 PROCESSED_DIR = ROOT / "data" / "Datapack" / "Processed"
+BACKEND_REPORTS_DIR = ROOT / "data" / "backend_reports"
+
+COMPETITION_START_DATE = "2026-10-27"
+COMPETITION_END_DATE = "2026-11-27"
+INITIAL_NAV = 1_000_000_000.0
+LOT_SIZE = 1000
 
 
 def find_datapack_raw(target_date: Optional[str] = None) -> Path:
@@ -81,6 +89,13 @@ GLOSSARY = """\
   holdings 為 [] 只在成功建倉前，代表真的空手；為 null（結算未產生）則不是空手，兩者不同。
 - compliance.violations：違規天數（累計），為取消資格的依據（對應後台右上角「警告次數」）。compliance.notices：異常提示列數（累計），不計入取消資格。
 - compliance.incidents：違規與異常提示紀錄。status=fail 計入 violations；status=warn 計入 notices。message 為判定說明。
+- 賽期進度與帳戶淨值演變（由歷史 DataPack 計算）：
+  - elapsed_trading_days / remaining_trading_days / progress_pct / phase：賽期已過交易日、剩餘交易日、進度 (%) 與階段（剩餘 <=5 日為 sprint 衝刺期）。
+  - cum_return_pct：相對初始 10 億之累計帳面報酬率 (%)；peak_nav / drawdown_from_peak_pct / max_drawdown_pct：賽期最高淨值、距高點回撤 (%) 與歷史最大回撤 MDD (%)。
+  - nav_return_1d_pct / nav_return_3d_pct / nav_return_5d_pct：近 1 / 3 / 5 個交易日淨值變化率 (%)；consecutive_loss_days：連續虧損天數；recent_5d_trajectory：近 5 日淨值走勢。
+- holdings 衍生追蹤欄位（由歷史 DataPack 與 backend_reports 實際成交紀錄計算，百分比欄位單位為 %）：
+  - entry_date / holding_days：最近一次建倉日期與已持有交易日數；avg_cost：實際成交移動加權平均成本；pnl_pct：目前未實現損益 (%)。
+  - peak_price / peak_pnl_pct / dd_from_peak_pct：持有期間最高收盤價、最高浮盈 (%) 與自高點回落幅度 (%)（移動停利依據）。
 """
 
 
@@ -110,8 +125,318 @@ def _status_note(dp: dict) -> str:
     return note
 
 
-def convert_datapack(dp: dict) -> str:
-    """將 DataPack dict 轉為給 Gemini 的精簡文字（欄位名與值保持原樣）。"""
+class _TableHTMLParser(HTMLParser):
+    """極簡 HTML 表格解析器，不依賴 lxml。"""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.tables: List[List[List[str]]] = []
+        self._cur_t: Optional[List[List[str]]] = None
+        self._cur_r: Optional[List[str]] = None
+        self._cur_c: Optional[List[str]] = None
+
+    def handle_starttag(self, tag: str, attrs) -> None:
+        if tag == "table":
+            self._cur_t = []
+        elif tag == "tr" and self._cur_t is not None:
+            self._cur_r = []
+        elif tag in ("td", "th") and self._cur_r is not None:
+            self._cur_c = []
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag in ("td", "th") and self._cur_c is not None:
+            self._cur_r.append("".join(self._cur_c).strip())
+            self._cur_c = None
+        elif tag == "tr" and self._cur_r is not None:
+            self._cur_t.append(self._cur_r)
+            self._cur_r = None
+        elif tag == "table" and self._cur_t is not None:
+            self.tables.append(self._cur_t)
+            self._cur_t = None
+
+    def handle_data(self, data: str) -> None:
+        if self._cur_c is not None:
+            self._cur_c.append(data)
+
+
+def load_backend_trades(
+    reports_dir: Path = BACKEND_REPORTS_DIR,
+    up_to_date: Optional[str] = None,
+) -> List[dict]:
+    """從 backend_reports/*.htm 讀取已成交交易明細，依交易日排序。"""
+    if not reports_dir.exists():
+        return []
+
+    up_to_iso = format_iso_trade_date(up_to_date) if up_to_date else None
+    trades: List[dict] = []
+
+    for htm_path in sorted(reports_dir.glob("*.htm")):
+        parser = _TableHTMLParser()
+        parser.feed(htm_path.read_text(encoding="utf-8"))
+        for table in parser.tables:
+            if not table:
+                continue
+            header = table[0]
+            if "交易日" not in header or "代號" not in header or "成交價" not in header:
+                continue
+            idx = {col: i for i, col in enumerate(header)}
+            for row in table[1:]:
+                if len(row) < len(header):
+                    continue
+                status = row[idx.get("結果", -1)] if "結果" in idx else "已成交"
+                if status != "已成交":
+                    continue
+                t_date = row[idx["交易日"]].strip()
+                if up_to_iso and t_date > up_to_iso:
+                    continue
+                side = row[idx["買/賣"]].strip()
+                code = row[idx["代號"]].strip()
+                lots = int(row[idx["張數"]].replace(",", "").strip())
+                price = float(row[idx["成交價"]].replace(",", "").strip())
+                trades.append({
+                    "date": t_date,
+                    "side": side,
+                    "code": code,
+                    "shares": lots * LOT_SIZE,
+                    "price": price,
+                })
+
+    trades.sort(key=lambda r: (r["date"], 0 if r["side"] == "買進" else 1, r["code"]))
+    return trades
+
+
+def load_datapack_history(
+    raw_dir: Path = RAW_DIR,
+    up_to_trade_date: Optional[str] = None,
+) -> List[dict]:
+    """讀取截至 up_to_trade_date（含）的所有歷史 DataPack Raw JSON，依 trade_date 排序。"""
+    if not raw_dir.exists():
+        return []
+    up_to_iso = format_iso_trade_date(up_to_trade_date) if up_to_trade_date else None
+    items: List[dict] = []
+    for p in sorted(raw_dir.glob("*.json")):
+        try:
+            dp = json.loads(p.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        t_date = dp.get("trade_date") or ""
+        if up_to_iso and t_date > up_to_iso:
+            continue
+        items.append(dp)
+    items.sort(key=lambda d: d.get("trade_date") or "")
+    return items
+
+
+def _count_weekdays(start_iso: str, end_iso: str) -> int:
+    """計算起訖日（含兩端）之間的工作日（週一至週五）天數。"""
+    d0 = date.fromisoformat(start_iso)
+    d1 = date.fromisoformat(end_iso)
+    if d1 < d0:
+        return 0
+    cnt = 0
+    cur = d0
+    while cur <= d1:
+        if cur.weekday() < 5:
+            cnt += 1
+        cur += timedelta(days=1)
+    return cnt
+
+
+def _build_progress_lines(trade_date: str, history: List[dict]) -> List[str]:
+    """計算賽期進度資訊。"""
+    elapsed = len(history) if history else _count_weekdays(COMPETITION_START_DATE, trade_date)
+    remaining = _count_weekdays(trade_date, COMPETITION_END_DATE)
+    total = elapsed + max(remaining - 1, 0)
+    progress_pct = round(elapsed / total * 100, 1) if total > 0 else 0.0
+    if remaining <= 5:
+        phase = "sprint (最後衝刺期，避免新建倉低波動防禦股)"
+    elif progress_pct >= 50:
+        phase = "mid-late (中後期)"
+    else:
+        phase = "early (初期)"
+    return [
+        "### 賽期進度",
+        f"start_date: {COMPETITION_START_DATE} | end_date: {COMPETITION_END_DATE} | "
+        f"elapsed_trading_days: {elapsed} | remaining_trading_days: {remaining} | "
+        f"progress_pct: {progress_pct}% | phase: {phase}",
+    ]
+
+
+def _build_nav_trajectory_lines(history: List[dict]) -> List[str]:
+    """從歷史 DataPack 計算淨值累計報酬、MDD、1D/3D/5D 報酬率與連虧天數。"""
+    series: List[Tuple[str, float]] = []
+    seen_dates = set()
+    for dp in history:
+        as_of = dp.get("as_of_date")
+        acc = dp.get("account") or {}
+        nav = acc.get("nav_tradable")
+        if as_of and nav is not None and as_of not in seen_dates:
+            seen_dates.add(as_of)
+            series.append((as_of, float(nav)))
+
+    if not series:
+        return ["### 帳戶淨值演變", "(尚無歷史結算淨值資料)"]
+
+    # 以初始資金 10 億作為起點計算回撤與連虧
+    full_points: List[Tuple[str, float]] = [("initial", INITIAL_NAV)] + series
+    peak_nav = INITIAL_NAV
+    peak_date = "initial"
+    mdd = 0.0
+    for dt, nav in series:
+        if nav > peak_nav:
+            peak_nav = nav
+            peak_date = dt
+        dd = (nav / peak_nav - 1.0) * 100.0
+        if dd < mdd:
+            mdd = dd
+
+    latest_dt, latest_nav = series[-1]
+    cum_ret = (latest_nav / INITIAL_NAV - 1.0) * 100.0
+    dd_from_peak = (latest_nav / peak_nav - 1.0) * 100.0
+
+    def _ret_n(n: int) -> Optional[float]:
+        if len(full_points) <= n:
+            return None
+        base = full_points[-1 - n][1]
+        return (latest_nav / base - 1.0) * 100.0 if base else None
+
+    r1d = _ret_n(1)
+    r3d = _ret_n(3)
+    r5d = _ret_n(5)
+
+    consec_loss = 0
+    for i in range(len(full_points) - 1, 0, -1):
+        if full_points[i][1] < full_points[i - 1][1]:
+            consec_loss += 1
+        else:
+            break
+
+    def _fmt_pct(v: Optional[float]) -> str:
+        return "null" if v is None else f"{v:+.2f}%"
+
+    # 近 5 個結算日淨值走勢摘要
+    recent_start = max(1, len(full_points) - 5)
+    traj_parts = []
+    for i in range(recent_start, len(full_points)):
+        dt, nav = full_points[i]
+        prev_nav = full_points[i - 1][1]
+        d_ret = (nav / prev_nav - 1.0) * 100.0
+        traj_parts.append(f"{dt[5:]}: {nav / 1e8:.3f}億 ({d_ret:+.2f}%)")
+
+    return [
+        "### 帳戶淨值演變",
+        f"initial_nav: {INITIAL_NAV:,.0f} | latest_nav ({latest_dt}): {latest_nav:,.2f} | "
+        f"cum_return_pct: {_fmt_pct(cum_ret)} | peak_nav ({peak_date}): {peak_nav:,.2f} | "
+        f"drawdown_from_peak_pct: {_fmt_pct(dd_from_peak)} | max_drawdown_pct: {mdd:.2f}%",
+        f"nav_return_1d_pct: {_fmt_pct(r1d)} | nav_return_3d_pct: {_fmt_pct(r3d)} | "
+        f"nav_return_5d_pct: {_fmt_pct(r5d)} | consecutive_loss_days: {consec_loss}",
+        "recent_5d_trajectory: " + " -> ".join(traj_parts),
+    ]
+
+
+def _compute_holdings_tracking(
+    dp: dict,
+    history: List[dict],
+    trades: List[dict],
+) -> Dict[str, dict]:
+    """結合 backend_reports 實際成交均價與歷史 DataPack 收盤價，計算每檔持股成本與高點回落。"""
+    holdings = dp.get("holdings") or []
+    if not holdings:
+        return {}
+
+    # 1. 由 backend_reports 計算目前持股的移動加權平均成本與建倉日
+    pos: Dict[str, dict] = {}
+    for tr in trades:
+        code = tr["code"]
+        st = pos.setdefault(code, {"shares": 0, "cost_total": 0.0, "entry_date": None})
+        qty = tr["shares"]
+        if tr["side"] == "買進":
+            if st["shares"] == 0:
+                st["entry_date"] = tr["date"]
+            st["shares"] += qty
+            st["cost_total"] += qty * tr["price"]
+        elif tr["side"] == "賣出":
+            if st["shares"] > 0:
+                avg_c = st["cost_total"] / st["shares"]
+                st["shares"] = max(0, st["shares"] - qty)
+                st["cost_total"] = st["shares"] * avg_c
+                if st["shares"] == 0:
+                    st["entry_date"] = None
+
+    # 2. 收集各個歷史結算日的收盤價與持有天數
+    price_history: Dict[str, List[Tuple[str, float]]] = {}
+    seen_asof = set()
+    ordered_asof: List[str] = []
+    for h_dp in history:
+        as_of = h_dp.get("as_of_date")
+        if not as_of or as_of in seen_asof:
+            continue
+        seen_asof.add(as_of)
+        ordered_asof.append(as_of)
+        for item in h_dp.get("holdings") or []:
+            c = str(item.get("code", "")).strip()
+            cp = item.get("close_price")
+            if c and cp is not None and int(item.get("shares", 0)) > 0:
+                price_history.setdefault(c, []).append((as_of, float(cp)))
+
+    latest_asof = dp.get("as_of_date") or (ordered_asof[-1] if ordered_asof else "")
+    result: Dict[str, dict] = {}
+
+    for h in holdings:
+        if int(h.get("shares", 0)) <= 0:
+            continue
+        code = str(h.get("code", "")).strip()
+        close_p = h.get("close_price")
+        close_val = float(close_p) if close_p is not None else None
+
+        st = pos.get(code)
+        if st and st["shares"] > 0 and st["entry_date"]:
+            entry_date = st["entry_date"]
+            avg_cost = st["cost_total"] / st["shares"]
+        else:
+            # 若 backend_reports 缺漏該檔，退回以歷史 DataPack 首次出現日與收盤價估算
+            hist_pts = price_history.get(code, [])
+            entry_date = hist_pts[0][0] if hist_pts else latest_asof
+            avg_cost = hist_pts[0][1] if hist_pts else (close_val or 0.0)
+
+        # 計算持有交易日數 (從 entry_date 至 latest_asof)
+        holding_days = sum(1 for d in ordered_asof if entry_date <= d <= latest_asof)
+        if holding_days == 0 and entry_date:
+            holding_days = _count_weekdays(entry_date, latest_asof) if latest_asof >= entry_date else 1
+
+        # 計算持有期間最高收盤價 (自 entry_date 起)
+        held_prices = [p for d, p in price_history.get(code, []) if d >= entry_date]
+        if close_val is not None:
+            held_prices.append(close_val)
+        peak_price = max(held_prices) if held_prices else close_val
+
+        if avg_cost > 0 and close_val is not None and peak_price is not None:
+            pnl_pct = round((close_val / avg_cost - 1.0) * 100.0, 2)
+            peak_pnl_pct = round((peak_price / avg_cost - 1.0) * 100.0, 2)
+            dd_from_peak_pct = round((close_val / peak_price - 1.0) * 100.0, 2)
+        else:
+            pnl_pct = peak_pnl_pct = dd_from_peak_pct = None
+
+        peak_fmt = int(peak_price) if (peak_price is not None and float(peak_price).is_integer()) else peak_price
+        result[code] = {
+            "entry_date": entry_date,
+            "holding_days": holding_days,
+            "avg_cost": round(avg_cost, 2) if avg_cost > 0 else None,
+            "pnl_pct": pnl_pct,
+            "peak_price": peak_fmt,
+            "peak_pnl_pct": peak_pnl_pct,
+            "dd_from_peak_pct": dd_from_peak_pct,
+        }
+
+    return result
+
+
+def convert_datapack(
+    dp: dict,
+    history: Optional[List[dict]] = None,
+    trades: Optional[List[dict]] = None,
+) -> str:
+    """將 DataPack dict 轉為給 Gemini 的精簡文字（欄位名與值保持原樣，並附加路徑演變特徵）。"""
     po = dp.get("prev_day_orders")
     acc = dp.get("account")
     hold = dp.get("holdings")
@@ -145,18 +470,35 @@ def convert_datapack(dp: dict) -> str:
         lines.append(" | ".join(f"{k}: {_v(acc.get(k))}" for k in (
             "cash", "cash_ratio_tradable", "nav_tradable", "aum", "receivable_cash", "holdings_count")))
 
+    trade_date = dp.get("trade_date") or ""
+    if history is not None and trade_date:
+        lines += [""] + _build_progress_lines(trade_date, history)
+        lines += [""] + _build_nav_trajectory_lines(history)
+
+    tracking_map = _compute_holdings_tracking(dp, history, trades or []) if (history is not None and trade_date) else {}
+
     lines += ["", "### holdings"]
     if hold is None:
         lines.append("null")
     elif not hold:
         lines.append("[]")
     else:
-        cols = ("code", "shares", "receivable_shares", "close_price", "tradable_weight")
-        lines.append(",".join(cols))
-        for h in hold:
-            # code 以字串輸出（不加引號），其餘為數值或 null
-            lines.append(",".join(
-                str(h.get(c)) if c == "code" else _v(h.get(c)) for c in cols))
+        cols = ("shares", "receivable_shares", "close_price", "tradable_weight")
+        lines.append("{")
+        if tracking_map:
+            note_val = "原生欄位: shares, receivable_shares, close_price, tradable_weight；追蹤欄位(百分比單位 %): entry_date, holding_days, avg_cost, pnl_pct, peak_price, peak_pnl_pct, dd_from_peak_pct"
+            lines.append(f'  "_note": {json.dumps(note_val, ensure_ascii=False)},')
+        for idx, h in enumerate(hold):
+            code_str = str(h.get("code"))
+            entry = {
+                c: (int(h.get(c)) if isinstance(h.get(c), float) and h.get(c).is_integer() else h.get(c))
+                for c in cols
+            }
+            if code_str in tracking_map:
+                entry.update(tracking_map[code_str])
+            comma = "," if idx < len(hold) - 1 else ""
+            lines.append(f'  {json.dumps(code_str, ensure_ascii=False)}: {json.dumps(entry, ensure_ascii=False)}{comma}')
+        lines.append("}")
 
     lines += ["", "### compliance",
               f"violations: {_v(comp.get('violations'))} | notices: {_v(comp.get('notices'))}"]
@@ -205,7 +547,11 @@ def process_datapack(
         raise ValueError(f"無法從檔名或參數取得合規日期 (YYYYMMDD): {actual_path.name}")
 
     raw_data = load_datapack(actual_path)
-    text = convert_datapack(raw_data)
+    dp_trade_date = raw_data.get("trade_date") or date_str
+    dp_as_of_date = raw_data.get("as_of_date") or dp_trade_date
+    history = load_datapack_history(RAW_DIR, up_to_trade_date=dp_trade_date)
+    trades = load_backend_trades(BACKEND_REPORTS_DIR, up_to_date=dp_as_of_date)
+    text = convert_datapack(raw_data, history=history, trades=trades)
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"DataPack_Processed_{date_str}.md"
     with open(out_path, "w", encoding="utf-8", newline="\n") as f:
