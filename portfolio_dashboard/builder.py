@@ -191,6 +191,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" id="themeColorMeta" content="#dce5f0">
   <title>2026 玉山 AI Agent 基金經理人 · TEAM_11402</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>">
   
@@ -2456,6 +2457,8 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       const useDark = mode === 'dark' || (mode === 'auto' && systemDarkMql && systemDarkMql.matches);
       html.classList.toggle('theme-dark', useDark);
       html.classList.toggle('theme-light', !useDark);
+      const themeMeta = document.getElementById('themeColorMeta');
+      if (themeMeta) themeMeta.setAttribute('content', useDark ? '#060b14' : '#dce5f0');
       document.getElementById('themeOptLight')?.classList.toggle('active', mode === 'light');
       document.getElementById('themeOptDark')?.classList.toggle('active', mode === 'dark');
       document.getElementById('themeOptAuto')?.classList.toggle('active', mode === 'auto');
