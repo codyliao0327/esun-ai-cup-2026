@@ -7,6 +7,7 @@ Dashboard HTML Builder for 2026 玉山人工智慧挑戰賽
   - 漲跌幅排序、即時搜尋、10-27 起股價趨勢微圖 (Sparkline)
   - 淺色 / 深色主題切換、完全響應式 (RWD) 手機與電腦極致優化
 """
+import html as html_lib
 import json
 import re
 import sys
@@ -24,8 +25,37 @@ if sys.platform == "win32":
 DASHBOARD_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = DASHBOARD_DIR.parent.parent
 REPORTS_DIR = PROJECT_ROOT / "data" / "D-Paln_Output" / "reports"
+ETF_STRATEGY_FILE = PROJECT_ROOT / "data" / "ETF_Strategy" / "etf_strategy.md"
 DIST_DIR = DASHBOARD_DIR / "dist"
 DIST_HTML = DIST_DIR / "index.html"
+
+
+def load_etf_strategy() -> Dict[str, str]:
+    """讀取 data/ETF_Strategy/etf_strategy.md 中的 ETF 名稱、投資主題與投資理念"""
+    strategy = {
+        "name": "主動台灣多面向動態配置",
+        "theme": "結合企業基本面、市場趨勢與事件動向的主動式台股配置策略。",
+        "philosophy": "",
+    }
+    if not ETF_STRATEGY_FILE.is_file():
+        return strategy
+    try:
+        text = ETF_STRATEGY_FILE.read_text(encoding="utf-8")
+        for line in text.splitlines():
+            parts = [p.strip() for p in line.strip().strip("|").split("|")]
+            if len(parts) < 2:
+                continue
+            key = parts[0].replace("*", "").strip()
+            val = parts[1].strip()
+            if "ETF 名稱" in key and val:
+                strategy["name"] = val
+            elif "ETF 投資主題" in key and val:
+                strategy["theme"] = val
+            elif "ETF 投資理念" in key and val:
+                strategy["philosophy"] = val
+    except Exception as exc:
+        print(f"[builder] 讀取 ETF 策略失敗: {exc}")
+    return strategy
 
 
 def load_decision_reports() -> List[Dict[str, Any]]:
@@ -171,8 +201,12 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
         except Exception as exc:
             print(f"[builder] 讀取 usage_history.json 失敗: {exc}")
 
-    # 讀取所有每日決策報告 (歷史 + 最新)
+    # 讀取所有每日決策報告 (歷史 + 最新) 與 ETF 投資策略
     decision_reports = load_decision_reports()
+    etf_strategy = load_etf_strategy()
+    etf_name_esc = html_lib.escape(etf_strategy["name"])
+    etf_theme_esc = html_lib.escape(etf_strategy["theme"])
+    etf_phil_esc = html_lib.escape(etf_strategy["philosophy"])
 
     # 轉為 JSON 注入前端以利動態排序與篩選
     json_data_payload = {
@@ -2353,6 +2387,20 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
         <a class="github-cta-btn" href="https://github.com/codyliao0327/esun-ai-cup-2026" target="_blank" rel="noopener noreferrer">
           <span>🔗</span> 前往 GitHub Repo
         </a>
+      </div>
+
+      <div class="glass-card" style="margin-bottom: 24px;">
+        <div class="chart-title" style="margin-bottom: 12px; display:flex; align-items:center; flex-wrap:wrap; gap:10px;">
+          <span>🎯</span>
+          <span>ETF 投資策略</span>
+          <span class="badge-pnl badge-held" style="font-size:12px;">{etf_name_esc}</span>
+        </div>
+        <div style="padding: 12px 16px; border-radius: 14px; background: var(--glass-pill-bg); border: 1px solid var(--glass-border-subtle); margin-bottom: 12px; font-size: 13.5px; color: var(--text-main);">
+          <strong style="color: var(--primary-accent);">投資主題：</strong>{etf_theme_esc}
+        </div>
+        <div style="font-size: 13.5px; line-height: 1.8; color: var(--text-muted);">
+          <strong style="color: var(--text-main);">投資理念：</strong>{etf_phil_esc}
+        </div>
       </div>
 
       <div class="glass-card">
