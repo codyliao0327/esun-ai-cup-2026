@@ -6,6 +6,7 @@ Portfolio Tracker for 2026 玉山人工智慧挑戰賽
 import re
 import json
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 
@@ -156,11 +157,12 @@ def parse_backend_reports() -> List[Dict[str, Any]]:
 
 
 def calculate_portfolio_costs(backend_reports: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
-    """依據後台歷史成交明細，計算每檔股票的移動加權平均成本與已實現損益"""
+    """依據後台歷史成交明細，計算每檔股票的移動加權平均成本、已實現損益與 FIFO 分批買進明細"""
     portfolio_state: Dict[str, Dict[str, Any]] = {}
-    # {code: {"shares": 0, "total_cost": 0.0, "avg_cost": 0.0, "realized_pnl": 0.0, "name": ""}}
+    # {code: {"shares": 0, "total_cost": 0.0, "avg_cost": 0.0, "realized_pnl": 0.0, "name": "", "buy_lots": [...]}}
 
     for rep in backend_reports:
+        rep_date = rep["date"]
         for t in rep["trades"]:
             code = t["code"]
             action = t["action"]
@@ -176,31 +178,51 @@ def calculate_portfolio_costs(backend_reports: List[Dict[str, Any]]) -> Dict[str
                     "total_cost": 0.0,
                     "avg_cost": 0.0,
                     "realized_pnl": 0.0,
+                    "buy_lots": [],
                 }
 
             item = portfolio_state[code]
             item["name"] = name
 
             if action == "買進":
-                # 加碼或建倉：移動加權平均成本
+                # 加碼或建倉：移動加權平均成本 + 記錄該筆買進批次
                 new_shares = item["shares"] + shares
                 new_cost = item["total_cost"] + (shares * price)
                 item["shares"] = new_shares
                 item["total_cost"] = new_cost
                 item["avg_cost"] = (new_cost / new_shares) if new_shares > 0 else 0.0
+                item["buy_lots"].append({
+                    "date": rep_date,
+                    "shares": shares,
+                    "lots": round(shares / 1000.0, 1),
+                    "orig_lots": round(t["lots"], 1),
+                    "price": round(price, 2),
+                })
             elif action == "賣出":
-                # 減碼或出清：依目前成本認列已實現損益
+                # 減碼或出清：依目前成本認列已實現損益，並以 FIFO 扣減未平倉買進批次
                 sell_shares = min(shares, item["shares"])
                 cost_of_sold = sell_shares * item["avg_cost"]
                 sell_revenue = sell_shares * price
                 item["realized_pnl"] += (sell_revenue - cost_of_sold)
-                
+
+                rem_to_sell = sell_shares
+                while rem_to_sell > 0 and item["buy_lots"]:
+                    oldest = item["buy_lots"][0]
+                    if oldest["shares"] <= rem_to_sell:
+                        rem_to_sell -= oldest["shares"]
+                        item["buy_lots"].pop(0)
+                    else:
+                        oldest["shares"] -= rem_to_sell
+                        oldest["lots"] = round(oldest["shares"] / 1000.0, 1)
+                        rem_to_sell = 0
+
                 new_shares = item["shares"] - sell_shares
                 item["shares"] = new_shares
                 item["total_cost"] = new_shares * item["avg_cost"]
                 if new_shares <= 0:
                     item["shares"] = 0
                     item["total_cost"] = 0.0
+                    item["buy_lots"] = []
 
     return portfolio_state
 
@@ -282,6 +304,14 @@ def get_latest_portfolio_summary() -> Dict[str, Any]:
     held_positions = []
     total_unrealized_pnl = 0.0
 
+    try:
+        as_of_dt = datetime.strptime(latest_dp["date"], "%Y-%m-%d")
+    except Exception:
+        as_of_dt = None
+
+    # 預先計算各股自最新交易日回推的連續持有交易日數
+    dp_held_sets = [{str(item.get("code")) for item in (dp.get("holdings") or [])} for dp in dp_history]
+
     for h in raw_holdings:
         code = str(h.get("code"))
         shares = int(h.get("shares", 0))
@@ -297,12 +327,54 @@ def get_latest_portfolio_summary() -> Dict[str, Any]:
         day_change = round(close_price - prev_close, 2)
         day_change_pct = round((day_change / prev_close * 100), 2) if prev_close else 0.0
 
-        # 成本均價：優先自後台成交明細計算，若無則以當日 close_price 作為 baseline
+        # 成本均價與 FIFO 分批買進明細
         cost_info = costs_by_code.get(code)
         if cost_info and cost_info["shares"] > 0:
             avg_cost = cost_info["avg_cost"]
+            raw_lots = cost_info.get("buy_lots", [])
         else:
             avg_cost = close_price  # fallback
+            raw_lots = []
+
+        # 連續持有交易日數
+        holding_trading_days = 0
+        for held_set in reversed(dp_held_sets):
+            if code in held_set:
+                holding_trading_days += 1
+            else:
+                break
+
+        # 計算每批買進明細損益與持有天數
+        buy_lots_detail = []
+        for lot in raw_lots:
+            lot_shares = lot["shares"]
+            lot_price = lot["price"]
+            lot_cost = lot_shares * lot_price
+            lot_mkt = lot_shares * close_price
+            lot_pnl = lot_mkt - lot_cost
+            lot_ret = (lot_pnl / lot_cost * 100.0) if lot_cost > 0 else 0.0
+            lot_days = holding_trading_days
+            if as_of_dt:
+                try:
+                    lot_dt = datetime.strptime(lot["date"], "%Y-%m-%d")
+                    lot_days = max(1, (as_of_dt - lot_dt).days + 1)
+                except Exception:
+                    pass
+            buy_lots_detail.append({
+                "date": lot["date"],
+                "lots": lot["lots"],
+                "orig_lots": lot["orig_lots"],
+                "shares": lot_shares,
+                "price": lot_price,
+                "cost": round(lot_cost, 0),
+                "market_value": round(lot_mkt, 0),
+                "unrealized_pnl": round(lot_pnl, 0),
+                "return_pct": round(lot_ret, 2),
+                "holding_days": lot_days,
+            })
+
+        first_buy_date = buy_lots_detail[0]["date"] if buy_lots_detail else latest_dp["date"]
+        holding_days = buy_lots_detail[0]["holding_days"] if buy_lots_detail else holding_trading_days
 
         total_cost = shares * avg_cost
         market_val = shares * close_price
@@ -325,6 +397,10 @@ def get_latest_portfolio_summary() -> Dict[str, Any]:
             "unrealized_pnl": round(unrealized_pnl, 0),
             "unrealized_return_pct": round(unrealized_return_pct, 2),
             "weight_pct": round(weight * 100.0, 2),
+            "holding_days": holding_days,
+            "holding_trading_days": holding_trading_days,
+            "first_buy_date": first_buy_date,
+            "buy_lots": buy_lots_detail,
         })
 
     # 依權重由大至小排序

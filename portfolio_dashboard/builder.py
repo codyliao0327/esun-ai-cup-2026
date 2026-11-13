@@ -154,6 +154,10 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
             "unrealized_pnl": held_info["unrealized_pnl"] if held_info else 0,
             "unrealized_return_pct": held_info["unrealized_return_pct"] if held_info else 0.0,
             "weight_pct": held_info["weight_pct"] if held_info else 0.0,
+            "holding_days": held_info.get("holding_days", 0) if held_info else 0,
+            "holding_trading_days": held_info.get("holding_trading_days", 0) if held_info else 0,
+            "first_buy_date": held_info.get("first_buy_date", "") if held_info else "",
+            "buy_lots": held_info.get("buy_lots", []) if held_info else [],
             "sparkline": sparkline_svg,
             "trend": trend
         })
@@ -186,8 +190,8 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
 <html lang="zh-TW" class="theme-dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>TEAM_11402 · 玉山人工智慧挑戰賽 · 投資決策與持股看板</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026 玉山 AI Agent 基金經理人 · TEAM_11402</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>">
   
   <!-- 字體引入 Inter & SF Pro 質感 -->
@@ -220,214 +224,173 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       --color-flat: #94a3b8;
 
       --primary-accent: #38bdf8;
-      --primary-glow: rgba(56, 189, 248, 0.34);
+      --primary-glow: rgba(56, 189, 248, 0.28);
       --spring-ease: cubic-bezier(0.22, 1, 0.36, 1);
       --glass-alpha-scale: 1;
-      --glass-blur-px: 26px;
+      --glass-blur-px: 16px;
     }}
 
-    /* 深色主題 (Apple iOS 27 Second-Gen Refined Liquid Dark Glass) */
+    /* 深色主題 (Apple macOS 冷冽藍灰 / 單色系柔和光場) */
     .theme-dark {{
       --bg-gradient:
-        radial-gradient(ellipse 62% 46% at 12% 8%, rgba(6, 182, 212, 0.38) 0%, transparent 65%),
-        radial-gradient(ellipse 58% 48% at 88% 12%, rgba(139, 92, 246, 0.36) 0%, transparent 65%),
-        radial-gradient(ellipse 55% 45% at 20% 50%, rgba(244, 63, 94, 0.24) 0%, transparent 65%),
-        radial-gradient(ellipse 60% 50% at 82% 55%, rgba(16, 185, 129, 0.25) 0%, transparent 65%),
-        radial-gradient(ellipse 65% 45% at 28% 92%, rgba(245, 158, 11, 0.20) 0%, transparent 65%),
-        radial-gradient(ellipse 65% 50% at 82% 92%, rgba(37, 99, 235, 0.32) 0%, transparent 70%),
-        linear-gradient(160deg, #040710 0%, #080d1a 48%, #050811 100%);
+        radial-gradient(ellipse 68% 52% at 14% 10%, rgba(56, 189, 248, 0.14) 0%, transparent 65%),
+        radial-gradient(ellipse 62% 54% at 86% 88%, rgba(30, 64, 175, 0.16) 0%, transparent 68%),
+        linear-gradient(160deg, #060b14 0%, #0b1322 50%, #070c16 100%);
       --ambient-orb-1:
-        radial-gradient(380px circle at 18% 22%, rgba(56, 189, 248, 0.30) 0%, rgba(56, 189, 248, 0.06) 45%, transparent 70%),
-        radial-gradient(420px circle at 82% 28%, rgba(168, 85, 247, 0.28) 0%, rgba(168, 85, 247, 0.05) 45%, transparent 70%),
-        radial-gradient(360px circle at 32% 68%, rgba(244, 63, 94, 0.22) 0%, transparent 70%),
-        radial-gradient(400px circle at 74% 72%, rgba(16, 185, 129, 0.22) 0%, transparent 70%);
-      --ambient-orb-2:
-        linear-gradient(125deg, transparent 18%, rgba(56, 189, 248, 0.11) 36%, rgba(236, 72, 153, 0.10) 52%, rgba(16, 185, 129, 0.10) 68%, transparent 84%);
-      --silk-opacity: 0.68;
+        radial-gradient(520px circle at 22% 20%, rgba(56, 189, 248, 0.11) 0%, transparent 70%),
+        radial-gradient(560px circle at 80% 76%, rgba(148, 163, 184, 0.08) 0%, transparent 70%);
 
       --text-main: #f8fafc;
       --text-muted: #cbd5e1;
       --text-dim: #94a3b8;
       
-      /* iOS 27 二代液態玻璃：雙層稜鏡折射邊框 + 高對比光學景深 */
-      --glass-backdrop: blur(var(--glass-blur-px, 26px)) saturate(215%) contrast(104%);
+      /* 冷冽水晶玻璃：純冰白高光 + 微量冰藍折射（無紫色雜訊） */
+      --glass-backdrop: blur(var(--glass-blur-px, 16px)) saturate(155%);
       --glass-bg:
-        radial-gradient(120% 95% at 50% 0%, rgba(255, 255, 255, calc(0.14 * var(--glass-alpha-scale, 1))) 0%, transparent 60%),
-        linear-gradient(135deg, rgba(30, 43, 72, calc(0.50 * var(--glass-alpha-scale, 1))) 0%, rgba(13, 20, 38, calc(0.32 * var(--glass-alpha-scale, 1))) 52%, rgba(24, 37, 64, calc(0.46 * var(--glass-alpha-scale, 1))) 100%);
+        linear-gradient(145deg, rgba(30, 41, 59, calc(0.62 * var(--glass-alpha-scale, 1))) 0%, rgba(15, 23, 42, calc(0.46 * var(--glass-alpha-scale, 1))) 55%, rgba(22, 34, 54, calc(0.58 * var(--glass-alpha-scale, 1))) 100%);
       --glass-bg-hover:
-        radial-gradient(120% 95% at 50% 0%, rgba(255, 255, 255, calc(0.20 * var(--glass-alpha-scale, 1))) 0%, transparent 62%),
-        linear-gradient(135deg, rgba(40, 56, 92, calc(0.58 * var(--glass-alpha-scale, 1))) 0%, rgba(18, 28, 52, calc(0.38 * var(--glass-alpha-scale, 1))) 52%, rgba(32, 48, 82, calc(0.52 * var(--glass-alpha-scale, 1))) 100%);
-      --glass-border: rgba(255, 255, 255, 0.15);
-      --glass-border-specular: rgba(255, 255, 255, 0.42);
-      --prismatic-rim: linear-gradient(135deg, rgba(255, 255, 255, 0.58) 0%, rgba(56, 189, 248, 0.28) 28%, rgba(255, 255, 255, 0.05) 50%, rgba(168, 85, 247, 0.30) 76%, rgba(255, 255, 255, 0.45) 100%);
+        linear-gradient(145deg, rgba(38, 52, 74, calc(0.68 * var(--glass-alpha-scale, 1))) 0%, rgba(20, 30, 52, calc(0.52 * var(--glass-alpha-scale, 1))) 55%, rgba(28, 44, 68, calc(0.64 * var(--glass-alpha-scale, 1))) 100%);
+      --glass-border: rgba(226, 232, 240, 0.14);
+      --glass-border-subtle: rgba(226, 232, 240, 0.09);
+      --glass-border-specular: rgba(248, 250, 252, 0.32);
       --glass-shadow:
-        0 24px 52px -12px rgba(0, 0, 0, 0.72),
-        0 4px 16px -2px rgba(0, 0, 0, 0.45),
-        0 0 0 1px rgba(0, 0, 0, 0.48),
-        inset 0 1.75px 1.2px 0 rgba(255, 255, 255, 0.46),
-        inset 0 -1.75px 2.5px 0 rgba(56, 189, 248, 0.18),
-        inset 1.25px 0 1.5px 0 rgba(255, 255, 255, 0.22),
-        inset -1.25px 0 2px 0 rgba(168, 85, 247, 0.16);
-      
-      --meniscus-sheen:
-        radial-gradient(92% 75% at 50% -2%, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0.05) 45%, transparent 72%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.11) 0%, transparent 16%);
-      --cursor-glint: radial-gradient(360px circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, 0.16) 0%, rgba(56, 189, 248, 0.05) 42%, transparent 70%);
+        0 18px 40px -12px rgba(2, 6, 23, 0.65),
+        0 2px 10px -2px rgba(2, 6, 23, 0.40),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.24),
+        inset 0 -1px 0 0 rgba(56, 189, 248, 0.10);
 
-      /* iOS 27 3D 凸透鏡水滴膠囊按鈕 (Convex Droplet Capsule) */
+      /* 3D 凸透鏡水滴膠囊按鈕 */
       --btn-glass-bg:
-        radial-gradient(110% 90% at 50% 8%, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.06) 52%, transparent 80%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(15, 23, 42, 0.22) 58%, rgba(56, 189, 248, 0.14) 100%);
+        radial-gradient(110% 90% at 50% 8%, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.04) 55%, transparent 82%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.11) 0%, rgba(15, 23, 42, 0.28) 60%, rgba(56, 189, 248, 0.10) 100%);
       --btn-glass-hover:
-        radial-gradient(110% 90% at 50% 8%, rgba(255, 255, 255, 0.38) 0%, rgba(255, 255, 255, 0.10) 52%, transparent 80%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(15, 23, 42, 0.18) 58%, rgba(56, 189, 248, 0.22) 100%);
-      --btn-glass-border: rgba(255, 255, 255, 0.24);
+        radial-gradient(110% 90% at 50% 8%, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.08) 55%, transparent 82%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(15, 23, 42, 0.22) 60%, rgba(56, 189, 248, 0.16) 100%);
+      --btn-glass-border: rgba(226, 232, 240, 0.20);
       --btn-glass-shadow:
-        0 8px 18px -4px rgba(0, 0, 0, 0.55),
-        0 0 0 1px rgba(0, 0, 0, 0.35),
-        inset 0 1.75px 1.2px 0 rgba(255, 255, 255, 0.52),
-        inset 0 -1.5px 2px 0 rgba(56, 189, 248, 0.22);
+        0 6px 14px -4px rgba(2, 6, 23, 0.50),
+        inset 0 1.25px 0.8px 0 rgba(255, 255, 255, 0.38),
+        inset 0 -1px 1.5px 0 rgba(56, 189, 248, 0.16);
 
-      /* 激活態 iOS 27 液態寶石膠囊 (Tinted Aqua Gem Droplet) */
+      /* 激活態液態寶石膠囊 */
       --btn-active-bg:
-        radial-gradient(110% 90% at 50% 6%, rgba(255, 255, 255, 0.45) 0%, transparent 58%),
-        linear-gradient(180deg, rgba(56, 189, 248, 0.62) 0%, rgba(2, 132, 199, 0.42) 55%, rgba(14, 165, 233, 0.56) 100%);
-      --btn-active-border: rgba(186, 230, 253, 0.75);
+        radial-gradient(110% 90% at 50% 6%, rgba(255, 255, 255, 0.42) 0%, transparent 58%),
+        linear-gradient(180deg, rgba(56, 189, 248, 0.62) 0%, rgba(2, 132, 199, 0.44) 55%, rgba(14, 165, 233, 0.56) 100%);
+      --btn-active-border: rgba(186, 230, 253, 0.70);
       --btn-active-shadow:
-        0 10px 24px -4px rgba(14, 165, 233, 0.52),
-        0 0 0 1px rgba(2, 132, 199, 0.4),
-        inset 0 2px 1.5px 0 rgba(255, 255, 255, 0.82),
-        inset 0 -2px 2.5px 0 rgba(2, 132, 199, 0.55);
+        0 8px 20px -4px rgba(14, 165, 233, 0.45),
+        inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.72),
+        inset 0 -1.5px 2px 0 rgba(2, 132, 199, 0.50);
       --btn-active-text: #ffffff;
 
       --tab-active-shadow:
-        0 8px 22px -4px rgba(0, 0, 0, 0.5),
-        0 0 20px -4px var(--primary-glow),
-        inset 0 2px 1.2px 0 rgba(255, 255, 255, 0.72),
-        inset 0 -1.75px 2px 0 rgba(56, 189, 248, 0.30);
+        0 6px 18px -4px rgba(2, 6, 23, 0.48),
+        0 0 16px -4px var(--primary-glow),
+        inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.55),
+        inset 0 -1.25px 1.5px 0 rgba(56, 189, 248, 0.24);
 
-      /* 凹槽軌道與輸入框 (Recessed Liquid Well) */
-      --well-bg: rgba(5, 9, 20, 0.52);
-      --well-border: rgba(255, 255, 255, 0.15);
+      /* 凹槽軌道與輸入框 */
+      --well-bg: rgba(6, 11, 20, 0.55);
+      --well-border: rgba(226, 232, 240, 0.13);
       --well-shadow:
-        inset 0 2.5px 6px rgba(0, 0, 0, 0.65),
-        inset 0 -1px 0.8px rgba(255, 255, 255, 0.20),
-        0 1px 0 rgba(255, 255, 255, 0.08);
+        inset 0 2px 5px rgba(0, 0, 0, 0.55),
+        inset 0 -1px 0.8px rgba(255, 255, 255, 0.14);
 
-      --table-header-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.03) 100%);
-      --table-hover: linear-gradient(90deg, rgba(56, 189, 248, 0.08) 0%, rgba(255, 255, 255, 0.09) 50%, rgba(168, 85, 247, 0.08) 100%);
-      --pill-bg: rgba(255, 255, 255, 0.09);
+      --table-header-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 100%);
+      --table-hover: rgba(56, 189, 248, 0.08);
+      --pill-bg: rgba(255, 255, 255, 0.07);
+      --glass-pill-bg: rgba(255, 255, 255, 0.06);
     }}
 
-    /* 淺色主題 (Apple iOS 27 Second-Gen Prismatic Daylight Crystal Glass) */
+    /* 淺色主題 (Apple macOS 冰川銀灰 / 冷冽藍灰柔和光場) */
     .theme-light {{
       --color-up: #dc2626;
       --color-up-bg:
         radial-gradient(100% 80% at 50% 8%, rgba(255, 255, 255, 0.85) 0%, transparent 60%),
         linear-gradient(180deg, rgba(254, 202, 202, 0.72) 0%, rgba(254, 226, 226, 0.38) 100%);
       --color-up-border: rgba(239, 68, 68, 0.42);
-      --color-up-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 1), 0 3px 8px -2px rgba(239, 68, 68, 0.22);
+      --color-up-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 1), 0 3px 8px -2px rgba(239, 68, 68, 0.20);
 
       --color-down: #059669;
       --color-down-bg:
         radial-gradient(100% 80% at 50% 8%, rgba(255, 255, 255, 0.85) 0%, transparent 60%),
         linear-gradient(180deg, rgba(167, 243, 208, 0.72) 0%, rgba(209, 250, 229, 0.38) 100%);
       --color-down-border: rgba(16, 185, 129, 0.42);
-      --color-down-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 1), 0 3px 8px -2px rgba(16, 185, 129, 0.22);
+      --color-down-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 1), 0 3px 8px -2px rgba(16, 185, 129, 0.20);
 
       --primary-accent: #0284c7;
-      --primary-glow: rgba(14, 165, 233, 0.35);
+      --primary-glow: rgba(14, 165, 233, 0.28);
 
-      /* iOS 27 淺色流光絲綢底色 + 高飽和彩帶，讓玻璃折射產生強烈透鏡對比 */
+      /* 冰川銀灰 + 冷冽天藍單色系柔和光場：無紫無粉，讓白色玻璃高光邊緣清晰浮現 */
       --bg-gradient:
-        radial-gradient(ellipse 60% 45% at 12% 8%, rgba(14, 165, 233, 0.52) 0%, transparent 62%),
-        radial-gradient(ellipse 58% 48% at 88% 12%, rgba(139, 92, 246, 0.46) 0%, transparent 62%),
-        radial-gradient(ellipse 55% 45% at 18% 52%, rgba(244, 63, 94, 0.38) 0%, transparent 62%),
-        radial-gradient(ellipse 60% 50% at 84% 54%, rgba(16, 185, 129, 0.42) 0%, transparent 62%),
-        radial-gradient(ellipse 62% 46% at 28% 92%, rgba(245, 158, 11, 0.35) 0%, transparent 65%),
-        radial-gradient(ellipse 65% 50% at 82% 94%, rgba(59, 130, 246, 0.45) 0%, transparent 68%),
-        linear-gradient(145deg, #dbeafe 0%, #ede9fe 34%, #fce7f3 66%, #d1fae5 100%);
+        radial-gradient(ellipse 68% 52% at 14% 10%, rgba(186, 230, 253, 0.72) 0%, transparent 64%),
+        radial-gradient(ellipse 62% 54% at 88% 88%, rgba(148, 163, 184, 0.42) 0%, transparent 66%),
+        linear-gradient(155deg, #dce5f0 0%, #e8eef5 48%, #d6e2ee 100%);
       --ambient-orb-1:
-        radial-gradient(350px circle at 20% 20%, rgba(14, 165, 233, 0.48) 0%, rgba(56, 189, 248, 0.12) 48%, transparent 70%),
-        radial-gradient(390px circle at 80% 24%, rgba(139, 92, 246, 0.46) 0%, rgba(167, 139, 250, 0.12) 48%, transparent 70%),
-        radial-gradient(340px circle at 28% 66%, rgba(244, 63, 94, 0.38) 0%, rgba(251, 113, 133, 0.10) 48%, transparent 70%),
-        radial-gradient(370px circle at 75% 70%, rgba(16, 185, 129, 0.40) 0%, rgba(45, 212, 191, 0.10) 48%, transparent 70%);
-      --ambient-orb-2:
-        linear-gradient(125deg, rgba(255, 255, 255, 0.25) 0%, rgba(14, 165, 233, 0.20) 30%, rgba(236, 72, 153, 0.18) 52%, rgba(16, 185, 129, 0.18) 74%, rgba(255, 255, 255, 0.25) 100%);
-      --silk-opacity: 0.92;
+        radial-gradient(520px circle at 24% 22%, rgba(125, 211, 252, 0.32) 0%, transparent 70%),
+        radial-gradient(560px circle at 78% 74%, rgba(148, 163, 184, 0.24) 0%, transparent 70%);
 
       --text-main: #0f172a;
       --text-muted: #1e293b;
       --text-dim: #475569;
       
-      /* iOS 27 淺色高通透冰晶玻璃：超清透中層 + 銳利深色微外框 + 135° 鑽石稜鏡切邊 */
-      --glass-backdrop: blur(var(--glass-blur-px, 26px)) saturate(235%) contrast(106%);
+      /* 淺色冰川水晶玻璃：純淨白高光 + 冷藍微折射（無紫色） */
+      --glass-backdrop: blur(var(--glass-blur-px, 16px)) saturate(160%);
       --glass-bg:
-        radial-gradient(120% 90% at 50% 0%, rgba(255, 255, 255, calc(0.66 * var(--glass-alpha-scale, 1))) 0%, transparent 56%),
-        linear-gradient(135deg, rgba(255, 255, 255, calc(0.38 * var(--glass-alpha-scale, 1))) 0%, rgba(255, 255, 255, calc(0.14 * var(--glass-alpha-scale, 1))) 48%, rgba(224, 242, 254, calc(0.28 * var(--glass-alpha-scale, 1))) 100%);
+        linear-gradient(145deg, rgba(255, 255, 255, calc(0.68 * var(--glass-alpha-scale, 1))) 0%, rgba(248, 250, 252, calc(0.44 * var(--glass-alpha-scale, 1))) 52%, rgba(241, 245, 249, calc(0.58 * var(--glass-alpha-scale, 1))) 100%);
       --glass-bg-hover:
-        radial-gradient(120% 90% at 50% 0%, rgba(255, 255, 255, calc(0.76 * var(--glass-alpha-scale, 1))) 0%, transparent 58%),
-        linear-gradient(135deg, rgba(255, 255, 255, calc(0.48 * var(--glass-alpha-scale, 1))) 0%, rgba(255, 255, 255, calc(0.22 * var(--glass-alpha-scale, 1))) 48%, rgba(224, 242, 254, calc(0.38 * var(--glass-alpha-scale, 1))) 100%);
+        linear-gradient(145deg, rgba(255, 255, 255, calc(0.78 * var(--glass-alpha-scale, 1))) 0%, rgba(248, 250, 252, calc(0.54 * var(--glass-alpha-scale, 1))) 52%, rgba(241, 245, 249, calc(0.66 * var(--glass-alpha-scale, 1))) 100%);
       --glass-border: rgba(255, 255, 255, 0.85);
+      --glass-border-subtle: rgba(15, 23, 42, 0.08);
       --glass-border-specular: rgba(255, 255, 255, 1);
-      --prismatic-rim: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(56, 189, 248, 0.55) 28%, rgba(255, 255, 255, 0.35) 50%, rgba(168, 85, 247, 0.50) 76%, rgba(255, 255, 255, 0.98) 100%);
       --glass-shadow:
-        0 22px 48px -12px rgba(15, 23, 42, 0.17),
-        0 6px 18px -4px rgba(2, 132, 199, 0.10),
-        0 0 0 1px rgba(15, 23, 42, 0.08),
-        inset 0 2.5px 2px 0 rgba(255, 255, 255, 1),
-        inset 0 -2.5px 4px 0 rgba(14, 165, 233, 0.24),
-        inset 1.75px 0 2px 0 rgba(255, 255, 255, 0.96),
-        inset -1.75px 0 3px 0 rgba(139, 92, 246, 0.18);
-      
-      --meniscus-sheen:
-        radial-gradient(92% 72% at 50% -2%, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.14) 45%, transparent 72%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, transparent 15%);
-      --cursor-glint: radial-gradient(360px circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, 0.85) 0%, rgba(56, 189, 248, 0.12) 45%, transparent 70%);
+        0 18px 40px -12px rgba(15, 23, 42, 0.13),
+        0 4px 12px -2px rgba(2, 132, 199, 0.07),
+        0 0 0 1px rgba(15, 23, 42, 0.06),
+        inset 0 1.5px 0 0 rgba(255, 255, 255, 0.96),
+        inset 0 -1.5px 0 0 rgba(14, 165, 233, 0.14);
 
-      /* iOS 27 淺色 3D 凸透鏡水滴按鈕：飽滿水滴弧頂 + 底部天藍焦散光 (Caustic Glow) */
+      /* 淺色 3D 凸透鏡水滴按鈕 */
       --btn-glass-bg:
         radial-gradient(110% 95% at 50% 8%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.25) 55%, transparent 82%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.52) 0%, rgba(255, 255, 255, 0.16) 55%, rgba(186, 230, 253, 0.44) 100%);
+        linear-gradient(180deg, rgba(255, 255, 255, 0.64) 0%, rgba(248, 250, 252, 0.34) 55%, rgba(224, 242, 254, 0.50) 100%);
       --btn-glass-hover:
         radial-gradient(110% 95% at 50% 8%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.42) 55%, transparent 82%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.30) 55%, rgba(186, 230, 253, 0.62) 100%);
+        linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(248, 250, 252, 0.50) 55%, rgba(224, 242, 254, 0.68) 100%);
       --btn-glass-border: rgba(255, 255, 255, 0.95);
       --btn-glass-shadow:
-        0 8px 18px -4px rgba(15, 23, 42, 0.14),
-        0 2px 5px rgba(2, 132, 199, 0.08),
-        0 0 0 1px rgba(15, 23, 42, 0.08),
-        inset 0 2.2px 1.2px 0 rgba(255, 255, 255, 1),
-        inset 0 -2px 2.5px 0 rgba(2, 132, 199, 0.24);
+        0 6px 14px -4px rgba(15, 23, 42, 0.12),
+        0 0 0 1px rgba(15, 23, 42, 0.07),
+        inset 0 1.5px 1px 0 rgba(255, 255, 255, 1),
+        inset 0 -1.5px 2px 0 rgba(2, 132, 199, 0.18);
 
       --btn-active-bg:
-        radial-gradient(110% 90% at 50% 6%, rgba(255, 255, 255, 0.62) 0%, transparent 55%),
-        linear-gradient(180deg, rgba(56, 189, 248, 0.92) 0%, rgba(2, 132, 199, 0.78) 55%, rgba(3, 105, 161, 0.88) 100%);
+        radial-gradient(110% 90% at 50% 6%, rgba(255, 255, 255, 0.60) 0%, transparent 55%),
+        linear-gradient(180deg, rgba(56, 189, 248, 0.92) 0%, rgba(2, 132, 199, 0.80) 55%, rgba(3, 105, 161, 0.90) 100%);
       --btn-active-border: rgba(224, 242, 254, 1);
       --btn-active-shadow:
-        0 10px 22px -4px rgba(2, 132, 199, 0.42),
-        0 0 0 1px rgba(2, 132, 199, 0.32),
-        inset 0 2.2px 1.5px 0 rgba(255, 255, 255, 0.95),
-        inset 0 -2px 2.5px 0 rgba(3, 105, 161, 0.52);
+        0 8px 18px -4px rgba(2, 132, 199, 0.38),
+        inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.92),
+        inset 0 -1.5px 2px 0 rgba(3, 105, 161, 0.45);
       --btn-active-text: #ffffff;
 
       --tab-active-shadow:
-        0 10px 24px -4px rgba(15, 23, 42, 0.18),
-        0 3px 8px rgba(2, 132, 199, 0.15),
-        0 0 0 1px rgba(15, 23, 42, 0.07),
-        inset 0 2.5px 1.5px 0 rgba(255, 255, 255, 1),
-        inset 0 -2px 2.5px 0 rgba(14, 165, 233, 0.26);
+        0 8px 20px -4px rgba(15, 23, 42, 0.14),
+        0 2px 6px rgba(2, 132, 199, 0.12),
+        0 0 0 1px rgba(15, 23, 42, 0.06),
+        inset 0 2px 1px 0 rgba(255, 255, 255, 1),
+        inset 0 -1.5px 2px 0 rgba(14, 165, 233, 0.20);
 
-      --well-bg: rgba(15, 23, 42, 0.08);
+      --well-bg: rgba(15, 23, 42, 0.07);
       --well-border: rgba(255, 255, 255, 0.85);
       --well-shadow:
-        inset 0 2.5px 5px rgba(15, 23, 42, 0.13),
-        inset 0 -1.5px 1px rgba(255, 255, 255, 0.98),
-        0 1px 2px rgba(255, 255, 255, 0.9);
+        inset 0 2px 4px rgba(15, 23, 42, 0.11),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.92);
 
-      --table-header-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.58) 0%, rgba(255, 255, 255, 0.20) 100%);
-      --table-hover: linear-gradient(90deg, rgba(14, 165, 233, 0.10) 0%, rgba(255, 255, 255, 0.62) 50%, rgba(139, 92, 246, 0.10) 100%);
-      --pill-bg: rgba(255, 255, 255, 0.42);
+      --table-header-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.62) 0%, rgba(255, 255, 255, 0.24) 100%);
+      --table-hover: rgba(14, 165, 233, 0.07);
+      --pill-bg: rgba(255, 255, 255, 0.45);
+      --glass-pill-bg: rgba(255, 255, 255, 0.52);
     }}
 
     * {{
@@ -441,7 +404,6 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
     body {{
       font-family: var(--font-sans);
       background: var(--bg-gradient);
-      background-attachment: fixed;
       color: var(--text-main);
       min-height: 100vh;
       overflow-x: hidden;
@@ -449,33 +411,13 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       transition: color 0.25s ease;
     }}
 
-    /* iOS 27 零耗能 3D 流光絲綢折射光場 (靜態 GPU 圖層，讓液態玻璃產生明顯邊緣透鏡彎曲與色散) */
+    /* 單一靜態固定背景光場（零捲動重繪負擔） */
     .ambient-glow {{
       position: fixed;
       inset: 0;
       background: var(--ambient-orb-1);
       pointer-events: none;
       z-index: 0;
-      transform: translateZ(0);
-      overflow: hidden;
-    }}
-
-    .ambient-glow::before {{
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--ambient-orb-2);
-      pointer-events: none;
-    }}
-
-    .ambient-silk-svg {{
-      position: absolute;
-      inset: -4%;
-      width: 108%;
-      height: 108%;
-      opacity: var(--silk-opacity, 0.85);
-      pointer-events: none;
-      transform: translateZ(0);
     }}
 
     /* 容器架構 */
@@ -487,6 +429,38 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       z-index: 1;
     }}
 
+    /* 懸浮置頂導航區 (Sticky Floating Liquid Glass Dock) */
+    .sticky-top-dock-slot {{
+      margin-bottom: 24px;
+    }}
+
+    .sticky-top-dock {{
+      position: relative;
+      z-index: 50;
+      border-radius: 24px;
+      border: 1px solid transparent;
+      transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, padding 0.25s var(--spring-ease);
+    }}
+
+    .sticky-top-dock.is-scrolled {{
+      position: fixed;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(calc(100% - 40px), 1320px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-backdrop);
+      -webkit-backdrop-filter: var(--glass-backdrop);
+      border-color: var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      border-radius: 999px;
+      padding: 8px 16px;
+    }}
+
     /* 頂部導航欄 (Header) */
     .app-header {{
       display: flex;
@@ -494,44 +468,25 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       align-items: center;
       flex-wrap: wrap;
       gap: 16px;
-      padding-bottom: 24px;
+      padding-bottom: 20px;
       border-bottom: 1px solid var(--glass-border);
-      margin-bottom: 24px;
+      margin-bottom: 18px;
+      transition: padding-bottom 0.25s var(--spring-ease), margin-bottom 0.25s var(--spring-ease), gap 0.25s ease;
+    }}
+
+    .sticky-top-dock.is-scrolled .app-header {{
+      padding-bottom: 0;
+      margin-bottom: 0;
+      border-bottom-color: transparent;
+      flex-wrap: nowrap;
+      gap: 10px;
+      min-width: 0;
     }}
 
     .header-branding {{
       display: flex;
       align-items: center;
-      gap: 14px;
-    }}
-
-    /* Apple 液態玻璃寶石徽章 */
-    .logo-badge {{
-      width: 46px;
-      height: 46px;
-      border-radius: 15px;
-      background: linear-gradient(145deg, rgba(56, 189, 248, 0.92) 0%, rgba(2, 132, 199, 0.78) 55%, rgba(3, 105, 161, 0.9) 100%);
-      border: 1px solid rgba(186, 230, 253, 0.65);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 800;
-      font-size: 20px;
-      position: relative;
-      overflow: hidden;
-      box-shadow:
-        0 8px 20px -4px rgba(2, 132, 199, 0.5),
-        inset 0 2px 1.5px 0 rgba(255, 255, 255, 0.75),
-        inset 0 -2px 3px 0 rgba(3, 105, 161, 0.6);
-    }}
-
-    .logo-badge::before {{
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(90% 70% at 30% 0%, rgba(255, 255, 255, 0.55) 0%, transparent 65%);
-      pointer-events: none;
+      min-width: 0;
     }}
 
     .header-title-box h1 {{
@@ -540,7 +495,16 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       letter-spacing: -0.02em;
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 10px;
+      transition: font-size 0.22s var(--spring-ease);
+    }}
+
+    .sticky-top-dock.is-scrolled .header-title-box h1 {{
+      font-size: 15px;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      gap: 8px;
     }}
 
     .header-title-box .team-pill {{
@@ -555,10 +519,72 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       box-shadow: var(--btn-glass-shadow);
     }}
 
+    .sticky-top-dock.is-scrolled .header-title-box .team-pill {{
+      font-size: 11px;
+      padding: 2px 8px;
+    }}
+
     .header-subtitle {{
       font-size: 13px;
       color: var(--text-muted);
-      margin-top: 3px;
+      margin-top: 4px;
+      transition: opacity 0.2s ease, max-height 0.22s ease, margin-top 0.22s ease;
+      max-height: 28px;
+      overflow: hidden;
+    }}
+
+    .sticky-top-dock.is-scrolled .header-subtitle,
+    .sticky-top-dock.is-scrolled .ios27-slider-pill,
+    .sticky-top-dock.is-scrolled .theme-toggle-btn {{
+      display: none;
+    }}
+
+    .sticky-top-dock.is-scrolled .date-pill {{
+      padding: 4px 10px;
+      font-size: 11.5px;
+      white-space: nowrap;
+    }}
+
+    .sticky-top-dock.is-scrolled .tab-nav-container {{
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }}
+
+    .sticky-top-dock.is-scrolled .segmented-control {{
+      padding: 4px;
+      gap: 4px;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      box-shadow: var(--well-shadow);
+    }}
+
+    .sticky-top-dock.is-scrolled .tab-btn {{
+      padding: 6px 11px;
+      font-size: 12px;
+      white-space: nowrap;
+    }}
+
+    @media (max-width: 1280px) {{
+      .sticky-top-dock.is-scrolled .date-pill {{
+        display: none;
+      }}
+      .sticky-top-dock.is-scrolled .tab-btn {{
+        padding: 5px 9px;
+        font-size: 11.5px;
+      }}
+    }}
+
+    @media (max-width: 1024px) {{
+      .sticky-top-dock.is-scrolled {{
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        border-radius: 22px;
+        padding: 10px 12px;
+      }}
+      .sticky-top-dock.is-scrolled .app-header {{
+        justify-content: center;
+      }}
     }}
 
     .header-actions {{
@@ -576,8 +602,8 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       padding: 6px 14px;
       border-radius: 999px;
       background: var(--btn-glass-bg);
-      backdrop-filter: blur(18px) saturate(200%);
-      -webkit-backdrop-filter: blur(18px) saturate(200%);
+      backdrop-filter: blur(14px) saturate(150%);
+      -webkit-backdrop-filter: blur(14px) saturate(150%);
       border: 1px solid var(--btn-glass-border);
       box-shadow: var(--btn-glass-shadow);
       font-size: 12px;
@@ -613,7 +639,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       transform: scale(1.18);
     }}
 
-    /* 頂部膠囊狀態標籤與液態按鈕 */
+    /* 頂部膠囊狀態標籤與全站統一液態膠囊按鈕 */
     .date-pill {{
       display: inline-flex;
       align-items: center;
@@ -621,8 +647,8 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       padding: 8px 16px;
       border-radius: 999px;
       background: var(--btn-glass-bg);
-      backdrop-filter: blur(18px) saturate(200%);
-      -webkit-backdrop-filter: blur(18px) saturate(200%);
+      backdrop-filter: blur(14px) saturate(150%);
+      -webkit-backdrop-filter: blur(14px) saturate(150%);
       border: 1px solid var(--btn-glass-border);
       font-size: 13px;
       font-weight: 600;
@@ -641,8 +667,10 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       box-shadow: 0 0 8px #30d158, inset 0 1px 1px rgba(255, 255, 255, 0.8);
     }}
 
-    /* 主題切換按鈕 (Apple iOS 27 3D Convex Droplet Button) */
-    .theme-toggle-btn {{
+    /* 全站共用液態玻璃膠囊按鈕基礎 (Header / Tab 2 / Tab 4 統一元素) */
+    .theme-toggle-btn,
+    .filter-btn,
+    .report-action-btn {{
       background: var(--btn-glass-bg);
       border: 1px solid var(--btn-glass-border);
       color: var(--text-main);
@@ -651,26 +679,41 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       cursor: pointer;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 7px;
       font-size: 13px;
       font-weight: 700;
       font-family: var(--font-sans);
-      backdrop-filter: blur(18px) saturate(200%);
-      -webkit-backdrop-filter: blur(18px) saturate(200%);
       box-shadow: var(--btn-glass-shadow);
       position: relative;
-      overflow: hidden;
-      transition: transform 0.25s var(--spring-ease), background 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.2s var(--spring-ease), background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
     }}
-    .theme-toggle-btn:hover {{
+
+    .theme-toggle-btn {{
+      backdrop-filter: blur(14px) saturate(150%);
+      -webkit-backdrop-filter: blur(14px) saturate(150%);
+    }}
+
+    .theme-toggle-btn:hover,
+    .filter-btn:hover,
+    .report-action-btn:hover:not(:disabled) {{
       background: var(--btn-glass-hover);
-      transform: translateY(-1px) scale(1.02);
+      color: var(--text-main);
+      transform: translateY(-1px) scale(1.015);
     }}
-    .theme-toggle-btn:active {{
+
+    .theme-toggle-btn:active,
+    .filter-btn:active,
+    .report-action-btn:active:not(:disabled) {{
       transform: translateY(0) scale(0.96);
     }}
 
-    /* 主選單分頁切換 (Tabs) - Apple iOS 27 二代液態玻璃膠囊控制器 */
+    .report-action-btn:disabled {{
+      opacity: 0.4;
+      cursor: not-allowed;
+    }}
+
+    /* 主選單分頁切換 (Tabs) - 液態玻璃膠囊控制器 */
     .tab-nav-container {{
       display: flex;
       justify-content: center;
@@ -680,12 +723,12 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
     .segmented-control {{
       display: inline-flex;
       background: var(--well-bg);
-      backdrop-filter: blur(22px) saturate(200%);
-      -webkit-backdrop-filter: blur(22px) saturate(200%);
+      backdrop-filter: blur(16px) saturate(150%);
+      -webkit-backdrop-filter: blur(16px) saturate(150%);
       padding: 6px;
       border-radius: 999px;
       border: 1px solid var(--well-border);
-      box-shadow: var(--well-shadow), 0 14px 34px -8px rgba(0, 0, 0, 0.22);
+      box-shadow: var(--well-shadow), 0 10px 26px -8px rgba(0, 0, 0, 0.18);
       gap: 6px;
       position: relative;
     }}
@@ -724,7 +767,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       box-shadow: var(--tab-active-shadow);
     }}
 
-    /* 液態玻璃卡片通用樣式 (Apple iOS 27 Second-Gen Liquid Glass Card) */
+    /* 液態玻璃卡片通用樣式（輕量化單層玻璃，移除 mask-composite 與 pointermove 重繪負擔） */
     .glass-card {{
       background: var(--glass-bg);
       backdrop-filter: var(--glass-backdrop);
@@ -734,45 +777,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       padding: 22px;
       box-shadow: var(--glass-shadow);
       position: relative;
-      overflow: hidden;
-      transition: transform 0.28s var(--spring-ease), box-shadow 0.28s ease, border-color 0.28s ease;
-    }}
-
-    /* iOS 27 135° 對角稜鏡折射高光邊框 + 頂部水滴張力光暈 (Prismatic Rim & Meniscus Lens) */
-    .glass-card::before {{
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      padding: 1.25px;
-      background: var(--prismatic-rim);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-      z-index: 2;
-    }}
-
-    /* 滑鼠懸停動態微光折射 + 頂部水滴張力曲面 (平時靜態零消耗，Hover 觸發焦散微光) */
-    .glass-card::after {{
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background: var(--cursor-glint), var(--meniscus-sheen);
-      opacity: 0.65;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-      z-index: 0;
-    }}
-
-    .glass-card:hover::after {{
-      opacity: 1;
-    }}
-
-    .glass-card > * {{
-      position: relative;
-      z-index: 1;
+      transition: transform 0.25s var(--spring-ease), border-color 0.25s ease;
     }}
 
     /* 頂部 KPI 卡片網格 */
@@ -821,7 +826,25 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       gap: 6px;
     }}
 
-    /* 歷史圖表區域 */
+    /* 歷史圖表區域 (雙欄並排：NAV/現金 + 累計總報酬率) */
+    .overview-charts-grid {{
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 20px;
+      margin-bottom: 28px;
+    }}
+
+    .overview-charts-grid .glass-card {{
+      min-width: 0;
+      overflow: hidden;
+    }}
+
+    @media (max-width: 960px) {{
+      .overview-charts-grid {{
+        grid-template-columns: minmax(0, 1fr);
+      }}
+    }}
+
     .chart-section {{
       margin-bottom: 28px;
     }}
@@ -867,29 +890,10 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       box-shadow: var(--well-shadow);
     }}
 
-    /* 液態玻璃膠囊按鈕 (Filter & Sort Liquid Buttons) */
+    /* 液態玻璃膠囊按鈕 active 狀態（基礎樣式已與全站按鈕統一） */
     .filter-btn {{
-      background: var(--btn-glass-bg);
-      border: 1px solid var(--btn-glass-border);
       color: var(--text-muted);
       padding: 8px 18px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 700;
-      font-family: var(--font-sans);
-      cursor: pointer;
-      box-shadow: var(--btn-glass-shadow);
-      transition: transform 0.22s var(--spring-ease), background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-    }}
-
-    .filter-btn:hover {{
-      background: var(--btn-glass-hover);
-      color: var(--text-main);
-      transform: translateY(-1px) scale(1.015);
-    }}
-
-    .filter-btn:active {{
-      transform: translateY(0) scale(0.96);
     }}
 
     .filter-btn.active {{
@@ -1009,11 +1013,10 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
 
     table.fugle-table td {{
       padding: 14px;
-      border-bottom: 1px solid var(--glass-border);
+      border-bottom: 1px solid var(--glass-border-subtle);
       text-align: right;
       font-family: var(--font-mono);
       white-space: nowrap;
-      transition: background 0.15s ease;
     }}
 
     table.fugle-table tbody tr:last-child td {{
@@ -1025,8 +1028,80 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       text-align: left;
     }}
 
-    table.fugle-table tbody tr:hover td {{
+    table.fugle-table tbody tr:not(.usage-stages-row):not(.holdings-drawer-row):hover td {{
       background: var(--table-hover);
+    }}
+
+    .holdings-row {{
+      cursor: pointer;
+    }}
+
+    .holdings-row.expanded .usage-chevron {{
+      transform: rotate(90deg);
+      color: var(--primary-accent);
+    }}
+
+    .holdings-drawer-row td {{
+      padding: 0 !important;
+      border-bottom: 1px solid var(--glass-border-subtle);
+    }}
+
+    .holdings-lot-drawer {{
+      padding: 14px 20px;
+      background: rgba(0, 0, 0, 0.14);
+    }}
+
+    html.theme-light .holdings-lot-drawer {{
+      background: rgba(15, 23, 42, 0.03);
+    }}
+
+    .holdings-lot-table {{
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      font-family: var(--font-mono);
+    }}
+
+    .holdings-lot-table th {{
+      background: transparent !important;
+      box-shadow: none !important;
+      padding: 6px 10px !important;
+      font-size: 11px;
+      color: var(--text-dim);
+      border-bottom: 1px solid var(--glass-border-subtle);
+      cursor: default !important;
+      text-align: right;
+    }}
+
+    .holdings-lot-table th:first-child {{
+      text-align: left;
+      border-radius: 0 !important;
+    }}
+
+    .holdings-lot-table td {{
+      padding: 8px 10px !important;
+      border-bottom: 1px solid var(--glass-border-subtle);
+      text-align: right;
+      font-size: 12px;
+    }}
+
+    .holdings-lot-table td:first-child {{
+      text-align: left;
+    }}
+
+    .holdings-lot-table tbody tr:last-child td {{
+      border-bottom: none;
+    }}
+
+    .lot-count-badge {{
+      font-size: 10.5px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: var(--glass-pill-bg);
+      border: 1px solid var(--glass-border-subtle);
+      color: var(--primary-accent);
     }}
 
     /* 股票標籤 */
@@ -1154,10 +1229,14 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       }}
       .segmented-control {{
         width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        border-radius: 22px;
       }}
       .tab-btn {{
-        flex: 1;
         justify-content: center;
+        padding: 10px 12px;
+        font-size: 13px;
       }}
       .kpi-grid {{
         grid-template-columns: repeat(2, 1fr);
@@ -1173,21 +1252,32 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       .search-box {{
         width: 100%;
       }}
-      .usage-charts-grid {{
-        grid-template-columns: 1fr !important;
-      }}
     }}
 
     /* ================= AI 模型用量與成本監控 (Tab 3) ================= */
     .usage-charts-grid {{
       display: grid;
-      grid-template-columns: 2fr 1fr;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
       gap: 20px;
       margin-bottom: 20px;
     }}
 
     .usage-chart-card {{
       padding: 20px 24px;
+      min-width: 0;
+      overflow: hidden;
+    }}
+
+    @media (max-width: 960px) {{
+      .usage-charts-grid {{
+        grid-template-columns: minmax(0, 1fr);
+      }}
+    }}
+
+    @media (max-width: 768px) {{
+      .usage-chart-card {{
+        padding: 16px;
+      }}
     }}
 
     .usage-chart-title {{
@@ -1197,8 +1287,9 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-wrap: wrap;
       gap: 8px;
-      color: var(--text-primary);
+      color: var(--text-main);
     }}
 
     .usage-chart-subtitle {{
@@ -1224,17 +1315,21 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       align-items: center;
       gap: 8px;
       padding: 8px 14px;
-      border-radius: 14px;
+      border-radius: 999px;
       background: var(--glass-pill-bg);
       border: 1px solid var(--glass-border-subtle);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
       font-size: 12px;
       font-weight: 600;
     }}
 
-    .model-badge {{
+    /* 成本監控 Model 標籤與沙盒標籤：與全站一致的液態水滴微膠囊 */
+    .model-badge,
+    .code-exec-badge {{
       display: inline-flex;
       align-items: center;
-      padding: 3px 9px;
+      gap: 4px;
+      padding: 3.5px 10px;
       border-radius: 999px;
       font-family: var(--font-mono);
       font-size: 11px;
@@ -1242,44 +1337,79 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
     }}
 
     .model-badge.flash {{
-      background: rgba(16, 185, 129, 0.16);
-      color: #10b981;
-      border: 1px solid rgba(16, 185, 129, 0.35);
+      background:
+        radial-gradient(100% 80% at 50% 8%, rgba(255, 255, 255, 0.28) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(16, 185, 129, 0.24) 0%, rgba(5, 150, 105, 0.10) 100%);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.40);
+      box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.35), 0 2px 6px -2px rgba(16, 185, 129, 0.25);
     }}
 
     .model-badge.argon {{
-      background: rgba(56, 189, 248, 0.16);
+      background:
+        radial-gradient(100% 80% at 50% 8%, rgba(255, 255, 255, 0.28) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(56, 189, 248, 0.26) 0%, rgba(2, 132, 199, 0.12) 100%);
       color: #38bdf8;
-      border: 1px solid rgba(56, 189, 248, 0.35);
+      border: 1px solid rgba(56, 189, 248, 0.42);
+      box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.35), 0 2px 6px -2px rgba(56, 189, 248, 0.25);
     }}
 
     .model-badge.fallback {{
-      background: rgba(245, 158, 11, 0.16);
-      color: #f59e0b;
-      border: 1px solid rgba(245, 158, 11, 0.35);
+      background:
+        radial-gradient(100% 80% at 50% 8%, rgba(255, 255, 255, 0.28) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(245, 158, 11, 0.24) 0%, rgba(217, 119, 6, 0.10) 100%);
+      color: #fbbf24;
+      border: 1px solid rgba(251, 191, 36, 0.40);
+      box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.35), 0 2px 6px -2px rgba(245, 158, 11, 0.22);
     }}
 
     .code-exec-badge {{
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 3px 9px;
-      border-radius: 999px;
-      background: rgba(139, 92, 246, 0.16);
-      color: #a78bfa;
-      border: 1px solid rgba(139, 92, 246, 0.35);
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
+      background:
+        radial-gradient(100% 80% at 50% 8%, rgba(255, 255, 255, 0.26) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(99, 102, 241, 0.24) 0%, rgba(79, 70, 229, 0.10) 100%);
+      color: #a5b4fc;
+      border: 1px solid rgba(129, 140, 248, 0.40);
+      box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.32), 0 2px 6px -2px rgba(99, 102, 241, 0.22);
+    }}
+
+    html.theme-light .model-badge.flash {{
+      background:
+        radial-gradient(100% 80% at 50% 8%, rgba(255, 255, 255, 0.85) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(167, 243, 208, 0.72) 0%, rgba(209, 250, 229, 0.38) 100%);
+      color: #047857;
+      border-color: rgba(16, 185, 129, 0.42);
+      box-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 1), 0 2px 6px -2px rgba(16, 185, 129, 0.18);
+    }}
+
+    html.theme-light .model-badge.argon {{
+      background:
+        radial-gradient(100% 80% at 50% 8%, rgba(255, 255, 255, 0.85) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(186, 230, 253, 0.76) 0%, rgba(224, 242, 254, 0.42) 100%);
+      color: #0369a1;
+      border-color: rgba(14, 165, 233, 0.42);
+      box-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 1), 0 2px 6px -2px rgba(2, 132, 199, 0.18);
+    }}
+
+    html.theme-light .model-badge.fallback {{
+      background:
+        radial-gradient(100% 80% at 50% 8%, rgba(255, 255, 255, 0.85) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(253, 230, 138, 0.74) 0%, rgba(254, 243, 199, 0.42) 100%);
+      color: #b45309;
+      border-color: rgba(245, 158, 11, 0.42);
+      box-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 1), 0 2px 6px -2px rgba(245, 158, 11, 0.18);
+    }}
+
+    html.theme-light .code-exec-badge {{
+      background:
+        radial-gradient(100% 80% at 50% 8%, rgba(255, 255, 255, 0.85) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(199, 210, 254, 0.74) 0%, rgba(224, 231, 255, 0.42) 100%);
+      color: #4338ca;
+      border-color: rgba(99, 102, 241, 0.40);
+      box-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 1), 0 2px 6px -2px rgba(99, 102, 241, 0.18);
     }}
 
     .usage-day-row {{
       cursor: pointer;
-      transition: background 0.2s ease;
-    }}
-
-    .usage-day-row:hover {{
-      background: rgba(255, 255, 255, 0.05);
     }}
 
     .usage-chevron {{
@@ -1292,7 +1422,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
 
     .usage-day-row.expanded .usage-chevron {{
       transform: rotate(90deg);
-      color: var(--accent-primary);
+      color: var(--primary-accent);
     }}
 
     .usage-stages-row td {{
@@ -1365,25 +1495,26 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
 
     .report-select {{
       appearance: none;
-      background: var(--glass-pill-bg);
+      background: var(--btn-glass-bg);
       color: var(--text-main);
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      padding: 8px 34px 8px 14px;
+      border: 1px solid var(--btn-glass-border);
+      box-shadow: var(--btn-glass-shadow);
+      border-radius: 999px;
+      padding: 8px 36px 8px 16px;
       font-family: var(--font-sans);
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       outline: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 12px center;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      background-position: right 14px center;
+      transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
     }}
 
     .report-select:hover, .report-select:focus {{
       border-color: var(--primary-accent);
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18);
+      box-shadow: var(--btn-glass-shadow), 0 0 0 3px var(--primary-glow);
     }}
 
     .report-select option {{
@@ -1396,38 +1527,12 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       color: #0f172a;
     }}
 
-    .report-action-btn {{
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 13px;
-      border-radius: 12px;
-      border: 1px solid var(--glass-border);
-      background: var(--glass-pill-bg);
-      color: var(--text-main);
-      font-family: var(--font-sans);
-      font-size: 12.5px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.15s var(--spring-ease), border-color 0.2s, background 0.2s;
-    }}
-
-    .report-action-btn:hover:not(:disabled) {{
-      border-color: var(--primary-accent);
-      transform: translateY(-1px);
-    }}
-
-    .report-action-btn:disabled {{
-      opacity: 0.4;
-      cursor: not-allowed;
-    }}
-
     .report-meta-pill {{
       font-size: 12px;
       color: var(--text-dim);
       font-family: var(--font-mono);
-      padding: 6px 12px;
-      border-radius: 10px;
+      padding: 7px 14px;
+      border-radius: 999px;
       background: var(--glass-pill-bg);
       border: 1px solid var(--glass-border-subtle);
     }}
@@ -1441,8 +1546,8 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
 
     .report-toc-card {{
       position: sticky;
-      top: 18px;
-      max-height: calc(100vh - 36px);
+      top: 86px;
+      max-height: calc(100vh - 104px);
       overflow-y: auto;
       padding: 18px 16px;
     }}
@@ -1520,7 +1625,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       margin: 28px 0 12px 0;
       padding-bottom: 8px;
       border-bottom: 1px solid var(--glass-border-subtle);
-      scroll-margin-top: 20px;
+      scroll-margin-top: 88px;
     }}
 
     .markdown-body h3 {{
@@ -1528,7 +1633,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       font-weight: 700;
       margin: 20px 0 10px 0;
       color: var(--primary-accent);
-      scroll-margin-top: 20px;
+      scroll-margin-top: 88px;
     }}
 
     .markdown-body h4 {{
@@ -1614,6 +1719,160 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       border: 1px solid var(--glass-border-subtle);
     }}
 
+    /* ================= 專案介紹與技術亮點 (Tab 5) ================= */
+    .about-hero-card {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 24px;
+      padding: 26px 28px;
+    }}
+
+    .about-hero-text {{
+      flex: 1 1 520px;
+    }}
+
+    .about-hero-title {{
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }}
+
+    .about-hero-desc {{
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--text-muted);
+    }}
+
+    .github-cta-btn {{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: 999px;
+      background: var(--btn-active-bg);
+      color: var(--btn-active-text);
+      border: 1px solid var(--btn-active-border);
+      box-shadow: var(--btn-active-shadow);
+      font-size: 13.5px;
+      font-weight: 700;
+      font-family: var(--font-sans);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: transform 0.2s var(--spring-ease), box-shadow 0.2s ease;
+    }}
+
+    .github-cta-btn:hover {{
+      transform: translateY(-2px) scale(1.02);
+    }}
+
+    .pipeline-flow {{
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }}
+
+    @media (max-width: 1100px) {{
+      .pipeline-flow {{
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }}
+    }}
+
+    @media (max-width: 640px) {{
+      .pipeline-flow {{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }}
+    }}
+
+    .pipeline-step {{
+      padding: 14px;
+      border-radius: 16px;
+      background: var(--glass-pill-bg);
+      border: 1px solid var(--glass-border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }}
+
+    .pipeline-step-tag {{
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--primary-accent);
+    }}
+
+    .pipeline-step-title {{
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-main);
+    }}
+
+    .pipeline-step-desc {{
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--text-dim);
+    }}
+
+    .highlights-grid {{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }}
+
+    @media (max-width: 960px) {{
+      .highlights-grid {{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }}
+    }}
+
+    @media (max-width: 640px) {{
+      .highlights-grid {{
+        grid-template-columns: minmax(0, 1fr);
+      }}
+    }}
+
+    .highlight-card {{
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }}
+
+    .highlight-card-title {{
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }}
+
+    .highlight-card-desc {{
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }}
+
+    .footer-link {{
+      color: var(--primary-accent);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }}
+
+    .footer-link:hover {{
+      text-decoration: underline;
+    }}
+
     .markdown-body table {{
       width: 100%;
       border-collapse: collapse;
@@ -1659,73 +1918,56 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
   </style>
 </head>
 <body>
-  <!-- iOS 27 3D 稜鏡流光絲綢背景：靜態向量彩帶穿過卡片後方，讓 backdrop-filter 折射出清晰的光學透鏡感且 0 效能負擔 -->
-  <div class="ambient-glow">
-    <svg class="ambient-silk-svg" viewBox="0 0 1600 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="ios27SilkCyan" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.45"/>
-          <stop offset="50%" stop-color="#3b82f6" stop-opacity="0.32"/>
-          <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.42"/>
-        </linearGradient>
-        <linearGradient id="ios27SilkRose" x1="100%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stop-color="#ec4899" stop-opacity="0.38"/>
-          <stop offset="50%" stop-color="#f43f5e" stop-opacity="0.28"/>
-          <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.35"/>
-        </linearGradient>
-        <linearGradient id="ios27SilkEmerald" x1="0%" y1="100%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#10b981" stop-opacity="0.38"/>
-          <stop offset="50%" stop-color="#14b8a6" stop-opacity="0.28"/>
-          <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.40"/>
-        </linearGradient>
-      </defs>
-      <path d="M-120,160 C320,-40 620,420 1060,180 C1340,30 1520,240 1720,110 L1720,390 C1420,510 1120,220 740,430 C380,620 140,340 -120,460 Z" fill="url(#ios27SilkCyan)"/>
-      <path d="M-100,520 C280,690 680,290 1120,540 C1380,680 1540,490 1720,610 L1720,860 C1400,720 1040,960 620,740 C260,550 80,790 -100,710 Z" fill="url(#ios27SilkRose)"/>
-      <path d="M180,-80 C540,180 880,-40 1260,260 C1480,430 1620,290 1740,440 L1740,640 C1460,480 1140,680 780,380 C440,100 160,310 -80,140 Z" fill="url(#ios27SilkEmerald)"/>
-    </svg>
-  </div>
+  <!-- 單一靜態冷冽藍灰／冰川銀柔和光場 -->
+  <div class="ambient-glow"></div>
 
   <div class="app-container">
-    <!-- 頂部標頭 -->
-    <header class="app-header">
-      <div class="header-branding">
-        <div class="logo-badge">玉</div>
-        <div class="header-title-box">
-          <h1>
-            <span>2026 AI 經理人投資決策看板</span>
-            <span class="team-pill">TEAM_11402</span>
-          </h1>
-          <div class="header-subtitle">玉山證券行情 SDK 串接 · Multi-Agent 每日決策追蹤系統</div>
+    <div class="sticky-top-dock-slot" id="stickyTopDockSlot">
+      <div class="sticky-top-dock" id="stickyTopDock">
+      <!-- 頂部標頭 -->
+      <header class="app-header">
+        <div class="header-branding">
+          <div class="header-title-box">
+            <h1>
+              <span>2026 玉山 AI Agent 基金經理人</span>
+              <span class="team-pill">TEAM_11402</span>
+            </h1>
+            <div class="header-subtitle">打造你的最佳 ETF 投資組合</div>
+          </div>
         </div>
-      </div>
-      <div class="header-actions">
-        <div class="date-pill" id="dateBadge">基準日: {summary_data['as_of_date']}</div>
-        <div class="ios27-slider-pill" title="iOS 27 液態玻璃通透度調節 (左：極致冰晶 / 右：溫潤凝霜)">
-          <span>💧 通透度</span>
-          <input type="range" id="glassAlphaSlider" min="35" max="145" value="100" oninput="setGlassTransparency(this.value)">
+        <div class="header-actions">
+          <div class="date-pill" id="dateBadge">基準日: {summary_data['as_of_date']}</div>
+          <div class="ios27-slider-pill" title="液態玻璃通透度調節 (左：極致冰晶 / 右：溫潤凝霜)">
+            <span>💧 通透度</span>
+            <input type="range" id="glassAlphaSlider" min="35" max="145" value="100" oninput="setGlassTransparency(this.value)">
+          </div>
+          <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()">
+            <span id="themeIcon">☀️</span>
+            <span id="themeLabel">淺色模式</span>
+          </button>
         </div>
-        <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()">
-          <span id="themeIcon">☀️</span>
-          <span id="themeLabel">淺色模式</span>
-        </button>
-      </div>
-    </header>
+      </header>
 
-    <!-- 分頁導航切換 -->
-    <div class="tab-nav-container">
-      <div class="segmented-control">
-        <button class="tab-btn active" id="tabBtn1" onclick="switchTab('tab1')">
-          <span>📊</span> 帳戶總覽與庫存損益
-        </button>
-        <button class="tab-btn" id="tabBtn2" onclick="switchTab('tab2')">
-          <span>📈</span> 自選行情觀察群組
-        </button>
-        <button class="tab-btn" id="tabBtn3" onclick="switchTab('tab3')">
-          <span>🤖</span> AI 模型用量與成本監控
-        </button>
-        <button class="tab-btn" id="tabBtn4" onclick="switchTab('tab4')">
-          <span>📄</span> 每日決策報告
-        </button>
+      <!-- 分頁導航切換 -->
+      <div class="tab-nav-container">
+        <div class="segmented-control">
+          <button class="tab-btn active" id="tabBtn1" onclick="switchTab('tab1')">
+            <span>📊</span> 帳戶總覽與庫存損益
+          </button>
+          <button class="tab-btn" id="tabBtn2" onclick="switchTab('tab2')">
+            <span>📈</span> 自選行情觀察群組
+          </button>
+          <button class="tab-btn" id="tabBtn3" onclick="switchTab('tab3')">
+            <span>🤖</span> AI 模型用量與成本監控
+          </button>
+          <button class="tab-btn" id="tabBtn4" onclick="switchTab('tab4')">
+            <span>📄</span> 每日決策報告
+          </button>
+          <button class="tab-btn" id="tabBtn5" onclick="switchTab('tab5')">
+            <span>💡</span> 專案亮點
+          </button>
+        </div>
+      </div>
       </div>
     </div>
 
@@ -1762,23 +2004,38 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
         </div>
       </div>
 
-      <!-- 資產走勢折線圖 -->
-      <div class="glass-card chart-section">
-        <div class="chart-header">
-          <div class="chart-title">
-            <span>📈</span> 每日可交易淨值 (NAV) 與現金水位變化趨勢
+      <!-- 資產走勢與累計總報酬率雙折線圖 -->
+      <div class="overview-charts-grid">
+        <div class="glass-card">
+          <div class="chart-header">
+            <div class="chart-title">
+              <span>📈</span> 每日可交易淨值 (NAV) 與現金水位
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="assetHistoryChart"></canvas>
           </div>
         </div>
-        <div class="chart-wrapper">
-          <canvas id="assetHistoryChart"></canvas>
+        <div class="glass-card">
+          <div class="chart-header">
+            <div class="chart-title">
+              <span>🚀</span> 累計總報酬率 (%) 趨勢
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="cumReturnChart"></canvas>
+          </div>
         </div>
       </div>
 
       <!-- 目前庫存持股明細表 -->
       <div class="glass-card">
         <div class="table-toolbar">
-          <div class="chart-title">
-            <span>📋</span> 目前庫存部位與未實現損益明細 ({len(held_positions)} 檔)
+          <div>
+            <div class="chart-title">
+              <span>📋</span> 目前庫存部位與未實現損益明細 ({len(held_positions)} 檔)
+            </div>
+            <div style="font-size:12px; color:var(--text-dim); margin-top:4px;">點擊任一持股列即可展開分批買進明細（建倉日期、張數、成交價與各批損益）</div>
           </div>
           <div class="search-box">
             <span class="search-icon">🔍</span>
@@ -1792,6 +2049,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
               <tr>
                 <th onclick="sortHoldings('code')">代號/名稱 <span class="sort-icon">⇅</span></th>
                 <th onclick="sortHoldings('market')">市場 <span class="sort-icon">⇅</span></th>
+                <th onclick="sortHoldings('holding_days')">持有天數 <span class="sort-icon">⇅</span></th>
                 <th onclick="sortHoldings('lots')">庫存張數 <span class="sort-icon">⇅</span></th>
                 <th onclick="sortHoldings('avg_cost')">成本均價 <span class="sort-icon">⇅</span></th>
                 <th onclick="sortHoldings('close_price')">最新現價 <span class="sort-icon">⇅</span></th>
@@ -1998,9 +2256,96 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       </div>
     </div>
 
+    <!-- ================= 頁籤 5: 專案介紹與技術亮點 ================= -->
+    <div id="tab5Content" style="display: none;">
+      <div class="glass-card about-hero-card">
+        <div class="about-hero-text">
+          <div class="about-hero-title">
+            <span>🤖 2026 玉山 AI Agent 基金經理人</span>
+            <span class="badge-pnl badge-held" style="font-size:11.5px;">TEAM_11402</span>
+          </div>
+          <div class="about-hero-desc">
+            本系統為 <strong>2026 玉山人工智慧公開挑戰賽（AI CUP 2026）</strong> 所建置的「<strong>Multi-Agent 自主量化投資決策產線（D-Plan v4.3）</strong>」與「<strong>即時投資組合監控看板</strong>」雙核心平台。透過分層因果推論與原生 Python 沙盒運算，讓 AI 每日自動完成盤後數據整合、市場研判、個股推論與投組委託生成，並即時同步於本看板供研究覆核。
+          </div>
+        </div>
+        <a class="github-cta-btn" href="https://github.com/codyliao0327/esun-ai-cup-2026" target="_blank" rel="noopener noreferrer">
+          <span>🔗</span> 前往 GitHub Repo
+        </a>
+      </div>
+
+      <div class="glass-card">
+        <div class="chart-title" style="margin-bottom: 4px;">
+          <span>🧭</span> 分層因果推論決策架構（L0 ➔ L4 Pipeline）
+        </div>
+        <div style="font-size:12.5px; color:var(--text-dim);">嚴格遵循單向因果引用鏈與官方 D-Plan Schema v4.3 規範，確保每一筆委託皆具備完整可追溯推論依據</div>
+        <div class="pipeline-flow">
+          <div class="pipeline-step">
+            <span class="pipeline-step-tag">L0 · Data Sources</span>
+            <span class="pipeline-step-title">多源數據收集</span>
+            <span class="pipeline-step-desc">整合量化行情、基本面、技術籌碼、社群情緒與官方帳戶快照。</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="pipeline-step-tag">L1 · Observations</span>
+            <span class="pipeline-step-title">客觀事實擷取</span>
+            <span class="pipeline-step-desc">壓縮為高密度 Compact Array JSON，保留時間戳並大幅降低 Token 消耗。</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="pipeline-step-tag">L2M · Market View</span>
+            <span class="pipeline-step-title">市場走向研判</span>
+            <span class="pipeline-step-desc">分析宏觀盤勢 Regime、資金水位與整體多空風險立場。</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="pipeline-step-tag">L2 · Inferences</span>
+            <span class="pipeline-step-title">個股深度推論</span>
+            <span class="pipeline-step-desc">針對精選候選池進行基本面、動能與風險因子因果推論。</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="pipeline-step-tag">L3 · Decisions</span>
+            <span class="pipeline-step-title">投組權重決策</span>
+            <span class="pipeline-step-desc">控管持股檔數、移動停利追蹤與整體部位風險平衡配置。</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="pipeline-step-tag">L4 · Orders & UI</span>
+            <span class="pipeline-step-title">委託精算與看板</span>
+            <span class="pipeline-step-desc">千股整股與合規校驗後產出 D-Plan，同步更新本儀表板。</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlights-grid">
+        <div class="glass-card highlight-card">
+          <div class="highlight-card-title"><span>🧠</span> 因果引用鏈與嚴格 Schema 校驗</div>
+          <div class="highlight-card-desc">落實 L0 ➔ L1 ➔ L2M ➔ L2 ➔ L3 ➔ L4 單向無循環引用，並透過 Pydantic <code>extra='forbid'</code> 全量結構驗證，杜絕孤兒節點與格式偏差。</div>
+        </div>
+        <div class="glass-card highlight-card">
+          <div class="highlight-card-title"><span>🐍</span> 原生 Python 沙盒零數值幻覺</div>
+          <div class="highlight-card-desc">於 L2、L3、L4 核心階段全面啟用 Gemini 原生 Code Execution 沙盒，將權重精算、整股張數換算與風險指標交由程式執行，徹底避免 LLM 算術誤差。</div>
+        </div>
+        <div class="glass-card highlight-card">
+          <div class="highlight-card-title"><span>🧭</span> LiteLLM Multi-Model 動態路由</div>
+          <div class="highlight-card-desc">透過 <code>litellm.Router</code> 依任務複雜度分流模型（輕量級模型處理海量事實擷取、旗艦推理模型負責投組決策），並配置異常自動降級備援（Fallback）。</div>
+        </div>
+        <div class="glass-card highlight-card">
+          <div class="highlight-card-title"><span>🛡️</span> 三層 JSON 容錯防禦鏈</div>
+          <div class="highlight-card-desc">結合串流模式結構化輸出（Structured Output）、Pydantic 校驗與 <code>json-repair</code> 自動修復容錯鏈，確保超長推論輸出依然維持高穩定度。</div>
+        </div>
+        <div class="glass-card highlight-card">
+          <div class="highlight-card-title"><span>⚡</span> 動態回補與 Compact JSON 工程</div>
+          <div class="highlight-card-desc">基本面與社群情緒指標採各股獨立動態遞補最新有效值，並以 Compact Array JSON 壓縮儲存，在有限上下文視窗中塞入最大資訊密度。</div>
+        </div>
+        <div class="glass-card highlight-card">
+          <div class="highlight-card-title"><span>💎</span> 實戰級全端監控與自動發布</div>
+          <div class="highlight-card-desc">整合玉山行情 SDK、FIFO 分批買進成本與損益追蹤、19 項 LiteLLM 用量成本監控，並支援每日一鍵更新與 Cloudflare Pages 自動部署。</div>
+        </div>
+      </div>
+    </div>
+
     <!-- 頁尾 -->
     <footer class="app-footer">
-      <div>AI CUP 2026 玉山人工智慧公開挑戰賽 · 隊伍 TEAM_11402 專用看板</div>
+      <div>
+        AI CUP 2026 玉山人工智慧公開挑戰賽 · 隊伍 TEAM_11402 專用看板 ·
+        <a class="footer-link" href="https://github.com/codyliao0327/esun-ai-cup-2026" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
+      </div>
       <div>數據更新自官方 DataPack 與玉山證券行情 SDK · 僅供研究與競賽內部覆核使用</div>
     </footer>
   </div>
@@ -2043,10 +2388,10 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       }}
     }}
 
-    // 初始化主題與 iOS 27 通透度滑桿
+    // 初始化主題與輕量化液態玻璃通透度滑桿
     function setGlassTransparency(val) {{
       const scale = (Number(val) / 100).toFixed(2);
-      const blurPx = Math.round(14 + (Number(val) / 100) * 12);
+      const blurPx = Math.round(6 + (Number(val) / 100) * 10);
       document.documentElement.style.setProperty('--glass-alpha-scale', scale);
       document.documentElement.style.setProperty('--glass-blur-px', blurPx + 'px');
       localStorage.setItem('esun_dashboard_glass_alpha', val);
@@ -2075,10 +2420,12 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       document.getElementById('tabBtn2').classList.toggle('active', tabId === 'tab2');
       document.getElementById('tabBtn3').classList.toggle('active', tabId === 'tab3');
       document.getElementById('tabBtn4').classList.toggle('active', tabId === 'tab4');
+      document.getElementById('tabBtn5').classList.toggle('active', tabId === 'tab5');
       document.getElementById('tab1Content').style.display = tabId === 'tab1' ? 'block' : 'none';
       document.getElementById('tab2Content').style.display = tabId === 'tab2' ? 'block' : 'none';
       document.getElementById('tab3Content').style.display = tabId === 'tab3' ? 'block' : 'none';
       document.getElementById('tab4Content').style.display = tabId === 'tab4' ? 'block' : 'none';
+      document.getElementById('tab5Content').style.display = tabId === 'tab5' ? 'block' : 'none';
       if (tabId === 'tab2') {{
         renderWatchTable();
       }} else if (tabId === 'tab3') {{
@@ -2114,15 +2461,47 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       tbody.innerHTML = list.map(item => {{
         const isUp = item.unrealized_return_pct >= 0;
         const changeUp = item.change >= 0;
+        const lotsList = item.buy_lots || [];
+        const batchBadge = lotsList.length > 1 ? `<span class="lot-count-badge">${{lotsList.length}} 批</span>` : '';
+        const daysTitle = item.first_buy_date ? `建倉日: ${{item.first_buy_date}} · ${{item.holding_trading_days || 0}} 交易日` : '';
+
+        const lotsRowsHtml = lotsList.length > 0
+          ? lotsList.map(lot => {{
+              const lotUp = lot.unrealized_pnl >= 0;
+              const origNote = (lot.orig_lots && lot.orig_lots > lot.lots) ? ` <span style="color:var(--text-dim); font-size:11px;">(原 ${{fmtNum(lot.orig_lots, 1)}} 張)</span>` : '';
+              return `
+                <tr>
+                  <td>${{lot.date}}</td>
+                  <td><strong>${{fmtNum(lot.lots, 1)}}</strong> 張${{origNote}}</td>
+                  <td>$${{fmtNum(lot.price, 2)}}</td>
+                  <td>$${{fmtNum(lot.cost, 0)}}</td>
+                  <td>$${{fmtNum(lot.market_value, 0)}}</td>
+                  <td style="color:${{lotUp ? 'var(--color-up)' : 'var(--color-down)'}}; font-weight:700;">
+                    ${{lotUp ? '+' : ''}}${{fmtNum(lot.unrealized_pnl, 0)}}
+                  </td>
+                  <td>
+                    <span class="badge-pnl ${{lotUp ? 'up' : 'down'}}" style="padding:2px 8px; font-size:11px;">
+                      ${{lotUp ? '+' : ''}}${{fmtNum(lot.return_pct, 2)}}%
+                    </span>
+                  </td>
+                  <td>${{lot.holding_days}} 天</td>
+                </tr>
+              `;
+            }}).join('')
+          : `<tr><td colspan="8" style="text-align:center; color:var(--text-dim);">尚無後台成交買進明細</td></tr>`;
+
         return `
-          <tr>
+          <tr class="holdings-row" id="holdingsRow_${{item.code}}" onclick="toggleHoldingsLot('${{item.code}}')">
             <td>
               <div class="stock-tag-box">
+                <span class="usage-chevron">▶</span>
                 <span class="stock-code">${{item.code}}</span>
                 <span class="stock-name">${{item.name}}</span>
+                ${{batchBadge}}
               </div>
             </td>
             <td><span class="market-badge">${{item.market}}</span></td>
+            <td title="${{daysTitle}}"><strong>${{item.holding_days || 0}}</strong> 天</td>
             <td><strong>${{fmtNum(item.lots, 1)}}</strong> 張</td>
             <td>$${{fmtNum(item.avg_cost, 2)}}</td>
             <td><strong>$${{fmtNum(item.close_price, 2)}}</strong></td>
@@ -2151,8 +2530,40 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
               </div>
             </td>
           </tr>
+          <tr class="holdings-drawer-row" id="holdingsDrawer_${{item.code}}" style="display: none;">
+            <td colspan="11">
+              <div class="holdings-lot-drawer">
+                <table class="holdings-lot-table">
+                  <thead>
+                    <tr>
+                      <th>買進日期</th>
+                      <th>持有張數</th>
+                      <th>成交價</th>
+                      <th>投入成本</th>
+                      <th>目前現值</th>
+                      <th>該批損益</th>
+                      <th>該批報酬率</th>
+                      <th>持有天數</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${{lotsRowsHtml}}
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
         `;
       }}).join('');
+    }}
+
+    function toggleHoldingsLot(code) {{
+      const row = document.getElementById(`holdingsRow_${{code}}`);
+      const drawer = document.getElementById(`holdingsDrawer_${{code}}`);
+      if (!row || !drawer) return;
+      const isHidden = drawer.style.display === 'none';
+      drawer.style.display = isHidden ? 'table-row' : 'none';
+      row.classList.toggle('expanded', isHidden);
     }}
 
     function filterHoldingsTable() {{
@@ -2355,6 +2766,89 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
           }}
         }}
       }});
+
+      // 累計總報酬率 (%) 趨勢圖
+      const retCtx = document.getElementById('cumReturnChart').getContext('2d');
+      const retData = DASHBOARD_DATA.history.map(h => Number(h.cum_return_pct || 0));
+      const zeroLine = labels.map(() => 0);
+      const latestRet = retData.length ? retData[retData.length - 1] : 0;
+      const retColor = latestRet >= 0 ? '#f43f5e' : '#10b981';
+      const retFill = latestRet >= 0 ? 'rgba(244, 63, 94, 0.14)' : 'rgba(16, 185, 129, 0.14)';
+
+      window.cumReturnChartInst = new Chart(retCtx, {{
+        type: 'line',
+        data: {{
+          labels: labels,
+          datasets: [
+            {{
+              label: '累計總報酬率 (%)',
+              data: retData,
+              borderColor: retColor,
+              backgroundColor: retFill,
+              borderWidth: 2.5,
+              tension: 0.35,
+              fill: true,
+              pointBackgroundColor: retColor,
+              pointRadius: 4,
+              pointHoverRadius: 6
+            }},
+            {{
+              label: '損益兩平基準 (0%)',
+              data: zeroLine,
+              borderColor: isDark ? 'rgba(148, 163, 184, 0.45)' : 'rgba(100, 116, 139, 0.45)',
+              borderWidth: 1.2,
+              borderDash: [5, 5],
+              pointRadius: 0,
+              fill: false
+            }}
+          ]
+        }},
+        options: {{
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {{ mode: 'index', intersect: false }},
+          plugins: {{
+            legend: {{
+              position: 'top',
+              labels: {{
+                color: textColor,
+                font: {{ family: 'Plus Jakarta Sans', size: 12, weight: '600' }}
+              }}
+            }},
+            tooltip: {{
+              backgroundColor: isDark ? 'rgba(15, 23, 42, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+              titleColor: isDark ? '#f8fafc' : '#0f172a',
+              bodyColor: isDark ? '#cbd5e1' : '#334155',
+              borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+              borderWidth: 1,
+              padding: 12,
+              callbacks: {{
+                label: function(context) {{
+                  if (context.datasetIndex === 1) return null;
+                  const val = Number(context.parsed.y);
+                  return `累計總報酬率: ${{val >= 0 ? '+' : ''}}${{val.toFixed(2)}}%`;
+                }}
+              }}
+            }}
+          }},
+          scales: {{
+            x: {{
+              grid: {{ color: gridColor }},
+              ticks: {{ color: textColor, font: {{ family: 'JetBrains Mono' }} }}
+            }},
+            y: {{
+              grid: {{ color: gridColor }},
+              ticks: {{
+                color: textColor,
+                font: {{ family: 'JetBrains Mono' }},
+                callback: function(value) {{
+                  return (value >= 0 ? '+' : '') + Number(value).toFixed(2) + '%';
+                }}
+              }}
+            }}
+          }}
+        }}
+      }});
     }}
 
     function updateChartTheme() {{
@@ -2362,7 +2856,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       const gridColor = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
       const textColor = isDark ? '#94a3b8' : '#64748b';
 
-      [window.assetChart, window.usageTrendChartInst, window.usageTokenStackChartInst].forEach(ch => {{
+      [window.assetChart, window.cumReturnChartInst, window.usageTrendChartInst, window.usageTokenStackChartInst].forEach(ch => {{
         if (!ch || typeof ch.update !== 'function') return;
         if (ch.options.scales) {{
           Object.values(ch.options.scales).forEach(s => {{
@@ -2422,10 +2916,6 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       requestAnimationFrame(() => {{
         renderUsageCharts(usage);
       }});
-      if (!usageTabRendered) {{
-        usageTabRendered = true;
-        initLiquidSpecularGlint();
-      }}
     }}
 
     function renderUsageKpis(usage) {{
@@ -2671,7 +3161,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
               </div>
               <div class="stage-mini-metrics">
                 <span>輸入 ${{fmtCompactTokens(st.prompt_tokens)}} / 輸出 ${{fmtCompactTokens(st.completion_tokens)}}</span>
-                <span style="color:var(--text-primary); font-weight:700;">$${{Number(st.response_cost || 0).toFixed(4)}}</span>
+                <span style="color:var(--text-main); font-weight:700;">$${{Number(st.response_cost || 0).toFixed(4)}}</span>
               </div>
               ${{stExec > 0 ? `<div style="margin-top:2px;"><span class="code-exec-badge">🐍 Code Exec: ${{stExec}} 次</span></div>` : ''}}
             </div>
@@ -2829,23 +3319,41 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       }}
     }}
 
-    // 輕量級液態玻璃表面微光追蹤 (Passive 事件且僅更新當前卡片 CSS 變數，無背景常駐運算)
-    function initLiquidSpecularGlint() {{
-      if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
-      document.querySelectorAll('.glass-card').forEach(card => {{
-        card.addEventListener('pointermove', (e) => {{
-          const rect = card.getBoundingClientRect();
-          card.style.setProperty('--mx', `${{(e.clientX - rect.left).toFixed(0)}}px`);
-          card.style.setProperty('--my', `${{(e.clientY - rect.top).toFixed(0)}}px`);
-        }}, {{ passive: true }});
-      }});
+    // 零版面位移 + 大遲滯區間 (Hysteresis) 偵測：鎖定佔位高度後切換為 fixed 單行懸浮，徹底消除跳動
+    function initStickyDockObserver() {{
+      const slot = document.getElementById('stickyTopDockSlot');
+      const dock = document.getElementById('stickyTopDock');
+      if (!slot || !dock) return;
+      let isCompact = false;
+      let ticking = false;
+
+      const updateDock = () => {{
+        ticking = false;
+        const y = window.scrollY || window.pageYOffset || 0;
+        if (!isCompact && y > 180) {{
+          slot.style.minHeight = dock.offsetHeight + 'px';
+          isCompact = true;
+          dock.classList.add('is-scrolled');
+        }} else if (isCompact && y < 40) {{
+          isCompact = false;
+          dock.classList.remove('is-scrolled');
+          slot.style.minHeight = '';
+        }}
+      }};
+
+      window.addEventListener('scroll', () => {{
+        if (!ticking) {{
+          ticking = true;
+          requestAnimationFrame(updateDock);
+        }}
+      }}, {{ passive: true }});
     }}
 
     // 初始化渲染
     window.addEventListener('DOMContentLoaded', () => {{
       renderHoldingsTable();
       renderAssetChart();
-      initLiquidSpecularGlint();
+      initStickyDockObserver();
     }});
   </script>
 </body>
