@@ -187,7 +187,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
     safe_json_payload = json.dumps(json_data_payload, ensure_ascii=False).replace("</", "<\\/")
 
     html_template = f"""<!DOCTYPE html>
-<html lang="zh-TW" class="theme-dark">
+<html lang="zh-TW" class="theme-light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -401,11 +401,16 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       -moz-osx-font-smoothing: grayscale;
     }}
 
+    html {{
+      overflow-x: hidden;
+    }}
+
     body {{
       font-family: var(--font-sans);
       background: var(--bg-gradient);
       color: var(--text-main);
       min-height: 100vh;
+      max-width: 100%;
       overflow-x: hidden;
       padding-bottom: 48px;
       transition: color 0.25s ease;
@@ -535,7 +540,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
 
     .sticky-top-dock.is-scrolled .header-subtitle,
     .sticky-top-dock.is-scrolled .ios27-slider-pill,
-    .sticky-top-dock.is-scrolled .theme-toggle-btn {{
+    .sticky-top-dock.is-scrolled .theme-segmented {{
       display: none;
     }}
 
@@ -689,9 +694,42 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       transition: transform 0.2s var(--spring-ease), background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
     }}
 
-    .theme-toggle-btn {{
-      backdrop-filter: blur(14px) saturate(150%);
-      -webkit-backdrop-filter: blur(14px) saturate(150%);
+    /* 三段式主題切換器 (淺色 / 深色 / 跟隨裝置) */
+    .theme-segmented {{
+      display: inline-flex;
+      align-items: center;
+      background: var(--well-bg);
+      border: 1px solid var(--well-border);
+      box-shadow: var(--well-shadow);
+      border-radius: 999px;
+      padding: 3px;
+      gap: 2px;
+    }}
+
+    .theme-opt-btn {{
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+    }}
+
+    .theme-opt-btn:hover:not(.active) {{
+      color: var(--text-main);
+      background: var(--pill-bg);
+    }}
+
+    .theme-opt-btn.active {{
+      background: var(--btn-active-bg);
+      color: var(--btn-active-text);
+      border-color: var(--btn-active-border);
+      box-shadow: var(--btn-active-shadow);
     }}
 
     .theme-toggle-btn:hover,
@@ -1219,6 +1257,28 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
     }}
 
     @media (max-width: 768px) {{
+      .app-container {{
+        padding: 14px 12px;
+      }}
+      .sticky-top-dock.is-scrolled {{
+        width: calc(100% - 24px);
+        top: 8px;
+        padding: 8px 10px;
+        border-radius: 18px;
+      }}
+      .sticky-top-dock.is-scrolled .header-title-box h1 {{
+        white-space: normal;
+        flex-wrap: wrap;
+        justify-content: center;
+        text-align: center;
+        font-size: 14px;
+      }}
+      .sticky-top-dock.is-scrolled .tab-btn {{
+        white-space: normal;
+        padding: 6px 8px;
+        font-size: 11.5px;
+        line-height: 1.25;
+      }}
       .app-header {{
         flex-direction: column;
         align-items: flex-start;
@@ -1226,20 +1286,39 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       .header-actions {{
         width: 100%;
         justify-content: space-between;
+        gap: 8px;
       }}
       .segmented-control {{
         width: 100%;
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        border-radius: 22px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        border-radius: 20px;
       }}
       .tab-btn {{
         justify-content: center;
-        padding: 10px 12px;
-        font-size: 13px;
+        padding: 9px 10px;
+        font-size: 12.5px;
+        min-width: 0;
+        text-align: center;
+      }}
+      #tabBtn5 {{
+        grid-column: 1 / -1;
       }}
       .kpi-grid {{
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }}
+      .kpi-card {{
+        padding: 14px;
+        min-width: 0;
+      }}
+      .kpi-value {{
+        font-size: 17px;
+        word-break: break-word;
+      }}
+      .glass-card {{
+        min-width: 0;
+        max-width: 100%;
       }}
       .table-toolbar {{
         flex-direction: column;
@@ -1250,6 +1329,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
         justify-content: center;
       }}
       .search-box {{
+        min-width: 0;
         width: 100%;
       }}
     }}
@@ -1941,10 +2021,11 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
             <span>💧 通透度</span>
             <input type="range" id="glassAlphaSlider" min="35" max="145" value="100" oninput="setGlassTransparency(this.value)">
           </div>
-          <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()">
-            <span id="themeIcon">☀️</span>
-            <span id="themeLabel">淺色模式</span>
-          </button>
+          <div class="theme-segmented" role="group" aria-label="主題模式切換">
+            <button type="button" class="theme-opt-btn active" id="themeOptLight" onclick="setThemeMode('light')">☀️ 淺色</button>
+            <button type="button" class="theme-opt-btn" id="themeOptDark" onclick="setThemeMode('dark')">🌙 深色</button>
+            <button type="button" class="theme-opt-btn" id="themeOptAuto" onclick="setThemeMode('auto')">🖥️ 跟隨</button>
+          </div>
         </div>
       </header>
 
@@ -2366,26 +2447,27 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
     let holdingsSortCol = 'weight_pct';
     let holdingsSortAsc = false;
 
-    // 主題切換 (深淺模式)
-    function toggleTheme() {{
+    // 主題切換 (三段式：淺色 / 深色 / 跟隨裝置，預設淺色)
+    let currentThemeMode = 'light';
+    const systemDarkMql = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+
+    function applyResolvedTheme(mode) {{
       const html = document.documentElement;
-      const isDark = html.classList.contains('theme-dark');
-      if (isDark) {{
-        html.classList.remove('theme-dark');
-        html.classList.add('theme-light');
-        document.getElementById('themeIcon').textContent = '🌙';
-        document.getElementById('themeLabel').textContent = '深色模式';
-        localStorage.setItem('esun_dashboard_theme', 'light');
-      }} else {{
-        html.classList.remove('theme-light');
-        html.classList.add('theme-dark');
-        document.getElementById('themeIcon').textContent = '☀️';
-        document.getElementById('themeLabel').textContent = '淺色模式';
-        localStorage.setItem('esun_dashboard_theme', 'dark');
-      }}
+      const useDark = mode === 'dark' || (mode === 'auto' && systemDarkMql && systemDarkMql.matches);
+      html.classList.toggle('theme-dark', useDark);
+      html.classList.toggle('theme-light', !useDark);
+      document.getElementById('themeOptLight')?.classList.toggle('active', mode === 'light');
+      document.getElementById('themeOptDark')?.classList.toggle('active', mode === 'dark');
+      document.getElementById('themeOptAuto')?.classList.toggle('active', mode === 'auto');
       if (window.assetChart) {{
         updateChartTheme();
       }}
+    }}
+
+    function setThemeMode(mode) {{
+      currentThemeMode = mode;
+      localStorage.setItem('esun_dashboard_theme', mode);
+      applyResolvedTheme(mode);
     }}
 
     // 初始化主題與輕量化液態玻璃通透度滑桿
@@ -2399,12 +2481,16 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
 
     (function initTheme() {{
       const saved = localStorage.getItem('esun_dashboard_theme');
-      if (saved === 'light') {{
-        document.documentElement.classList.remove('theme-dark');
-        document.documentElement.classList.add('theme-light');
-        document.getElementById('themeIcon').textContent = '🌙';
-        document.getElementById('themeLabel').textContent = '深色模式';
+      const initialMode = (saved === 'light' || saved === 'dark' || saved === 'auto') ? saved : 'light';
+      currentThemeMode = initialMode;
+      applyResolvedTheme(initialMode);
+
+      if (systemDarkMql && typeof systemDarkMql.addEventListener === 'function') {{
+        systemDarkMql.addEventListener('change', () => {{
+          if (currentThemeMode === 'auto') applyResolvedTheme('auto');
+        }});
       }}
+
       const savedAlpha = localStorage.getItem('esun_dashboard_glass_alpha');
       if (savedAlpha !== null) {{
         const slider = document.getElementById('glassAlphaSlider');
