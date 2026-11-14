@@ -94,6 +94,10 @@ flowchart LR
 14. **後台數據管線全面切換為 Tampermonkey JSON 直抓 (`datapack_loader.py`, `tracker.py`)**：
     - 淘汰過去手動於瀏覽器 `Ctrl + S` 另存單日 `.htm` 的做法，改為透過 **Tampermonkey 擴充套件**直接抓取競賽後端 API 並匯出全賽期完整的 `data/backend_reports/backend_all_history.json`（同時保留 `*.htm` 作為備援）。
     - 成交價精度由網頁四捨五入的 **2 位小數提升至後端原始 4 位小數**，並直接採用後端精確手續費／證交稅、官方單日／累計報酬率、持股市值與競賽排名（總排名／社會組／學生組），大幅降低成本與損益追蹤誤差並消除重複計算。
+15. **CMoney 個股情緒 API 免登入全自動訪客憑證萃取 (`cmoney_sentiment_crawler.py`)**：
+    - 淘汰過去需每日手動從瀏覽器複製 `Authorization` Bearer Token 與 Session 的繁瑣流程，徹底消除超過 24 小時即驗證失效導致自動化產線中斷的痛點。
+    - **核心運作原理**：利用 CMoney 採用 **SSR（伺服器端渲染）** 架構的特性，每次以無狀態請求訪問討論區 HTML 時，後端皆會在原始碼內嵌一組全新的 24 小時訪客 JWT（`is_guest: true`、`app_id: 21`）。
+    - **全自動驗證與容錯**：程式啟動時透過 `ensure_guest_token()` 自動抓取討論區 HTML 並萃取出 `eyJ...` 訪客 Token，搭配 `is_token_valid()` 解碼 JWT 檢查 `exp` 效期（預留 60 秒緩衝）與動態生成的 `DEVICE_ID`，且在遭遇 `401` 時自動強制重抓憑證並重試，實現零人工介入的全自動批次抓取。
 
 ---
 
@@ -292,7 +296,7 @@ flowchart TD
 ### L0 資料來源與爬取層 (`L0_sources`)
 - **嚴格防漏機制**：資料收集是後續推論基礎，各模組皆設有嚴格驗證。**任何一項下載或爬取失敗，立即拋出 `RuntimeError` 並中斷整個產線**，絕不容許缺漏資料進入模型。
 - **`datapack_loader.py`**：解析官方 DataPack JSON，提取 `cash`、`nav_tradable`、`holdings` 及 `compliance` 違規次數。
-- **`cmoney_sentiment_crawler.py`**：爬取 CMoney 討論區個股多空評分與社群熱度；**必須全數 58 檔抓取成功**，若有失敗檔數立即報錯中斷。
+- **`cmoney_sentiment_crawler.py`**：透過解析 CMoney SSR 網頁原始碼自動萃取 24 小時訪客 JWT Token（免登入、無需手動複製憑證，並內建 JWT `exp` 效期檢查與 401 自動重取重試機制），爬取討論區個股多空評分與社群熱度；**必須全數標的抓取成功**，若有失敗檔數立即報錯中斷。
 - **`finlab_market_loader.py`**：透過 FinLab API 計算 26 檔市場特徵（個股 17 + 大盤 9），輸出為 Compact Array JSON 格式儲存；若有任何指標計算失敗即終止進程。
 - **`stock_indicators.py` 基本面動態遞補演算法**：
   - 三大指標（`roe_latest`、`revenue_yoy_latest`、`revenue_mom_latest`）採個別股票動態回溯最新非空值（Not-NaN）：

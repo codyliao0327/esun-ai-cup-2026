@@ -1,8 +1,12 @@
 import sys
+import re
+import time
+import uuid
+import base64
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 import json
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, Optional
 import requests
 import urllib3
 import pandas as pd
@@ -19,38 +23,73 @@ def ms_to_tw_str(ms: Optional[int]) -> str:
         return ""
     return datetime.fromtimestamp(ms / 1000.0, tz=TW_TZ).strftime("%Y-%m-%d %H:%M")
 
-# 2. 建立 Session 並帶入驗證成功的 Cookies 與 Headers
+# 2. 建立 Session 並設定基礎瀏覽器標頭（不再需要寫死 Cookie 與 Authorization）
 session = requests.Session()
-# 忽略 CMoney 伺服器缺少 Subject Key Identifier 之 SSL 憑證驗證問題
 session.verify = False
+DEVICE_ID = str(uuid.uuid4())
 
 session.headers.update({
     'accept': 'application/json, text/plain, */*',
     'accept-language': 'zh-TW,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
-    'authorization': 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkEydWczbUIxRFQiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiI0MzYyMjYzIiwidXNlcl9ndWlkIjoiNjU3MzQ4NjUtMzQ5Yy00ZGE2LTllNmQtZmE5MzVmYWIwZjNkIiwidG9rZW5faWQiOiIwIiwiYXBwX2lkIjoiMjEiLCJpc19ndWVzdCI6dHJ1ZSwibmJmIjoxNzk0NDc5MTAwLCJleHAiOjE3OTQ1NjkxMDAsImlhdCI6MTc5NDQ4MjcwMCwiaXNzIjoiaHR0cHM6Ly93d3cuY21vbmV5LnR3IiwiYXVkIjoiY21vbmV5YXBpIn0.NTUevNCtZuEnJA_88hYFXQCgIiGp_SltYlTm8do-QT5Jh8JpiIFobdGZ6DCAvaqHFboZeVBQbRrnLUqx2qKCTmUqBuJ2_A6iVAykSoYelRsHu8bTV1_ULdD0ZFU8wtY8EG-ZSfU3OLXOhoGIeN5elgaE_kNt8kmUO7NGQP9Oi_JdMXT_km4kJKXsZcycM7lV3RiwIFzgRpQ13sSbgEd52EI0DLUei9ExdgicL9oFrQuZHMKnPEUBJjVHRw6wO_hocnV09V-I9ut0jZaS72S2NiHQrT5KBBVZESlxDScG5U_fgWACK-LlWqSSdRxPiEyKOxh_hzcRzQd6F435HH5gVw',
     'cache-control': 'private max-age=5',
-    'cmoneyapi-trace-context': '{"device":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36 Edg/157.0.0.0","deviceId":"daf31bb2-abd9-4d25-afd0-b71830b25c5f"}',
-    'priority': 'u=1, i',
-    'referer': 'https://www.cmoney.tw/forum/stock/2330?utm_source=chatgpt.com&tab=AISummary',
-    'sec-ch-ua': '"Not-A.Brand";v="99", "Microsoft Edge";v="157", "Chromium";v="157"',
-    'sec-ch-ua-mobile': '?0',
-    'sec-ch-ua-platform': '"Windows"',
-    'sec-fetch-dest': 'empty',
-    'sec-fetch-mode': 'cors',
-    'sec-fetch-site': 'same-origin',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36 Edg/157.0.0.0',
-    # 'cookie': '_ga=GA1.1.616575418.1792862649; __lt__cid=2ee2beba-f583-41a0-92f9-63e2ffa12682; _qg_fts=1792862650; QGUserId=1385138909155198; _ga_5XLZWTV92B=GS2.1.s1793465416$o2$g0$t1793465416$j60$l0$h0; _qg_cm=2; AspSession=om43ughxgh1obji0imcuve5n; _ga_7VD5TT91L3=GS2.1.s1794396419$o26$g1$t1794396430$j60$l0$h0; __lt__sid=31313697-d93297a2; _ga_4JFZQM569R=GS2.1.s1794482742$o27$g0$t1794482742$j60$l0$h0; _ga_SG15L0JFQ7=GS2.1.s1794482742$o25$g1$t1794482742$j60$l0$h1264703596; FCNEC=%5B%5B%22AKsRol_s_xAWCj3ydih44X1v7vguZddVW3WZzaLcIaS8NUTOuYJO4cBdCyW3braLpMXX2dH4DdHlZdnDOF6nYP2OhoNAbHHOAg%3D%3D%22%5D%5D; g_state={"i_l":0,"i_ll":1794482742203,"i_b":"kBcNA0JDMPeNBIq8341mxe8e0w7OQQB0IPgYYaj+3mc","i_e":{"enable_itp_optimization":24},"i_et":1794482742203}; _clck=1j19rpv%5E2%5Egb3%5E0%5E2488; _ga_H3D2MQFGQP=GS2.1.s1794482742$o26$g0$t1794482742$j60$l0$h0; _clsk=5t8o7a%5E1794482743149%5E1%5E1%5Eg.clarity.ms%2Fcollect; _gcl_au=1.1.1605001415.1792862649.845168942.1794482740.1794482745.1345801883.1794482740.1794482745; FCCDCF=%5Bnull%2Cnull%2Cnull%2Cnull%2Cnull%2Cnull%2C%5B%5B32%2C%22%5B%5C%2268a41f29-ee81-42d7-b5d7-eb528d8c8028%5C%22%2C%5B1792862649%2C367000000%5D%5D%22%5D%5D%5D; _ga_32V50L7K4M=GS2.1.s1794482740$o28$g1$t1794482745$j60$l0$h0',
+    'cmoneyapi-trace-context': json.dumps({
+        "device": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+        "deviceId": DEVICE_ID
+    }),
+    'referer': 'https://www.cmoney.tw/forum/stock/2330?tab=AISummary',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
 })
 
+def is_token_valid(token: str) -> bool:
+    """解碼 JWT 檢查 Token 是否仍在有效期限內（預留 60 秒緩衝）"""
+    if not token:
+        return False
+    try:
+        payload_b64 = token.split('.')[1]
+        payload_b64 += '=' * (-len(payload_b64) % 4)
+        payload = json.loads(base64.urlsafe_b64decode(payload_b64))
+        return payload.get('exp', 0) > (time.time() + 60)
+    except Exception:
+        return False
+
+def ensure_guest_token(force_refresh: bool = False) -> None:
+    """從 CMoney SSR 網頁自動萃取最新的訪客 JWT Token"""
+    current_auth = session.headers.get('authorization', '').replace('Bearer ', '').strip()
+    if not force_refresh and is_token_valid(current_auth):
+        return
+
+    resp = session.get(
+        "https://www.cmoney.tw/forum/stock/2330?tab=AISummary",
+        headers={"accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"},
+        timeout=15
+    )
+    resp.raise_for_status()
+
+    tokens = re.findall(r'eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+', resp.text)
+    if not tokens:
+        raise RuntimeError("無法從 CMoney 網頁原始碼中取得訪客 Token！")
+
+    session.headers['authorization'] = f"Bearer {tokens[0]}"
+    print("🔑 已自動取得最新 CMoney 訪客 Token！")
+
 def get_stock_sentiment(stock_id: str = "2330") -> Dict[str, Any]:
+    ensure_guest_token()
     url = f"https://www.cmoney.tw/api/mach/api/AiSentiment/Stock/{stock_id}"
-    session.headers["Referer"] = f"https://www.cmoney.tw/forum/stock/{stock_id}?tab=AISummary"
+    session.headers["referer"] = f"https://www.cmoney.tw/forum/stock/{stock_id}?tab=AISummary"
 
     resp = session.get(url, timeout=15)
+    # 若執行中途遇到 401，強制重抓一次新 Token 並重試
+    if resp.status_code == 401:
+        ensure_guest_token(force_refresh=True)
+        resp = session.get(url, timeout=15)
+
     resp.raise_for_status()
     return resp.json()
 
 def main(target_date: Optional[str] = None):
+    # 先取得一次 Guest Token，後續 62 檔直接共用同一個 Token
+    ensure_guest_token()
+
     # 3. 批次抓取多檔股票
     stock_list = [
         "1216", "1301", "1303", "1326", "1590", "1785", "1802", "1815", "2207", "2301",
@@ -74,7 +113,6 @@ def main(target_date: Optional[str] = None):
                 "股票代號": sid,
                 "情緒分數": data.get("sentimentScore"),
                 "樣本數": data.get("sampleCount"),
-                # "狀態": data.get("state"),
                 "極度樂觀": dist.get("strongBull", 0),
                 "樂觀": dist.get("bull", 0),
                 "中立": dist.get("neutral", 0),
