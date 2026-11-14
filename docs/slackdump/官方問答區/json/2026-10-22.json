@@ -1,0 +1,600 @@
+[
+  {
+    "client_msg_id": "7cece88e-16fd-4fd9-ae67-0b6179952e05",
+    "type": "message",
+    "user": "U0CAA3ZS7FC",
+    "text": "主辦單位您好，想請問當前封測環境中，如果第一天(10/21)尚未提交D-Plan，第二日(10/22)才提交，當前系統可以進行第二日交易嗎？由於在第2交易日的當日委託中有顯示委託明細，但是當日交易頁面與投資儀表板均未顯示任何資料，再勞煩主辦單位協助確認，謝謝。",
+    "ts": "1792668938.158559",
+    "thread_ts": "1792668938.158559",
+    "reply_count": 5,
+    "reply_users": [
+      "U0C3LFZUG3D",
+      "U0C97F4DBFC",
+      "U0CA64NUFTL",
+      "U0CAA3ZS7FC"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792672628.295919"
+      },
+      {
+        "user": "U0CA64NUFTL",
+        "ts": "1792677210.062619"
+      },
+      {
+        "user": "U0C97F4DBFC",
+        "ts": "1792677796.493149"
+      },
+      {
+        "user": "U0CA64NUFTL",
+        "ts": "1792677900.707319"
+      },
+      {
+        "user": "U0CAA3ZS7FC",
+        "ts": "1792705500.216599"
+      }
+    ],
+    "latest_reply": "1792705500.216599",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "M3q+z",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好，想請問當前封測環境中，如果第一天(10/21)尚未提交D-Plan，第二日(10/22)才提交，當前系統可以進行第二日交易嗎？由於在第2交易日的當日委託中有顯示委託明細，但是當日交易頁面與投資儀表板均未顯示任何資料，再勞煩主辦單位協助確認，謝謝。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/5a3b84b499ad0fc5488c7ac7e4f7e80b.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png",
+      "first_name": "Yeh",
+      "real_name": "Yeh",
+      "display_name": "Yeh",
+      "team": "T0C3BBR6687",
+      "name": "yuhao200.ok",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 4
+  },
+  {
+    "client_msg_id": "a7c88911-d2b7-41d2-aef3-fd5edb5f9341",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的提問，回覆如下請參考：\n\n1. 目前競賽辦法未限制競賽期間調整 Agent 的模型、Prompt、參數、演算法或程式碼。只要實際投資標的、配置比例及每日交易內容仍由 Agent 自主分析及產生，且符合所揭露之投資主題與理念，原則上符合競賽規範。\n2. 目前競賽並未要求參賽隊伍於調整模型、Prompt、參數、演算法或程式碼時另行申報或通知主辦單位。惟每日投資分析及交易決策仍須由 Agent 自主產生，不得由人工直接決定或介入，並應依規定於每日 D-Plan 中如實揭露相關 Agent Metadata 及資訊。\n",
+    "ts": "1792671652.634569",
+    "thread_ts": "1792566192.020909",
+    "parent_user_id": "U0C478XU6PK",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "/ONHA",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的提問，回覆如下請參考：\n\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "目前競賽辦法未限制競賽期間調整 Agent 的模型、Prompt、參數、演算法或程式碼。只要實際投資標的、配置比例及每日交易內容仍由 Agent 自主分析及產生，且符合所揭露之投資主題與理念，原則上符合競賽規範。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "目前競賽並未要求參賽隊伍於調整模型、Prompt、參數、演算法或程式碼時另行申報或通知主辦單位。惟每日投資分析及交易決策仍須由 Agent 自主產生，不得由人工直接決定或介入，並應依規定於每日 D-Plan 中如實揭露相關 Agent Metadata 及資訊。"
+                  }
+                ]
+              }
+            ],
+            "style": "ordered",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          },
+          {
+            "type": "rich_text_section",
+            "elements": []
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "20643f4f-cb64-423f-a592-a214dacc851c",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，請提供您的隊伍代碼供我們查詢確認喔，謝謝！",
+    "ts": "1792672628.295919",
+    "thread_ts": "1792668938.158559",
+    "parent_user_id": "U0CAA3ZS7FC",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "n+qSE",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，請提供您的隊伍代碼供我們查詢確認喔，謝謝！"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "f9408cb9-8181-41bf-8cda-a51fd976acbb",
+    "type": "message",
+    "user": "U0C4MBQCQ6A",
+    "text": "主辦單位您好：\n想請教，初賽期間若遇到不可抗力或非參賽隊伍可控制的事件，包括但不限於颱風、地震等天災造成台股臨時休市、延後開盤或提前收盤，以及交易所或競賽平台重大系統異常，相關處理原則為何？\n目前比賽辦法以「每個台股交易日」規定每日繳交義務，並載明初賽共24個交易日、至少22日成功繳交才列入排名。為避免理解錯誤，想確認以下事項：\n1. 當日是否仍須繳交D-Plan？\n若宣布整日休市，當日是否免繳，且不計入未繳交警告？若休市公告前已完成提交，該份D-Plan會自動作廢，還是順延至下一交易日？恢復交易後是否須重新產製及提交？\n2. 競賽天數與資格門檻是否調整？\n臨時休市是否影響「至少22日成功繳交」的門檻？初賽截止日是否順延？若休市恰逢首日或最後一日，建倉及最終績效結算如何處理？\n3. 非整日休市時，交易及績效如何計算？\n若延後開盤、提前收盤，或個別持股暫停交易，是否仍採當日成交均價執行？若無成交量或無收盤價，交易、持股估值與合規檢查會如何處理？\n4. 平台或資料異常是否有補交／申覆機制？\n若競賽平台無法登入、上傳或提交，或官方DataPack延遲、缺漏，導致無法在期限內完成繳交，是否提供展延、補交或免計警告的機制？參賽隊伍應保留哪些證明，並透過何種管道通報？\n5. 應以哪個公告管道為準？\n上述事件的處理方式，會統一公告於競賽平台、Slack或電子郵件嗎？若提交截止前尚未公告，參賽隊伍應依什麼原則處理？",
+    "ts": "1792674621.126519",
+    "thread_ts": "1792674621.126519",
+    "reply_count": 2,
+    "reply_users": [
+      "U0C4MBQCQ6A",
+      "U0C97F4DBFC"
+    ],
+    "replies": [
+      {
+        "user": "U0C97F4DBFC",
+        "ts": "1792679643.231839"
+      },
+      {
+        "user": "U0C4MBQCQ6A",
+        "ts": "1792706299.055359"
+      }
+    ],
+    "latest_reply": "1792706299.055359",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "2Ss7E",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好：\n想請教，初賽期間若遇到不可抗力或非參賽隊伍可控制的事件，包括但不限於颱風、地震等天災造成台股臨時休市、延後開盤或提前收盤，以及交易所或競賽平台重大系統異常，相關處理原則為何？\n目前比賽辦法以「每個台股交易日」規定每日繳交義務，並載明初賽共24個交易日、至少22日成功繳交才列入排名。為避免理解錯誤，想確認以下事項：\n1. 當日是否仍須繳交D-Plan？\n若宣布整日休市，當日是否免繳，且不計入未繳交警告？若休市公告前已完成提交，該份D-Plan會自動作廢，還是順延至下一交易日？恢復交易後是否須重新產製及提交？\n2. 競賽天數與資格門檻是否調整？\n臨時休市是否影響「至少22日成功繳交」的門檻？初賽截止日是否順延？若休市恰逢首日或最後一日，建倉及最終績效結算如何處理？\n3. 非整日休市時，交易及績效如何計算？\n若延後開盤、提前收盤，或個別持股暫停交易，是否仍採當日成交均價執行？若無成交量或無收盤價，交易、持股估值與合規檢查會如何處理？\n4. 平台或資料異常是否有補交／申覆機制？\n若競賽平台無法登入、上傳或提交，或官方DataPack延遲、缺漏，導致無法在期限內完成繳交，是否提供展延、補交或免計警告的機制？參賽隊伍應保留哪些證明，並透過何種管道通報？\n5. 應以哪個公告管道為準？\n上述事件的處理方式，會統一公告於競賽平台、Slack或電子郵件嗎？若提交截止前尚未公告，參賽隊伍應依什麼原則處理？"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/be8b4fad6cdfd162cd805b1dcbbc5295.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png",
+      "first_name": "forggy0113",
+      "real_name": "forggy0113",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "forggy0113",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 2
+  },
+  {
+    "client_msg_id": "9c60f1de-38bb-44fe-a188-938ee4635f2e",
+    "type": "message",
+    "user": "U0CA64NUFTL",
+    "text": "您好，我們組(TEAM_11426)也是遇到一模一樣的問題",
+    "ts": "1792677210.062619",
+    "thread_ts": "1792668938.158559",
+    "subtype": "thread_broadcast",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "XSfJ7",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，我們組(TEAM_11426)也是遇到一模一樣的問題"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/435c1c3c926da55e48af4f460ba90d5e.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0015-72.png",
+      "first_name": "chengnih",
+      "real_name": "chengnih",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "chengnih",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "8f68dfa3-2bdd-4b38-b7d5-1738a4e185a5",
+    "type": "message",
+    "user": "U0C97F4DBFC",
+    "text": "我們隊伍也遇到一樣的問題，不過剛剛看到結果了",
+    "ts": "1792677796.493149",
+    "thread_ts": "1792668938.158559",
+    "edited": {
+      "user": "U0C97F4DBFC",
+      "ts": "1792677817.000000"
+    },
+    "parent_user_id": "U0CAA3ZS7FC",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "rp0KF",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "我們隊伍也遇到一樣的問題，不過剛剛看到結果了"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/76ddf4e8f623ede99c73e4ea86aa2140.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png",
+      "first_name": "戰鬥力只有5",
+      "real_name": "戰鬥力只有5",
+      "display_name": "買低低漲高高",
+      "team": "T0C3BBR6687",
+      "name": "chanshiouan",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "15d1370f-ff26-453f-976e-afe2c1445341",
+    "type": "message",
+    "user": "U0CA64NUFTL",
+    "text": "我們也看到結果了，感謝",
+    "ts": "1792677900.707319",
+    "thread_ts": "1792668938.158559",
+    "subtype": "thread_broadcast",
+    "reactions": [
+      {
+        "name": "eyes",
+        "count": 1,
+        "users": [
+          "U0CA277B7ME"
+        ]
+      }
+    ],
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "HqkcX",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "我們也看到結果了，感謝"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/435c1c3c926da55e48af4f460ba90d5e.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0015-72.png",
+      "first_name": "chengnih",
+      "real_name": "chengnih",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "chengnih",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "6a29bf9f-8de2-4941-9560-0bd682f05d7a",
+    "type": "message",
+    "user": "U0C97F4DBFC",
+    "text": "主辦方網站有幾則公告應該跟你的問題有關，另外他們也公告了受颱風影響封測會提早結束喔！路過分享一下資訊，希望有幫助！:grinning:",
+    "ts": "1792679643.231839",
+    "thread_ts": "1792674621.126519",
+    "parent_user_id": "U0C4MBQCQ6A",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "h7kZa",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦方網站有幾則公告應該跟你的問題有關，另外他們也公告了受颱風影響封測會提早結束喔！路過分享一下資訊，希望有幫助！"
+              },
+              {
+                "type": "emoji",
+                "name": "grinning",
+                "unicode": "1f600"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/76ddf4e8f623ede99c73e4ea86aa2140.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png",
+      "first_name": "戰鬥力只有5",
+      "real_name": "戰鬥力只有5",
+      "display_name": "買低低漲高高",
+      "team": "T0C3BBR6687",
+      "name": "chanshiouan",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "80c95344-4975-4de9-a73a-baf949327319",
+    "type": "message",
+    "user": "U0CAA3ZS7FC",
+    "text": "已看到，謝謝，辛苦了",
+    "ts": "1792705500.216599",
+    "thread_ts": "1792668938.158559",
+    "parent_user_id": "U0CAA3ZS7FC",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "oKsLH",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "已看到，謝謝，辛苦了"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/5a3b84b499ad0fc5488c7ac7e4f7e80b.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-72.png",
+      "first_name": "Yeh",
+      "real_name": "Yeh",
+      "display_name": "Yeh",
+      "team": "T0C3BBR6687",
+      "name": "yuhao200.ok",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "c82314f3-f0db-47f1-9ba2-bc478a04ccea",
+    "type": "message",
+    "user": "U0C4MBQCQ6A",
+    "text": "感謝 :saluting_face:",
+    "ts": "1792706299.055359",
+    "thread_ts": "1792674621.126519",
+    "parent_user_id": "U0C4MBQCQ6A",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "l6jMc",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "感謝 "
+              },
+              {
+                "type": "emoji",
+                "name": "saluting_face",
+                "unicode": "1fae1"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/be8b4fad6cdfd162cd805b1dcbbc5295.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png",
+      "first_name": "forggy0113",
+      "real_name": "forggy0113",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "forggy0113",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "c436ecce-ed09-43f2-80d0-ee14005c21cd",
+    "type": "message",
+    "user": "U0C4PGVMN66",
+    "text": "主辦單位您好，我是TEAM_11836，想要請問關於課程證明認列的部分，我們於10/15下午寄出，目前還沒收到回覆，再煩請協助確認一下，謝謝！",
+    "ts": "1792726118.848149",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "GgSfN",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好，我是TEAM_11836，想要請問關於課程證明認列的部分，我們於10/15下午寄出，目前還沒收到回覆，再煩請協助確認一下，謝謝！"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/3c9225fd8cb7bbfb550229634a281d48.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0001-72.png",
+      "first_name": "a0965715169",
+      "real_name": "a0965715169",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "a0965715169",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  }
+]

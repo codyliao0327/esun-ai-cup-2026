@@ -1,0 +1,16 @@
+{
+  "timestamp": "2026-11-05T02:12:48+08:00",
+  "model": "gemini-3.8-flash",
+  "duration_seconds": 22.22,
+  "prompt_tokens": 6646,
+  "candidates_tokens": 591,
+  "total_tokens": 8693,
+  "cached_tokens": 0,
+  "tool_use_tokens": 0,
+  "thought_tokens": 1456,
+  "code_execution_used": false,
+  "code_execution_call_count": 0,
+  "executed_codes": [],
+  "date": "20261105",
+  "stage": "l2m"
+}

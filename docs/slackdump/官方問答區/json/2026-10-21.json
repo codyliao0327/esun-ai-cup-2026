@@ -1,0 +1,409 @@
+[
+  {
+    "client_msg_id": "29b1cdb1-640c-45c1-8b98-c0ecd524ad3e",
+    "type": "message",
+    "user": "U0C478XU6PK",
+    "text": "主辦單位您好，感謝 10/20 的回覆說明：競賽期間調整因子門檻、風險參數等設計參數，原則上屬於 Agent 策略設計的一部分。想再請教兩點：\n1. 若初賽期間（10/27–11/27）更新的不只是參數，而是 Agent 的演算法或程式碼（例如新增或修改選股條件的計算方式），只要投資標的、權重與每日交易仍完全由 Agent 產生，且與已繳交的策略說明文件之主題與理念一致，是否同樣符合競賽規範？\n2. 進行上述更新時，是否需要事先或事後告知主辦單位？若需要，請問應以何種方式告知？\n我們會在每日 D-Plan 的 `agent_metadata.code_version` 標示當天實際執行的程式版本，並完整保留每一個版本，以供後續審查時重現。再次感謝主辦單位的協助！",
+    "ts": "1792566192.020909",
+    "thread_ts": "1792566192.020909",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792671652.634569"
+      }
+    ],
+    "latest_reply": "1792671652.634569",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "oo2pF",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好，感謝 10/20 的回覆說明：競賽期間調整因子門檻、風險參數等設計參數，原則上屬於 Agent 策略設計的一部分。想再請教兩點：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "若初賽期間（10/27–11/27）更新的不只是參數，而是 Agent 的演算法或程式碼（例如新增或修改選股條件的計算方式），只要投資標的、權重與每日交易仍完全由 Agent 產生，且與已繳交的策略說明文件之主題與理念一致，是否同樣符合競賽規範？"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "進行上述更新時，是否需要事先或事後告知主辦單位？若需要，請問應以何種方式告知？"
+                  }
+                ]
+              }
+            ],
+            "style": "ordered",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "我們會在每日 D-Plan 的 "
+              },
+              {
+                "type": "text",
+                "text": "agent_metadata.code_version",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 標示當天實際執行的程式版本，並完整保留每一個版本，以供後續審查時重現。再次感謝主辦單位的協助！"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-24/12139418871558_e446b94a30f6e434b49e_72.jpg",
+      "first_name": "張智奇",
+      "real_name": "張智奇",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "r13922176",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "ddb71a66-424b-4cff-b51f-e2dd1301d4dd",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，經查 TEAM_11693 之 Google Token Credit 已於 2026-10-19 09:20 發送。再請您確認，謝謝",
+    "ts": "1792568579.391419",
+    "thread_ts": "1792550733.164669",
+    "parent_user_id": "U0CA38JCGQZ",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "YWdQo",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，經查 TEAM_11693 之 Google Token Credit 已於 2026-10-19 09:20 發送。再請您確認，謝謝"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "99f1cbb8-1f29-4920-a97b-777fa8894e67",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的提問，回覆如下請參考：\n*1.* 初賽期間 `hold` 的判定標準請以最新版 D-Plan 撰寫指南 v4.3 及競賽平台實際驗證規則為準，目前使用之容差為 2% NAV。若後續有調整，主辦單位將透過競賽平台公告。\n*2.* 複賽隊伍之最終排名係依初賽及複賽成績計算，其中初賽成績採各隊 NAV 占比計算，複賽成績採募資金額占比計算，再綜合計算最終排名。競賽辦法中的範例即為實際計分方式之說明。",
+    "ts": "1792568765.208529",
+    "thread_ts": "1792551851.866829",
+    "parent_user_id": "U0C9LMNJFCY",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "66fYP",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的提問，回覆如下請參考：\n"
+              },
+              {
+                "type": "text",
+                "text": "1.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 初賽期間 "
+              },
+              {
+                "type": "text",
+                "text": "hold",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 的判定標準請以最新版 D-Plan 撰寫指南 v4.3"
+              },
+              {
+                "type": "text",
+                "text": " ",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "及競賽平台實際驗證規則為準，目前使用之容差為 2% NAV。若後續有調整，主辦單位將透過競賽平台公告。\n"
+              },
+              {
+                "type": "text",
+                "text": "2.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 複賽隊伍之最終排名係依初賽及複賽成績計算，其中初賽成績採各隊 NAV 占比計算，複賽成績採募資金額占比計算，再綜合計算最終排名。競賽辦法中的範例即為實際計分方式之說明。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "c73bb5de-a10b-4da5-a25d-bf33d9345cc7",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的提問，回覆如下請參考：\n*1.* 若 Agent 產出的決策未通過本機端的合規預檢，由程式自動將錯誤訊息回饋給 Agent 並重新產生決策，且全程未由人工修改決策內容，原則上符合競賽所強調之 Agent 自主決策精神。\n*2.* 若 Agent 因連線異常或其他技術因素無法產出決策，而由程式自動觸發預先設計之備援規則，原則上可視為 Agent 自主運作之一部分。惟參賽者不可直接額外指定當日投資標的、配置比例或交易內容。\n*3.* 若抽檢重跑時發現結果與競賽期間提交內容差異較大，主辦單位將進一步與隊伍釐清驗證上的差異後再進行判定，提高 LLM 產出的一致性本身亦是重要技術能力，複賽階段也可能作為評審評估項目之一。\n*4.* 若 Agent 使用主辦單位每日提供之 DataPack 作為分析或投資決策依據，`source.url` 可填寫： `\u003chttps://fundaiagent.esun-ai-challenge.tw/docs\u003e` ，惟仍應於每日繳交內容中清楚揭露 Agent 實際參考之資料內容，以及該資料如何作為當日投資決策依據。\n*5.* 10/21～10/23 期間上傳之 D-Plan 僅作為競賽平台、Schema 與提交流程測試使用，不列入正式競賽成績。\n*6.* 目前競賽期間 `hold` 之容差設定為 *2% NAV*。若後續有調整，主辦單位將透過競賽平台公告。\n*7.* 正式計分方式請以競賽辦法公告之公式為準。初賽成績採各隊 NAV 占比計算，複賽成績採募資金額占比計算，再綜合計算最終排名。",
+    "ts": "1792569377.790459",
+    "thread_ts": "1792560353.729419",
+    "parent_user_id": "U0CA3LFF6EA",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "4Z8bM",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的提問，回覆如下請參考：\n"
+              },
+              {
+                "type": "text",
+                "text": "1.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 若 Agent 產出的決策未通過本機端的合規預檢，由程式自動將錯誤訊息回饋給 Agent 並重新產生決策，且全程未由人工修改決策內容，原則上符合競賽所強調之 Agent 自主決策精神。\n"
+              },
+              {
+                "type": "text",
+                "text": "2.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 若 Agent 因連線異常或其他技術因素無法產出決策，而由程式自動觸發預先設計之備援規則，原則上可視為 Agent 自主運作之一部分。惟參賽者不可直接額外指定當日投資標的、配置比例或交易內容。\n"
+              },
+              {
+                "type": "text",
+                "text": "3.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 若抽檢重跑時發現結果與競賽期間提交內容差異較大，主辦單位將進一步與隊伍釐清驗證上的差異後再進行判定，提高 LLM 產出的一致性本身亦是重要技術能力，複賽階段也可能作為評審評估項目之一。\n"
+              },
+              {
+                "type": "text",
+                "text": "4.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 若 Agent 使用主辦單位每日提供之 DataPack 作為分析或投資決策依據，"
+              },
+              {
+                "type": "text",
+                "text": "source.url",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 可填寫： "
+              },
+              {
+                "type": "link",
+                "url": "https://fundaiagent.esun-ai-challenge.tw/docs",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " ，惟仍應於每日繳交內容中清楚揭露 Agent 實際參考之資料內容，以及該資料如何作為當日投資決策依據。\n"
+              },
+              {
+                "type": "text",
+                "text": "5.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 10/21～10/23 期間上傳之 D-Plan 僅作為競賽平台、Schema 與提交流程測試使用，不列入正式競賽成績。\n"
+              },
+              {
+                "type": "text",
+                "text": "6.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 目前競賽期間 "
+              },
+              {
+                "type": "text",
+                "text": "hold",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 之容差設定為 "
+              },
+              {
+                "type": "text",
+                "text": "2% NAV",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "。若後續有調整，主辦單位將透過競賽平台公告。\n"
+              },
+              {
+                "type": "text",
+                "text": "7.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 正式計分方式請以競賽辦法公告之公式為準。初賽成績採各隊 NAV 占比計算，複賽成績採募資金額占比計算，再綜合計算最終排名。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  }
+]

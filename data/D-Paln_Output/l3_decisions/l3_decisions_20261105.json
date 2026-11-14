@@ -1,0 +1,267 @@
+{
+  "decisions": [
+    {
+      "decision_id": "D1",
+      "ticker": "2330",
+      "action": "TRIM",
+      "target_weight": 0.06,
+      "inference_refs": [
+        "I1"
+      ],
+      "risk_check": "核心權值調節至 6.0% <= 25.0% 上限；調節後釋出流動性，整體投資組合持股 29 檔 ∈ [20, 30]，現金比率控制在 14.7% 遠低於 22.0% 安全線。"
+    },
+    {
+      "decision_id": "D2",
+      "ticker": "2317",
+      "action": "TRIM",
+      "target_weight": 0.04,
+      "inference_refs": [
+        "I2"
+      ],
+      "risk_check": "個股目標權重 4.0% <= 10.0% 上限；維持核心代工防禦配置，整體投資組合持股 29 檔 ∈ [20, 30]，剩餘現金在 [0.08, 0.18] 合規區間內。"
+    },
+    {
+      "decision_id": "D3",
+      "ticker": "2603",
+      "action": "ADD",
+      "target_weight": 0.045,
+      "inference_refs": [
+        "I3"
+      ],
+      "risk_check": "個股目標權重 4.5% <= 10.0% 上限；加碼航運強勢抗跌標的，整體持股 29 檔 ∈ [20, 30]，剩餘現金 14.7% 符合區間要求且低於 22% 安全線。"
+    },
+    {
+      "decision_id": "D4",
+      "ticker": "2891",
+      "action": "TRIM",
+      "target_weight": 0.04,
+      "inference_refs": [
+        "I4"
+      ],
+      "risk_check": "個股目標權重 4.0% <= 10.0% 上限；微調金控防禦部位，整體持股 29 檔 ∈ [20, 30]，剩餘現金比率 14.7% 落在 [0.08, 0.18] 區間。"
+    },
+    {
+      "decision_id": "D5",
+      "ticker": "2881",
+      "action": "TRIM",
+      "target_weight": 0.035,
+      "inference_refs": [
+        "I5"
+      ],
+      "risk_check": "個股目標權重 3.5% <= 10.0% 上限；金控獲利龍頭防禦配置，整體持股 29 檔 ∈ [20, 30]，現金比率 14.7% 遠離 25.0% 違規天花板。"
+    },
+    {
+      "decision_id": "D6",
+      "ticker": "2882",
+      "action": "TRIM",
+      "target_weight": 0.035,
+      "inference_refs": [
+        "I6"
+      ],
+      "risk_check": "個股目標權重 3.5% <= 10.0% 上限；金控避風港微調部位，整體持股 29 檔 ∈ [20, 30]，現金比率 14.7% 落在目標區間內。"
+    },
+    {
+      "decision_id": "D7",
+      "ticker": "4938",
+      "action": "ADD",
+      "target_weight": 0.045,
+      "inference_refs": [
+        "I7"
+      ],
+      "risk_check": "個股目標權重 4.5% <= 10.0% 上限；加碼營收爆發抗跌動能股，整體持股 29 檔 ∈ [20, 30]，現金水位安全充裕。"
+    },
+    {
+      "decision_id": "D8",
+      "ticker": "6446",
+      "action": "TRIM",
+      "target_weight": 0.03,
+      "inference_refs": [
+        "I8"
+      ],
+      "risk_check": "個股目標權重 3.0% <= 10.0% 上限；生技避險標的微幅調至整數目標，整體持股 29 檔 ∈ [20, 30]，現金比率 14.7% 合規。"
+    },
+    {
+      "decision_id": "D9",
+      "ticker": "2379",
+      "action": "TRIM",
+      "target_weight": 0.03,
+      "inference_refs": [
+        "I9"
+      ],
+      "risk_check": "個股目標權重 3.0% <= 10.0% 上限；網通 IC 龍頭調節防禦，整體持股 29 檔 ∈ [20, 30]，現金水位維持在 [0.08, 0.18] 區間。"
+    },
+    {
+      "decision_id": "D10",
+      "ticker": "2382",
+      "action": "TRIM",
+      "target_weight": 0.025,
+      "inference_refs": [
+        "I10"
+      ],
+      "risk_check": "個股目標權重 2.5% <= 10.0% 上限；因應外資調節降低風險曝險，整體持股 29 檔 ∈ [20, 30]，現金比率控制在安全線內。"
+    },
+    {
+      "decision_id": "D11",
+      "ticker": "1802",
+      "action": "TRIM",
+      "target_weight": 0.02,
+      "inference_refs": [
+        "I11"
+      ],
+      "risk_check": "個股目標權重 2.0% <= 10.0% 上限；傳產轉機微幅調節維持低權重，整體持股 29 檔 ∈ [20, 30]，剩餘現金比率 14.7% 合規。"
+    },
+    {
+      "decision_id": "D12",
+      "ticker": "6415",
+      "action": "TRIM",
+      "target_weight": 0.025,
+      "inference_refs": [
+        "I12"
+      ],
+      "risk_check": "個股目標權重 2.5% <= 10.0% 上限；晶片龍頭小幅調節維持防守，整體持股 29 檔 ∈ [20, 30]，剩餘現金在 [0.08, 0.18] 區間。"
+    },
+    {
+      "decision_id": "D13",
+      "ticker": "2412",
+      "action": "BUY",
+      "target_weight": 0.04,
+      "inference_refs": [
+        "I13"
+      ],
+      "risk_check": "新建倉電信防禦龍頭 4.0% <= 10.0% 上限；大幅降低現金水位防範被動違規，新增後整體持股 29 檔 ∈ [20, 30]，剩餘現金 14.7% 合規。"
+    },
+    {
+      "decision_id": "D14",
+      "ticker": "3045",
+      "action": "BUY",
+      "target_weight": 0.035,
+      "inference_refs": [
+        "I14"
+      ],
+      "risk_check": "新建倉電信高防禦權值 3.5% <= 10.0% 上限；強化投資組合抗跌韌性，新增後整體持股 29 檔 ∈ [20, 30]，剩餘現金在 [0.08, 0.18] 區間。"
+    },
+    {
+      "decision_id": "D15",
+      "ticker": "1216",
+      "action": "BUY",
+      "target_weight": 0.035,
+      "inference_refs": [
+        "I16"
+      ],
+      "risk_check": "新建倉民生食品防禦龍頭 3.5% <= 10.0% 上限；具抗通膨抗空頭特性，新增後整體持股 29 檔 ∈ [20, 30]，剩餘現金控制在 22% 安全線以下。"
+    },
+    {
+      "decision_id": "D16",
+      "ticker": "2886",
+      "action": "BUY",
+      "target_weight": 0.035,
+      "inference_refs": [
+        "I17"
+      ],
+      "risk_check": "新建倉官股金控龍頭 3.5% <= 10.0% 上限；獲利穩健避險屬性明確，新增後整體持股 29 檔 ∈ [20, 30]，現金比率 14.7% 落在目標區間內。"
+    }
+  ],
+  "no_trade_decisions": [
+    {
+      "ticker": "1303",
+      "reason_refs": [
+        "I11",
+        "I1"
+      ],
+      "reason": "塑化龍頭目前營運持穩，低波動防禦特質符合目前 risk_off 環境，偏離度在無交易區間，維持既有部位續抱。"
+    },
+    {
+      "ticker": "2368",
+      "reason_refs": [
+        "I2",
+        "I1"
+      ],
+      "reason": "AI 伺服器高階 PCB 板領導廠商，受惠 AI 伺服器長期趨勢(參照 I2)，權重在合規安全區間，維持部位續抱。"
+    },
+    {
+      "ticker": "2376",
+      "reason_refs": [
+        "I2",
+        "I10"
+      ],
+      "reason": "板卡與 AI 伺服器製造商，伺服器出貨穩健(參照 I2、I10)，未達調倉門檻，維持既有配置續抱。"
+    },
+    {
+      "ticker": "2383",
+      "reason_refs": [
+        "I2",
+        "I10"
+      ],
+      "reason": "AI 伺服器高階銅箔基板龍頭，同業核心成分股，技術領先優勢明顯，維持既有部位續抱。"
+    },
+    {
+      "ticker": "2404",
+      "reason_refs": [
+        "I1"
+      ],
+      "reason": "半導體無塵室工程龍頭，受惠台積電(I1)全球先進製程擴產訂單，在手訂單充足，維持既有配置續抱。"
+    },
+    {
+      "ticker": "3034",
+      "reason_refs": [
+        "I9"
+      ],
+      "reason": "驅動 IC 龍頭，獲利與現金流穩定，同屬優質 IC 設計族群(參照 I9)，維持既有防守部位續抱。"
+    },
+    {
+      "ticker": "3037",
+      "reason_refs": [
+        "I2",
+        "I7"
+      ],
+      "reason": "ABF 載板領導廠商，受惠先進封裝長線需求，部位適中且偏離度未觸發調倉，維持既有配置續抱。"
+    },
+    {
+      "ticker": "3189",
+      "reason_refs": [
+        "I2",
+        "I7"
+      ],
+      "reason": "載板與晶片封裝元件廠，低權重持股，目前波動在合理範圍內，維持既有部位續抱。"
+    },
+    {
+      "ticker": "3231",
+      "reason_refs": [
+        "I2",
+        "I7"
+      ],
+      "reason": "AI 伺服器代工要角，與一線代工廠(I2、I7)同具出貨動能，權重符合防守配置，維持部位續抱。"
+    },
+    {
+      "ticker": "3443",
+      "reason_refs": [
+        "I1"
+      ],
+      "reason": "ASIC 高階設計服務領導廠商，緊扣台積電(I1)先進製程生態系，維持利基配置續抱。"
+    },
+    {
+      "ticker": "3533",
+      "reason_refs": [
+        "I2",
+        "I10"
+      ],
+      "reason": "伺服器 CPU Socket 高階連接器龍頭，新伺服器平台世代交替挹注動能，維持既有部位續抱。"
+    },
+    {
+      "ticker": "4958",
+      "reason_refs": [
+        "I2",
+        "I7"
+      ],
+      "reason": "全球 PCB 龍頭廠商，同業主動 ETF 重點標竿成分股，具規模經濟優勢，維持部位續抱。"
+    },
+    {
+      "ticker": "6505",
+      "reason_refs": [
+        "I11",
+        "I1"
+      ],
+      "reason": "煉油與輕油裂解龍頭，具傳統公用事業低波動特性，有助平抑組合波動度，維持防守續抱。"
+    }
+  ]
+}

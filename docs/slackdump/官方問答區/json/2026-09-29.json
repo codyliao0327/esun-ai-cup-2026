@@ -1,0 +1,654 @@
+[
+  {
+    "client_msg_id": "d7e5e77f-9862-491f-b753-57341efa4cd0",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的提問。\n依據競賽辦法，主辦方將以公告之主動型 ETF 前十大持股作為 Active Share 檢核基礎，關於計算所需資料與權重使用方式，原則如下：\n• 各主動型 ETF 前十大持股及持股比例可能隨時間變動，請參賽隊伍自行取得各主動型 ETF 的基金公開持股資料。\n• Active Share 計算時，將直接使用基金公告之原始持股權重進行計算。例如聯發科權重 5%、台達電權重 4%，即直接以 5%、4% 帶入公式，不需將前十大持股重新正規化至 100%。",
+    "ts": "1790666197.984719",
+    "thread_ts": "1790498929.610639",
+    "parent_user_id": "U0C4J5XEX98",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "G1Gk6",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的提問。\n依據競賽辦法，主辦方將以公告之主動型 ETF 前十大持股作為 Active Share 檢核基礎，關於計算所需資料與權重使用方式，原則如下：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "各主動型 ETF 前十大持股及持股比例可能隨時間變動，請參賽隊伍自行取得各主動型 ETF 的基金公開持股資料。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "Active Share 計算時，將直接使用基金公告之原始持股權重進行計算。例如聯發科權重 5%、台達電權重 4%，即直接以 5%、4% 帶入公式，不需將前十大持股重新正規化至 100%。"
+                  }
+                ]
+              }
+            ],
+            "style": "bullet",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "54d5dcb7-0720-4dd6-9efa-a0319143a873",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的詢問。\n為協助參賽隊伍熟悉競賽平台操作與提交流程，主辦單位預計提前於2026/10/21 開放競賽系統測試環境，提供參賽隊伍進行相關功能測試，請詳情請於後續留意競賽網站公告，謝謝。",
+    "ts": "1790666520.689969",
+    "thread_ts": "1790433268.309539",
+    "parent_user_id": "U0C3XS72LS1",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "jtH79",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的詢問。\n為協助參賽隊伍熟悉競賽平台操作與提交流程，主辦單位預計提前於2026/10/21 開放競賽系統測試環境，提供參賽隊伍進行相關功能測試，請詳情請於後續留意競賽網站公告，謝謝。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "7dee694d-dedb-4505-a819-f38de2332298",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的提問！\n1. 本競賽不提供 API 上傳或 API 查詢機制，D-Plan 提交、投資組合查詢及相關操作，均在主辦單位於競賽平台提供的功能進行 (預計10/21開放測試)，不需另外串接 API 或申請金鑰。\n2. 目前「ETF 投資策略說明文件」不需額外提交初始持股清單，主辦單位會根據隊伍繳交之 d-plan 辨識持股清單，請依官方提供之格式填寫即可。",
+    "ts": "1790666614.982529",
+    "thread_ts": "1790401610.167989",
+    "parent_user_id": "U0C4N15AG02",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "ajwk8",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的提問！\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "本競賽不提供 API 上傳或 API 查詢機制，D-Plan 提交、投資組合查詢及相關操作，均在主辦單位於競賽平台提供的功能進行 (預計10/21開放測試)，不需另外串接 API 或申請金鑰。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "目前「ETF 投資策略說明文件」不需額外提交初始持股清單，主辦單位會根據隊伍繳交之 d-plan 辨識持股清單，請依官方提供之格式填寫即可。"
+                  }
+                ]
+              }
+            ],
+            "style": "ordered",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "86BD12C9-9F23-4B19-A415-25677E24D99E",
+    "type": "message",
+    "user": "U0C5A0UTRDF",
+    "text": "您好，想詢問關於比賽的細節\n1. 10/26 為光復節補假休市，請問初賽第一個交易日是否為 10/27、第一次提交時間為 10/26 19:30～10/27 08:55？\n2.範例檔 derivation_detail 的公式 target_shares = floor(目標權重 × 淨值 / 價格 / 1000) × 1000，其中「淨值」與「價格」分別是指哪一天的數值（例如前一交易日收盤淨值與收盤價）？\n3.market_view 宣告 net_exposure_intent 為 hold 時，淨買賣金額在多大範圍內會被視為一致？\n4.成交價採用的「當日成交均價」，是否包含鉅額交易、盤後定價交易與零股交易？資料來源是哪一個？\n5.當日決定全部續抱、不進行任何交易時，decisions 與 orders 是否可為空陣列？\n6.若 Agent 因資料來源異常而維持前日持股，observations 是否可引用前一交易日的資料來源？\n7.辦法寫明交易一律全數成交、以當日成交均價計算。若下單的個股當日停牌或完全無成交（沒有成交均價），該筆交易會如何處理？\n8.辦法寫明初賽最後一日以「此日最後的繳交內容」計算。其他交易日若同一天提交多次，是否也以當日最後一次提交為準？",
+    "ts": "1790673822.251189",
+    "thread_ts": "1790673822.251189",
+    "reply_count": 2,
+    "reply_users": [
+      "U0C3LFZUG3D",
+      "U0CA2K2786S"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1790765587.358819"
+      },
+      {
+        "user": "U0CA2K2786S",
+        "ts": "1792397198.551129"
+      }
+    ],
+    "latest_reply": "1792397198.551129",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "DX/ew",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，想詢問關於比賽的細節\n1"
+              },
+              {
+                "type": "text",
+                "text": ". 10/26 為光復節補假休市，請問初賽第一個交易日是否為 10/27、第一次提交時間為 10/26 19:30～10/27 08:55？"
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "2.範例檔 derivation_detail 的公式 target_shares = floor(目標權重 × 淨值 / 價格 / 1000) × 1000，其中「淨值」與「價格」分別是指哪一天的數值（例如前一交易日收盤淨值與收盤價）？"
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "3."
+              },
+              {
+                "type": "text",
+                "text": "market_view 宣告 net_exposure_intent 為 hold 時，淨買賣金額在多大範圍內會被視為一致？\n"
+              },
+              {
+                "type": "text",
+                "text": "4."
+              },
+              {
+                "type": "text",
+                "text": "成交價採用的「當日成交均價」，是否包含鉅額交易、盤後定價交易與零股交易？資料來源是哪一個？\n"
+              },
+              {
+                "type": "text",
+                "text": "5."
+              },
+              {
+                "type": "text",
+                "text": "當日決定全部續抱、不進行任何交易時，decisions 與 orders 是否可為空陣列？\n"
+              },
+              {
+                "type": "text",
+                "text": "6."
+              },
+              {
+                "type": "text",
+                "text": "若 Agent 因資料來源異常而維持前日持股，observations 是否可引用前一交易日的資料來源？\n"
+              },
+              {
+                "type": "text",
+                "text": "7."
+              },
+              {
+                "type": "text",
+                "text": "辦法寫明交易一律全數成交、以當日成交均價計算。若下單的個股當日停牌或完全無成交（沒有成交均價），該筆交易會如何處理？\n"
+              },
+              {
+                "type": "text",
+                "text": "8."
+              },
+              {
+                "type": "text",
+                "text": "辦法寫明初賽最後一日以「此日最後的繳交內容」計算。其他交易日若同一天提交多次，是否也以當日最後一次提交為準？"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-29/12177948375554_d559e5e8a9f104b43d10_72.jpg",
+      "first_name": "Boan",
+      "real_name": "Boan Cai",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "boancai765",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 2
+  },
+  {
+    "client_msg_id": "01FB319C-AE36-47E9-B67E-7B4B13EB75D9",
+    "type": "message",
+    "user": "U0C4NSAC6LS",
+    "text": "了解 ，謝謝您的回覆。",
+    "ts": "1790724794.701629",
+    "thread_ts": "1790422761.813229",
+    "parent_user_id": "U0C4NSAC6LS",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "2FmNg",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "了解 ，謝謝您的回覆。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-26/12143652908055_0c152ac36717b8e24923_72.png",
+      "first_name": "蔡秉宏",
+      "real_name": "蔡秉宏",
+      "display_name": "蔡秉宏",
+      "team": "T0C3BBR6687",
+      "name": "joejoe4902",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "ba5c045d-b621-4556-83cc-1f9c93bf7544",
+    "type": "message",
+    "user": "U0C4639LS7N",
+    "text": "您好，想詢問關於google課程的相關事項\n在任務一要執行的過程中\n12.畫面會出現「根據目前的提示詞建立網頁應用程式」對話方塊，請在當中：\n    ◦ 勾選「確認聲明」，同意公開部署應用程式。\n    ◦ 點選「建立應用程式」。\n13.部署程序會開始執行，過程可能需要幾分鐘。期間 UI 可能顯示類似下方的狀態更新：\n在按下部署程序中，並無跳出「管理網頁應用程式」對話方塊中\n重複操作過幾次了以及隔日重試都無法解決\n所以想請教一下應該要如何解決\n感謝 辛苦了",
+    "ts": "1790732099.323839",
+    "thread_ts": "1790732099.323839",
+    "reply_count": 5,
+    "reply_users": [
+      "U0C3LFZUG3D",
+      "U0C4639LS7N",
+      "U0C4992J1K5",
+      "U0C5W1T0EKV"
+    ],
+    "replies": [
+      {
+        "user": "U0C4992J1K5",
+        "ts": "1790744150.174069"
+      },
+      {
+        "user": "U0C4639LS7N",
+        "ts": "1790757071.036659"
+      },
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1790765368.500299"
+      },
+      {
+        "user": "U0C5W1T0EKV",
+        "ts": "1791166471.478279"
+      },
+      {
+        "user": "U0C5W1T0EKV",
+        "ts": "1791308358.459559"
+      }
+    ],
+    "latest_reply": "1791308358.459559",
+    "files": [
+      {
+        "id": "F0C5EPZRG8N",
+        "created": 1790731220,
+        "timestamp": 1790731220,
+        "name": "截圖 2026-09-29 下午3.09.13.png",
+        "title": "截圖 2026-09-29 下午3.09.13.png",
+        "mimetype": "image/png",
+        "image_exif_rotation": 0,
+        "filetype": "png",
+        "pretty_type": "PNG",
+        "user": "U0C4639LS7N",
+        "mode": "hosted",
+        "editable": false,
+        "is_external": false,
+        "external_type": "",
+        "size": 389186,
+        "url": "",
+        "url_download": "",
+        "url_private": "https://files.slack.com/files-pri/T0C3BBR6687-F0C5EPZRG8N/_______2026-09-29_______3.09.13.png",
+        "url_private_download": "https://files.slack.com/files-pri/T0C3BBR6687-F0C5EPZRG8N/download/_______2026-09-29_______3.09.13.png",
+        "original_h": 1172,
+        "original_w": 2268,
+        "thumb_64": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C5EPZRG8N-52b76c260d/_______2026-09-29_______3.09.13_64.png",
+        "thumb_80": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C5EPZRG8N-52b76c260d/_______2026-09-29_______3.09.13_80.png",
+        "thumb_160": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C5EPZRG8N-52b76c260d/_______2026-09-29_______3.09.13_160.png",
+        "thumb_360": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C5EPZRG8N-52b76c260d/_______2026-09-29_______3.09.13_360.png",
+        "thumb_360_gif": "",
+        "thumb_360_w": 360,
+        "thumb_360_h": 186,
+        "thumb_480": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C5EPZRG8N-52b76c260d/_______2026-09-29_______3.09.13_480.png",
+        "thumb_480_w": 480,
+        "thumb_480_h": 248,
+        "thumb_720": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C5EPZRG8N-52b76c260d/_______2026-09-29_______3.09.13_720.png",
+        "thumb_720_w": 720,
+        "thumb_720_h": 372,
+        "thumb_960": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C5EPZRG8N-52b76c260d/_______2026-09-29_______3.09.13_960.png",
+        "thumb_960_w": 960,
+        "thumb_960_h": 496,
+        "thumb_1024": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C5EPZRG8N-52b76c260d/_______2026-09-29_______3.09.13_1024.png",
+        "thumb_1024_w": 1024,
+        "thumb_1024_h": 529,
+        "permalink": "https://esunaiopencom-me19126.slack.com/files/U0C4M9YRDB5/F0C5EPZRG8N/_______2026-09-29_______3.09.13.png",
+        "permalink_public": "https://slack-files.com/T0C3BBR6687-F0C5EPZRG8N-cab14b9abb",
+        "edit_link": "",
+        "preview": "",
+        "preview_highlight": "",
+        "lines": 0,
+        "lines_more": 0,
+        "is_public": true,
+        "public_url_shared": false,
+        "channels": null,
+        "groups": null,
+        "ims": null,
+        "initial_comment": {},
+        "comments_count": 0,
+        "num_stars": 0,
+        "is_starred": false,
+        "shares": {
+          "public": null,
+          "private": null
+        },
+        "subject": "",
+        "to": null,
+        "from": null,
+        "cc": null,
+        "headers": {
+          "date": "",
+          "in_reply_to": "",
+          "reply_to": "",
+          "message_id": ""
+        },
+        "plain_text": "",
+        "preview_plain_text": ""
+      }
+    ],
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "GS06K",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，想詢問關於google課程的相關事項\n在任務一要執行的過程中\n12.畫面會出現「根據目前的提示詞建立網頁應用程式」對話方塊，請在當中：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "勾選「確認聲明」，同意公開部署應用程式。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "點選「建立應用程式」。"
+                  }
+                ]
+              }
+            ],
+            "style": "bullet",
+            "indent": 1,
+            "border": 0,
+            "offset": 0
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "13.部署程序會開始執行，過程可能需要幾分鐘。期間 UI 可能顯示類似下方的狀態更新：\n在按下部署程序中，並無跳出「管理網頁應用程式」對話方塊中\n重複操作過幾次了以及隔日重試都無法解決\n所以想請教一下應該要如何解決\n感謝 辛苦了"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12132219949587_397e57a3bb55b223a208_72.png",
+      "first_name": "CW",
+      "real_name": "CW TSENG",
+      "display_name": "CW TSENG",
+      "team": "T0C3BBR6687",
+      "name": "asdfghj0622",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 4
+  },
+  {
+    "client_msg_id": "391afea9-50af-4e1c-964b-ae0441d9a797",
+    "type": "message",
+    "user": "U0C4992J1K5",
+    "text": "我也有遇過這個問題，後來是全部重新操作一次就出現課程說明裡面的畫面了。\n不過我有注意到你gemini模型的選擇與課程說的不太一樣，不確定會不會是那個問題。\n單純提出經驗及觀察。",
+    "ts": "1790744150.174069",
+    "thread_ts": "1790732099.323839",
+    "parent_user_id": "U0C4639LS7N",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "EiZEi",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "我也有遇過這個問題，後來是全部重新操作一次就出現課程說明裡面的畫面了。\n不過我有注意到你gemini模型的選擇與課程說的不太一樣，不確定會不會是那個問題。\n單純提出經驗及觀察。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/63065b2947ce867d1386c9163bf2ef89.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0022-72.png",
+      "first_name": "楊博凱（Deity）",
+      "real_name": "楊博凱（Deity）",
+      "display_name": "Deity",
+      "team": "T0C3BBR6687",
+      "name": "tommy12333312",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "fa9672dd-7bfc-4eef-bfd7-34e627f167f6",
+    "type": "message",
+    "user": "U0C4MBQCQ6A",
+    "text": "主辦您好，想確認現金比例低於 25% 的規則：\n\n1. 是以「當日交易後的收盤結算」判定，還是提交 D-Plan 時也有獨立的 25% 限制？\n2. 例如前一天結算現金為 24%，隔天操作前因股價下跌升至 26%，但當日委託讓最終結算降回 23%，這樣是否合規？\n3. 若提交時按前日價格估算低於 25%，但實際成交後結算超過 25%，是否會記當日違規？\n4. 規則寫「低於 25%」，警告條款寫「超過 25%」，請問恰好等於 25% 時如何判定？\n\n謝謝！",
+    "ts": "1790745327.844469",
+    "thread_ts": "1790745327.844469",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1790825250.756869"
+      }
+    ],
+    "latest_reply": "1790825250.756869",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "2fRBO",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦您好，想確認現金比例低於 25% 的規則：\n\n1. 是以「當日交易後的收盤結算」判定，還是提交 D-Plan 時也有獨立的 25% 限制？\n2. 例如前一天結算現金為 24%，隔天操作前因股價下跌升至 26%，但當日委託讓最終結算降回 23%，這樣是否合規？\n3. 若提交時按前日價格估算低於 25%，但實際成交後結算超過 25%，是否會記當日違規？\n4. 規則寫「低於 25%」，警告條款寫「超過 25%」，請問恰好等於 25% 時如何判定？\n\n謝謝！"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/be8b4fad6cdfd162cd805b1dcbbc5295.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png",
+      "first_name": "forggy0113",
+      "real_name": "forggy0113",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "forggy0113",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  }
+]

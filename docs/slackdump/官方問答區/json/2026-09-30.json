@@ -1,0 +1,508 @@
+[
+  {
+    "client_msg_id": "356b2d58-2ca5-4986-8fc0-66c277ea8108",
+    "type": "message",
+    "user": "U0C4639LS7N",
+    "text": "跟模型好像無關。試過各種都沒辦法，隊友也是遇到一樣的問題",
+    "ts": "1790757071.036659",
+    "thread_ts": "1790732099.323839",
+    "parent_user_id": "U0C4639LS7N",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "uOt2k",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "跟模型好像無關。試過各種都沒辦法，隊友也是遇到一樣的問題"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12132219949587_397e57a3bb55b223a208_72.png",
+      "first_name": "CW",
+      "real_name": "CW TSENG",
+      "display_name": "CW TSENG",
+      "team": "T0C3BBR6687",
+      "name": "asdfghj0622",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "2d93e890-aedf-404d-99e4-d9c6663451d7",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，由於 Google Cloud Skills Boost 課程內容與操作介面可能因帳號、權限或平台更新而有所差異，建議您可先參考 Google 官方說明與協助資源進行排查，*若您已依照課程指示操作，並嘗試重新登入、重新執行或於不同時間重試後，仍無法完成課程指定步驟，請再次將相關資訊（例如錯誤畫面截圖）寄信至* \u003cmailto:intelligent-finance@esunbank.com|intelligent-finance@esunbank.com\u003e *給我們。*\n主辦單位將協助進一步了解狀況；若確認屬於平台或課程執行上的特殊情形，也會評估是否提供其他可行的完成證明方式供認定，謝謝！",
+    "ts": "1790765368.500299",
+    "thread_ts": "1790732099.323839",
+    "parent_user_id": "U0C4639LS7N",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "KTaw6",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，由於 Google Cloud Skills Boost 課程內容與操作介面可能因帳號、權限或平台更新而有所差異，建議您可先參考 Google 官方說明與協助資源進行排查，"
+              },
+              {
+                "type": "text",
+                "text": "若您已依照課程指示操作，並嘗試重新登入、重新執行或於不同時間重試後，仍無法完成課程指定步驟，請再次將相關資訊（例如錯誤畫面截圖）寄信至 ",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "link",
+                "url": "mailto:intelligent-finance@esunbank.com",
+                "text": "intelligent-finance@esunbank.com"
+              },
+              {
+                "type": "text",
+                "text": " "
+              },
+              {
+                "type": "text",
+                "text": "給我們。",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n主辦單位將協助進一步了解狀況；若確認屬於平台或課程執行上的特殊情形，也會評估是否提供其他可行的完成證明方式供認定，謝謝！"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "3b228403-9b1e-4c18-8b61-4e5fb8f68da8",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，謝謝詢問，請參考以下回覆：\n1. 10/26 為休市日，初賽第一個交易日為 10/27，首次提交期間為 10/26 19:30 至 10/27 08:55。\n2. target_shares 公式中的 NAV 與價格，均基於前一交易日收盤價計算，詳見 D-Plan_撰寫指南_v4.2.md。\n3. 詳見 D-Plan_撰寫指南_v4.2.md 章節「market_view — 整體市場怎麼看」中的posture.net_exposure_intent 代碼說明。\n4. 成交價以整股交易之成交均價進行計算，資料來源以證交所及櫃買中心之資料為主。\n5. 若當日不進行任何交易，decisions 與 orders 可不填寫。\n6. 建議 Agent 設計多重資料來源，原則上還是需要有時間合理的資訊源。\n7. 本次個股標的池為上市前100大+上櫃前50大公司，應不致出現該日無成交量之情形。\n8. 同一交易日可多次提交，系統將以最後一次成功提交內容為準。",
+    "ts": "1790765587.358819",
+    "thread_ts": "1790673822.251189",
+    "parent_user_id": "U0C5A0UTRDF",
+    "team": "T0C3BBR6687",
+    "reactions": [
+      {
+        "name": "eyes",
+        "count": 2,
+        "users": [
+          "U0C71JKF6MD",
+          "U0C5A0UTRDF"
+        ]
+      }
+    ],
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "oN6ci",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，謝謝詢問，請參考以下回覆：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "10/26 為休市日，初賽第一個交易日為 10/27，首次提交期間為 10/26 19:30 至 10/27 08:55。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "target_shares 公式中的 NAV 與價格，均基於前一交易日收盤價計算，詳見 "
+                  },
+                  {
+                    "type": "text",
+                    "text": "D-Plan_撰寫指南_v4.2.md",
+                    "style": {
+                      "unlink": true
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "詳見 "
+                  },
+                  {
+                    "type": "text",
+                    "text": "D-Plan_撰寫指南_v4.2.md",
+                    "style": {
+                      "unlink": true
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": " 章節「market_view — 整體市場怎麼看」"
+                  },
+                  {
+                    "type": "text",
+                    "text": "中的posture.net",
+                    "style": {
+                      "unlink": true
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "_exposure_intent 代碼說明。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "成交價以整股交易之成交均價進行計算，資料來源以證交所及櫃買中心之資料為主。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "若當日不進行任何交易，decisions 與 orders 可不填寫。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "建議 Agent 設計多重資料來源，原則上還是需要有時間合理的資訊源。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "本次個股標的池為上市前100大+上櫃前50大公司，應不致出現該日無成交量之情形。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "同一交易日可多次提交，系統將以最後一次成功提交內容為準。"
+                  }
+                ]
+              }
+            ],
+            "style": "ordered",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "57e7978b-2b5f-4aa1-92a5-6d5071c7d0a3",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，謝謝您的詢問，回覆如下敬請參考：\n1. 現金比例係以每日結算後的投資組合狀態判定，並非以提交 D-Plan 當下的估算結果作為檢核依據。\n2. 若前一日現金比例為 24%，隔日盤中因股價波動使現金比例暫時超過 25%，但經當日委託調整後，最終結算時已低於（或等於）25%，則不視為違規。\n3. 若提交 D-Plan 時依前日資料估算符合規範，但最終結算後現金比例超過 25%，則將以實際結算結果作為認定依據。\n4. 現金比例恰好等於 25% 不視為違規，僅在超過 25% 時才視為違反規定。",
+    "ts": "1790825250.756869",
+    "thread_ts": "1790745327.844469",
+    "parent_user_id": "U0C4MBQCQ6A",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "fgUc6",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，謝謝您的詢問，回覆如下敬請參考：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "現金比例係以每日結算後的投資組合狀態判定，並非以提交 D-Plan 當下的估算結果作為檢核依據。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "若前一日現金比例為 24%，隔日盤中因股價波動使現金比例暫時超過 25%，但經當日委託調整後，最終結算時已低於（或等於）25%，則不視為違規。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "若提交 D-Plan 時依前日資料估算符合規範，但最終結算後現金比例超過 25%，則將以實際結算結果作為認定依據。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "現金比例恰好等於 25% 不視為違規，僅在超過 25% 時才視為違反規定。"
+                  }
+                ]
+              }
+            ],
+            "style": "ordered",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "be2eea97-4453-45aa-8870-3c9c88acd241",
+    "type": "message",
+    "user": "U0C4MBQCQ6A",
+    "text": "您好想詢問系統「整股交易之當日成交均價」使用證交所／櫃買中心哪個資料表、欄位或網址？是否直接採日總成交金額÷總成交股數；若不是，如何排除零股、盤後定價及鉅額交易？",
+    "ts": "1790830608.503899",
+    "thread_ts": "1790830608.503899",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1790833779.863329"
+      }
+    ],
+    "latest_reply": "1790833779.863329",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "iUVpm",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好想詢問系統「整股交易之當日成交均價」使用證交所／櫃買中心哪個資料表、欄位或網址？是否直接採日總成交金額÷總成交股數；若不是，如何排除零股、盤後定價及鉅額交易？"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/be8b4fad6cdfd162cd805b1dcbbc5295.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-72.png",
+      "first_name": "forggy0113",
+      "real_name": "forggy0113",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "forggy0113",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "fdc072d6-c88b-4dd9-bb26-522950441729",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，請參考\u003chttps://www.twse.com.tw/zh/trading/historical/stock-day.html|twse.com.tw/zh/trading/historical/stock-day.html\u003e\n本競賽成交均價係以本網頁中載明的成交金額÷成交股數。\n謝謝您的發問。",
+    "ts": "1790833779.863329",
+    "thread_ts": "1790830608.503899",
+    "attachments": [
+      {
+        "fallback": "個股日成交資訊 - TWSE 臺灣證券交易所",
+        "id": 1,
+        "title": "個股日成交資訊 - TWSE 臺灣證券交易所",
+        "title_link": "https://www.twse.com.tw/zh/trading/historical/stock-day.html",
+        "text": "臺灣證券交易所全球資訊網介紹公司組織、沿革外，並分為「交易資訊」、「上市公司」、 「產品與服務」、「結算服務」、「市場公告」、「法令規章」、「投資人教育」、「統計報表」等，期能提供投資大眾即時完整之訊息，使投資大眾對本公司業務及市場動態有更深一層的瞭解。",
+        "service_name": "twse.com.tw",
+        "service_icon": "https://www.twse.com.tw/favicon.ico",
+        "from_url": "https://www.twse.com.tw/zh/trading/historical/stock-day.html",
+        "original_url": "https://www.twse.com.tw/zh/trading/historical/stock-day.html",
+        "blocks": null
+      }
+    ],
+    "parent_user_id": "U0C4MBQCQ6A",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "s13Qz",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，請參考"
+              },
+              {
+                "type": "link",
+                "url": "https://www.twse.com.tw/zh/trading/historical/stock-day.html",
+                "text": "twse.com.tw/zh/trading/historical/stock-day.html"
+              },
+              {
+                "type": "text",
+                "text": "\n本競賽成交均價係以本網頁中載明的成交金額÷成交股數。\n謝謝您的發問。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  }
+]

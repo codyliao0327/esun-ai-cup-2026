@@ -1,0 +1,94 @@
+[
+  {
+    "client_msg_id": "ec6e5cc8-a00e-4ddf-b753-535f2f778802",
+    "type": "message",
+    "user": "U0C3M4SN2BZ",
+    "text": "感謝您的回答",
+    "ts": "1791103449.601199",
+    "thread_ts": "1790649293.489759",
+    "parent_user_id": "U0C3M4SN2BZ",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "A5AIQ",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "感謝您的回答"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-29/12179261110468_8b31aeb9aae7670766ab_72.jpg",
+      "first_name": "Robert",
+      "real_name": "Robert Chang",
+      "display_name": "Robert Chang",
+      "team": "T0C3BBR6687",
+      "name": "robert.epochmit",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "e700797c-2359-4c21-9730-cd71383925ef",
+    "type": "message",
+    "user": "U0C5W1T0EKV",
+    "text": "我也遇過，這些部屬的動作需要帳號有一定的金額，加上臨時學生帳號登錄時有出現 IAM 錯誤，這會影響到部署後的讀取權限問題，想確認 IAM 角色問題，但仍然被拒絕存取，感覺很難用~",
+    "ts": "1791166471.478279",
+    "thread_ts": "1790732099.323839",
+    "parent_user_id": "U0C4639LS7N",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "zP7fa",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "我也遇過，這些部屬的動作需要帳號有一定的金額，加上臨時學生帳號登錄時有出現 IAM 錯誤，這會影響到部署後的讀取權限問題，想確認 IAM 角色問題，但仍然被拒絕存取，感覺很難用~"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/00b5dc12321a058ecd0c382a707fd885.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png",
+      "first_name": "Kenny",
+      "real_name": "Kenny",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "kenny7012",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  }
+]

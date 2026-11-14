@@ -1,0 +1,16 @@
+{
+  "timestamp": "2026-11-12T00:19:27+08:00",
+  "model": "gemini-4-argon",
+  "duration_seconds": 160.71,
+  "prompt_tokens": 62106,
+  "candidates_tokens": 11360,
+  "total_tokens": 73466,
+  "cached_tokens": 0,
+  "tool_use_tokens": 0,
+  "thought_tokens": 0,
+  "code_execution_used": false,
+  "code_execution_call_count": 0,
+  "executed_codes": [],
+  "date": "20261112",
+  "stage": "l1"
+}

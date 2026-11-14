@@ -1,0 +1,182 @@
+[
+  {
+    "client_msg_id": "2e0d145b-5f6d-4624-961f-5be2d2d59823",
+    "type": "message",
+    "user": "U0C8ABAA7JM",
+    "text": "主辦您好，想確認 ETF 投資策略說明文件的提交規則：10/2 答覆提到「提交後不開放修改」，但後台操作說明第 4.2 節寫「繳交期間截止前，可以重新上傳新的檔案覆蓋舊版」。請問在繳交截止前，是否可以重新上傳 PDF 覆蓋先前版本？以截止前最後一次上傳的版本為準嗎？謝謝！",
+    "ts": "1792054240.948139",
+    "thread_ts": "1792054240.948139",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792135118.588679"
+      }
+    ],
+    "latest_reply": "1792135118.588679",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "4Sg8X",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦您好，想確認 ETF 投資策略說明文件的提交規則：10/2 答覆提到「提交後不開放修改」，但後台操作說明第 4.2 節寫「繳交期間截止前，可以重新上傳新的檔案覆蓋舊版」。請問在繳交截止前，是否可以重新上傳 PDF 覆蓋先前版本？以截止前最後一次上傳的版本為準嗎？謝謝！"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-10-10/12265066822967_1e2a7b749080c01c68bc_72.jpg",
+      "first_name": "家祿黃",
+      "real_name": "家祿黃",
+      "display_name": "家祿黃",
+      "team": "T0C3BBR6687",
+      "name": "www.ez0223",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "0ef84291-fd98-419b-bd5e-ebfca2120c03",
+    "type": "message",
+    "user": "U0C9F65AA74",
+    "text": "主辦單位您好：\n目前查閱 10/05 更新版的競賽辦法，發現第二大項第（七）點提到，參賽隊伍須繳交「ETF 投資策略說明文件」及「當日 Agent 決策報告及交易書」，並註明「上述內容皆須透過 AI Agent 產製」。\n想再向主辦單位確認，這是否代表連賽前繳交的「ETF 投資策略說明文件」，也必須完全由 AI Agent 產製，而不能由參賽團隊自行規劃及撰寫？",
+    "ts": "1792054360.588079",
+    "thread_ts": "1792054360.588079",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792135767.420829"
+      }
+    ],
+    "latest_reply": "1792135767.420829",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "uxtBj",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好：\n目前查閱 10/05 更新版的競賽辦法，發現第二大項第（七）點提到，參賽隊伍須繳交「ETF 投資策略說明文件」及「當日 Agent 決策報告及交易書」，並註明「上述內容皆須透過 AI Agent 產製」。\n想再向主辦單位確認，這是否代表連賽前繳交的「ETF 投資策略說明文件」，也必須完全由 AI Agent 產製，而不能由參賽團隊自行規劃及撰寫？"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-10-15/12315166550707_69a968153f1655881556_72.png",
+      "first_name": "北科大-洪承熙",
+      "real_name": "北科大-洪承熙",
+      "display_name": "alan",
+      "team": "T0C3BBR6687",
+      "name": "t115ab8055",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "603a126e-585d-4e69-97d4-3087d09248c4",
+    "type": "message",
+    "user": "U0C5YM9NWMD",
+    "text": "主辦單位您好，我們是TEAM_11399，想要課程證明認列的問題，我們大概四天前寄出，目前沒有收到回覆，麻煩您幫我確認一下",
+    "ts": "1792116572.795219",
+    "thread_ts": "1792116572.795219",
+    "edited": {
+      "user": "U0C5YM9NWMD",
+      "ts": "1792116598.000000"
+    },
+    "reply_count": 2,
+    "reply_users": [
+      "U0C3LFZUG3D",
+      "U0C5YM9NWMD"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792135893.293879"
+      },
+      {
+        "user": "U0C5YM9NWMD",
+        "ts": "1792141085.152389"
+      }
+    ],
+    "latest_reply": "1792141085.152389",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "i6KwX",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好，我們是TEAM_11399，想要課程證明認列的問題，我們大概四天前寄出，目前沒有收到回覆，麻煩您幫我確認一下"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/57d19abf83f667c56328dac32877bedb.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png",
+      "first_name": "Eric",
+      "real_name": "Eric",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "etericown",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 2
+  }
+]

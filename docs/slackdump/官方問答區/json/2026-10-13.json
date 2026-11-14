@@ -1,0 +1,125 @@
+[
+  {
+    "client_msg_id": "58190d84-9abe-46eb-9bc1-d466c7ea922e",
+    "type": "message",
+    "user": "U0C3T5612SF",
+    "text": "主辦單位您好，有兩個問題想請教，已查閱比賽辦法、D-Plan 撰寫指南 v4.3、DataPack 規格書及過往問答，仍無法確定，謝謝。\n\n【一、Active Share 的計算方式】\n\n假設我方前 15 大持股包含 A 股票（權重 8%），而某主動型 ETF 的前 15 大持股不包含 A（A 在該 ETF 排第 20 名，實際權重 2%）。\n\n1. 計算時，A 在該 ETF 的權重是以 0 計，還是以實際的 2% 計？\n2. 比較的股票集合，是雙方前 15 大的聯集（最多 30 檔），還是只比我方的前 15 大？\n3. 可否提供一個簡單的計算範例？\n\n【二、首日建倉是否即須符合持股限制】\n\n初賽首日（10/27）由全現金、0 檔持股開始建倉。\n\n4. 首日結算時，是否即須符合「現金不超過 25%」及「持股 20–30 檔」？若未符合，是否當日即記警告？\n5. 或者首日建倉另有寬限（例如可分數日完成建倉）？",
+    "ts": "1791882261.723149",
+    "thread_ts": "1791882261.723149",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1791973645.876959"
+      }
+    ],
+    "latest_reply": "1791973645.876959",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "WmlgT",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好，有兩個問題想請教，已查閱比賽辦法、D-Plan 撰寫指南 v4.3、DataPack 規格書及過往問答，仍無法確定，謝謝。\n\n【一、Active Share 的計算方式】\n\n假設我方前 15 大持股包含 A 股票（權重 8%），而某主動型 ETF 的前 15 大持股不包含 A（A 在該 ETF 排第 20 名，實際權重 2%）。\n\n1. 計算時，A 在該 ETF 的權重是以 0 計，還是以實際的 2% 計？\n2. 比較的股票集合，是雙方前 15 大的聯集（最多 30 檔），還是只比我方的前 15 大？\n3. 可否提供一個簡單的計算範例？\n\n【二、首日建倉是否即須符合持股限制】\n\n初賽首日（10/27）由全現金、0 檔持股開始建倉。\n\n4. 首日結算時，是否即須符合「現金不超過 25%」及「持股 20–30 檔」？若未符合，是否當日即記警告？\n5. 或者首日建倉另有寬限（例如可分數日完成建倉）？"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/ad49a329577f59cbf086325f6423cb87.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png",
+      "first_name": "Ting",
+      "real_name": "Ting",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "jnes0824",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "ea9c93c4-e7bb-409f-ad83-8f1fa506aecd",
+    "type": "message",
+    "user": "U0C8CTY1V50",
+    "text": "主辦單位您好，已閱讀最新 DataPack 規格書與先前問答，想確認兩個 D-Plan 細節：\n\n1. 資料包 holdings 中，shares 為 0、只有 receivable_shares（應收配股）的股票，需要列入 no_trade_decisions 嗎？若列入會不會被判定為決策覆蓋錯誤？\n\n2. sources 若引用本隊自行彙整的資料快照（例如把公開資訊觀測站多個月份的月營收原檔整理成一份檔案，並在 name 欄附上各原始檔網址與 sha256），authority 填 other，是否可以接受？\n\n謝謝！",
+    "ts": "1791946821.255289",
+    "thread_ts": "1791946821.255289",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1791973750.433329"
+      }
+    ],
+    "latest_reply": "1791973750.433329",
+    "team": "T0C3BBR6687",
+    "reactions": [
+      {
+        "name": "eyes",
+        "count": 1,
+        "users": [
+          "U0CA277B7ME"
+        ]
+      }
+    ],
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "OCpsp",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好，已閱讀最新 DataPack 規格書與先前問答，想確認兩個 D-Plan 細節：\n\n1. 資料包 holdings 中，shares 為 0、只有 receivable_shares（應收配股）的股票，需要列入 no_trade_decisions 嗎？若列入會不會被判定為決策覆蓋錯誤？\n\n2. sources 若引用本隊自行彙整的資料快照（例如把公開資訊觀測站多個月份的月營收原檔整理成一份檔案，並在 name 欄附上各原始檔網址與 sha256），authority 填 other，是否可以接受？\n\n謝謝！"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-10-11/12283154158358_824b24134174ab725327_72.png",
+      "first_name": "Ryan",
+      "real_name": "Ryan Shih",
+      "display_name": "Ryan Shih",
+      "team": "T0C3BBR6687",
+      "name": "10402030ryan",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  }
+]

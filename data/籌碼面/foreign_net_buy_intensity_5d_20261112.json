@@ -1,0 +1,177 @@
+{
+  "_format": "[value, date]",
+  "1301": {
+    "foreign_net_buy_intensity_5d": [-2.68, "2026-11-11"]
+  },
+  "1303": {
+    "foreign_net_buy_intensity_5d": [-4.5, "2026-11-11"]
+  },
+  "1326": {
+    "foreign_net_buy_intensity_5d": [8.17, "2026-11-11"]
+  },
+  "1590": {
+    "foreign_net_buy_intensity_5d": [-2.42, "2026-11-11"]
+  },
+  "1785": {
+    "foreign_net_buy_intensity_5d": [7.71, "2026-11-11"]
+  },
+  "1802": {
+    "foreign_net_buy_intensity_5d": [12.79, "2026-11-11"]
+  },
+  "1815": {
+    "foreign_net_buy_intensity_5d": [1.27, "2026-11-11"]
+  },
+  "2207": {
+    "foreign_net_buy_intensity_5d": [-12.74, "2026-11-11"]
+  },
+  "2301": {
+    "foreign_net_buy_intensity_5d": [-8.5, "2026-11-11"]
+  },
+  "2330": {
+    "foreign_net_buy_intensity_5d": [-16.21, "2026-11-11"]
+  },
+  "2345": {
+    "foreign_net_buy_intensity_5d": [-13.57, "2026-11-11"]
+  },
+  "2376": {
+    "foreign_net_buy_intensity_5d": [-8.71, "2026-11-11"]
+  },
+  "2379": {
+    "foreign_net_buy_intensity_5d": [1.78, "2026-11-11"]
+  },
+  "2383": {
+    "foreign_net_buy_intensity_5d": [-16.31, "2026-11-11"]
+  },
+  "2404": {
+    "foreign_net_buy_intensity_5d": [0.36, "2026-11-11"]
+  },
+  "2412": {
+    "foreign_net_buy_intensity_5d": [16.49, "2026-11-11"]
+  },
+  "2454": {
+    "foreign_net_buy_intensity_5d": [-15.94, "2026-11-11"]
+  },
+  "2603": {
+    "foreign_net_buy_intensity_5d": [-22.46, "2026-11-11"]
+  },
+  "2610": {
+    "foreign_net_buy_intensity_5d": [40.04, "2026-11-11"]
+  },
+  "2618": {
+    "foreign_net_buy_intensity_5d": [33.53, "2026-11-11"]
+  },
+  "2880": {
+    "foreign_net_buy_intensity_5d": [-18.42, "2026-11-11"]
+  },
+  "2881": {
+    "foreign_net_buy_intensity_5d": [-0.9, "2026-11-11"]
+  },
+  "2882": {
+    "foreign_net_buy_intensity_5d": [-14.07, "2026-11-11"]
+  },
+  "2883": {
+    "foreign_net_buy_intensity_5d": [-3.39, "2026-11-11"]
+  },
+  "2885": {
+    "foreign_net_buy_intensity_5d": [2.07, "2026-11-11"]
+  },
+  "2886": {
+    "foreign_net_buy_intensity_5d": [8.59, "2026-11-11"]
+  },
+  "2891": {
+    "foreign_net_buy_intensity_5d": [-14.01, "2026-11-11"]
+  },
+  "3034": {
+    "foreign_net_buy_intensity_5d": [-12.06, "2026-11-11"]
+  },
+  "3037": {
+    "foreign_net_buy_intensity_5d": [-12.14, "2026-11-11"]
+  },
+  "3045": {
+    "foreign_net_buy_intensity_5d": [-10.91, "2026-11-11"]
+  },
+  "3131": {
+    "foreign_net_buy_intensity_5d": [3.84, "2026-11-11"]
+  },
+  "3189": {
+    "foreign_net_buy_intensity_5d": [-10.65, "2026-11-11"]
+  },
+  "3227": {
+    "foreign_net_buy_intensity_5d": [7.98, "2026-11-11"]
+  },
+  "3231": {
+    "foreign_net_buy_intensity_5d": [-13.92, "2026-11-11"]
+  },
+  "3293": {
+    "foreign_net_buy_intensity_5d": [6.78, "2026-11-11"]
+  },
+  "3363": {
+    "foreign_net_buy_intensity_5d": [15.61, "2026-11-11"]
+  },
+  "3443": {
+    "foreign_net_buy_intensity_5d": [-6.83, "2026-11-11"]
+  },
+  "3491": {
+    "foreign_net_buy_intensity_5d": [5.3, "2026-11-11"]
+  },
+  "3529": {
+    "foreign_net_buy_intensity_5d": [0.72, "2026-11-11"]
+  },
+  "3533": {
+    "foreign_net_buy_intensity_5d": [1.87, "2026-11-11"]
+  },
+  "3661": {
+    "foreign_net_buy_intensity_5d": [4.35, "2026-11-11"]
+  },
+  "4123": {
+    "foreign_net_buy_intensity_5d": [5.5, "2026-11-11"]
+  },
+  "4749": {
+    "foreign_net_buy_intensity_5d": [26.2, "2026-11-11"]
+  },
+  "4772": {
+    "foreign_net_buy_intensity_5d": [3.62, "2026-11-11"]
+  },
+  "4904": {
+    "foreign_net_buy_intensity_5d": [-5.66, "2026-11-11"]
+  },
+  "4938": {
+    "foreign_net_buy_intensity_5d": [-11.41, "2026-11-11"]
+  },
+  "4958": {
+    "foreign_net_buy_intensity_5d": [-5.93, "2026-11-11"]
+  },
+  "4979": {
+    "foreign_net_buy_intensity_5d": [9.46, "2026-11-11"]
+  },
+  "5880": {
+    "foreign_net_buy_intensity_5d": [1.9, "2026-11-11"]
+  },
+  "5903": {
+    "foreign_net_buy_intensity_5d": [-22.47, "2026-11-11"]
+  },
+  "6023": {
+    "foreign_net_buy_intensity_5d": [-38.4, "2026-11-11"]
+  },
+  "6139": {
+    "foreign_net_buy_intensity_5d": [7.48, "2026-11-11"]
+  },
+  "6505": {
+    "foreign_net_buy_intensity_5d": [12.66, "2026-11-11"]
+  },
+  "6510": {
+    "foreign_net_buy_intensity_5d": [5.28, "2026-11-11"]
+  },
+  "6548": {
+    "foreign_net_buy_intensity_5d": [7.31, "2026-11-11"]
+  },
+  "6919": {
+    "foreign_net_buy_intensity_5d": [-16.01, "2026-11-11"]
+  },
+  "7734": {
+    "foreign_net_buy_intensity_5d": [11.57, "2026-11-11"]
+  },
+  "8069": {
+    "foreign_net_buy_intensity_5d": [-3.36, "2026-11-11"]
+  }
+}

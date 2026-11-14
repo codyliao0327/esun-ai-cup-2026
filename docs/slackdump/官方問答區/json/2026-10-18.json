@@ -1,0 +1,370 @@
+[
+  {
+    "client_msg_id": "aaf211a5-bdb2-4dec-83c3-8ad65aa85de9",
+    "type": "message",
+    "user": "U0C6DH6QQK0",
+    "text": "主辦單位您好，我們是team11514，想詢問課程證明認列的問題，已送出申請很久，但未收到Google Token Credit，麻煩您幫我確認一下。謝謝!",
+    "ts": "1792315277.959679",
+    "thread_ts": "1792315277.959679",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792400050.054889"
+      }
+    ],
+    "latest_reply": "1792400050.054889",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "SPVYx",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好，我們是team11514，想詢問課程證明認列的問題，已送出申請很久，但未收到Google Token Credit，麻煩您幫我確認一下。謝謝!"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/a8e3bed47e001a4aa2bc58fb6328c2a5.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0001-72.png",
+      "first_name": "hfishstop",
+      "real_name": "hfishstop",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "hfishstop",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "dd1979bf-29c1-4a77-bc7d-8aadbc543b95",
+    "type": "message",
+    "user": "U0C63R58YTW",
+    "text": "您好，想請教關於初賽期間 D-Plan 的繳交規定。\n依照競賽規則，參賽隊伍須於每個台股交易日前一日 19:30 至交易日當天 08:55 繳交 D-Plan。\n想確認以下理解是否正確：\n1. 若隔天為非台股交易日（例如星期六、星期日或休市日），是否不需要繳交 D-Plan？\n2. 若星期一為正常交易日，是否須於星期日 19:30 至星期一 08:55 期間繳交 D-Plan？\n再麻煩主辦方協助確認，謝謝！",
+    "ts": "1792332131.113569",
+    "thread_ts": "1792332131.113569",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792403064.304179"
+      }
+    ],
+    "latest_reply": "1792403064.304179",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "ZeFm3",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，想請教關於初賽期間 D-Plan 的繳交規定。\n依照競賽規則，參賽隊伍須於每個台股交易日前一日 19:30 至交易日當天 08:55 繳交 D-Plan。\n想確認以下理解是否正確：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "若隔天為非台股交易日（例如星期六、星期日或休市日），是否不需要繳交 D-Plan？"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "若星期一為正常交易日，是否須於星期日 19:30 至星期一 08:55 期間繳交 D-Plan？"
+                  }
+                ]
+              }
+            ],
+            "style": "ordered",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "再麻煩主辦方協助確認，謝謝！"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/6249d3e028b80080754639c4fc6e63ce.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0010-72.png",
+      "first_name": "wsh1998528",
+      "real_name": "wsh1998528",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "wsh1998528",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "e1dd8ffd-23cb-4bb9-9685-d466ee35c7ff",
+    "type": "message",
+    "user": "U0CA3LFF6EA",
+    "text": "請問「ETF 投資策略說明文件內容須由 AI Agent 產製」的範圍為何？ 1. 團隊可否在 Agent 的設定中，預先指定投資主題與選股因子（視為 Agent 的設計參數），再由 Agent 產製文件文字，團隊不修改產出內容？ 2. Agent 產出文件後，團隊可否只做格式轉換（例如轉成 PDF），不改動文字內容？ 3. 產製說明文件的 Agent，是否須與每日產製 D-Plan 的 Agent 為同一套程式？",
+    "ts": "1792338460.888299",
+    "thread_ts": "1792338460.888299",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792404834.374159"
+      }
+    ],
+    "latest_reply": "1792404834.374159",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "B6hti",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "請問「ETF 投資策略說明文件內容須由 AI Agent 產製」的範圍為何？ 1. 團隊可否在 Agent 的設定中，預先指定投資主題與選股因子（視為 Agent 的設計參數），再由 Agent 產製文件文字，團隊不修改產出內容？ 2. Agent 產出文件後，團隊可否只做格式轉換（例如轉成 PDF），不改動文字內容？ 3. 產製說明文件的 Agent，是否須與每日產製 D-Plan 的 Agent 為同一套程式？"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/c80e6801ebf6bb20f9fc3c77cb45e27a.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png",
+      "first_name": "ljcisme",
+      "real_name": "ljcisme",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "ljcisme",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "3bfdc697-ad63-4fb1-b838-f4ec977d9e22",
+    "type": "message",
+    "user": "U0CAQLV5L0G",
+    "text": "主辦單位您好，想請教本隊 DataPack 的下載方式。\n\n已閱讀《DataPack 規格書 v4.3》，文件說明可由「參賽者後台 → 文件繳交 → 下載資料包」取得，想確認：\n\n1. 目前是否已開放下載？若尚未開放，預計何時開放？\n2. 若已開放，下載按鈕的實際位置在哪裡？是否方便提供操作截圖？\n3. 測試期間是否也能下載本隊的 DataPack，供我們驗證現金、持股、NAV 與行情資料的接入流程？\n\n謝謝主辦單位！",
+    "ts": "1792375781.144539",
+    "thread_ts": "1792375781.144539",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792403851.294789"
+      }
+    ],
+    "latest_reply": "1792403851.294789",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "uDTT5",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好，想請教本隊 DataPack 的下載方式。\n\n已閱讀《DataPack 規格書 v4.3》，文件說明可由「參賽者後台 → 文件繳交 → 下載資料包」取得，想確認：\n\n1. 目前是否已開放下載？若尚未開放，預計何時開放？\n2. 若已開放，下載按鈕的實際位置在哪裡？是否方便提供操作截圖？\n3. 測試期間是否也能下載本隊的 DataPack，供我們驗證現金、持股、NAV 與行情資料的接入流程？\n\n謝謝主辦單位！"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/982ac794df1f2745ee7cf5ad57773747.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png",
+      "first_name": "JACK",
+      "real_name": "JACK",
+      "display_name": "JACK",
+      "team": "T0C3BBR6687",
+      "name": "thumb0994571",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "f0abc26e-3581-45e6-83eb-e7765fb4384f",
+    "type": "message",
+    "user": "U0C983FDQMN",
+    "text": "主辦單位您好：想確認 Active Share 的計算範圍。\n\n若官方列為比較對象的某檔主動型 ETF，其前 15 大持股包含*不在 150 檔交易標的清單內*的股票（例如 NVDA US 等海外股票，或清單以外的台股）：\n1. 這些股票是否仍會列入該 ETF 的前 15 大，並納入 Active Share 計算？\n2. 若會納入，由於參賽組合無法持有這些股票，是否視為我方權重 0%？\n謝謝！",
+    "ts": "1792382756.834979",
+    "thread_ts": "1792382756.834979",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792403970.804499"
+      }
+    ],
+    "latest_reply": "1792403970.804499",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "K3/71",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好：想確認 Active Share 的計算範圍。\n\n若官方列為比較對象的某檔主動型 ETF，其前 15 大持股包含"
+              },
+              {
+                "type": "text",
+                "text": "不在 150 檔交易標的清單內",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "的股票（例如 NVDA US 等海外股票，或清單以外的台股）：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "這些股票是否仍會列入該 ETF 的前 15 大，並納入 Active Share 計算？"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "若會納入，由於參賽組合無法持有這些股票，是否視為我方權重 0%？"
+                  }
+                ]
+              }
+            ],
+            "style": "ordered",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "\n謝謝！"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/5828c0b648d36dc56c4e55bfc1b407f2.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png",
+      "first_name": "eugene",
+      "real_name": "eugene",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "eugenew472",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  }
+]

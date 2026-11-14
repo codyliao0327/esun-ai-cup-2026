@@ -1,0 +1,25 @@
+{
+  "orders": [
+    {
+      "ticker": "2603",
+      "side": "SELL",
+      "shares": 49000,
+      "decision_ref": "D1",
+      "derivation_detail": "target_shares = floor(0.03×913,650,396 / 245.5 / 1000)×1000 = 111,000；現持 160,000 → SELL 49,000"
+    },
+    {
+      "ticker": "2382",
+      "side": "SELL",
+      "shares": 36000,
+      "decision_ref": "D2",
+      "derivation_detail": "target_shares = floor(0×913,650,396 / 296.5 / 1000)×1000 = 0；現持 36,000 → SELL 36,000"
+    },
+    {
+      "ticker": "2884",
+      "side": "BUY",
+      "shares": 289000,
+      "decision_ref": "D3",
+      "derivation_detail": "target_shares = floor(0.015×913,650,396 / 47.3 / 1000)×1000 = 289,000；現持 0 → BUY 289,000"
+    }
+  ]
+}

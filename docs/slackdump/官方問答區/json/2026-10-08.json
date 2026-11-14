@@ -1,0 +1,59 @@
+[
+  {
+    "client_msg_id": "262120aa-7b85-47a0-a854-3eebb30c3d87",
+    "type": "message",
+    "user": "U0C6D24HYRM",
+    "text": "主辦單位您好，\n查詢競賽規則後發現目前對於 Agent 的描述似乎有些籠統，想請問整個預測 workflow 中，一定要有 LLM 嗎?\n如果一定要有 LLM 作為所謂的 Agent，那可以搭配傳統統計模型或是 Time-series Foundation Models 等其他 components 來輔助其決策嗎?",
+    "ts": "1791457991.744679",
+    "thread_ts": "1791457991.744679",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1791776941.839139"
+      }
+    ],
+    "latest_reply": "1791776941.839139",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "pUpTp",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好，\n查詢競賽規則後發現目前對於 Agent 的描述似乎有些籠統，想請問整個預測 workflow 中，一定要有 LLM 嗎?\n如果一定要有 LLM 作為所謂的 Agent，那可以搭配傳統統計模型或是 Time-series Foundation Models 等其他 components 來輔助其決策嗎?"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/37e72cfb829a42630d229080ad8d60f3.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0023-72.png",
+      "first_name": "arthurissmart728",
+      "real_name": "arthurissmart728",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "arthurissmart728",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  }
+]

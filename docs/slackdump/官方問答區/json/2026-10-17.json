@@ -1,0 +1,120 @@
+[
+  {
+    "client_msg_id": "cc092c14-9307-4875-afa2-4fb5521bc651",
+    "type": "message",
+    "user": "U0C7W220571",
+    "text": "主辦單位您好，我們是TEAM_11461，想要確認課程證明認列的進度，證明大約在十天前寄出，目前沒有收到回覆，麻煩您幫我確認一下。",
+    "ts": "1792224787.316349",
+    "thread_ts": "1792224787.316349",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792399842.338639"
+      }
+    ],
+    "latest_reply": "1792399842.338639",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "IKVkA",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好，我們是TEAM_11461，想要確認課程證明認列的進度，證明大約在十天前寄出，目前沒有收到回覆，麻煩您幫我確認一下。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-10-10/12278149014309_1572b2c999ac09fdcbc1_72.png",
+      "first_name": "Kelvin",
+      "real_name": "Kelvin Chen",
+      "display_name": "Kelvin Chen",
+      "team": "T0C3BBR6687",
+      "name": "kelvin920831",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "8cd60a82-8e3e-4aee-887d-4753fcaac402",
+    "type": "message",
+    "user": "U0C3T5612SF",
+    "text": "主辦單位您好，想請教持股超限寬限期遇到個股停牌時的處理方式。\n\n依比賽辦法第六節註 3 及 10/12 的回覆，因價格波動首次超限的結算日為寬限期第 1 個交易日，第 6 個交易日結算後仍超限則記警告；另依 10/12 回覆，停牌個股的委託視為無效。\n\n1. 寬限期內若該檔個股停牌（市場正常開市），停牌日是否計入 5 個交易日的寬限期？還是寬限期會順延停牌的天數？\n2. 若隊伍在寬限期第 5 個交易日提交第 6 個交易日的減碼委託，但該股在第 6 個交易日停牌、委託被視為無效，導致第 6 個交易日結算後仍超限，是否仍記警告？\n3. 持有的個股停牌期間沒有收盤價時，DataPack 該檔的 close_price 會沿用停牌前最後一個收盤價，還是為 null（依規格書計算 nav_tradable 時以 0 計入）？結算判定個股權重是否超限時，以哪個價格計算？\n4. 承上，若該股以 0 計入而使結算現金比超過 25%，或其他個股權重因此超限，是否會記警告？\n5. D-Plan 的 target_shares 公式使用前一交易日收盤價。若個股在 T-1 停牌、T 日恢復交易，T-1 當日沒有收盤價，此時公式中的「前日收盤價」應使用哪個價格（例如停牌前最後一個收盤價，或恢復交易當日的開盤競價基準）？posture 檢核與預估現金比是否也使用同一價格？\n\n謝謝主辦團隊協助釐清",
+    "ts": "1792253795.982239",
+    "thread_ts": "1792253795.982239",
+    "edited": {
+      "user": "U0C3T5612SF",
+      "ts": "1792298757.000000"
+    },
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792404197.513189"
+      }
+    ],
+    "latest_reply": "1792404197.513189",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "qaC7O",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好，想請教持股超限寬限期遇到個股停牌時的處理方式。\n\n依比賽辦法第六節註 3 及 10/12 的回覆，因價格波動首次超限的結算日為寬限期第 1 個交易日，第 6 個交易日結算後仍超限則記警告；另依 10/12 回覆，停牌個股的委託視為無效。\n\n1. 寬限期內若該檔個股停牌（市場正常開市），停牌日是否計入 5 個交易日的寬限期？還是寬限期會順延停牌的天數？\n2. 若隊伍在寬限期第 5 個交易日提交第 6 個交易日的減碼委託，但該股在第 6 個交易日停牌、委託被視為無效，導致第 6 個交易日結算後仍超限，是否仍記警告？\n3. 持有的個股停牌期間沒有收盤價時，DataPack 該檔的 close_price 會沿用停牌前最後一個收盤價，還是為 null（依規格書計算 nav_tradable 時以 0 計入）？結算判定個股權重是否超限時，以哪個價格計算？\n4. 承上，若該股以 0 計入而使結算現金比超過 25%，或其他個股權重因此超限，是否會記警告？\n5. D-Plan 的 target_shares 公式使用前一交易日收盤價。若個股在 T-1 停牌、T 日恢復交易，T-1 當日沒有收盤價，此時公式中的「前日收盤價」應使用哪個價格（例如停牌前最後一個收盤價，或恢復交易當日的開盤競價基準）？posture 檢核與預估現金比是否也使用同一價格？\n\n謝謝主辦團隊協助釐清"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/ad49a329577f59cbf086325f6423cb87.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png",
+      "first_name": "Ting",
+      "real_name": "Ting",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "jnes0824",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  }
+]

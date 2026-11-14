@@ -1,0 +1,377 @@
+[
+  {
+    "type": "message",
+    "user": "U0C4PKC6MJ4",
+    "text": "\u003c@U0C4PKC6MJ4\u003e 已加入頻道",
+    "ts": "1790156806.805309",
+    "subtype": "channel_join",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12131190913730_ec948d0f13a28a5b2fe6_72.png",
+      "first_name": "colaaaaaaaaaa",
+      "real_name": "colaaaaaaaaaa",
+      "display_name": "colaaaaaaaaaa",
+      "team": "T0C3BBR6687",
+      "name": "chi0989121290",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "type": "message",
+    "user": "U0C3TGBJ2AJ",
+    "text": "\u003c@U0C3TGBJ2AJ\u003e 已加入頻道",
+    "ts": "1790158652.104489",
+    "subtype": "channel_join",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/ca4869b7d0b97478f4422a73ae440faa.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png",
+      "first_name": "fang",
+      "real_name": "fang",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "adamfang308",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "type": "message",
+    "user": "U0C4QK3QKHN",
+    "text": "\u003c@U0C4QK3QKHN\u003e 已加入頻道",
+    "ts": "1790165981.590999",
+    "subtype": "channel_join",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12126067621811_7f0a6ff54213f6dd541a_72.png",
+      "first_name": "thank",
+      "real_name": "thank hsiehpinghan",
+      "display_name": "thank hsiehpinghan",
+      "team": "T0C3BBR6687",
+      "name": "thank.hsiehpinghan",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "type": "message",
+    "user": "U0C3UNNKEEA",
+    "text": "\u003c@U0C3UNNKEEA\u003e 已加入頻道",
+    "ts": "1790169078.172119",
+    "subtype": "channel_join",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12126494646659_410e081dbe27771b66aa_72.jpg",
+      "first_name": "王敏軒",
+      "real_name": "王敏軒",
+      "display_name": "王敏軒",
+      "team": "T0C3BBR6687",
+      "name": "chloe811616",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "type": "message",
+    "user": "U0C3QLK6R6X",
+    "text": "\u003c@U0C3QLK6R6X\u003e 已加入頻道",
+    "ts": "1790170382.643969",
+    "subtype": "channel_join",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12161282944064_c10220a09b469186c57b_72.jpg",
+      "first_name": "Steve",
+      "real_name": "Steve Chen",
+      "display_name": "Steve Chen",
+      "team": "T0C3BBR6687",
+      "name": "stevessschen",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "type": "message",
+    "user": "U0C3SP7S7AR",
+    "text": "\u003c@U0C3SP7S7AR\u003e 已加入頻道",
+    "ts": "1790175477.591679",
+    "subtype": "channel_join",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12137443472436_67fd147ac19a9800e96a_72.jpg",
+      "first_name": "Yu",
+      "real_name": "Yu Chang",
+      "display_name": "Yu Chang",
+      "team": "T0C3BBR6687",
+      "name": "ricky5932",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "type": "message",
+    "user": "U0C3TF10HBP",
+    "text": "\u003c@U0C3TF10HBP\u003e 已加入頻道",
+    "ts": "1790179650.889789",
+    "subtype": "channel_join",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12129512260789_bd5df3a2c39e2fc9c1ca_72.png",
+      "first_name": "113碩-韋將",
+      "real_name": "113碩-韋將",
+      "display_name": "113碩-韋將",
+      "team": "T0C3BBR6687",
+      "name": "viocitovictor",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "type": "message",
+    "user": "U0C3TTFSMKP",
+    "text": "\u003c@U0C3TTFSMKP\u003e 已加入頻道",
+    "ts": "1790182371.412669",
+    "subtype": "channel_join",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12129934860309_46e3d699d40e6891a746_72.png",
+      "first_name": "Jimmy",
+      "real_name": "Jimmy",
+      "display_name": "Jimmy",
+      "team": "T0C3BBR6687",
+      "name": "jimmy0220tw",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "type": "message",
+    "user": "U0C3T5612SF",
+    "text": "\u003c@U0C3T5612SF\u003e 已加入頻道",
+    "ts": "1790185372.955749",
+    "subtype": "channel_join",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/ad49a329577f59cbf086325f6423cb87.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png",
+      "first_name": "Ting",
+      "real_name": "Ting",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "jnes0824",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "type": "message",
+    "user": "U0C3UV0G5PF",
+    "text": "\u003c@U0C3UV0G5PF\u003e 已加入頻道",
+    "ts": "1790189389.140479",
+    "subtype": "channel_join",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12139658915876_c7fb82ad2e052b67a806_72.jpg",
+      "first_name": "Chung-Chun",
+      "real_name": "Chung-Chun Wang",
+      "display_name": "Chung-Chun Wang",
+      "team": "T0C3BBR6687",
+      "name": "ccwangtakala",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "type": "message",
+    "user": "U0C460976NQ",
+    "text": "\u003c@U0C460976NQ\u003e 已加入頻道",
+    "ts": "1790211124.665459",
+    "subtype": "channel_join",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/7d8b85b9884e38f0508a41ec92b76fb0.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png",
+      "first_name": "Melody",
+      "real_name": "Melody",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "yihsuanchang24",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "type": "message",
+    "user": "U0C40BWLWKY",
+    "text": "\u003c@U0C40BWLWKY\u003e 已加入頻道",
+    "ts": "1790211265.114329",
+    "subtype": "channel_join",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/00a79fd8a49fa0bd824acfdae380699e.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0011-72.png",
+      "first_name": "gary109",
+      "real_name": "gary109",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "gary109",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "type": "message",
+    "user": "U0C4639LS7N",
+    "text": "\u003c@U0C4639LS7N\u003e 已加入頻道",
+    "ts": "1790212303.788459",
+    "subtype": "channel_join",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12132219949587_397e57a3bb55b223a208_72.png",
+      "first_name": "CW",
+      "real_name": "CW TSENG",
+      "display_name": "CW TSENG",
+      "team": "T0C3BBR6687",
+      "name": "asdfghj0622",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "type": "message",
+    "user": "U0C3XEEB38D",
+    "text": "\u003c@U0C3XEEB38D\u003e 已加入頻道",
+    "ts": "1790212934.380339",
+    "subtype": "channel_join",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/564242074e6f6baaa22d45512c691635.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png",
+      "first_name": "ian",
+      "real_name": "ian",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "ianjang9911",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "type": "message",
+    "user": "U0C3M4SN2BZ",
+    "text": "\u003c@U0C3M4SN2BZ\u003e 已加入頻道",
+    "ts": "1790213439.741179",
+    "subtype": "channel_join",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-29/12179261110468_8b31aeb9aae7670766ab_72.jpg",
+      "first_name": "Robert",
+      "real_name": "Robert Chang",
+      "display_name": "Robert Chang",
+      "team": "T0C3BBR6687",
+      "name": "robert.epochmit",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  }
+]

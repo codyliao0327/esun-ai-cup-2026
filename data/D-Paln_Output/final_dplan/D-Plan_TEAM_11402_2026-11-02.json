@@ -1,0 +1,1955 @@
+{
+  "schema_version": "4.3",
+  "doc_type": "D-Plan",
+  "team_id": "TEAM_11402",
+  "trade_date": "2026-11-02",
+  "sources": [
+    {
+      "source_id": "S1",
+      "authority": "vendor",
+      "url": "https://finlab.finance",
+      "content_as_of": "2026-11-01T20:52:08+08:00",
+      "name": "FinLab"
+    },
+    {
+      "source_id": "S2",
+      "authority": "vendor",
+      "url": "https://www.cmoney.tw/forum/stock",
+      "content_as_of": "2026-11-01T20:52:07+08:00",
+      "name": "CMoney"
+    }
+  ],
+  "observations": [
+    {
+      "obs_id": "O1",
+      "source_ref": [
+        "S1"
+      ],
+      "statement": "2026-10-30 加權指數收盤為 45211.83，位於 MA20 47726.51 與 MA60 46540.7 之下；20 日報酬率為 -5.08%，20 日最大回撤為 -9.25%；全市場外資 20 日累計買賣超為 -963,460,270,340 元，投信 20 日累計買超為 221,954,666,459 元。",
+      "values": {
+        "listed_margin_balance_change_5d": -3.24,
+        "market_advance_decline_ratio": 0.1,
+        "market_foreign_net_buy_20d": -963460270340.0,
+        "market_trust_net_buy_20d": 221954666459.0,
+        "taiex_close_latest": 45211.83,
+        "taiex_ma20_latest": 47726.51,
+        "taiex_ma60_latest": 46540.7,
+        "taiex_max_drawdown_20d": -9.25,
+        "taiex_return_20d": -5.08
+      },
+      "topic": "tw_market"
+    },
+    {
+      "obs_id": "O2",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "台塑(1301)收盤價為 72.5 元，20 日報酬率為 12.23%，20 日超額報酬為 17.31%；外資單日賣超 383,736 股，CMoney 情緒分數為 50 分。",
+      "values": {
+        "amount_ma20": 6246309673.05,
+        "close_latest": 72.5,
+        "excess_return_20d": 17.31,
+        "ma20_change_5d": 3.31,
+        "price_vs_ma20": -4.06,
+        "return_20d": 12.23,
+        "return_5d": -5.84,
+        "rsi_14": 49.01,
+        "volatility_10d": 3.38,
+        "volume_ma5_to_ma20": 0.38,
+        "revenue_mom_latest": 7.33,
+        "revenue_yoy_latest": 7.13,
+        "roe_latest": 2.21,
+        "foreign_net_buy_1d": -383736.0,
+        "foreign_net_buy_intensity_5d": -8.64,
+        "trust_net_buy_1d": 0.0,
+        "trust_net_buy_intensity_5d": 0.0,
+        "cmoney_sentiment_情緒分數": 50.0,
+        "cmoney_sentiment_樣本數": 0.0,
+        "cmoney_sentiment_極度樂觀": 0.0,
+        "cmoney_sentiment_樂觀": 0.0,
+        "cmoney_sentiment_中立": 0.0,
+        "cmoney_sentiment_謹慎": 0.0,
+        "cmoney_sentiment_極度謹慎": 0.0
+      },
+      "topic": "stock_1301"
+    },
+    {
+      "obs_id": "O3",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "南亞(1303)收盤價為 296.0 元，5 日報酬率為 -7.64%，20 日報酬率為 19.84%；外資單日買賣超 -15,973,583 股，CMoney 情緒分數為 48 分。",
+      "values": {
+        "amount_ma20": 30460755435.25,
+        "close_latest": 296.0,
+        "excess_return_20d": 24.92,
+        "ma20_change_5d": 6.03,
+        "price_vs_ma20": -1.51,
+        "return_20d": 19.84,
+        "return_5d": -7.64,
+        "rsi_14": 52.99,
+        "volatility_10d": 5.56,
+        "volume_ma5_to_ma20": 0.91,
+        "revenue_mom_latest": 12.49,
+        "revenue_yoy_latest": 55.25,
+        "roe_latest": 6.13,
+        "foreign_net_buy_1d": -15973583.0,
+        "foreign_net_buy_intensity_5d": -9.51,
+        "trust_net_buy_1d": 2245000.0,
+        "trust_net_buy_intensity_5d": 1.21,
+        "cmoney_sentiment_情緒分數": 48.0,
+        "cmoney_sentiment_樣本數": 100.0,
+        "cmoney_sentiment_極度樂觀": 10.0,
+        "cmoney_sentiment_樂觀": 30.0,
+        "cmoney_sentiment_中立": 15.0,
+        "cmoney_sentiment_謹慎": 30.0,
+        "cmoney_sentiment_極度謹慎": 15.0
+      },
+      "topic": "stock_1303"
+    },
+    {
+      "obs_id": "O4",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "台化(1326)收盤價為 72.5 元，20 日報酬率為 7.41%，營收 YoY 達 44.77%；投信單日買超 2,100,000 股，CMoney 情緒分數為 50 分。",
+      "values": {
+        "amount_ma20": 3223432025.2,
+        "close_latest": 72.5,
+        "excess_return_20d": 12.49,
+        "ma20_change_5d": 2.43,
+        "price_vs_ma20": -3.22,
+        "return_20d": 7.41,
+        "return_5d": -4.86,
+        "rsi_14": 48.89,
+        "volatility_10d": 4.0,
+        "volume_ma5_to_ma20": 0.53,
+        "revenue_mom_latest": 9.29,
+        "revenue_yoy_latest": 44.77,
+        "roe_latest": 1.34,
+        "foreign_net_buy_1d": -3494841.0,
+        "foreign_net_buy_intensity_5d": -3.0,
+        "trust_net_buy_1d": 2100000.0,
+        "trust_net_buy_intensity_5d": 4.18,
+        "cmoney_sentiment_情緒分數": 50.0,
+        "cmoney_sentiment_樣本數": 11.0,
+        "cmoney_sentiment_極度樂觀": 1.0,
+        "cmoney_sentiment_樂觀": 3.0,
+        "cmoney_sentiment_中立": 3.0,
+        "cmoney_sentiment_謹慎": 3.0,
+        "cmoney_sentiment_極度謹慎": 1.0
+      },
+      "topic": "stock_1326"
+    },
+    {
+      "obs_id": "O5",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "台玻(1802)收盤價為 62.3 元，20 日報酬率為 8.16%，5 日報酬率為 -7.29%；外資單日買超 5,634,882 股，CMoney 情緒分數為 50 分。",
+      "values": {
+        "amount_ma20": 7121331459.7,
+        "close_latest": 62.3,
+        "excess_return_20d": 13.24,
+        "ma20_change_5d": 2.39,
+        "price_vs_ma20": -2.01,
+        "return_20d": 8.16,
+        "return_5d": -7.29,
+        "rsi_14": 48.64,
+        "volatility_10d": 3.75,
+        "volume_ma5_to_ma20": 1.25,
+        "revenue_mom_latest": 8.18,
+        "revenue_yoy_latest": 34.1,
+        "roe_latest": 2.43,
+        "foreign_net_buy_1d": 5634882.0,
+        "foreign_net_buy_intensity_5d": -1.32,
+        "trust_net_buy_1d": 340000.0,
+        "trust_net_buy_intensity_5d": 0.63,
+        "cmoney_sentiment_情緒分數": 50.0,
+        "cmoney_sentiment_樣本數": 125.0,
+        "cmoney_sentiment_極度樂觀": 3.0,
+        "cmoney_sentiment_樂觀": 47.0,
+        "cmoney_sentiment_中立": 30.0,
+        "cmoney_sentiment_謹慎": 35.0,
+        "cmoney_sentiment_極度謹慎": 10.0
+      },
+      "topic": "stock_1802"
+    },
+    {
+      "obs_id": "O6",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "華通(2313)收盤價為 202.0 元，5 日報酬率為 -16.01%，距 MA20 乖離 -14.14%；投信單日買超 1,367,000 股，CMoney 情緒分數為 37 分。",
+      "values": {
+        "amount_ma20": 8269771526.9,
+        "close_latest": 202.0,
+        "excess_return_20d": -5.54,
+        "ma20_change_5d": -0.77,
+        "price_vs_ma20": -14.14,
+        "return_20d": -10.62,
+        "return_5d": -16.01,
+        "rsi_14": 36.5,
+        "volatility_10d": 5.22,
+        "volume_ma5_to_ma20": 0.69,
+        "revenue_mom_latest": 22.89,
+        "revenue_yoy_latest": 15.01,
+        "roe_latest": 3.1,
+        "foreign_net_buy_1d": -3073635.0,
+        "foreign_net_buy_intensity_5d": -15.53,
+        "trust_net_buy_1d": 1367000.0,
+        "trust_net_buy_intensity_5d": 1.46,
+        "cmoney_sentiment_情緒分數": 37.0,
+        "cmoney_sentiment_樣本數": 75.0,
+        "cmoney_sentiment_極度樂觀": 4.0,
+        "cmoney_sentiment_樂觀": 13.0,
+        "cmoney_sentiment_中立": 16.0,
+        "cmoney_sentiment_謹慎": 24.0,
+        "cmoney_sentiment_極度謹慎": 18.0
+      },
+      "topic": "stock_2313"
+    },
+    {
+      "obs_id": "O7",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "鴻海(2317)收盤價為 245.5 元，營收 MoM 達 25.69%，外資 5 日買超力道為 10.08%；外資單日賣超 3,392,427 股，CMoney 情緒分數為 50 分。",
+      "values": {
+        "amount_ma20": 10394680263.95,
+        "close_latest": 245.5,
+        "excess_return_20d": 3.08,
+        "ma20_change_5d": -0.45,
+        "price_vs_ma20": -0.75,
+        "return_20d": -2.0,
+        "return_5d": -1.8,
+        "rsi_14": 47.65,
+        "volatility_10d": 1.9,
+        "volume_ma5_to_ma20": 0.85,
+        "revenue_mom_latest": 25.69,
+        "revenue_yoy_latest": 38.41,
+        "roe_latest": 3.41,
+        "foreign_net_buy_1d": -3392427.0,
+        "foreign_net_buy_intensity_5d": 10.08,
+        "trust_net_buy_1d": 1373663.0,
+        "trust_net_buy_intensity_5d": 1.5,
+        "cmoney_sentiment_情緒分數": 50.0,
+        "cmoney_sentiment_樣本數": 54.0,
+        "cmoney_sentiment_極度樂觀": 4.0,
+        "cmoney_sentiment_樂觀": 7.0,
+        "cmoney_sentiment_中立": 29.0,
+        "cmoney_sentiment_謹慎": 12.0,
+        "cmoney_sentiment_極度謹慎": 2.0
+      },
+      "topic": "stock_2317"
+    },
+    {
+      "obs_id": "O8",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "台積電(2330)收盤價為 2370.0 元，營收 YoY 為 54.64%，外資 5 日買超力道為 -18.04%；外資單日賣超 8,632,834 股，CMoney 情緒分數為 44 分。",
+      "values": {
+        "amount_ma20": 70695009294.4,
+        "close_latest": 2370.0,
+        "excess_return_20d": 0.84,
+        "ma20_change_5d": -0.79,
+        "price_vs_ma20": -4.06,
+        "return_20d": -4.24,
+        "return_5d": -2.07,
+        "rsi_14": 37.99,
+        "volatility_10d": 1.07,
+        "volume_ma5_to_ma20": 1.01,
+        "revenue_mom_latest": -0.57,
+        "revenue_yoy_latest": 54.64,
+        "roe_latest": 11.39,
+        "foreign_net_buy_1d": -8632834.0,
+        "foreign_net_buy_intensity_5d": -18.04,
+        "trust_net_buy_1d": 1854677.0,
+        "trust_net_buy_intensity_5d": 4.77,
+        "cmoney_sentiment_情緒分數": 44.0,
+        "cmoney_sentiment_樣本數": 147.0,
+        "cmoney_sentiment_極度樂觀": 15.0,
+        "cmoney_sentiment_樂觀": 30.0,
+        "cmoney_sentiment_中立": 36.0,
+        "cmoney_sentiment_謹慎": 34.0,
+        "cmoney_sentiment_極度謹慎": 32.0
+      },
+      "topic": "stock_2330"
+    },
+    {
+      "obs_id": "O9",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "智邦(2345)收盤價為 1615.0 元，5 日報酬率為 -11.02%，RSI_14 為 31.85；外資單日買超 360,678 股，CMoney 情緒分數為 48 分。",
+      "values": {
+        "amount_ma20": 9407874932.75,
+        "close_latest": 1615.0,
+        "excess_return_20d": -5.69,
+        "ma20_change_5d": -1.61,
+        "price_vs_ma20": -16.13,
+        "return_20d": -10.77,
+        "return_5d": -11.02,
+        "rsi_14": 31.85,
+        "volatility_10d": 3.8,
+        "volume_ma5_to_ma20": 0.82,
+        "revenue_mom_latest": -1.15,
+        "revenue_yoy_latest": 66.12,
+        "roe_latest": 16.42,
+        "foreign_net_buy_1d": 360678.0,
+        "foreign_net_buy_intensity_5d": 6.85,
+        "trust_net_buy_1d": -128230.0,
+        "trust_net_buy_intensity_5d": -1.04,
+        "cmoney_sentiment_情緒分數": 48.0,
+        "cmoney_sentiment_樣本數": 21.0,
+        "cmoney_sentiment_極度樂觀": 4.0,
+        "cmoney_sentiment_樂觀": 2.0,
+        "cmoney_sentiment_中立": 6.0,
+        "cmoney_sentiment_謹慎": 6.0,
+        "cmoney_sentiment_極度謹慎": 3.0
+      },
+      "topic": "stock_2345"
+    },
+    {
+      "obs_id": "O10",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "華碩(2357)收盤價為 906.0 元，5 日報酬率為 -7.74%，外資 5 日買超力道為 -11.4%；外資單日賣超 1,043,510 股，CMoney 情緒分數為 46 分。",
+      "values": {
+        "amount_ma20": 2471487781.3,
+        "close_latest": 906.0,
+        "excess_return_20d": -0.84,
+        "ma20_change_5d": -0.08,
+        "price_vs_ma20": -6.89,
+        "return_20d": -5.92,
+        "return_5d": -7.74,
+        "rsi_14": 39.13,
+        "volatility_10d": 2.69,
+        "volume_ma5_to_ma20": 1.24,
+        "revenue_mom_latest": 2.4,
+        "revenue_yoy_latest": 17.73,
+        "roe_latest": 6.29,
+        "foreign_net_buy_1d": -1043510.0,
+        "foreign_net_buy_intensity_5d": -11.4,
+        "trust_net_buy_1d": 280677.0,
+        "trust_net_buy_intensity_5d": 0.74,
+        "cmoney_sentiment_情緒分數": 46.0,
+        "cmoney_sentiment_樣本數": 14.0,
+        "cmoney_sentiment_極度樂觀": 0.0,
+        "cmoney_sentiment_樂觀": 5.0,
+        "cmoney_sentiment_中立": 4.0,
+        "cmoney_sentiment_謹慎": 3.0,
+        "cmoney_sentiment_極度謹慎": 2.0
+      },
+      "topic": "stock_2357"
+    },
+    {
+      "obs_id": "O11",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "金像電(2368)收盤價為 1020.0 元，5 日報酬率為 -14.64%，股價距 MA20 乖離 -13.45%；投信 5 日買超力道為 8.31%，CMoney 情緒分數為 40 分。",
+      "values": {
+        "amount_ma20": 13682656782.75,
+        "close_latest": 1020.0,
+        "excess_return_20d": -3.85,
+        "ma20_change_5d": 0.28,
+        "price_vs_ma20": -13.45,
+        "return_20d": -8.93,
+        "return_5d": -14.64,
+        "rsi_14": 41.42,
+        "volatility_10d": 5.76,
+        "volume_ma5_to_ma20": 0.75,
+        "revenue_mom_latest": -10.24,
+        "revenue_yoy_latest": 55.46,
+        "roe_latest": 12.41,
+        "foreign_net_buy_1d": -666378.0,
+        "foreign_net_buy_intensity_5d": -7.37,
+        "trust_net_buy_1d": 526666.0,
+        "trust_net_buy_intensity_5d": 8.31,
+        "cmoney_sentiment_情緒分數": 40.0,
+        "cmoney_sentiment_樣本數": 36.0,
+        "cmoney_sentiment_極度樂觀": 1.0,
+        "cmoney_sentiment_樂觀": 7.0,
+        "cmoney_sentiment_中立": 12.0,
+        "cmoney_sentiment_謹慎": 8.0,
+        "cmoney_sentiment_極度謹慎": 8.0
+      },
+      "topic": "stock_2368"
+    },
+    {
+      "obs_id": "O12",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "技嘉(2376)收盤價為 336.0 元，營收 YoY 達 125.44%，5 日報酬率為 -6.28%；外資單日賣超 908,409 股，CMoney 情緒分數為 30 分。",
+      "values": {
+        "amount_ma20": 2141685406.3,
+        "close_latest": 336.0,
+        "excess_return_20d": -2.1,
+        "ma20_change_5d": -1.03,
+        "price_vs_ma20": -6.45,
+        "return_20d": -7.18,
+        "return_5d": -6.28,
+        "rsi_14": 39.37,
+        "volatility_10d": 2.68,
+        "volume_ma5_to_ma20": 1.0,
+        "revenue_mom_latest": 33.11,
+        "revenue_yoy_latest": 125.44,
+        "roe_latest": 10.95,
+        "foreign_net_buy_1d": -908409.0,
+        "foreign_net_buy_intensity_5d": -15.49,
+        "trust_net_buy_1d": 292000.0,
+        "trust_net_buy_intensity_5d": 1.97,
+        "cmoney_sentiment_情緒分數": 30.0,
+        "cmoney_sentiment_樣本數": 23.0,
+        "cmoney_sentiment_極度樂觀": 1.0,
+        "cmoney_sentiment_樂觀": 4.0,
+        "cmoney_sentiment_中立": 3.0,
+        "cmoney_sentiment_謹慎": 6.0,
+        "cmoney_sentiment_極度謹慎": 9.0
+      },
+      "topic": "stock_2376"
+    },
+    {
+      "obs_id": "O13",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "瑞昱(2379)收盤價為 803.0 元，20 日超額報酬為 10.74%，RSI_14 為 64.82；外資單日買超 1,473,768 股，CMoney 情緒分數為 56 分。",
+      "values": {
+        "amount_ma20": 2078567791.6,
+        "close_latest": 803.0,
+        "excess_return_20d": 10.74,
+        "ma20_change_5d": 1.24,
+        "price_vs_ma20": 4.3,
+        "return_20d": 5.66,
+        "return_5d": 1.39,
+        "rsi_14": 64.82,
+        "volatility_10d": 1.72,
+        "volume_ma5_to_ma20": 1.43,
+        "revenue_mom_latest": -0.65,
+        "revenue_yoy_latest": 23.35,
+        "roe_latest": 7.96,
+        "foreign_net_buy_1d": 1473768.0,
+        "foreign_net_buy_intensity_5d": 14.75,
+        "trust_net_buy_1d": 134217.0,
+        "trust_net_buy_intensity_5d": -0.59,
+        "cmoney_sentiment_情緒分數": 56.0,
+        "cmoney_sentiment_樣本數": 17.0,
+        "cmoney_sentiment_極度樂觀": 0.0,
+        "cmoney_sentiment_樂觀": 6.0,
+        "cmoney_sentiment_中立": 10.0,
+        "cmoney_sentiment_謹慎": 0.0,
+        "cmoney_sentiment_極度謹慎": 1.0
+      },
+      "topic": "stock_2379"
+    },
+    {
+      "obs_id": "O14",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "廣達(2382)收盤價為 318.0 元，最新 ROE 為 12.11%，營收 YoY 為 76.68%；外資單日賣超 2,927,113 股，CMoney 情緒分數為 50 分。",
+      "values": {
+        "amount_ma20": 3834463914.6,
+        "close_latest": 318.0,
+        "excess_return_20d": -0.42,
+        "ma20_change_5d": -1.33,
+        "price_vs_ma20": -2.3,
+        "return_20d": -5.5,
+        "return_5d": -3.2,
+        "rsi_14": 42.66,
+        "volatility_10d": 2.18,
+        "volume_ma5_to_ma20": 1.04,
+        "revenue_mom_latest": -23.27,
+        "revenue_yoy_latest": 76.68,
+        "roe_latest": 12.11,
+        "foreign_net_buy_1d": -2927113.0,
+        "foreign_net_buy_intensity_5d": -0.13,
+        "trust_net_buy_1d": 1347730.0,
+        "trust_net_buy_intensity_5d": 4.25,
+        "cmoney_sentiment_情緒分數": 50.0,
+        "cmoney_sentiment_樣本數": 0.0,
+        "cmoney_sentiment_極度樂觀": 0.0,
+        "cmoney_sentiment_樂觀": 0.0,
+        "cmoney_sentiment_中立": 0.0,
+        "cmoney_sentiment_謹慎": 0.0,
+        "cmoney_sentiment_極度謹慎": 0.0
+      },
+      "topic": "stock_2382"
+    },
+    {
+      "obs_id": "O15",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "台光電(2383)收盤價為 4675.0 元，5 日報酬率為 -6.31%，最新 ROE 達 18.58%；營收 YoY 為 168.87%，CMoney 情緒分數為 40 分。",
+      "values": {
+        "amount_ma20": 16486148554.6,
+        "close_latest": 4675.0,
+        "excess_return_20d": 0.1,
+        "ma20_change_5d": -0.2,
+        "price_vs_ma20": -11.65,
+        "return_20d": -4.98,
+        "return_5d": -6.31,
+        "rsi_14": 38.62,
+        "volatility_10d": 4.26,
+        "volume_ma5_to_ma20": 1.35,
+        "revenue_mom_latest": 6.88,
+        "revenue_yoy_latest": 168.87,
+        "roe_latest": 18.58,
+        "foreign_net_buy_1d": -696290.0,
+        "foreign_net_buy_intensity_5d": -9.74,
+        "trust_net_buy_1d": 310503.0,
+        "trust_net_buy_intensity_5d": 3.9,
+        "cmoney_sentiment_情緒分數": 40.0,
+        "cmoney_sentiment_樣本數": 20.0,
+        "cmoney_sentiment_極度樂觀": 2.0,
+        "cmoney_sentiment_樂觀": 2.0,
+        "cmoney_sentiment_中立": 6.0,
+        "cmoney_sentiment_謹慎": 6.0,
+        "cmoney_sentiment_極度謹慎": 4.0
+      },
+      "topic": "stock_2383"
+    },
+    {
+      "obs_id": "O16",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "漢唐(2404)收盤價為 1075.0 元，最新 ROE 達 22.95%，投信 5 日買超力道為 9.03%；外資單日賣超 21,026 股，CMoney 情緒分數為 50 分。",
+      "values": {
+        "amount_ma20": 1552641587.75,
+        "close_latest": 1075.0,
+        "excess_return_20d": -6.81,
+        "ma20_change_5d": -2.35,
+        "price_vs_ma20": -9.11,
+        "return_20d": -11.89,
+        "return_5d": -2.71,
+        "rsi_14": 39.85,
+        "volatility_10d": 1.8,
+        "volume_ma5_to_ma20": 0.42,
+        "revenue_mom_latest": -13.02,
+        "revenue_yoy_latest": 12.56,
+        "roe_latest": 22.95,
+        "foreign_net_buy_1d": -21026.0,
+        "foreign_net_buy_intensity_5d": -3.53,
+        "trust_net_buy_1d": 79921.0,
+        "trust_net_buy_intensity_5d": 9.03,
+        "cmoney_sentiment_情緒分數": 50.0,
+        "cmoney_sentiment_樣本數": 0.0,
+        "cmoney_sentiment_極度樂觀": 0.0,
+        "cmoney_sentiment_樂觀": 0.0,
+        "cmoney_sentiment_中立": 0.0,
+        "cmoney_sentiment_謹慎": 0.0,
+        "cmoney_sentiment_極度謹慎": 0.0
+      },
+      "topic": "stock_2404"
+    },
+    {
+      "obs_id": "O17",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "友達(2409)收盤價為 30.65 元，5 日報酬率為 -17.72%，20 日報酬率為 -12.55%；外資單日賣超 28,002,424 股，CMoney 情緒分數為 38 分。",
+      "values": {
+        "amount_ma20": 15437459673.7,
+        "close_latest": 30.65,
+        "excess_return_20d": -7.47,
+        "ma20_change_5d": -0.67,
+        "price_vs_ma20": -15.32,
+        "return_20d": -12.55,
+        "return_5d": -17.72,
+        "rsi_14": 41.02,
+        "volatility_10d": 5.16,
+        "volume_ma5_to_ma20": 0.7,
+        "revenue_mom_latest": 1.3,
+        "revenue_yoy_latest": -4.26,
+        "roe_latest": 1.29,
+        "foreign_net_buy_1d": -28002424.0,
+        "foreign_net_buy_intensity_5d": -10.09,
+        "trust_net_buy_1d": -1612217.0,
+        "trust_net_buy_intensity_5d": 0.47,
+        "cmoney_sentiment_情緒分數": 38.0,
+        "cmoney_sentiment_樣本數": 298.0,
+        "cmoney_sentiment_極度樂觀": 8.0,
+        "cmoney_sentiment_樂觀": 44.0,
+        "cmoney_sentiment_中立": 101.0,
+        "cmoney_sentiment_謹慎": 82.0,
+        "cmoney_sentiment_極度謹慎": 63.0
+      },
+      "topic": "stock_2409"
+    },
+    {
+      "obs_id": "O18",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "長榮(2603)收盤價為 271.5 元，5 日報酬率為 5.44%，20 日超額報酬達 19.16%；外資單日買超 7,919,899 股，CMoney 情緒分數為 67 分。",
+      "values": {
+        "amount_ma20": 3630108434.9,
+        "close_latest": 271.5,
+        "excess_return_20d": 19.16,
+        "ma20_change_5d": 2.19,
+        "price_vs_ma20": 7.43,
+        "return_20d": 14.08,
+        "return_5d": 5.44,
+        "rsi_14": 68.22,
+        "volatility_10d": 2.02,
+        "volume_ma5_to_ma20": 0.77,
+        "revenue_mom_latest": 1.48,
+        "revenue_yoy_latest": 63.74,
+        "roe_latest": 2.75,
+        "foreign_net_buy_1d": 7919899.0,
+        "foreign_net_buy_intensity_5d": 25.92,
+        "trust_net_buy_1d": 1861200.0,
+        "trust_net_buy_intensity_5d": 2.87,
+        "cmoney_sentiment_情緒分數": 67.0,
+        "cmoney_sentiment_樣本數": 66.0,
+        "cmoney_sentiment_極度樂觀": 10.0,
+        "cmoney_sentiment_樂觀": 30.0,
+        "cmoney_sentiment_中立": 22.0,
+        "cmoney_sentiment_謹慎": 4.0,
+        "cmoney_sentiment_極度謹慎": 0.0
+      },
+      "topic": "stock_2603"
+    },
+    {
+      "obs_id": "O19",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "陽明(2609)收盤價為 63.5 元，20 日報酬率為 8.73%，外資 5 日買超力道為 35.87%；外資單日買超 16,598,249 股，CMoney 情緒分數為 46 分。",
+      "values": {
+        "amount_ma20": 1663101028.05,
+        "close_latest": 63.5,
+        "excess_return_20d": 13.81,
+        "ma20_change_5d": 1.1,
+        "price_vs_ma20": 2.68,
+        "return_20d": 8.73,
+        "return_5d": 2.25,
+        "rsi_14": 58.24,
+        "volatility_10d": 1.83,
+        "volume_ma5_to_ma20": 0.57,
+        "revenue_mom_latest": 0.4,
+        "revenue_yoy_latest": 69.93,
+        "roe_latest": 1.77,
+        "foreign_net_buy_1d": 16598249.0,
+        "foreign_net_buy_intensity_5d": 35.87,
+        "trust_net_buy_1d": -30000.0,
+        "trust_net_buy_intensity_5d": -0.2,
+        "cmoney_sentiment_情緒分數": 46.0,
+        "cmoney_sentiment_樣本數": 42.0,
+        "cmoney_sentiment_極度樂觀": 1.0,
+        "cmoney_sentiment_樂觀": 18.0,
+        "cmoney_sentiment_中立": 7.0,
+        "cmoney_sentiment_謹慎": 5.0,
+        "cmoney_sentiment_極度謹慎": 11.0
+      },
+      "topic": "stock_2609"
+    },
+    {
+      "obs_id": "O20",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "富邦金(2881)收盤價為 161.5 元，20 日超額報酬為 11.68%，外資 5 日買超力道為 14.93%；投信單日買超 1,929,171 股，CMoney 情緒分數為 50 分。",
+      "values": {
+        "amount_ma20": 2579516427.9,
+        "close_latest": 161.5,
+        "excess_return_20d": 11.68,
+        "ma20_change_5d": 1.34,
+        "price_vs_ma20": 2.78,
+        "return_20d": 6.6,
+        "return_5d": 1.89,
+        "rsi_14": 61.27,
+        "volatility_10d": 1.88,
+        "volume_ma5_to_ma20": 0.85,
+        "revenue_mom_latest": -51.99,
+        "revenue_yoy_latest": -63.8,
+        "roe_latest": 5.54,
+        "foreign_net_buy_1d": -1305079.0,
+        "foreign_net_buy_intensity_5d": 14.93,
+        "trust_net_buy_1d": 1929171.0,
+        "trust_net_buy_intensity_5d": 3.04,
+        "cmoney_sentiment_情緒分數": 50.0,
+        "cmoney_sentiment_樣本數": 0.0,
+        "cmoney_sentiment_極度樂觀": 0.0,
+        "cmoney_sentiment_樂觀": 0.0,
+        "cmoney_sentiment_中立": 0.0,
+        "cmoney_sentiment_謹慎": 0.0,
+        "cmoney_sentiment_極度謹慎": 0.0
+      },
+      "topic": "stock_2881"
+    },
+    {
+      "obs_id": "O21",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "國泰金(2882)收盤價為 116.0 元，20 日超額報酬為 9.12%，外資 5 日買超力道為 10.61%；投信單日買超 3,321,000 股，CMoney 情緒分數為 50 分。",
+      "values": {
+        "amount_ma20": 2423578410.5,
+        "close_latest": 116.0,
+        "excess_return_20d": 9.12,
+        "ma20_change_5d": 0.76,
+        "price_vs_ma20": 2.45,
+        "return_20d": 4.04,
+        "return_5d": 1.75,
+        "rsi_14": 58.52,
+        "volatility_10d": 2.06,
+        "volume_ma5_to_ma20": 1.02,
+        "revenue_mom_latest": -30.79,
+        "revenue_yoy_latest": -47.38,
+        "roe_latest": 4.61,
+        "foreign_net_buy_1d": -1836205.0,
+        "foreign_net_buy_intensity_5d": 10.61,
+        "trust_net_buy_1d": 3321000.0,
+        "trust_net_buy_intensity_5d": 3.29,
+        "cmoney_sentiment_情緒分數": 50.0,
+        "cmoney_sentiment_樣本數": 0.0,
+        "cmoney_sentiment_極度樂觀": 0.0,
+        "cmoney_sentiment_樂觀": 0.0,
+        "cmoney_sentiment_中立": 0.0,
+        "cmoney_sentiment_謹慎": 0.0,
+        "cmoney_sentiment_極度謹慎": 0.0
+      },
+      "topic": "stock_2882"
+    },
+    {
+      "obs_id": "O22",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "開發金(2883)收盤價為 37.8 元，20 日超額報酬率為 2.13%，投信 5 日買超力道為 3.78%；外資單日賣超 8,169,500 股，CMoney 情緒分數為 50 分。",
+      "values": {
+        "amount_ma20": 1739993951.25,
+        "close_latest": 37.8,
+        "excess_return_20d": 2.13,
+        "ma20_change_5d": -0.77,
+        "price_vs_ma20": -0.86,
+        "return_20d": -2.95,
+        "return_5d": -1.18,
+        "rsi_14": 49.77,
+        "volatility_10d": 1.84,
+        "volume_ma5_to_ma20": 0.83,
+        "revenue_mom_latest": -44.42,
+        "revenue_yoy_latest": -61.19,
+        "roe_latest": 3.99,
+        "foreign_net_buy_1d": -8169500.0,
+        "foreign_net_buy_intensity_5d": -5.4,
+        "trust_net_buy_1d": 1045000.0,
+        "trust_net_buy_intensity_5d": 3.78,
+        "cmoney_sentiment_情緒分數": 50.0,
+        "cmoney_sentiment_樣本數": 0.0,
+        "cmoney_sentiment_極度樂觀": 0.0,
+        "cmoney_sentiment_樂觀": 0.0,
+        "cmoney_sentiment_中立": 0.0,
+        "cmoney_sentiment_謹慎": 0.0,
+        "cmoney_sentiment_極度謹慎": 0.0
+      },
+      "topic": "stock_2883"
+    },
+    {
+      "obs_id": "O23",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "台新金(2887)收盤價為 42.25 元，5 日報酬率為 0.72%，投信單日買超 13,184,000 股；外資單日賣超 14,208,722 股，CMoney 情緒分數為 61 分。",
+      "values": {
+        "amount_ma20": 2004301817.05,
+        "close_latest": 42.25,
+        "excess_return_20d": 6.16,
+        "ma20_change_5d": -0.36,
+        "price_vs_ma20": 0.82,
+        "return_20d": 1.08,
+        "return_5d": 0.72,
+        "rsi_14": 53.03,
+        "volatility_10d": 1.74,
+        "volume_ma5_to_ma20": 0.95,
+        "revenue_mom_latest": -13.69,
+        "revenue_yoy_latest": -18.58,
+        "roe_latest": 3.47,
+        "foreign_net_buy_1d": -14208722.0,
+        "foreign_net_buy_intensity_5d": 7.93,
+        "trust_net_buy_1d": 13184000.0,
+        "trust_net_buy_intensity_5d": 4.85,
+        "cmoney_sentiment_情緒分數": 61.0,
+        "cmoney_sentiment_樣本數": 24.0,
+        "cmoney_sentiment_極度樂觀": 6.0,
+        "cmoney_sentiment_樂觀": 5.0,
+        "cmoney_sentiment_中立": 8.0,
+        "cmoney_sentiment_謹慎": 4.0,
+        "cmoney_sentiment_極度謹慎": 1.0
+      },
+      "topic": "stock_2887"
+    },
+    {
+      "obs_id": "O24",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "中信金(2891)收盤價為 75.8 元，20 日報酬率為 10.33%，RSI_14 為 67.73；投信單日買超 10,429,000 股，CMoney 情緒分數為 50 分。",
+      "values": {
+        "amount_ma20": 2667321849.65,
+        "close_latest": 75.8,
+        "excess_return_20d": 15.41,
+        "ma20_change_5d": 2.08,
+        "price_vs_ma20": 6.04,
+        "return_20d": 10.33,
+        "return_5d": 1.34,
+        "rsi_14": 67.73,
+        "volatility_10d": 1.87,
+        "volume_ma5_to_ma20": 1.08,
+        "revenue_mom_latest": -12.57,
+        "revenue_yoy_latest": 12.81,
+        "roe_latest": 2.53,
+        "foreign_net_buy_1d": 3577096.0,
+        "foreign_net_buy_intensity_5d": 18.06,
+        "trust_net_buy_1d": 10429000.0,
+        "trust_net_buy_intensity_5d": 1.86,
+        "cmoney_sentiment_情緒分數": 50.0,
+        "cmoney_sentiment_樣本數": 0.0,
+        "cmoney_sentiment_極度樂觀": 0.0,
+        "cmoney_sentiment_樂觀": 0.0,
+        "cmoney_sentiment_中立": 0.0,
+        "cmoney_sentiment_謹慎": 0.0,
+        "cmoney_sentiment_極度謹慎": 0.0
+      },
+      "topic": "stock_2891"
+    },
+    {
+      "obs_id": "O25",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "大立光(3008)收盤價為 5430.0 元，5 日報酬率為 -11.99%，距 MA20 乖離 -15.26%；外資單日買超 573,114 股，CMoney 情緒分數為 46 分。",
+      "values": {
+        "amount_ma20": 18971402474.5,
+        "close_latest": 5430.0,
+        "excess_return_20d": -4.72,
+        "ma20_change_5d": -1.16,
+        "price_vs_ma20": -15.26,
+        "return_20d": -9.8,
+        "return_5d": -11.99,
+        "rsi_14": 37.26,
+        "volatility_10d": 4.22,
+        "volume_ma5_to_ma20": 0.81,
+        "revenue_mom_latest": 15.3,
+        "revenue_yoy_latest": -7.31,
+        "roe_latest": 2.49,
+        "foreign_net_buy_1d": 573114.0,
+        "foreign_net_buy_intensity_5d": -1.6,
+        "trust_net_buy_1d": -444281.0,
+        "trust_net_buy_intensity_5d": 0.4,
+        "cmoney_sentiment_情緒分數": 46.0,
+        "cmoney_sentiment_樣本數": 34.0,
+        "cmoney_sentiment_極度樂觀": 1.0,
+        "cmoney_sentiment_樂觀": 13.0,
+        "cmoney_sentiment_中立": 7.0,
+        "cmoney_sentiment_謹慎": 5.0,
+        "cmoney_sentiment_極度謹慎": 8.0
+      },
+      "topic": "stock_3008"
+    },
+    {
+      "obs_id": "O26",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "聯詠(3034)收盤價為 575.0 元，20 日報酬率為 6.48%，最新 ROE 為 8.98%；外資 5 日買超力道為 6.61%，CMoney 情緒分數為 48 分。",
+      "values": {
+        "amount_ma20": 1947968088.7,
+        "close_latest": 575.0,
+        "excess_return_20d": 11.56,
+        "ma20_change_5d": 1.98,
+        "price_vs_ma20": 2.3,
+        "return_20d": 6.48,
+        "return_5d": -2.54,
+        "rsi_14": 54.44,
+        "volatility_10d": 2.39,
+        "volume_ma5_to_ma20": 0.98,
+        "revenue_mom_latest": 0.19,
+        "revenue_yoy_latest": 24.99,
+        "roe_latest": 8.98,
+        "foreign_net_buy_1d": -207640.0,
+        "foreign_net_buy_intensity_5d": 6.61,
+        "trust_net_buy_1d": 354468.0,
+        "trust_net_buy_intensity_5d": 1.18,
+        "cmoney_sentiment_情緒分數": 48.0,
+        "cmoney_sentiment_樣本數": 13.0,
+        "cmoney_sentiment_極度樂觀": 1.0,
+        "cmoney_sentiment_樂觀": 7.0,
+        "cmoney_sentiment_中立": 0.0,
+        "cmoney_sentiment_謹慎": 0.0,
+        "cmoney_sentiment_極度謹慎": 5.0
+      },
+      "topic": "stock_3034"
+    },
+    {
+      "obs_id": "O27",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "欣興(3037)收盤價為 989.0 元，5 日報酬率為 -10.09%，股價距 MA20 乖離 -14.88%；外資單日賣超 3,230,164 股，CMoney 情緒分數為 43 分。",
+      "values": {
+        "amount_ma20": 19991223569.5,
+        "close_latest": 989.0,
+        "excess_return_20d": -10.03,
+        "ma20_change_5d": -1.59,
+        "price_vs_ma20": -14.88,
+        "return_20d": -15.11,
+        "return_5d": -10.09,
+        "rsi_14": 38.54,
+        "volatility_10d": 4.64,
+        "volume_ma5_to_ma20": 1.29,
+        "revenue_mom_latest": 5.1,
+        "revenue_yoy_latest": 64.66,
+        "roe_latest": 10.91,
+        "foreign_net_buy_1d": -3230164.0,
+        "foreign_net_buy_intensity_5d": -9.31,
+        "trust_net_buy_1d": 710387.0,
+        "trust_net_buy_intensity_5d": 4.65,
+        "cmoney_sentiment_情緒分數": 43.0,
+        "cmoney_sentiment_樣本數": 42.0,
+        "cmoney_sentiment_極度樂觀": 2.0,
+        "cmoney_sentiment_樂觀": 8.0,
+        "cmoney_sentiment_中立": 14.0,
+        "cmoney_sentiment_謹慎": 13.0,
+        "cmoney_sentiment_極度謹慎": 5.0
+      },
+      "topic": "stock_3037"
+    },
+    {
+      "obs_id": "O28",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "健鼎(3044)收盤價為 512.0 元，5 日報酬率為 -12.18%，營收 YoY 為 53.5%；投信單日買超 57,000 股，CMoney 情緒分數為 50 分。",
+      "values": {
+        "amount_ma20": 1733619655.5,
+        "close_latest": 512.0,
+        "excess_return_20d": 3.35,
+        "ma20_change_5d": 0.04,
+        "price_vs_ma20": -8.71,
+        "return_20d": -1.73,
+        "return_5d": -12.18,
+        "rsi_14": 41.21,
+        "volatility_10d": 3.24,
+        "volume_ma5_to_ma20": 1.03,
+        "revenue_mom_latest": 4.14,
+        "revenue_yoy_latest": 53.5,
+        "roe_latest": 6.83,
+        "foreign_net_buy_1d": -109382.0,
+        "foreign_net_buy_intensity_5d": -4.34,
+        "trust_net_buy_1d": 57000.0,
+        "trust_net_buy_intensity_5d": 1.61,
+        "cmoney_sentiment_情緒分數": 50.0,
+        "cmoney_sentiment_樣本數": 0.0,
+        "cmoney_sentiment_極度樂觀": 0.0,
+        "cmoney_sentiment_樂觀": 0.0,
+        "cmoney_sentiment_中立": 0.0,
+        "cmoney_sentiment_謹慎": 0.0,
+        "cmoney_sentiment_極度謹慎": 0.0
+      },
+      "topic": "stock_3044"
+    },
+    {
+      "obs_id": "O29",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "景碩(3189)收盤價為 932.0 元，5 日報酬率為 -7.72%，20 日超額報酬率為 2.67%；外資單日買賣超 -1,455,313 股，CMoney 情緒分數為 50 分。",
+      "values": {
+        "amount_ma20": 16811373699.45,
+        "close_latest": 932.0,
+        "excess_return_20d": 2.67,
+        "ma20_change_5d": 1.47,
+        "price_vs_ma20": -8.13,
+        "return_20d": -2.41,
+        "return_5d": -7.72,
+        "rsi_14": 46.58,
+        "volatility_10d": 5.7,
+        "volume_ma5_to_ma20": 1.1,
+        "revenue_mom_latest": 7.72,
+        "revenue_yoy_latest": 44.46,
+        "roe_latest": 3.22,
+        "foreign_net_buy_1d": -1455313.0,
+        "foreign_net_buy_intensity_5d": -11.09,
+        "trust_net_buy_1d": 830000.0,
+        "trust_net_buy_intensity_5d": 2.67,
+        "cmoney_sentiment_情緒分數": 50.0,
+        "cmoney_sentiment_樣本數": 23.0,
+        "cmoney_sentiment_極度樂觀": 4.0,
+        "cmoney_sentiment_樂觀": 3.0,
+        "cmoney_sentiment_中立": 6.0,
+        "cmoney_sentiment_謹慎": 9.0,
+        "cmoney_sentiment_極度謹慎": 1.0
+      },
+      "topic": "stock_3189"
+    },
+    {
+      "obs_id": "O30",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "緯創(3231)收盤價為 183.5 元，5 日報酬率為 -5.9%，營收 YoY 為 87.18%；外資單日賣超 12,964,533 股，CMoney 情緒分數為 43 分。",
+      "values": {
+        "amount_ma20": 7595182934.55,
+        "close_latest": 183.5,
+        "excess_return_20d": 4.0,
+        "ma20_change_5d": 0.81,
+        "price_vs_ma20": -2.05,
+        "return_20d": -1.08,
+        "return_5d": -5.9,
+        "rsi_14": 47.01,
+        "volatility_10d": 3.54,
+        "volume_ma5_to_ma20": 0.75,
+        "revenue_mom_latest": -17.22,
+        "revenue_yoy_latest": 87.18,
+        "roe_latest": 8.6,
+        "foreign_net_buy_1d": -12964533.0,
+        "foreign_net_buy_intensity_5d": -5.93,
+        "trust_net_buy_1d": 529586.0,
+        "trust_net_buy_intensity_5d": -1.36,
+        "cmoney_sentiment_情緒分數": 43.0,
+        "cmoney_sentiment_樣本數": 15.0,
+        "cmoney_sentiment_極度樂觀": 1.0,
+        "cmoney_sentiment_樂觀": 4.0,
+        "cmoney_sentiment_中立": 3.0,
+        "cmoney_sentiment_謹慎": 4.0,
+        "cmoney_sentiment_極度謹慎": 3.0
+      },
+      "topic": "stock_3231"
+    },
+    {
+      "obs_id": "O31",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "創意(3443)收盤價為 7635.0 元，營收 YoY 達 97.77%，投信 5 日買超力道為 3.38%；外資單日賣超 124,735 股，CMoney 情緒分數為 64 分。",
+      "values": {
+        "amount_ma20": 12206926995.25,
+        "close_latest": 7635.0,
+        "excess_return_20d": 1.42,
+        "ma20_change_5d": -1.46,
+        "price_vs_ma20": -4.12,
+        "return_20d": -3.66,
+        "return_5d": -4.56,
+        "rsi_14": 50.68,
+        "volatility_10d": 5.34,
+        "volume_ma5_to_ma20": 1.26,
+        "revenue_mom_latest": 22.34,
+        "revenue_yoy_latest": 97.77,
+        "roe_latest": 11.09,
+        "foreign_net_buy_1d": -124735.0,
+        "foreign_net_buy_intensity_5d": -0.23,
+        "trust_net_buy_1d": 133576.0,
+        "trust_net_buy_intensity_5d": 3.38,
+        "cmoney_sentiment_情緒分數": 64.0,
+        "cmoney_sentiment_樣本數": 30.0,
+        "cmoney_sentiment_極度樂觀": 3.0,
+        "cmoney_sentiment_樂觀": 18.0,
+        "cmoney_sentiment_中立": 3.0,
+        "cmoney_sentiment_謹慎": 5.0,
+        "cmoney_sentiment_極度謹慎": 1.0
+      },
+      "topic": "stock_3443"
+    },
+    {
+      "obs_id": "O32",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "嘉澤(3533)收盤價為 1860.0 元，5 日報酬率為 2.2%，20 日超額報酬為 13.85%；外資 5 日買超力道為 10.08%，CMoney 情情緒分數為 50 分。",
+      "values": {
+        "amount_ma20": 3336585137.75,
+        "close_latest": 1860.0,
+        "excess_return_20d": 13.85,
+        "ma20_change_5d": 2.8,
+        "price_vs_ma20": 0.19,
+        "return_20d": 8.77,
+        "return_5d": 2.2,
+        "rsi_14": 53.71,
+        "volatility_10d": 3.46,
+        "volume_ma5_to_ma20": 0.79,
+        "revenue_mom_latest": 4.95,
+        "revenue_yoy_latest": 16.12,
+        "roe_latest": 4.53,
+        "foreign_net_buy_1d": -43843.0,
+        "foreign_net_buy_intensity_5d": 10.08,
+        "trust_net_buy_1d": 39207.0,
+        "trust_net_buy_intensity_5d": 1.53,
+        "cmoney_sentiment_情緒分數": 50.0,
+        "cmoney_sentiment_樣本數": 0.0,
+        "cmoney_sentiment_極度樂觀": 0.0,
+        "cmoney_sentiment_樂觀": 0.0,
+        "cmoney_sentiment_中立": 0.0,
+        "cmoney_sentiment_謹慎": 0.0,
+        "cmoney_sentiment_極度謹慎": 0.0
+      },
+      "topic": "stock_3533"
+    },
+    {
+      "obs_id": "O33",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "健策(3653)收盤價為 6315.0 元，20 日報酬率為 -8.41%，營收 YoY 為 79.96%；投信 5 日買超力道為 1.99%，CMoney 情緒分數為 50 分。",
+      "values": {
+        "amount_ma20": 8934210066.95,
+        "close_latest": 6315.0,
+        "excess_return_20d": -3.33,
+        "ma20_change_5d": -0.61,
+        "price_vs_ma20": -5.9,
+        "return_20d": -8.41,
+        "return_5d": -3.37,
+        "rsi_14": 48.71,
+        "volatility_10d": 4.23,
+        "volume_ma5_to_ma20": 1.45,
+        "revenue_mom_latest": -5.32,
+        "revenue_yoy_latest": 79.96,
+        "roe_latest": 10.3,
+        "foreign_net_buy_1d": -233022.0,
+        "foreign_net_buy_intensity_5d": -0.34,
+        "trust_net_buy_1d": 126265.0,
+        "trust_net_buy_intensity_5d": 1.99,
+        "cmoney_sentiment_情緒分數": 50.0,
+        "cmoney_sentiment_樣本數": 0.0,
+        "cmoney_sentiment_極度樂觀": 0.0,
+        "cmoney_sentiment_樂觀": 0.0,
+        "cmoney_sentiment_中立": 0.0,
+        "cmoney_sentiment_謹慎": 0.0,
+        "cmoney_sentiment_極度謹慎": 0.0
+      },
+      "topic": "stock_3653"
+    },
+    {
+      "obs_id": "O34",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "世芯-KY(3661)收盤價為 3425.0 元，5 日報酬率為 -7.68%，最新營收 YoY 達 495.99%；外資單日賣超 567,238 股，CMoney 情緒分數為 33 分。",
+      "values": {
+        "amount_ma20": 9268854279.65,
+        "close_latest": 3425.0,
+        "excess_return_20d": -1.98,
+        "ma20_change_5d": -0.9,
+        "price_vs_ma20": -10.71,
+        "return_20d": -7.06,
+        "return_5d": -7.68,
+        "rsi_14": 40.16,
+        "volatility_10d": 4.66,
+        "volume_ma5_to_ma20": 0.71,
+        "revenue_mom_latest": 13.7,
+        "revenue_yoy_latest": 495.99,
+        "roe_latest": 3.16,
+        "foreign_net_buy_1d": -567238.0,
+        "foreign_net_buy_intensity_5d": -4.89,
+        "trust_net_buy_1d": 119190.0,
+        "trust_net_buy_intensity_5d": 2.5,
+        "cmoney_sentiment_情緒分數": 33.0,
+        "cmoney_sentiment_樣本數": 25.0,
+        "cmoney_sentiment_極度樂觀": 0.0,
+        "cmoney_sentiment_樂觀": 3.0,
+        "cmoney_sentiment_中立": 10.0,
+        "cmoney_sentiment_謹慎": 4.0,
+        "cmoney_sentiment_極度謹慎": 8.0
+      },
+      "topic": "stock_3661"
+    },
+    {
+      "obs_id": "O35",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "日月光投控(3711)收盤價為 668.0 元，投信 5 日買超力道達 17.82%，投信單日買超 7,173,554 股；外資單日賣超 12,156,113 股，CMoney 情緒分數為 61 分。",
+      "values": {
+        "amount_ma20": 11824366909.25,
+        "close_latest": 668.0,
+        "excess_return_20d": 2.31,
+        "ma20_change_5d": -0.59,
+        "price_vs_ma20": -4.88,
+        "return_20d": -2.77,
+        "return_5d": -2.34,
+        "rsi_14": 47.53,
+        "volatility_10d": 4.42,
+        "volume_ma5_to_ma20": 1.29,
+        "revenue_mom_latest": 7.15,
+        "revenue_yoy_latest": 45.52,
+        "roe_latest": 5.37,
+        "foreign_net_buy_1d": -12156113.0,
+        "foreign_net_buy_intensity_5d": -23.96,
+        "trust_net_buy_1d": 7173554.0,
+        "trust_net_buy_intensity_5d": 17.82,
+        "cmoney_sentiment_情緒分數": 61.0,
+        "cmoney_sentiment_樣本數": 39.0,
+        "cmoney_sentiment_極度樂觀": 5.0,
+        "cmoney_sentiment_樂觀": 17.0,
+        "cmoney_sentiment_中立": 7.0,
+        "cmoney_sentiment_謹慎": 10.0,
+        "cmoney_sentiment_極度謹慎": 0.0
+      },
+      "topic": "stock_3711"
+    },
+    {
+      "obs_id": "O36",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "和碩(4938)收盤價為 102.5 元，20 日報酬率為 12.89%，營收 MoM 達 143.19%；外資 5 日買超力道為 14.77%，CMoney 情緒分數為 50 分。",
+      "values": {
+        "amount_ma20": 1797893488.95,
+        "close_latest": 102.5,
+        "excess_return_20d": 17.96,
+        "ma20_change_5d": 3.66,
+        "price_vs_ma20": 4.36,
+        "return_20d": 12.89,
+        "return_5d": -2.38,
+        "rsi_14": 58.71,
+        "volatility_10d": 2.44,
+        "volume_ma5_to_ma20": 0.61,
+        "revenue_mom_latest": 143.19,
+        "revenue_yoy_latest": 86.87,
+        "roe_latest": 2.51,
+        "foreign_net_buy_1d": -37405.0,
+        "foreign_net_buy_intensity_5d": 14.77,
+        "trust_net_buy_1d": 1272056.0,
+        "trust_net_buy_intensity_5d": 2.76,
+        "cmoney_sentiment_情緒分數": 50.0,
+        "cmoney_sentiment_樣本數": 0.0,
+        "cmoney_sentiment_極度樂觀": 0.0,
+        "cmoney_sentiment_樂觀": 0.0,
+        "cmoney_sentiment_中立": 0.0,
+        "cmoney_sentiment_謹慎": 0.0,
+        "cmoney_sentiment_極度謹慎": 0.0
+      },
+      "topic": "stock_4938"
+    },
+    {
+      "obs_id": "O37",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "臻鼎-KY(4958)收盤價為 486.0 元，5 日報酬率為 -15.92%，股價距 MA20 乖離 -11.68%；投信單日買超 621,000 股，CMoney 情緒分數為 35 分。",
+      "values": {
+        "amount_ma20": 18476564245.45,
+        "close_latest": 486.0,
+        "excess_return_20d": 2.57,
+        "ma20_change_5d": 2.2,
+        "price_vs_ma20": -11.68,
+        "return_20d": -2.51,
+        "return_5d": -15.92,
+        "rsi_14": 42.02,
+        "volatility_10d": 5.96,
+        "volume_ma5_to_ma20": 0.93,
+        "revenue_mom_latest": 27.54,
+        "revenue_yoy_latest": 36.12,
+        "roe_latest": 1.93,
+        "foreign_net_buy_1d": -4952438.0,
+        "foreign_net_buy_intensity_5d": -14.88,
+        "trust_net_buy_1d": 621000.0,
+        "trust_net_buy_intensity_5d": 1.29,
+        "cmoney_sentiment_情緒分數": 35.0,
+        "cmoney_sentiment_樣本數": 66.0,
+        "cmoney_sentiment_極度樂觀": 2.0,
+        "cmoney_sentiment_樂觀": 14.0,
+        "cmoney_sentiment_中立": 9.0,
+        "cmoney_sentiment_謹慎": 24.0,
+        "cmoney_sentiment_極度謹慎": 17.0
+      },
+      "topic": "stock_4958"
+    },
+    {
+      "obs_id": "O38",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "矽力*-KY(6415)收盤價為 502.0 元，20 日超額報酬率為 27.82%，股價距 MA20 乖離為 8.17%；投信單日買超 241,000 股，CMoney 情緒分數為 45 分。",
+      "values": {
+        "amount_ma20": 2718333818.85,
+        "close_latest": 502.0,
+        "excess_return_20d": 27.82,
+        "ma20_change_5d": 4.3,
+        "price_vs_ma20": 8.17,
+        "return_20d": 22.74,
+        "return_5d": 2.45,
+        "rsi_14": 59.14,
+        "volatility_10d": 4.7,
+        "volume_ma5_to_ma20": 1.53,
+        "revenue_mom_latest": 3.9,
+        "revenue_yoy_latest": 50.7,
+        "roe_latest": 3.94,
+        "foreign_net_buy_1d": 219159.0,
+        "foreign_net_buy_intensity_5d": -5.13,
+        "trust_net_buy_1d": 241000.0,
+        "trust_net_buy_intensity_5d": 2.92,
+        "cmoney_sentiment_情緒分數": 45.0,
+        "cmoney_sentiment_樣本數": 11.0,
+        "cmoney_sentiment_極度樂觀": 1.0,
+        "cmoney_sentiment_樂觀": 3.0,
+        "cmoney_sentiment_中立": 2.0,
+        "cmoney_sentiment_謹慎": 3.0,
+        "cmoney_sentiment_極度謹慎": 2.0
+      },
+      "topic": "stock_6415"
+    },
+    {
+      "obs_id": "O39",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "藥華藥(6446)收盤價為 1190.0 元，營收 YoY 達 99.97%，投信 5 日買超力道為 6.47%；外資單日賣超 682,542 股，CMoney 情緒分數為 39 分。",
+      "values": {
+        "amount_ma20": 2247488853.25,
+        "close_latest": 1190.0,
+        "excess_return_20d": 4.66,
+        "ma20_change_5d": 0.61,
+        "price_vs_ma20": 0.04,
+        "return_20d": -0.42,
+        "return_5d": 1.28,
+        "rsi_14": 47.8,
+        "volatility_10d": 3.1,
+        "volume_ma5_to_ma20": 1.06,
+        "revenue_mom_latest": 0.69,
+        "revenue_yoy_latest": 99.97,
+        "roe_latest": 7.1,
+        "foreign_net_buy_1d": -682542.0,
+        "foreign_net_buy_intensity_5d": -1.17,
+        "trust_net_buy_1d": 448000.0,
+        "trust_net_buy_intensity_5d": 6.47,
+        "cmoney_sentiment_情緒分數": 39.0,
+        "cmoney_sentiment_樣本數": 48.0,
+        "cmoney_sentiment_極度樂觀": 1.0,
+        "cmoney_sentiment_樂觀": 8.0,
+        "cmoney_sentiment_中立": 12.0,
+        "cmoney_sentiment_謹慎": 23.0,
+        "cmoney_sentiment_極度謹慎": 4.0
+      },
+      "topic": "stock_6446"
+    },
+    {
+      "obs_id": "O40",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "台塑化(6505)收盤價為 98.3 元，20 日報酬率為 4.24%，20 日超額報酬為 9.32%；外資單日買超 340,437 股，CMoney 情緒分數為 45 分。",
+      "values": {
+        "amount_ma20": 4894568578.75,
+        "close_latest": 98.3,
+        "excess_return_20d": 9.32,
+        "ma20_change_5d": 3.29,
+        "price_vs_ma20": -7.89,
+        "return_20d": 4.24,
+        "return_5d": -10.23,
+        "rsi_14": 47.13,
+        "volatility_10d": 5.23,
+        "volume_ma5_to_ma20": 0.62,
+        "revenue_mom_latest": 6.13,
+        "revenue_yoy_latest": 65.59,
+        "roe_latest": 4.76,
+        "foreign_net_buy_1d": 340437.0,
+        "foreign_net_buy_intensity_5d": 18.38,
+        "trust_net_buy_1d": 54000.0,
+        "trust_net_buy_intensity_5d": -11.3,
+        "cmoney_sentiment_情緒分數": 45.0,
+        "cmoney_sentiment_樣本數": 47.0,
+        "cmoney_sentiment_極度樂觀": 2.0,
+        "cmoney_sentiment_樂觀": 8.0,
+        "cmoney_sentiment_中立": 22.0,
+        "cmoney_sentiment_謹慎": 9.0,
+        "cmoney_sentiment_極度謹慎": 6.0
+      },
+      "topic": "stock_6505"
+    },
+    {
+      "obs_id": "O41",
+      "source_ref": [
+        "S1",
+        "S2"
+      ],
+      "statement": "南電(8046)收盤價為 1190.0 元，5 日報酬率為 -11.19%，距 MA20 乖離 -13.36%；投信單日買超 425,901 股，CMoney 情緒分數為 57 分。",
+      "values": {
+        "amount_ma20": 13489546742.4,
+        "close_latest": 1190.0,
+        "excess_return_20d": -1.22,
+        "ma20_change_5d": 1.16,
+        "price_vs_ma20": -13.36,
+        "return_20d": -6.3,
+        "return_5d": -11.19,
+        "rsi_14": 40.14,
+        "volatility_10d": 3.77,
+        "volume_ma5_to_ma20": 0.88,
+        "revenue_mom_latest": 4.35,
+        "revenue_yoy_latest": 57.81,
+        "roe_latest": 4.71,
+        "foreign_net_buy_1d": -62916.0,
+        "foreign_net_buy_intensity_5d": -7.26,
+        "trust_net_buy_1d": 425901.0,
+        "trust_net_buy_intensity_5d": 4.46,
+        "cmoney_sentiment_情緒分數": 57.0,
+        "cmoney_sentiment_樣本數": 29.0,
+        "cmoney_sentiment_極度樂觀": 0.0,
+        "cmoney_sentiment_樂觀": 15.0,
+        "cmoney_sentiment_中立": 7.0,
+        "cmoney_sentiment_謹慎": 7.0,
+        "cmoney_sentiment_極度謹慎": 0.0
+      },
+      "topic": "stock_8046"
+    }
+  ],
+  "market_view": {
+    "basis_refs": [
+      "O1"
+    ],
+    "logic": "依據事實 O1 數據，加權指數 2026-10-30 收盤為 45211.83 點，已跌破 20MA (47726.51) 與 60MA (46540.70)，短中期均線破線下彎，近 20 日報酬率為 -5.08%、最大回撤達 -9.25%，顯示市場中期技術結構顯著轉弱。在資金與籌碼方面，外資近 20 日大幅提款達 -9634.60 億元，市場騰落比僅 0.10，廣度極度疲弱，整體市場承受沉重下行賣壓。對照 DataPack 現況，帳戶可交易淨值 (nav_tradable) 約 9.85 億元，持股檔數達 25 檔，可動用現金比率為 18.10%，持股廣泛分布於電子與權值股，容易遭受大盤系統性風險波及。因此，整體走向研判為 risk_off，操作姿態採取 defensive。部位意圖上宣告 reduce，透過適度減碼防禦、釋出流動性，將目標現金比例區間提升至 [0.20, 0.25]，以增強組合抗震與風險緩衝能力。",
+    "regime": "risk_off",
+    "stance": "defensive",
+    "posture": {
+      "net_exposure_intent": "reduce",
+      "target_cash_pct_range": [
+        0.2,
+        0.25
+      ]
+    },
+    "counter_evidence": "投信近 20 日累計逆勢買超 2219.55 億元，展現內資逢低承接力道；同時上市融資餘額近 5 日減少 3.24%，顯示浮額槓桿已有初步去化，非融資失控之多殺多格局，可為市場下檔提供部分支撐。",
+    "confidence": 0.85
+  },
+  "inferences": [
+    {
+      "inf_id": "I1",
+      "premise_refs": [
+        "O3"
+      ],
+      "logic": "依據事實 O3，南亞(1303)最新收盤價 296.0 元，近 20 日報酬率達 19.84%，超額報酬達 24.92%，展現顯著抗跌與波段動能；營運基本面強勁，最新月營收 MoM 達 12.49%，YoY 達 55.25%，最新 ROE 為 6.13%，呈現扎實營運動能。技術面 MA20 近 5 日上揚 6.03%，股價雖短期拉回跌破 MA20 乖離 -1.51%，但整體多頭架構未破。雖外資單日大幅賣超 1597 萬股，但投信單日買超 224.5 萬股且 5 日買超力道維持正向 (1.21%)。在防禦姿態下，南亞具備傳產權值抗震及營收高增長雙重優勢，適合作為投資組合之核心穩定配置，建議維持目標權重約 3.2%。",
+      "conclusion": "南亞營收年增 55.25% 且中波段相對強勢，作為傳產防禦與營運改善核心標的，建議維持目標權重約 3.2%。",
+      "counter_evidence": "近 5 日報酬回檔 -7.64%，外資單日大幅賣超 15,973,583 股且外資 5 日買賣超力道為 -9.51%，籌碼面外資賣壓顯著。"
+    },
+    {
+      "inf_id": "I2",
+      "premise_refs": [
+        "O5"
+      ],
+      "logic": "依據事實 O5，台玻(1802)最新收盤價 62.3 元，近 20 日報酬率為 8.16%，相對大盤超額報酬為 13.24%，表現穩健抗跌。營收表現方面，最新月營收 MoM 達 8.18%、YoY 達 34.10%，本業營運持續復甦。籌碼面呈現外資單日積極回補 563.4 萬股，投信單日亦買超 34 萬股。技術面上 MA20 近 5 日上升 2.39%，股價距 MA20 乖離僅 -2.01%，短線整理屬良性回測。考量其評價低基期與籌碼轉向偏多，具備防禦轉機特性，建議維持目標權重約 2.3%。",
+      "conclusion": "台玻營收年增 34.1% 且外資單日大幅買超 563 萬股，具備低基期抗跌優勢，建議維持目標權重約 2.3%。",
+      "counter_evidence": "最新 ROE 僅 2.43% 相對偏低，獲利體質改善速度仍需觀察；近 5 日報酬為 -7.29%，短線存在回檔壓力。"
+    },
+    {
+      "inf_id": "I3",
+      "premise_refs": [
+        "O7"
+      ],
+      "logic": "依據事實 O7，鴻海(2317)收盤價 245.5 元，近 20 日報酬為 -2.0%，相較大盤 (-5.08%) 取得 3.08% 之超額報酬，展現強大大型權值抗震力道。基本面上，最新營收 MoM 達 25.69%、YoY 達 38.41%，出貨動能旺盛，ROE 為 3.41%。籌碼面上外資 5 日買超力道達 10.08%，投信近 5 日亦買超力道為 1.5%，法人籌碼相對穩定。技術面股價距 MA20 僅 -0.75%，波動率僅 1.90% 極低。面對大盤 risk_off 環境，鴻海是控制組合下行波動不可或缺之核心防線，建議維持目標權重約 4.7%。",
+      "conclusion": "鴻海營收雙增且獲利穩健，5 日外資偏多、波動率極低，為組合最重要防禦權值核心之一，建議維持目標權重約 4.7%。",
+      "counter_evidence": "外資單日賣超 3,392,427 股，且短期 MA20 近 5 日微幅下彎 -0.45%，上檔存在均線反壓。"
+    },
+    {
+      "inf_id": "I4",
+      "premise_refs": [
+        "O8"
+      ],
+      "logic": "依據事實 O8，台積電(2330)收盤價 2370.0 元，為台股基石與全球半導體龍頭。基本面極為優異，最新 ROE 高達 11.39%，最新營收 YoY 達 54.64%，展現無可取代之護城河。近 20 日超額報酬率為 0.84%，波動度 1.07% 極為穩定。籌碼面投信持續力挺，單日買超 185.4 萬股、5 日力道 4.77%。儘管受大盤拖累，外資單日賣超 863.2 萬股致使價格落於 MA20 之下 -4.06%，但其堅實獲利為抗風暴首選。考量系統性風險防範與流動性配置，建議適度微調但維持組合最高核心權重約 6.8%。",
+      "conclusion": "台積電具備 11.39% 高 ROE 與營收年增 54.64%，為核心護城河資產，建議維持旗艦核心目標權重約 6.8%。",
+      "counter_evidence": "外資單日賣超 8,632,834 股且外資 5 日買賣超力道為 -18.04%，股價受外資提款短期承壓破 MA20。"
+    },
+    {
+      "inf_id": "I5",
+      "premise_refs": [
+        "O11"
+      ],
+      "logic": "依據事實 O11，金像電(2368)收盤價 1020.0 元，ROE 高達 12.41%，營收 YoY 達 55.46%，高階伺服器板動能扎實。然而短期走勢極弱，近 5 日報酬率為 -14.64%，股價大幅跌破 MA20 達 -13.45%，近 10 日波動率高達 5.76%。籌碼面雖有投信 5 日買超力道 8.31% 承接，但外資單日賣超 66.6 萬股且外資 5 日力道為 -7.37%。在防禦姿態及降低組合波動的考量下，伺服器零組件面臨短線劇烈修正，建議適度調降權重釋出流動性，目標權重調降至約 1.8%。",
+      "conclusion": "金像電 ROE 高達 12.41% 但近 5 日跌幅達 -14.64% 技術結構嚴重破線，建議逢反彈適度減碼至 1.8%。",
+      "counter_evidence": "投信 5 日買超力道達 8.31% 逆勢加碼，最新營收 YoY 仍維持 55.46% 高水準，中長線基本面並未轉壞。"
+    },
+    {
+      "inf_id": "I6",
+      "premise_refs": [
+        "O12"
+      ],
+      "logic": "依據事實 O12，技嘉(2376)收盤價 336.0 元，營收爆發力極強，最新月營收 MoM 達 33.11%，YoY 高達 125.44%，最新 ROE 亦達 10.95%，顯示 AI 伺服器放量明確。但技術面短期轉弱，近 5 日報酬 -6.28%，股價距 MA20 乖離為 -6.45%，MA20 近 5 日下彎 -1.03%。外資 5 日賣超力道達 -15.49%，單日賣超 90.8 萬股，市場情緒偏謹慎 (30分)。鑑於獲利品質優異但短期籌碼面受外資壓抑，建議在防禦前提下小幅調節部位，維持目標權重約 3.0%。",
+      "conclusion": "技嘉營收暴增 125% 且 ROE 達 10.95%，但外資賣壓沉重致短線破線，建議適度降低曝險至目標權重約 3.0%。",
+      "counter_evidence": "外資單日賣超 908,409 股，5 日外資賣超力道高達 -15.49%，短期法人去槓桿賣壓未除。"
+    },
+    {
+      "inf_id": "I7",
+      "premise_refs": [
+        "O13"
+      ],
+      "logic": "依據事實 O13，瑞昱(2379)收盤價 803.0 元，技術結構非常強勢，近 5 日逆勢上漲 1.39%，近 20 日超額報酬高達 10.74%，股價站於 MA20 之上 +4.30%，MA20 持續上升 1.24%，RSI_14 達 64.82。籌碼面外資單日大買 147.3 萬股，5 日外資買超力道高達 14.75%，量能溫和擴大 (量比 1.43)。基本面 ROE 達 7.96%，營收 YoY 達 23.35%。在大盤 risk_off 中呈現罕見之多頭突破與籌碼雙強型態，為關鍵攻擊兼防守配置，建議維持強勢配置，目標權重約 4.0%。",
+      "conclusion": "瑞昱逆勢站穩 MA20 且外資連 5 日強力買超，技術籌碼全面偏多，建議維持相對強勢配置，目標權重約 4.0%。",
+      "counter_evidence": "最新月營收 MoM 微幅衰退 -0.65%，投信 5 日買超力道微幅為負 (-0.59%)，內資尚未全面同步跟進。"
+    },
+    {
+      "inf_id": "I8",
+      "premise_refs": [
+        "O14"
+      ],
+      "logic": "依據事實 O14，廣達(2382)收盤價 318.0 元，最新 ROE 達 12.11%，營收 YoY 達 76.68%，獲利與產業龍頭地位卓越。近 20 日報酬為 -5.50%，相對大盤表現持平。技術面股價距 MA20 為 -2.30%，短線波動率 2.18% 處於可控水準。籌碼面上，外資雖單日賣超 292.7 萬股，但投信單日積極承接買超 134.7 萬股，5 日買超力道達 4.25%。考量廣達兼具高獲利能力與伺服器核心競爭力，在大盤防守期具備抗震韌性，建議維持目標權重約 3.6%。",
+      "conclusion": "廣達具備 12.11% 高 ROE 與投信積極加碼防護，營運底氣深厚，建議維持組合核心權重約 3.6%。",
+      "counter_evidence": "最新營收 MoM 出現 -23.27% 明顯月減，且外資單日賣超 2,927,113 股，短線出貨節奏需留意。"
+    },
+    {
+      "inf_id": "I9",
+      "premise_refs": [
+        "O15"
+      ],
+      "logic": "依據事實 O15，台光電(2383)收盤價 4675.0 元，獲利能力拔群，最新 ROE 高達 18.58%，營收 MoM 成長 6.88%，營收 YoY 更達驚人的 168.87%。但短線技術面遭到系統性獲利了結賣壓衝擊，近 5 日報酬 -6.31%，股價距 MA20 乖離達 -11.65%，近 10 日波動率 4.26%。籌碼面投信 5 日買超力道 3.90% 護盤，但外資 5 日賣超力道 -9.74%。鑑於高價股於大盤轉弱時去流動性風險高，建議由 2.37% 小幅調降曝險至約 1.8%，落實現金防禦政策。",
+      "conclusion": "台光電 ROE 18.58% 與營收年增 168% 具極致基本面，但受高價股流動性修正影響，建議適度減碼至目標權重約 1.8%。",
+      "counter_evidence": "外資單日賣超 696,290 股，且股價距 MA20 負乖離高達 -11.65%，短期均線結構尚未止跌回穩。"
+    },
+    {
+      "inf_id": "I10",
+      "premise_refs": [
+        "O16"
+      ],
+      "logic": "依據事實 O16，漢唐(2404)收盤價 1075.0 元，最新 ROE 高達 22.95%，具備極強的獲利與高殖利率護城河。近 20 日股價跌幅達 -11.89%，超額報酬 -6.81%，技術面破 MA20 達 -9.11%，但近 10 日波動率僅 1.80%，走勢偏向縮量抗跌盤整。籌碼面投信持續大舉吸籌，5 日買超力道高達 9.03%，單日續買 7.9 萬股。在高息防禦與優質資產考量下，其高 ROE 有效提供下檔保護，建議維持防守型配置，目標權重約 1.6%。",
+      "conclusion": "漢唐 ROE 高達 22.95% 且投信 5 日強力買超力道達 9.03%，兼顧高防禦與高體質，建議維持目標權重約 1.6%。",
+      "counter_evidence": "最新營收 MoM 下滑 -13.02%，且近 20 日跌幅 -11.89% 弱於大盤，反彈動能相對溫吞。"
+    },
+    {
+      "inf_id": "I11",
+      "premise_refs": [
+        "O18"
+      ],
+      "logic": "依據事實 O18，長榮(2603)收盤價 271.5 元，近 5 日上漲 5.44%，近 20 日報酬達 14.08%，超額報酬高達 19.16%，為全市場最強勢標的之一。基本面營收 YoY 大增 63.74%，營收持續正成長。技術面強勢站上 MA20 達 +7.43%，MA20 5 日揚升 2.19%，RSI 達 68.22。籌碼面內外資同步爆買，外資單日買超 791.9 萬股、5 日力道 25.92%，投信單日買超 186.1 萬股。在防守型架構中，長榮兼具高動量與防禦特性，建議維持重要持股比重，目標權重約 4.5%。",
+      "conclusion": "長榮近 20 日超額報酬達 19.16% 且法人同步大買，為盤面多頭避險領頭羊，建議維持目標權重約 4.5%。",
+      "counter_evidence": "RSI_14 來到 68.22 逼近超買區，短線漲多可能面臨獲利回吐震盪；航運景氣循環波動度長期較大。"
+    },
+    {
+      "inf_id": "I12",
+      "premise_refs": [
+        "O20"
+      ],
+      "logic": "依據事實 O20，富邦金(2881)收盤價 161.5 元，為金融權值防守核心。近 5 日報酬 +1.89%，近 20 日超額報酬達 11.68%，股價穩健站於 MA20 之上 +2.78%，MA20 走揚 1.34%，RSI_14 達 61.27。外資 5 日買超力道高達 14.93%，投信單日買超 192.9 萬股且 5 日力道 3.04%，法人合力偏多。雖然單月營收因基期與認列因素月減，但最新 ROE 維持在 5.54% 穩健水準。在大盤 risk_off 下，金融旗艦是吸收市場震盪之主力防線，建議維持目標權重約 4.0%。",
+      "conclusion": "富邦金技術面站穩均線且法人籌碼持續偏多，提供絕佳防守與資金避風港功能，建議維持目標權重約 4.0%。",
+      "counter_evidence": "外資單日微幅賣超 130.5 萬股，且最新營收 YoY 為 -63.80%，金融投資收益受資本市場波動影響較大。"
+    },
+    {
+      "inf_id": "I13",
+      "premise_refs": [
+        "O21"
+      ],
+      "logic": "依據事實 O21，國泰金(2882)收盤價 116.0 元，近 20 日超額報酬達 9.12%，近 5 日逆勢上揚 1.75%，站上 MA20 達 +2.45%，呈現穩健多頭排列。籌碼面投信強力買進，單日買超 332.1 萬股，投信 5 日買超力道達 3.29%，外資 5 日買超力道亦達 10.61%。最新 ROE 為 4.61%。在市場動盪與低風險偏好環境中，國泰金具備極高防禦價值與高流動性，可有效平衡科技股之波動，建議維持目標權重約 3.7%。",
+      "conclusion": "國泰金逆勢抗跌且獲投信外資雙向偏多力挺，為防禦架構中不可或缺之基石，建議維持目標權重約 3.7%。",
+      "counter_evidence": "最新單月營收年減 -47.38%、月減 -30.79%，壽險單月避險成本與評價仍存有短期不確定性。"
+    },
+    {
+      "inf_id": "I14",
+      "premise_refs": [
+        "O24"
+      ],
+      "logic": "依據事實 O24，中信金(2891)收盤價 75.8 元，技術走勢極為強悍，近 20 日報酬達 10.33%，超額報酬高達 15.41%，股價領先創高站上 MA20 達 +6.04%，MA20 5 日上升 2.08%。籌碼面法人全數瘋狂搶進，外資單日買超 357.7 萬股、5 日力道 18.06%，投信單日狂買 1042.9 萬股。營收維持年增 12.81%，銀行核心獲利穩固。在市場全面防禦時，中信金同時兼具絕佳動能與銀行端防禦底氣，為首選配置標的，建議維持目標權重約 4.5%。",
+      "conclusion": "中信金超額報酬 15.41% 且投信單日大買逾萬張，為防守型牛市主力標的，建議維持目標權重約 4.5%。",
+      "counter_evidence": "RSI_14 達 67.73 接近短期超買區，且最新單月營收 MoM 出現 -12.57% 之季節性波動。"
+    },
+    {
+      "inf_id": "I15",
+      "premise_refs": [
+        "O26"
+      ],
+      "logic": "依據事實 O26，聯詠(3034)收盤價 575.0 元，近 20 日報酬為 6.48%，超額報酬達 11.56%，抗跌性顯著。營運面表現穩健，營收 YoY 達 24.99%，最新 ROE 達 8.98% 具良好獲利水準。技術面上股價站穩 MA20 達 +2.30%，MA20 5 日揚升 1.98%。籌碼面外資 5 日買超力道達 6.61%，投信單日買超 35.4 萬股、5 日力道 1.18%。在電子設計類股中，聯詠獲利健全且均線維持多方排列，建議維持穩定配置，目標權重約 4.0%。",
+      "conclusion": "聯詠 ROE 8.98% 且營收年增 24.99%，技術結構維持在均線之上偏多，建議維持目標權重約 4.0%。",
+      "counter_evidence": "近 5 日報酬微跌 -2.54%，外資單日小幅調節 20.7 萬股，短期高檔面臨震盪整理。"
+    },
+    {
+      "inf_id": "I16",
+      "premise_refs": [
+        "O27"
+      ],
+      "logic": "依據事實 O27，欣興(3037)收盤價 989.0 元，最新 ROE 達 10.91%，營收 YoY 達 64.66%，載板產業長線需求明確。但短線走勢極度疲弱，近 5 日報酬 -10.09%，近 20 日報酬 -15.11%，股價重挫跌破 MA20 達 -14.88%，近 10 日波動率達 4.64%。籌碼面外資單日大賣 323.0 萬股，5 日外資賣超力道達 -9.31%，即便投信買超 71 萬股亦難擋破線賣壓。考量弱勢技術面可能引發進一步斷頭去槓桿風險，建議將目標權重由 2.11% 調降至約 1.5%，騰出防守現金。",
+      "conclusion": "欣興基本面佳但短線崩跌破線，外資單日大賣 323 萬張，建議減碼至目標權重約 1.5% 防禦風險。",
+      "counter_evidence": "投信單日逆勢買超 710,387 股且 5 日買超力道 4.65%，最新營收 YoY 達 64.66% 仍具強大成長動能。"
+    },
+    {
+      "inf_id": "I17",
+      "premise_refs": [
+        "O29"
+      ],
+      "logic": "依據事實 O29，景碩(3189)收盤價 932.0 元，近 20 日超額報酬為 2.67%，營收 YoY 達 44.46%、MoM 達 7.72%，基本面持續增溫。然而短期技術面破線下殺，近 5 日報酬為 -7.72%，股價距 MA20 為 -8.13%，近 10 日波動率高達 5.70%。外資單日賣超 145.5 萬股，5 日賣超力道高達 -11.09%。雖然投信 5 日買超力道 2.67% 承接，但在組合整體縮減曝險的大方針下，高波動次核心個股應優先縮減比重，建議維持保守低比重配置，目標權重約 1.0%。",
+      "conclusion": "景碩短線跌幅深且外資賣壓沉重，波動率高達 5.70%，建議維持低比重防守配置，目標權重約 1.0%。",
+      "counter_evidence": "投信單日買超 830,000 股，最新月營收呈現雙成長 (MoM 7.72%, YoY 44.46%)，營運谷底復甦跡象明顯。"
+    },
+    {
+      "inf_id": "I18",
+      "premise_refs": [
+        "O30"
+      ],
+      "logic": "依據事實 O30，緯創(3231)收盤價 183.5 元，最新 ROE 達 8.60%，營收 YoY 大增 87.18%，在 AI 伺服器代工市場具備關鍵地位。近 20 日報酬為 -1.08%，優於大盤表現 (超額報酬 4.00%)。然而短線受外資強烈提款，單日賣超高達 1296.4 萬股，近 5 日跌幅 -5.90%，股價跌破 MA20 達 -2.05%。鑑於外資賣超力道沉重，但其本業成長強勁且獲利紮實，建議適度微調但維持組合重要權重，目標權重約 3.2%。",
+      "conclusion": "緯創營收年增 87% 且具優質 ROE，但受外資單日大賣近 1.3 萬張影響，建議適度降權至 3.2% 保持彈性。",
+      "counter_evidence": "外資單日狂賣 12,964,533 股且 5 日買超力道為 -5.93%，投信亦微幅賣超，短線籌碼外流壓力龐大。"
+    },
+    {
+      "inf_id": "I19",
+      "premise_refs": [
+        "O31"
+      ],
+      "logic": "依據事實 O31，創意(3443)收盤價 7635.0 元，獲利品質卓越，最新 ROE 達 11.09%，營收 MoM 達 22.34%，營收 YoY 達 97.77%，ASIC 需求展望正向。技術面近 5 日報酬 -4.56%，距 MA20 -4.12%，近 10 日波動率 5.34% 偏高。籌碼面外資單日小賣 12.4 萬股，但投信 5 日力道 3.38% 且單日買超 13.3 萬股，CMoney 市場情緒樂觀 (64分)。考量高單價 IC 股在弱勢盤局中承受之評價修正壓力，建議維持輕量精準配置，目標權重約 1.4%。",
+      "conclusion": "創意營收倍增且 ROE 11.09%，具備 ASIC 長線爆發力，但在高波動環境下建議維持精巧配置，目標權重約 1.4%。",
+      "counter_evidence": "近 10 日報酬波動率高達 5.34%，MA20 近 5 日微幅下彎 -1.46%，高價股短線流動性承接力道易受考驗。"
+    },
+    {
+      "inf_id": "I20",
+      "premise_refs": [
+        "O32"
+      ],
+      "logic": "依據事實 O32，嘉澤(3533)收盤價 1860.0 元，近 5 日逆勢上揚 2.20%，近 20 日超額報酬達 13.85%，股價站回 MA20 之上 +0.19%，MA20 近 5 日加速上升 2.80%，技術結構領先回穩。基本面營收雙成長 (MoM 4.95%, YoY 16.12%)，ROE 4.53%。籌碼面外資 5 日買超力道達 10.08%，投信亦同步加碼 1.53%，法人動向齊步翻多。在新世代伺服器連接器規格升級帶動下，嘉澤兼具抗跌與攻擊彈性，建議維持目標權重約 3.0%。",
+      "conclusion": "嘉澤逆勢抗跌且站回均線，外資 5 日大舉回補，技術結構健康，建議維持組合配置，目標權重約 3.0%。",
+      "counter_evidence": "外資單日微幅賣超 4.3 萬股，且 14 日 RSI 僅 53.71 仍處中性區間，尚未出現決定性量增噴出訊號。"
+    },
+    {
+      "inf_id": "I21",
+      "premise_refs": [
+        "O36"
+      ],
+      "logic": "依據事實 O36，和碩(4938)收盤價 102.5 元，基本面出現爆發性改善，最新月營收 MoM 達驚人的 143.19%，YoY 達 86.87%，展現旗艦新品拉貨潮。技術面表現極佳，近 20 日報酬 12.89%，超額報酬高達 17.96%，股價站上 MA20 達 +4.36%，MA20 5 日大升 3.66%。籌碼面外資 5 日買超力道達 14.77%，投信單日買超 127.2 萬股且 5 日力道 2.76%。和碩兼具營運跳升與強勢抗跌結構，為投資組合核心進攻標的，建議維持目標權重約 4.2%。",
+      "conclusion": "和碩營收月增 143% 展現強烈轉機動能，技術結構穩居 MA20 之上，建議維持高持股比重，目標權重約 4.2%。",
+      "counter_evidence": "最新 ROE 為 2.51% 獲利能力仍待進一步轉化為實質利潤，且近 5 日報酬微幅拉回 -2.38%。"
+    },
+    {
+      "inf_id": "I22",
+      "premise_refs": [
+        "O37"
+      ],
+      "logic": "依據事實 O37，臻鼎-KY(4958)收盤價 486.0 元，營收表現搶眼，MoM 達 27.54%、YoY 達 36.12%。然而短線價格遭遇猛烈拋售，近 5 日暴跌 -15.92%，股價距 MA20 負乖離達 -11.68%，近 10 日波動率高達 5.96%。籌碼面外資單日拋售 495.2 萬股，5 日賣超力道達 -14.88%，散戶與市場情緒極度低落 (35分)。儘管投信加碼 62 萬股，但籌碼潰散使下行風險急劇升高。在防禦姿態下應立即控制風險，建議目標權重調降至約 1.2%。",
+      "conclusion": "臻鼎-KY 短線重挫跌破均線且外資大砍近 500 萬股，波動過劇，建議減碼至目標權重約 1.2% 規避風險。",
+      "counter_evidence": "投信單日買超 621,000 股逆勢護盤，且營收年月雙增，若短線急跌過度存在超跌反彈契機。"
+    },
+    {
+      "inf_id": "I23",
+      "premise_refs": [
+        "O38"
+      ],
+      "logic": "依據事實 O38，矽力*-KY(6415)收盤價 502.0 元，為大盤弱勢中極罕見的領漲指標。近 20 日報酬達 22.74%，超額報酬達 27.82%，近 5 日續漲 2.45%，股價站上 MA20 達 +8.17%，MA20 5 日揚升 4.30%。基本面營收 YoY 達 50.70%、MoM 達 3.90%，最新 ROE 為 3.94%。籌碼面投信單日買超 24.1 萬股且 5 日力道 2.92%，外資單日亦回補 21.9 萬股。兼具動能超額報酬與景氣循環復甦，建議維持積極配置，目標權重約 3.5%。",
+      "conclusion": "矽力*-KY 超額報酬達 27.82% 領跑全市場，均線強烈多頭發散，建議維持重點攻擊配置，目標權重約 3.5%。",
+      "counter_evidence": "近 10 日波動率 4.70% 偏高，且外資近 5 日累積買賣超力道為 -5.13%，籌碼換手過程中需提防高檔震盪。"
+    },
+    {
+      "inf_id": "I24",
+      "premise_refs": [
+        "O39"
+      ],
+      "logic": "依據事實 O39，藥華藥(6446)收盤價 1190.0 元，生技醫療龍頭與大盤連動度低，為典型非景氣循環防禦標的。基本面成長極其驚人，營收 YoY 高達 99.97%，最新 ROE 達 7.10%，本業獲利轉正爆發。近 5 日報酬 +1.28%，股價站於 MA20 之上 +0.04%，MA20 穩定揚升。籌碼面投信持續重倉加碼，單日買超 44.8 萬股，5 日買超力道達 6.47%。在科技股普遍回檔時，藥華藥提供絕佳獨立成長避險特性，建議維持目標權重約 2.8%。",
+      "conclusion": "藥華藥營收年增近 100% 且具生技避險防禦特質，投信 5 日持續買超，建議維持目標權重約 2.8%。",
+      "counter_evidence": "外資單日賣超 682,542 股，且 CMoney 市場情緒分數為 39 分偏向保守，市場討論氛圍偏冷。"
+    },
+    {
+      "inf_id": "I25",
+      "premise_refs": [
+        "O40"
+      ],
+      "logic": "依據事實 O40，台塑化(6505)收盤價 98.3 元，最新 ROE 為 4.76%，營收 YoY 達 65.59%、MoM 達 6.13%，展現能源煉油獲利修復動能。近 20 日超額報酬達 9.32%。但短期遭遇大幅度補跌，近 5 日報酬為 -10.23%，股價跌破 MA20 達 -7.89%，近 10 日波動率達 5.23%。雖然外資 5 日買超力道達 18.38% 且單日買超 34 萬股，但投信 5 日賣超力道高達 -11.30%。考量內外資分歧且短線波動遽增，建議在整體防禦下微幅調節，目標權重約 2.0%。",
+      "conclusion": "台塑化營收年增 65.59% 具備轉機，但短線跌破 MA20 且投信出脫，建議微幅降權至目標權重約 2.0%。",
+      "counter_evidence": "近 5 日跌幅高達 -10.23%，技術結構轉為弱勢破線，投信 5 日賣超力道達 -11.30% 呈現明顯獲利結帳。"
+    }
+  ],
+  "decisions": [
+    {
+      "decision_id": "D1",
+      "ticker": "2368",
+      "action": "TRIM",
+      "target_weight": 0.018,
+      "inference_refs": [
+        "I5"
+      ],
+      "risk_check": "減碼至目標權重 1.8% <= 10% 上限；整體持股維持 25 檔在 [20, 30] 區間，預留現金提升以符防禦姿態。"
+    },
+    {
+      "decision_id": "D2",
+      "ticker": "2376",
+      "action": "TRIM",
+      "target_weight": 0.03,
+      "inference_refs": [
+        "I6"
+      ],
+      "risk_check": "減碼至目標權重 3.0% <= 10% 上限；整體持股維持 25 檔在 [20, 30] 區間，防禦外資去槓桿賣壓。"
+    },
+    {
+      "decision_id": "D3",
+      "ticker": "2383",
+      "action": "TRIM",
+      "target_weight": 0.018,
+      "inference_refs": [
+        "I9"
+      ],
+      "risk_check": "減碼至目標權重 1.8% <= 10% 上限；整體持股維持 25 檔在 [20, 30] 區間，降低高價股流動性修正曝險。"
+    },
+    {
+      "decision_id": "D4",
+      "ticker": "3037",
+      "action": "TRIM",
+      "target_weight": 0.015,
+      "inference_refs": [
+        "I16"
+      ],
+      "risk_check": "減碼至目標權重 1.5% <= 10% 上限；整體持股維持 25 檔在 [20, 30] 區間，防範短線技術破線賣壓。"
+    },
+    {
+      "decision_id": "D5",
+      "ticker": "3189",
+      "action": "TRIM",
+      "target_weight": 0.01,
+      "inference_refs": [
+        "I17"
+      ],
+      "risk_check": "減碼至目標權重 1.0% <= 10% 上限；整體持股維持 25 檔在 [20, 30] 區間，降低高波動度次核心個股曝險。"
+    },
+    {
+      "decision_id": "D6",
+      "ticker": "3231",
+      "action": "TRIM",
+      "target_weight": 0.032,
+      "inference_refs": [
+        "I18"
+      ],
+      "risk_check": "減碼至目標權重 3.2% <= 10% 上限；整體持股維持 25 檔在 [20, 30] 區間，因應外資大幅提款調節部位。"
+    },
+    {
+      "decision_id": "D7",
+      "ticker": "4958",
+      "action": "TRIM",
+      "target_weight": 0.012,
+      "inference_refs": [
+        "I22"
+      ],
+      "risk_check": "減碼至目標權重 1.2% <= 10% 上限；整體持股維持 25 檔在 [20, 30] 區間，規避短線重挫與外資拋售風險。"
+    },
+    {
+      "decision_id": "D8",
+      "ticker": "6505",
+      "action": "TRIM",
+      "target_weight": 0.02,
+      "inference_refs": [
+        "I25"
+      ],
+      "risk_check": "減碼至目標權重 2.0% <= 10% 上限；整體持股維持 25 檔在 [20, 30] 區間，因應投信出脫與破線補跌風險。"
+    }
+  ],
+  "no_trade_decisions": [
+    {
+      "ticker": "1303",
+      "reason_refs": [
+        "I1"
+      ],
+      "reason": "南亞營收年增 55.25% 且中波段相對強勢，作為傳產防禦與營運改善核心標的，續抱維持部位。"
+    },
+    {
+      "ticker": "1802",
+      "reason_refs": [
+        "I2"
+      ],
+      "reason": "台玻營收年增 34.1% 且外資積極回補，具備低基期抗跌優勢，續抱維持部位。"
+    },
+    {
+      "ticker": "2317",
+      "reason_refs": [
+        "I3"
+      ],
+      "reason": "鴻海營收雙增且波動率極低，外資籌碼相對穩定，為防禦核心權值，續抱維持部位。"
+    },
+    {
+      "ticker": "2330",
+      "reason_refs": [
+        "I4"
+      ],
+      "reason": "台積電具備 11.39% 高 ROE 與營收高成長，護城河極深，續抱維持旗艦核心部位。"
+    },
+    {
+      "ticker": "2379",
+      "reason_refs": [
+        "I7"
+      ],
+      "reason": "瑞昱逆勢站穩 MA20 且外資連買，技術與籌碼偏多，續抱維持強勢配置。"
+    },
+    {
+      "ticker": "2382",
+      "reason_refs": [
+        "I8"
+      ],
+      "reason": "廣達高 ROE 且投信積極承接，伺服器核心競爭力扎實，續抱維持部位。"
+    },
+    {
+      "ticker": "2404",
+      "reason_refs": [
+        "I10"
+      ],
+      "reason": "漢唐高 ROE 且投信強力吸籌，高殖利率具備防守保護，續抱維持部位。"
+    },
+    {
+      "ticker": "2603",
+      "reason_refs": [
+        "I11"
+      ],
+      "reason": "長榮近 20 日超額報酬高且法人同步大買，為強勢避險領頭羊，續抱維持部位。"
+    },
+    {
+      "ticker": "2881",
+      "reason_refs": [
+        "I12"
+      ],
+      "reason": "富邦金技術面站穩均線且法人籌碼偏多，提供資金避風港功能，續抱維持金融核心部位。"
+    },
+    {
+      "ticker": "2882",
+      "reason_refs": [
+        "I13"
+      ],
+      "reason": "國泰金逆勢抗跌且獲法人雙向力挺，防禦價值與流動性佳，續抱維持金融基石部位。"
+    },
+    {
+      "ticker": "2891",
+      "reason_refs": [
+        "I14"
+      ],
+      "reason": "中信金超額報酬亮眼且法人大舉買進，銀行獲利穩固，續抱維持主力配置。"
+    },
+    {
+      "ticker": "3034",
+      "reason_refs": [
+        "I15"
+      ],
+      "reason": "聯詠 ROE 良好且均線多方排列，營收年增穩健，續抱維持穩定配置。"
+    },
+    {
+      "ticker": "3443",
+      "reason_refs": [
+        "I19"
+      ],
+      "reason": "創意獲利品質佳且長線 ASIC 展望正向，續抱維持輕量精準配置。"
+    },
+    {
+      "ticker": "3533",
+      "reason_refs": [
+        "I20"
+      ],
+      "reason": "嘉澤逆勢抗跌且站回均線，法人齊步翻多，續抱維持伺服器升級配置。"
+    },
+    {
+      "ticker": "4938",
+      "reason_refs": [
+        "I21"
+      ],
+      "reason": "和碩營收倍增具強烈轉機動能，技術結構穩健偏多，續抱維持核心配置。"
+    },
+    {
+      "ticker": "6415",
+      "reason_refs": [
+        "I23"
+      ],
+      "reason": "矽力*-KY 超額報酬領先市場且均線多頭發散，動能強勁，續抱維持進攻配置。"
+    },
+    {
+      "ticker": "6446",
+      "reason_refs": [
+        "I24"
+      ],
+      "reason": "藥華藥營收倍增且具生技避險特性，投信重倉加碼，續抱維持配置。"
+    }
+  ],
+  "orders": [
+    {
+      "ticker": "2368",
+      "side": "SELL",
+      "shares": 6000,
+      "decision_ref": "D1",
+      "derivation_detail": "target_shares = floor(0.018×985,357,292 / 1020 / 1000)×1000 = 17,000；現持 23,000 → SELL 6,000"
+    },
+    {
+      "ticker": "2376",
+      "side": "SELL",
+      "shares": 18000,
+      "decision_ref": "D2",
+      "derivation_detail": "target_shares = floor(0.03×985,357,292 / 336 / 1000)×1000 = 87,000；現持 105,000 → SELL 18,000"
+    },
+    {
+      "ticker": "2383",
+      "side": "SELL",
+      "shares": 2000,
+      "decision_ref": "D3",
+      "derivation_detail": "target_shares = floor(0.018×985,357,292 / 4675 / 1000)×1000 = 3,000；現持 5,000 → SELL 2,000"
+    },
+    {
+      "ticker": "3037",
+      "side": "SELL",
+      "shares": 7000,
+      "decision_ref": "D4",
+      "derivation_detail": "target_shares = floor(0.015×985,357,292 / 989 / 1000)×1000 = 14,000；現持 21,000 → SELL 7,000"
+    },
+    {
+      "ticker": "3189",
+      "side": "SELL",
+      "shares": 5000,
+      "decision_ref": "D5",
+      "derivation_detail": "target_shares = floor(0.01×985,357,292 / 932 / 1000)×1000 = 10,000；現持 15,000 → SELL 5,000"
+    },
+    {
+      "ticker": "3231",
+      "side": "SELL",
+      "shares": 27000,
+      "decision_ref": "D6",
+      "derivation_detail": "target_shares = floor(0.032×985,357,292 / 183.5 / 1000)×1000 = 171,000；現持 198,000 → SELL 27,000"
+    },
+    {
+      "ticker": "4958",
+      "side": "SELL",
+      "shares": 14000,
+      "decision_ref": "D7",
+      "derivation_detail": "target_shares = floor(0.012×985,357,292 / 486 / 1000)×1000 = 24,000；現持 38,000 → SELL 14,000"
+    },
+    {
+      "ticker": "6505",
+      "side": "SELL",
+      "shares": 44000,
+      "decision_ref": "D8",
+      "derivation_detail": "target_shares = floor(0.02×985,357,292 / 98.3 / 1000)×1000 = 200,000；現持 244,000 → SELL 44,000"
+    }
+  ],
+  "agent_metadata": {
+    "model_provider": "google",
+    "model_version": "gemini-3.8-flash",
+    "run_started_at": "2026-11-01T20:52:07+08:00",
+    "run_completed_at": "2026-11-01T20:57:30+08:00",
+    "code_version": "git:f3036ab"
+  }
+}

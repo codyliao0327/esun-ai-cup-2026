@@ -1,0 +1,467 @@
+{
+  "_format": "[value, date]",
+  "1301": {
+    "bollinger_position_pct": [49.79, "2026-11-10"],
+    "bollinger_bandwidth_pct": [20.42, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [2.47, "2026-11-10"],
+    "bollinger_contraction_days": [2, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [70.0, "2026-11-10"]
+  },
+  "1303": {
+    "bollinger_position_pct": [57.77, "2026-11-10"],
+    "bollinger_bandwidth_pct": [33.82, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [6.06, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [78.33, "2026-11-10"]
+  },
+  "1326": {
+    "bollinger_position_pct": [58.93, "2026-11-10"],
+    "bollinger_bandwidth_pct": [21.22, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [3.41, "2026-11-10"],
+    "bollinger_contraction_days": [2, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [81.67, "2026-11-10"]
+  },
+  "1590": {
+    "bollinger_position_pct": [41.28, "2026-11-10"],
+    "bollinger_bandwidth_pct": [14.42, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [1.36, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [86.67, "2026-11-10"]
+  },
+  "1785": {
+    "bollinger_position_pct": [57.84, "2026-11-10"],
+    "bollinger_bandwidth_pct": [30.98, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [3.54, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [95.0, "2026-11-10"]
+  },
+  "1802": {
+    "bollinger_position_pct": [95.05, "2026-11-10"],
+    "bollinger_bandwidth_pct": [20.42, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [5.9, "2026-11-10"],
+    "bollinger_contraction_days": [0, "2026-11-10"],
+    "bollinger_expansion_days": [1, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [95.0, "2026-11-10"]
+  },
+  "1815": {
+    "bollinger_position_pct": [40.24, "2026-11-10"],
+    "bollinger_bandwidth_pct": [22.32, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [1.51, "2026-11-10"],
+    "bollinger_contraction_days": [0, "2026-11-10"],
+    "bollinger_expansion_days": [1, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [55.0, "2026-11-10"]
+  },
+  "2207": {
+    "bollinger_position_pct": [-21.13, "2026-11-10"],
+    "bollinger_bandwidth_pct": [6.37, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [1.61, "2026-11-10"],
+    "bollinger_contraction_days": [0, "2026-11-10"],
+    "bollinger_expansion_days": [1, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [68.33, "2026-11-10"]
+  },
+  "2301": {
+    "bollinger_position_pct": [53.33, "2026-11-10"],
+    "bollinger_bandwidth_pct": [29.9, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [4.73, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [93.33, "2026-11-10"]
+  },
+  "2330": {
+    "bollinger_position_pct": [45.64, "2026-11-10"],
+    "bollinger_bandwidth_pct": [13.98, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [3.48, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [95.0, "2026-11-10"]
+  },
+  "2345": {
+    "bollinger_position_pct": [51.08, "2026-11-10"],
+    "bollinger_bandwidth_pct": [39.07, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [4.8, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [95.0, "2026-11-10"]
+  },
+  "2376": {
+    "bollinger_position_pct": [20.5, "2026-11-10"],
+    "bollinger_bandwidth_pct": [22.11, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [4.9, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [91.67, "2026-11-10"]
+  },
+  "2379": {
+    "bollinger_position_pct": [37.83, "2026-11-10"],
+    "bollinger_bandwidth_pct": [15.48, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [3.24, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [95.0, "2026-11-10"]
+  },
+  "2383": {
+    "bollinger_position_pct": [42.58, "2026-11-10"],
+    "bollinger_bandwidth_pct": [32.25, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [8.23, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [95.0, "2026-11-10"]
+  },
+  "2404": {
+    "bollinger_position_pct": [29.12, "2026-11-10"],
+    "bollinger_bandwidth_pct": [27.39, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [9.07, "2026-11-10"],
+    "bollinger_contraction_days": [0, "2026-11-10"],
+    "bollinger_expansion_days": [7, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [83.33, "2026-11-10"]
+  },
+  "2412": {
+    "bollinger_position_pct": [45.79, "2026-11-10"],
+    "bollinger_bandwidth_pct": [4.46, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [-0.71, "2026-11-10"],
+    "bollinger_contraction_days": [4, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [58.33, "2026-11-10"]
+  },
+  "2454": {
+    "bollinger_position_pct": [53.64, "2026-11-10"],
+    "bollinger_bandwidth_pct": [24.61, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [3.14, "2026-11-10"],
+    "bollinger_contraction_days": [2, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [86.67, "2026-11-10"]
+  },
+  "2603": {
+    "bollinger_position_pct": [34.11, "2026-11-10"],
+    "bollinger_bandwidth_pct": [13.5, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [5.79, "2026-11-10"],
+    "bollinger_contraction_days": [0, "2026-11-10"],
+    "bollinger_expansion_days": [8, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [71.67, "2026-11-10"]
+  },
+  "2610": {
+    "bollinger_position_pct": [108.75, "2026-11-10"],
+    "bollinger_bandwidth_pct": [14.68, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [7.19, "2026-11-10"],
+    "bollinger_contraction_days": [0, "2026-11-10"],
+    "bollinger_expansion_days": [4, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [88.33, "2026-11-10"]
+  },
+  "2618": {
+    "bollinger_position_pct": [108.61, "2026-11-10"],
+    "bollinger_bandwidth_pct": [9.48, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [1.85, "2026-11-10"],
+    "bollinger_contraction_days": [0, "2026-11-10"],
+    "bollinger_expansion_days": [1, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [90.0, "2026-11-10"]
+  },
+  "2880": {
+    "bollinger_position_pct": [41.11, "2026-11-10"],
+    "bollinger_bandwidth_pct": [3.41, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [-0.17, "2026-11-10"],
+    "bollinger_contraction_days": [2, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [3.33, "2026-11-10"]
+  },
+  "2881": {
+    "bollinger_position_pct": [30.31, "2026-11-10"],
+    "bollinger_bandwidth_pct": [10.56, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [3.56, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [81.67, "2026-11-10"]
+  },
+  "2882": {
+    "bollinger_position_pct": [27.82, "2026-11-10"],
+    "bollinger_bandwidth_pct": [10.8, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [4.98, "2026-11-10"],
+    "bollinger_contraction_days": [0, "2026-11-10"],
+    "bollinger_expansion_days": [3, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [85.0, "2026-11-10"]
+  },
+  "2883": {
+    "bollinger_position_pct": [38.65, "2026-11-10"],
+    "bollinger_bandwidth_pct": [18.63, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [2.22, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [88.33, "2026-11-10"]
+  },
+  "2885": {
+    "bollinger_position_pct": [34.29, "2026-11-10"],
+    "bollinger_bandwidth_pct": [11.05, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [2.13, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [83.33, "2026-11-10"]
+  },
+  "2886": {
+    "bollinger_position_pct": [19.51, "2026-11-10"],
+    "bollinger_bandwidth_pct": [4.64, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [0.01, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [16.67, "2026-11-10"]
+  },
+  "2891": {
+    "bollinger_position_pct": [25.28, "2026-11-10"],
+    "bollinger_bandwidth_pct": [4.67, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [1.22, "2026-11-10"],
+    "bollinger_contraction_days": [0, "2026-11-10"],
+    "bollinger_expansion_days": [3, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [18.33, "2026-11-10"]
+  },
+  "3034": {
+    "bollinger_position_pct": [12.02, "2026-11-10"],
+    "bollinger_bandwidth_pct": [30.37, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [11.45, "2026-11-10"],
+    "bollinger_contraction_days": [0, "2026-11-10"],
+    "bollinger_expansion_days": [6, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [98.33, "2026-11-10"]
+  },
+  "3037": {
+    "bollinger_position_pct": [33.51, "2026-11-10"],
+    "bollinger_bandwidth_pct": [50.26, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [13.16, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [96.67, "2026-11-10"]
+  },
+  "3045": {
+    "bollinger_position_pct": [-15.27, "2026-11-10"],
+    "bollinger_bandwidth_pct": [5.32, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [1.81, "2026-11-10"],
+    "bollinger_contraction_days": [0, "2026-11-10"],
+    "bollinger_expansion_days": [2, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [56.67, "2026-11-10"]
+  },
+  "3131": {
+    "bollinger_position_pct": [42.63, "2026-11-10"],
+    "bollinger_bandwidth_pct": [42.04, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [8.24, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [96.67, "2026-11-10"]
+  },
+  "3189": {
+    "bollinger_position_pct": [30.29, "2026-11-10"],
+    "bollinger_bandwidth_pct": [53.21, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [16.11, "2026-11-10"],
+    "bollinger_contraction_days": [0, "2026-11-10"],
+    "bollinger_expansion_days": [7, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [98.33, "2026-11-10"]
+  },
+  "3227": {
+    "bollinger_position_pct": [49.11, "2026-11-10"],
+    "bollinger_bandwidth_pct": [9.42, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [0.81, "2026-11-10"],
+    "bollinger_contraction_days": [2, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [86.67, "2026-11-10"]
+  },
+  "3231": {
+    "bollinger_position_pct": [34.38, "2026-11-10"],
+    "bollinger_bandwidth_pct": [21.18, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [4.01, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [95.0, "2026-11-10"]
+  },
+  "3293": {
+    "bollinger_position_pct": [41.96, "2026-11-10"],
+    "bollinger_bandwidth_pct": [11.82, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [4.7, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [80.0, "2026-11-10"]
+  },
+  "3363": {
+    "bollinger_position_pct": [38.03, "2026-11-10"],
+    "bollinger_bandwidth_pct": [44.55, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [6.23, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [96.67, "2026-11-10"]
+  },
+  "3443": {
+    "bollinger_position_pct": [52.64, "2026-11-10"],
+    "bollinger_bandwidth_pct": [30.66, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [4.75, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [73.33, "2026-11-10"]
+  },
+  "3491": {
+    "bollinger_position_pct": [72.8, "2026-11-10"],
+    "bollinger_bandwidth_pct": [21.88, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [2.82, "2026-11-10"],
+    "bollinger_contraction_days": [0, "2026-11-10"],
+    "bollinger_expansion_days": [1, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [71.67, "2026-11-10"]
+  },
+  "3529": {
+    "bollinger_position_pct": [45.75, "2026-11-10"],
+    "bollinger_bandwidth_pct": [40.71, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [8.86, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [96.67, "2026-11-10"]
+  },
+  "3533": {
+    "bollinger_position_pct": [45.09, "2026-11-10"],
+    "bollinger_bandwidth_pct": [22.9, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [5.53, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [83.33, "2026-11-10"]
+  },
+  "3661": {
+    "bollinger_position_pct": [61.4, "2026-11-10"],
+    "bollinger_bandwidth_pct": [33.55, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [5.18, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [93.33, "2026-11-10"]
+  },
+  "4123": {
+    "bollinger_position_pct": [28.63, "2026-11-10"],
+    "bollinger_bandwidth_pct": [6.05, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [-2.34, "2026-11-10"],
+    "bollinger_contraction_days": [6, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [46.67, "2026-11-10"]
+  },
+  "4749": {
+    "bollinger_position_pct": [55.11, "2026-11-10"],
+    "bollinger_bandwidth_pct": [21.49, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [-0.57, "2026-11-10"],
+    "bollinger_contraction_days": [2, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [91.67, "2026-11-10"]
+  },
+  "4772": {
+    "bollinger_position_pct": [43.36, "2026-11-10"],
+    "bollinger_bandwidth_pct": [29.53, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [-1.28, "2026-11-10"],
+    "bollinger_contraction_days": [2, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [93.33, "2026-11-10"]
+  },
+  "4904": {
+    "bollinger_position_pct": [-3.38, "2026-11-10"],
+    "bollinger_bandwidth_pct": [10.08, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [6.88, "2026-11-10"],
+    "bollinger_contraction_days": [0, "2026-11-10"],
+    "bollinger_expansion_days": [2, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [88.33, "2026-11-10"]
+  },
+  "4938": {
+    "bollinger_position_pct": [26.02, "2026-11-10"],
+    "bollinger_bandwidth_pct": [16.73, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [6.7, "2026-11-10"],
+    "bollinger_contraction_days": [0, "2026-11-10"],
+    "bollinger_expansion_days": [6, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [86.67, "2026-11-10"]
+  },
+  "4958": {
+    "bollinger_position_pct": [39.94, "2026-11-10"],
+    "bollinger_bandwidth_pct": [46.13, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [2.17, "2026-11-10"],
+    "bollinger_contraction_days": [2, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [95.0, "2026-11-10"]
+  },
+  "4979": {
+    "bollinger_position_pct": [42.19, "2026-11-10"],
+    "bollinger_bandwidth_pct": [52.28, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [10.47, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [95.0, "2026-11-10"]
+  },
+  "5880": {
+    "bollinger_position_pct": [8.87, "2026-11-10"],
+    "bollinger_bandwidth_pct": [6.2, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [1.84, "2026-11-10"],
+    "bollinger_contraction_days": [0, "2026-11-10"],
+    "bollinger_expansion_days": [3, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [43.33, "2026-11-10"]
+  },
+  "5903": {
+    "bollinger_position_pct": [44.89, "2026-11-10"],
+    "bollinger_bandwidth_pct": [2.12, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [0.57, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [86.67, "2026-11-10"]
+  },
+  "6023": {
+    "bollinger_position_pct": [9.42, "2026-11-10"],
+    "bollinger_bandwidth_pct": [6.49, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [2.74, "2026-11-10"],
+    "bollinger_contraction_days": [0, "2026-11-10"],
+    "bollinger_expansion_days": [5, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [75.0, "2026-11-10"]
+  },
+  "6139": {
+    "bollinger_position_pct": [44.08, "2026-11-10"],
+    "bollinger_bandwidth_pct": [25.12, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [6.89, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [90.0, "2026-11-10"]
+  },
+  "6505": {
+    "bollinger_position_pct": [27.86, "2026-11-10"],
+    "bollinger_bandwidth_pct": [24.32, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [1.43, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [76.67, "2026-11-10"]
+  },
+  "6510": {
+    "bollinger_position_pct": [56.53, "2026-11-10"],
+    "bollinger_bandwidth_pct": [32.84, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [3.69, "2026-11-10"],
+    "bollinger_contraction_days": [2, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [83.33, "2026-11-10"]
+  },
+  "6548": {
+    "bollinger_position_pct": [44.17, "2026-11-10"],
+    "bollinger_bandwidth_pct": [32.11, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [-0.73, "2026-11-10"],
+    "bollinger_contraction_days": [2, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [93.33, "2026-11-10"]
+  },
+  "6919": {
+    "bollinger_position_pct": [90.93, "2026-11-10"],
+    "bollinger_bandwidth_pct": [16.97, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [-7.87, "2026-11-10"],
+    "bollinger_contraction_days": [0, "2026-11-10"],
+    "bollinger_expansion_days": [1, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [68.33, "2026-11-10"]
+  },
+  "7734": {
+    "bollinger_position_pct": [36.76, "2026-11-10"],
+    "bollinger_bandwidth_pct": [49.06, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [8.21, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [96.67, "2026-11-10"]
+  },
+  "8069": {
+    "bollinger_position_pct": [25.21, "2026-11-10"],
+    "bollinger_bandwidth_pct": [13.19, "2026-11-10"],
+    "bollinger_bandwidth_change_3d_pp": [-0.5, "2026-11-10"],
+    "bollinger_contraction_days": [1, "2026-11-10"],
+    "bollinger_expansion_days": [0, "2026-11-10"],
+    "bollinger_bandwidth_percentile_60d": [81.67, "2026-11-10"]
+  }
+}

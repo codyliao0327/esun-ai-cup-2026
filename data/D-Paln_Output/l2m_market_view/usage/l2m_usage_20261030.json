@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-10-30T00:36:28+08:00",
+  "model": "gemini-3.8-flash",
+  "duration_seconds": 11.94,
+  "prompt_tokens": 4906,
+  "candidates_tokens": 285,
+  "total_tokens": 5191,
+  "cached_tokens": 0,
+  "date": "20261030",
+  "stage": "l2m"
+}

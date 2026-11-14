@@ -1,0 +1,276 @@
+[
+  {
+    "client_msg_id": "9f1f73f9-240f-448a-a6a8-e7bdba6069f6",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的發問，回覆如下請酌參：\n1. 若隊伍於交易決策與委託規劃時已符合持股比例上限規定，後續因市場價格波動導致結算時超過上限，原則上將視為「價格波動」造成之超限情形辦理，有5個交易日供檢視調整。\n2. 若已完成調整並恢復符合持股比例規範，後續因市場價格波動再次超過上限，將視為新的超限事件重新認定。\n3. 除權股數不在除權當日返還於投資組合中，會由主辦方統一累積，於初賽結束時，以賽程最後一天的收盤價計算並納入總資產價值，詳細說明請參見競賽辦法「六、競賽規則」中第12點。\n4. 同上，將以賽程最後一天的收盤價計算並納入總資產價值。",
+    "ts": "1790930416.272299",
+    "thread_ts": "1790868301.520849",
+    "parent_user_id": "U0C4QK3QKHN",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "KRNSs",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的發問，回覆如下請酌參：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "若隊伍於交易決策與委託規劃時已符合持股比例上限規定，後續因市場價格波動導致結算時超過上限，原則上將視為「價格波動」造成之超限情形辦理，有5個交易日供檢視調整。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "若已完成調整並恢復符合持股比例規範，後續因市場價格波動再次超過上限，將視為新的超限事件重新認定。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "除權股數不在除權當日返還於投資組合中，會由主辦方統一累積，於初賽結束時，以賽程最後一天的收盤價計算並納入總資產價值，詳細說明請參見競賽辦法「六、競賽規則」中第12點。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "同上，將以賽程最後一天的收盤價計算並納入總資產價值。"
+                  }
+                ]
+              }
+            ],
+            "style": "ordered",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "039d1362-f020-4843-897e-4451889ce488",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的提問，以下逐項說明：\n1. 競賽系統將提供持股、現金、NAV 等資訊供參賽隊伍下載使用。參賽者將系統提供之資料提供給 Agent 分析，本競賽之無人工直接介入的原則為*「人工決定交易內容」*，因此建議避免涉及人工介入決策的行為。\n2. Active Share 係與每一檔主動型 ETF 分別進行計算與檢核，檢核時採用當日公告之 ETF 前十大持股及權重資料。\n3. 因格式或驗證錯誤而遭系統拒收之上傳，不計入每日提交次數額度。\n4. 策略說明文件將於競賽平台上傳提交，提交後不開放修改，請於提交前確認內容無誤。\n5. 可以使用交易日 08:55 前已公開之資訊（如新聞、市場資訊等）進行分析及產生 D-Plan，只要能於截止時間前完成提交即可。\n6. 相關驗證規則、警示／拒收判定標準、排名資訊及計算結果，預計將整合呈現於競賽系統中，系統預計於 10/21 開放測試，屆時可進一步確認相關功能與顯示內容。\n7. 同上。\n8. 入圍後若需進行檢核，除程式可執行外，投資決策、D-Plan 與訂單產生邏輯亦應與競賽期間實際使用之版本一致。\n9. 主辦單位將以整體投資邏輯、持股內容及實際交易行為是否與所提交之 ETF 投資主題及理念相符進行綜合判斷，若長期明顯偏離所揭露之投資主題，主辦單位得要求說明或限期改善。\n10. 不設最低手續費及折讓機制，手續費、交易稅及相關結算結果將由系統統一計算並呈現，請以系統計算結果為準。\n11. 只要 D-Plan 成功提交，即計入成功繳交天數統計。\n12. 前 30 名隊伍之證書資料繳交方式與時程，將於初賽結束後另行公告。\n13. 依整股交易原則，零股不得交易。若因配股產生零股，系統將自動處理並於初賽最後一日納入淨值計算。",
+    "ts": "1790933474.097409",
+    "thread_ts": "1790914873.007229",
+    "parent_user_id": "U0C478XU6PK",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "oHI+T",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的提問，以下逐項說明：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "競賽系統將提供持股、現金、NAV 等資訊供參賽隊伍下載使用。參賽者將系統提供之資料提供給 Agent 分析，本競賽之無人工直接介入的原則為"
+                  },
+                  {
+                    "type": "text",
+                    "text": "「人工決定交易內容」",
+                    "style": {
+                      "bold": true
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "，因此建議避免涉及人工介入決策的行為。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "Active Share 係與每一檔主動型 ETF 分別進行計算與檢核，檢核時採用當日公告之 ETF 前十大持股及權重資料。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "因格式或驗證錯誤而遭系統拒收之上傳，不計入每日提交次數額度。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "策略說明文件將於競賽平台上傳提交，提交後不開放修改，請於提交前確認內容無誤。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "可以使用交易日 08:55 前已公開之資訊（如新聞、市場資訊等）進行分析及產生 D-Plan，只要能於截止時間前完成提交即可。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "相關驗證規則、警示／拒收判定標準、排名資訊及計算結果，預計將整合呈現於競賽系統中，系統預計於 10/21 開放測試，屆時可進一步確認相關功能與顯示內容。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "同上。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "入圍後若需進行檢核，除程式可執行外，投資決策、D-Plan 與訂單產生邏輯亦應與競賽期間實際使用之版本一致。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "主辦單位將以整體投資邏輯、持股內容及實際交易行為是否與所提交之 ETF 投資主題及理念相符進行綜合判斷，若長期明顯偏離所揭露之投資主題，主辦單位得要求說明或限期改善。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "不設最低手續費及折讓機制，手續費、交易稅及相關結算結果將由系統統一計算並呈現，請以系統計算結果為準。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "只要 D-Plan 成功提交，即計入成功繳交天數統計。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "前 30 名隊伍之證書資料繳交方式與時程，將於初賽結束後另行公告。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "依整股交易原則，零股不得交易。若因配股產生零股，系統將自動處理並於初賽最後一日納入淨值計算。"
+                  }
+                ]
+              }
+            ],
+            "style": "ordered",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  }
+]

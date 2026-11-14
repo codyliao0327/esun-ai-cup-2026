@@ -1,0 +1,285 @@
+{
+  "decisions": [
+    {
+      "decision_id": "D1",
+      "ticker": "2330",
+      "action": "ADD",
+      "target_weight": 0.07,
+      "inference_refs": [
+        "I1"
+      ],
+      "risk_check": "目標權重 7.0% 符合台積電單一標的 <=25% 規範；持股檔數維持 25 檔，預留現金約 16.4% 符合 [12%, 20%] 區間。"
+    },
+    {
+      "decision_id": "D2",
+      "ticker": "2317",
+      "action": "ADD",
+      "target_weight": 0.048,
+      "inference_refs": [
+        "I2"
+      ],
+      "risk_check": "目標權重 4.8% 符合單一持股 <=10% 規範；持股檔數維持 25 檔，預留現金約 16.4% 符合 [12%, 20%] 區間。"
+    },
+    {
+      "decision_id": "D3",
+      "ticker": "2891",
+      "action": "ADD",
+      "target_weight": 0.043,
+      "inference_refs": [
+        "I3"
+      ],
+      "risk_check": "目標權重 4.3% 符合單一持股 <=10% 規範；持股檔數維持 25 檔，預留現金約 16.4% 符合 [12%, 20%] 區間。"
+    },
+    {
+      "decision_id": "D4",
+      "ticker": "2881",
+      "action": "ADD",
+      "target_weight": 0.038,
+      "inference_refs": [
+        "I4"
+      ],
+      "risk_check": "目標權重 3.8% 符合單一持股 <=10% 規範；持股檔數維持 25 檔，預留現金約 16.4% 符合 [12%, 20%] 區間。"
+    },
+    {
+      "decision_id": "D5",
+      "ticker": "2882",
+      "action": "ADD",
+      "target_weight": 0.036,
+      "inference_refs": [
+        "I5"
+      ],
+      "risk_check": "目標權重 3.6% 符合單一持股 <=10% 規範；持股檔數維持 25 檔，預留現金約 16.4% 符合 [12%, 20%] 區間。"
+    },
+    {
+      "decision_id": "D6",
+      "ticker": "2603",
+      "action": "ADD",
+      "target_weight": 0.042,
+      "inference_refs": [
+        "I6"
+      ],
+      "risk_check": "目標權重 4.2% 符合單一持股 <=10% 規範；持股檔數維持 25 檔，預留現金約 16.4% 符合 [12%, 20%] 區間。"
+    },
+    {
+      "decision_id": "D7",
+      "ticker": "3034",
+      "action": "ADD",
+      "target_weight": 0.043,
+      "inference_refs": [
+        "I7"
+      ],
+      "risk_check": "目標權重 4.3% 符合單一持股 <=10% 規範；持股檔數維持 25 檔，預留現金約 16.4% 符合 [12%, 20%] 區間。"
+    },
+    {
+      "decision_id": "D8",
+      "ticker": "4938",
+      "action": "ADD",
+      "target_weight": 0.043,
+      "inference_refs": [
+        "I8"
+      ],
+      "risk_check": "目標權重 4.3% 符合單一持股 <=10% 規範；持股檔數維持 25 檔，預留現金約 16.4% 符合 [12%, 20%] 區間。"
+    },
+    {
+      "decision_id": "D9",
+      "ticker": "2379",
+      "action": "ADD",
+      "target_weight": 0.038,
+      "inference_refs": [
+        "I9"
+      ],
+      "risk_check": "目標權重 3.8% 符合單一持股 <=10% 規範；持股檔數維持 25 檔，預留現金約 16.4% 符合 [12%, 20%] 區間。"
+    },
+    {
+      "decision_id": "D10",
+      "ticker": "3231",
+      "action": "ADD",
+      "target_weight": 0.038,
+      "inference_refs": [
+        "I10"
+      ],
+      "risk_check": "目標權重 3.8% 符合單一持股 <=10% 規範；持股檔數維持 25 檔，預留現金約 16.4% 符合 [12%, 20%] 區間。"
+    },
+    {
+      "decision_id": "D11",
+      "ticker": "2382",
+      "action": "ADD",
+      "target_weight": 0.038,
+      "inference_refs": [
+        "I11"
+      ],
+      "risk_check": "目標權重 3.8% 符合單一持股 <=10% 規範；持股檔數維持 25 檔，預留現金約 16.4% 符合 [12%, 20%] 區間。"
+    },
+    {
+      "decision_id": "D12",
+      "ticker": "2376",
+      "action": "ADD",
+      "target_weight": 0.038,
+      "inference_refs": [
+        "I12"
+      ],
+      "risk_check": "目標權重 3.8% 符合單一持股 <=10% 規範；持股檔數維持 25 檔，預留現金約 16.4% 符合 [12%, 20%] 區間。"
+    },
+    {
+      "decision_id": "D13",
+      "ticker": "3533",
+      "action": "ADD",
+      "target_weight": 0.032,
+      "inference_refs": [
+        "I13"
+      ],
+      "risk_check": "目標權重 3.2% 符合單一持股 <=10% 規範；持股檔數維持 25 檔，預留現金約 16.4% 符合 [12%, 20%] 區間。"
+    },
+    {
+      "decision_id": "D14",
+      "ticker": "6446",
+      "action": "ADD",
+      "target_weight": 0.028,
+      "inference_refs": [
+        "I16"
+      ],
+      "risk_check": "目標權重 2.8% 符合單一持股 <=10% 規範；持股檔數維持 25 檔，預留現金約 16.4% 符合 [12%, 20%] 區間。"
+    },
+    {
+      "decision_id": "D15",
+      "ticker": "1802",
+      "action": "ADD",
+      "target_weight": 0.024,
+      "inference_refs": [
+        "I17"
+      ],
+      "risk_check": "目標權重 2.4% 符合單一持股 <=10% 規範；持股檔數維持 25 檔，預留現金約 16.4% 符合 [12%, 20%] 區間。"
+    },
+    {
+      "decision_id": "D16",
+      "ticker": "1303",
+      "action": "TRIM",
+      "target_weight": 0.032,
+      "inference_refs": [
+        "I14"
+      ],
+      "risk_check": "目標權重 3.2% 符合單一持股 <=10% 規範；釋出資金支應加碼，整體預留現金約 16.4% 符合區間要求。",
+      "funding_for": [
+        "D2"
+      ]
+    },
+    {
+      "decision_id": "D17",
+      "ticker": "6415",
+      "action": "TRIM",
+      "target_weight": 0.033,
+      "inference_refs": [
+        "I15"
+      ],
+      "risk_check": "目標權重 3.3% 符合單一持股 <=10% 規範；釋出資金支應加碼，整體預留現金約 16.4% 符合區間要求。",
+      "funding_for": [
+        "D3"
+      ]
+    },
+    {
+      "decision_id": "D18",
+      "ticker": "6505",
+      "action": "TRIM",
+      "target_weight": 0.026,
+      "inference_refs": [
+        "I18"
+      ],
+      "risk_check": "目標權重 2.6% 符合單一持股 <=10% 規範；因應波動度過高減碼釋出資金，提升現金防禦緩衝。",
+      "funding_for": [
+        "D7"
+      ]
+    },
+    {
+      "decision_id": "D19",
+      "ticker": "2368",
+      "action": "TRIM",
+      "target_weight": 0.025,
+      "inference_refs": [
+        "I19"
+      ],
+      "risk_check": "目標權重 2.5% 符合單一持股 <=10% 規範；因技術面轉弱防禦性調節，釋出資金提升組合抗跌性。",
+      "funding_for": [
+        "D8"
+      ]
+    },
+    {
+      "decision_id": "D20",
+      "ticker": "2383",
+      "action": "TRIM",
+      "target_weight": 0.025,
+      "inference_refs": [
+        "I20"
+      ],
+      "risk_check": "目標權重 2.5% 符合單一持股 <=10% 規範；防禦外資賣壓調節釋出流動性，符合現金比例要求。",
+      "funding_for": [
+        "D13"
+      ]
+    },
+    {
+      "decision_id": "D21",
+      "ticker": "3037",
+      "action": "TRIM",
+      "target_weight": 0.023,
+      "inference_refs": [
+        "I21"
+      ],
+      "risk_check": "目標權重 2.3% 符合單一持股 <=10% 規範；跌破均線防禦減碼，釋出資金支援強勢抗跌標的。",
+      "funding_for": [
+        "D6"
+      ]
+    },
+    {
+      "decision_id": "D22",
+      "ticker": "4958",
+      "action": "TRIM",
+      "target_weight": 0.02,
+      "inference_refs": [
+        "I22"
+      ],
+      "risk_check": "目標權重 2.0% 符合單一持股 <=10% 規範；弱勢標的減持讓位，整體現金水平調升至防禦區間。",
+      "funding_for": [
+        "D10"
+      ]
+    },
+    {
+      "decision_id": "D23",
+      "ticker": "3443",
+      "action": "TRIM",
+      "target_weight": 0.02,
+      "inference_refs": [
+        "I23"
+      ],
+      "risk_check": "目標權重 2.0% 符合單一持股 <=10% 規範；防範高價股評價壓縮風險，調節資金充實防禦儲備。",
+      "funding_for": [
+        "D11"
+      ]
+    },
+    {
+      "decision_id": "D24",
+      "ticker": "2404",
+      "action": "TRIM",
+      "target_weight": 0.018,
+      "inference_refs": [
+        "I24"
+      ],
+      "risk_check": "目標權重 1.8% 符合單一持股 <=10% 規範；成交量萎縮調節流動性，降低曝險至防禦水準。",
+      "funding_for": [
+        "D4"
+      ]
+    },
+    {
+      "decision_id": "D25",
+      "ticker": "3189",
+      "action": "TRIM",
+      "target_weight": 0.015,
+      "inference_refs": [
+        "I25"
+      ],
+      "risk_check": "目標權重 1.5% 符合單一持股 <=10% 規範；弱勢破線減碼，部位調整後整體持股 25 檔合規。",
+      "funding_for": [
+        "D14"
+      ]
+    }
+  ],
+  "no_trade_decisions": []
+}

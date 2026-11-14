@@ -1,0 +1,296 @@
+[
+  {
+    "client_msg_id": "bfaf8e02-9598-4727-a8ea-ce07a9a1a844",
+    "type": "message",
+    "user": "U0C4992J1K5",
+    "text": "您好，我想詢問關於檔案之間存在一個*版本不一致*：\n\n撰寫指南寫的是：\n\u0026gt; `schema_version: 4.1` \n正例與反例也是：\n\u0026gt; `4.1`  \n但在 `D-Plan.schema.json` 裡面寫的：\n\u0026gt; `\"schema_version\": {\"const\": \"4.0\"}`\n想詢問我需要參考哪一份資料會是比較精確的呢？",
+    "ts": "1790333585.587739",
+    "thread_ts": "1790333585.587739",
+    "reply_count": 2,
+    "reply_users": [
+      "U0C3LFZUG3D",
+      "U0C3XS72LS1"
+    ],
+    "replies": [
+      {
+        "user": "U0C3XS72LS1",
+        "ts": "1790433308.080429"
+      },
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1790659249.595349"
+      }
+    ],
+    "latest_reply": "1790659249.595349",
+    "team": "T0C3BBR6687",
+    "reactions": [
+      {
+        "name": "white_check_mark",
+        "count": 1,
+        "users": [
+          "U0C3XS72LS1"
+        ]
+      },
+      {
+        "name": "+1",
+        "count": 1,
+        "users": [
+          "U0C4QJJ6VMF"
+        ]
+      }
+    ],
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "MoCeS",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，我想詢問關於檔案之間存在一個"
+              },
+              {
+                "type": "text",
+                "text": "版本不一致",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "：\n\n撰寫指南寫的是：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_quote",
+            "elements": [
+              {
+                "type": "text",
+                "text": "schema_version: 4.1",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " "
+              }
+            ]
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "正例與反例也是：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_quote",
+            "elements": [
+              {
+                "type": "text",
+                "text": "4.1",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "  "
+              }
+            ]
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "但在 "
+              },
+              {
+                "type": "text",
+                "text": "D-Plan.schema.json",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 裡面寫的：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_quote",
+            "elements": [
+              {
+                "type": "text",
+                "text": "\"schema_version\": {\"const\": \"4.0\"}",
+                "style": {
+                  "code": true
+                }
+              }
+            ]
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "\n想詢問我需要參考哪一份資料會是比較精確的呢？"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/63065b2947ce867d1386c9163bf2ef89.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0022-72.png",
+      "first_name": "楊博凱（Deity）",
+      "real_name": "楊博凱（Deity）",
+      "display_name": "Deity",
+      "team": "T0C3BBR6687",
+      "name": "tommy12333312",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 2
+  },
+  {
+    "client_msg_id": "f2a5337a-4eb7-4eac-ba85-d89d14c6e609",
+    "type": "message",
+    "user": "U0C4AUCJJG3",
+    "text": "您好，我想詢問\n1) 這個競賽中只有提供Google Cloud的token credit 資源？\n2) 學生組會有其他AI agent 資源可以使用嗎？還是都要自費準備agent 方案和tokens?",
+    "ts": "1790349324.292609",
+    "thread_ts": "1790349324.292609",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1790659442.886749"
+      }
+    ],
+    "latest_reply": "1790659442.886749",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "Hiyiy",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，我想詢問\n1) 這個競賽中只有提供Google Cloud的token credit 資源？\n2) 學生組會有其他AI agent 資源可以使用嗎？還是都要自費準備agent 方案和tokens?"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/5406907b87b09592b9a43bdeb10caab2.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0016-72.png",
+      "first_name": "Jerry",
+      "real_name": "Jerry Wang",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "wangchingchuan",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "91f68611-bb5d-427a-9501-bd2a234d6ebb",
+    "type": "message",
+    "user": "U0C4N15AG02",
+    "text": "您好，想請教兩個問題：\n1. 提交 D-Plan 與查詢持股（撰寫指南提到的 GET /api/portfolio/holdings/）是透過網頁上傳還是 API？API 文件與認證方式（是否需要金鑰）會在哪裡公布？\n2. 9/18 公告提到 ETF 投資策略說明文件需「說明初始持股與選股邏輯」，但官方繳交格式只有名稱、主題、理念三欄，請問是否需要另外提供初始持股清單？\n謝謝！ — TEAM_11270",
+    "ts": "1790401610.167989",
+    "thread_ts": "1790401610.167989",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1790666614.982529"
+      }
+    ],
+    "latest_reply": "1790666614.982529",
+    "team": "T0C3BBR6687",
+    "reactions": [
+      {
+        "name": "eyes",
+        "count": 1,
+        "users": [
+          "U0C4ZJGMNQ2"
+        ]
+      }
+    ],
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "Vothj",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，想請教兩個問題：\n1. 提交 D-Plan 與查詢持股（撰寫指南提到的 GET /api/portfolio/holdings/）是透過網頁上傳還是 API？API 文件與認證方式（是否需要金鑰）會在哪裡公布？\n2. 9/18 公告提到 ETF 投資策略說明文件需「說明初始持股與選股邏輯」，但官方繳交格式只有名稱、主題、理念三欄，請問是否需要另外提供初始持股清單？\n謝謝！ — TEAM_11270"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/8784708e7dcefdbf16f5bdf8e4d361b2.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0007-72.png",
+      "first_name": "60401ben",
+      "real_name": "60401ben",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "60401ben",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  }
+]

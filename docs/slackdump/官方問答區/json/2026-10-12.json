@@ -1,0 +1,342 @@
+[
+  {
+    "client_msg_id": "c289f315-1b3c-4808-abc4-703fe54f66f9",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的提問，回覆如下請參考：\n*1.* 請參考最新公告附件 *\u003chttps://esun-ai-challenge.tw/events/fundaiagent|DataPack_規格書_v4.3.md\u003e*；若當日交易被判定無效，則系統將依競賽辦法以前一日有效投資組合作為計算基礎。\n*2.* 同隊成員皆可使用自己的帳號進行上傳；上傳後系統會回傳驗證結果；10/21 開放之測試環境亦可進行測試上傳與驗證，且不列入正式競賽成績。\n*3.* 是，Active Share 檢核僅以前 15 大持股及其權重進行比較；我方權重亦採個股占整體 NAV 之原始比例計算，不另進行正規化。\n*4.* 依競賽辦法規定，除權股數將由主辦方統一累積，並於初賽結束時納入最終資產淨值；股票分割等公司行動則依主辦方帳務規則處理。\n*5.* D-Plan 之拒收條件、警示項目及驗證規則，請以最新公告之 D-Plan v4.3 相關文件及競賽平台實際驗證結果為準。\n*6.* 請依官方提供格式於競賽平台提交\n*7.* 若個股於委託當日停牌，該筆委託將視為無效，其餘個股委託仍正常執行。",
+    "ts": "1791790733.001629",
+    "thread_ts": "1791373800.243959",
+    "parent_user_id": "U0C478XU6PK",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "A4N6r",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的提問，回覆如下請參考：\n"
+              },
+              {
+                "type": "text",
+                "text": "1.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 請參考最新公告附件 "
+              },
+              {
+                "type": "link",
+                "url": "https://esun-ai-challenge.tw/events/fundaiagent",
+                "text": "DataPack_規格書_v4.3.md",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "；若當日交易被判定無效，則系統將依競賽辦法以前一日有效投資組合作為計算基礎。\n"
+              },
+              {
+                "type": "text",
+                "text": "2.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 同隊成員皆可使用自己的帳號進行上傳；上傳後系統會回傳驗證結果；10/21 開放之測試環境亦可進行測試上傳與驗證，且不列入正式競賽成績。\n"
+              },
+              {
+                "type": "text",
+                "text": "3.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 是，Active Share 檢核僅以前 15 大持股及其權重進行比較；我方權重亦採個股占整體 NAV 之原始比例計算，不另進行正規化。\n"
+              },
+              {
+                "type": "text",
+                "text": "4.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 依競賽辦法規定，除權股數將由主辦方統一累積，並於初賽結束時納入最終資產淨值；股票分割等公司行動則依主辦方帳務規則處理。\n"
+              },
+              {
+                "type": "text",
+                "text": "5.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " D-Plan 之拒收條件、警示項目及驗證規則，請以最新公告之 D-Plan v4.3 相關文件及競賽平台實際驗證結果為準。\n"
+              },
+              {
+                "type": "text",
+                "text": "6.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 請依官方提供格式於競賽平台提交\n"
+              },
+              {
+                "type": "text",
+                "text": "7.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 若個股於委託當日停牌，該筆委託將視為無效，其餘個股委託仍正常執行。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "a6be592e-037b-43c8-a2a8-51f49df32e3a",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，提醒您今日已新增 *DataPack 規格書*，並同步更新 *D-Plan 撰寫指南、Schema 與範例檔案*。請參賽隊伍務必前往\u003chttps://esun-ai-challenge.tw/events/fundaiagent|活動公告頁面\u003e查看最新內容，並更新使用的規格文件，以確保提交資料符合最新規範。謝謝！",
+    "ts": "1791790972.779479",
+    "thread_ts": "1791652699.579789",
+    "parent_user_id": "U0C5092EJMA",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "m3ITD",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，提醒您今日已新增 "
+              },
+              {
+                "type": "text",
+                "text": "DataPack 規格書",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "，並同步更新 "
+              },
+              {
+                "type": "text",
+                "text": "D-Plan 撰寫指南、Schema 與範例檔案",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "。請參賽隊伍務必前往"
+              },
+              {
+                "type": "link",
+                "url": "https://esun-ai-challenge.tw/events/fundaiagent",
+                "text": "活動公告頁面"
+              },
+              {
+                "type": "text",
+                "text": "查看最新內容，並更新使用的規格文件，以確保提交資料符合最新規範。謝謝！"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "e15c92e1-3006-4329-b679-2500fda05993",
+    "type": "message",
+    "user": "U0C6SUX3401",
+    "text": "主辦您好，有以下幾個問題需要詢問：\n1. 若持股發生現金增資原股東認購權，請問主辦系統是否會全權自動處理，參賽者無須且不得提交認購決策？另外除權日至處理完成期間，權利價值、認購款及新增股數會分別於何時、以 DataPack 哪些欄位反映？\n2. 若 DataPack 某檔股票為 `shares = 0`、但 `receivable_shares \u0026gt; 0`，該標的是否仍屬於 D-Plan 所稱的「昨日持股」，必須出現在 `decisions` 或 `no_trade_decisions`？若無可交易股數，應如何填寫？",
+    "ts": "1791872052.959379",
+    "thread_ts": "1791872052.959379",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1791973106.046459"
+      }
+    ],
+    "latest_reply": "1791973106.046459",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "j99u+",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦您好，有以下幾個問題需要詢問：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "若持股發生現金增資原股東認購權，請問主辦系統是否會全權自動處理，參賽者無須且不得提交認購決策？另外除權日至處理完成期間，權利價值、認購款及新增股數會分別於何時、以 DataPack 哪些欄位反映？"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "若 DataPack 某檔股票為 "
+                  },
+                  {
+                    "type": "text",
+                    "text": "shares = 0",
+                    "style": {
+                      "code": true
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "、但 "
+                  },
+                  {
+                    "type": "text",
+                    "text": "receivable_shares \u003e 0",
+                    "style": {
+                      "code": true
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "，該標的是否仍屬於 D-Plan 所稱的「昨日持股」，必須出現在 "
+                  },
+                  {
+                    "type": "text",
+                    "text": "decisions",
+                    "style": {
+                      "code": true
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": " 或 "
+                  },
+                  {
+                    "type": "text",
+                    "text": "no_trade_decisions",
+                    "style": {
+                      "code": true
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "？若無可交易股數，應如何填寫？"
+                  }
+                ]
+              }
+            ],
+            "style": "ordered",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/fb7e53e11ccef60a8b869e8f7af7c23c.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png",
+      "first_name": "changyukun1222",
+      "real_name": "changyukun1222",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "changyukun1222",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  }
+]

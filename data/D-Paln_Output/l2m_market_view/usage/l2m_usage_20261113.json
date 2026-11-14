@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-11-13T04:09:07+08:00",
+  "date": "20261113",
+  "provider": "gemini",
+  "model": "gemini-4-argon",
+  "model_group": "stage-l2m",
+  "stage": "l2m",
+  "status": "success",
+  "finish_reason": "stop",
+  "duration_seconds": 21.56,
+  "prompt_tokens": 8612,
+  "completion_tokens": 1079,
+  "total_tokens": 9691,
+  "cached_tokens": 0,
+  "tool_use_tokens": 0,
+  "reasoning_tokens": 0,
+  "response_cost": 0.028014,
+  "code_execution_used": false,
+  "code_execution_call_count": 0,
+  "executed_codes": []
+}

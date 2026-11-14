@@ -1,0 +1,163 @@
+{
+  "trade_date": "20261113",
+  "calculation_timestamp": "2026-11-13T04:15:52+08:00",
+  "orders": [
+    {
+      "ticker": "2330",
+      "side": "BUY",
+      "shares": 7000,
+      "decision_ref": "D1",
+      "derivation_detail": "target_shares = floor(0.078×926,659,553 / 2340 / 1000)×1000 = 30,000；現持 23,000 → BUY 7,000"
+    },
+    {
+      "ticker": "2412",
+      "side": "BUY",
+      "shares": 20000,
+      "decision_ref": "D2",
+      "derivation_detail": "target_shares = floor(0.056×926,659,553 / 162 / 1000)×1000 = 320,000；現持 300,000 → BUY 20,000"
+    },
+    {
+      "ticker": "2886",
+      "side": "BUY",
+      "shares": 65000,
+      "decision_ref": "D3",
+      "derivation_detail": "target_shares = floor(0.048×926,659,553 / 54.4 / 1000)×1000 = 817,000；現持 752,000 → BUY 65,000"
+    },
+    {
+      "ticker": "2891",
+      "side": "BUY",
+      "shares": 47000,
+      "decision_ref": "D4",
+      "derivation_detail": "target_shares = floor(0.048×926,659,553 / 75.4 / 1000)×1000 = 589,000；現持 542,000 → BUY 47,000"
+    },
+    {
+      "ticker": "1216",
+      "side": "BUY",
+      "shares": 46000,
+      "decision_ref": "D5",
+      "derivation_detail": "target_shares = floor(0.045×926,659,553 / 77.9 / 1000)×1000 = 535,000；現持 489,000 → BUY 46,000"
+    },
+    {
+      "ticker": "2317",
+      "side": "BUY",
+      "shares": 24000,
+      "decision_ref": "D6",
+      "derivation_detail": "target_shares = floor(0.045×926,659,553 / 240 / 1000)×1000 = 173,000；現持 149,000 → BUY 24,000"
+    },
+    {
+      "ticker": "3045",
+      "side": "BUY",
+      "shares": 18000,
+      "decision_ref": "D7",
+      "derivation_detail": "target_shares = floor(0.043×926,659,553 / 130 / 1000)×1000 = 306,000；現持 288,000 → BUY 18,000"
+    },
+    {
+      "ticker": "1303",
+      "side": "BUY",
+      "shares": 19000,
+      "decision_ref": "D8",
+      "derivation_detail": "target_shares = floor(0.04×926,659,553 / 293 / 1000)×1000 = 126,000；現持 107,000 → BUY 19,000"
+    },
+    {
+      "ticker": "2881",
+      "side": "BUY",
+      "shares": 28000,
+      "decision_ref": "D9",
+      "derivation_detail": "target_shares = floor(0.036×926,659,553 / 159 / 1000)×1000 = 209,000；現持 181,000 → BUY 28,000"
+    },
+    {
+      "ticker": "2379",
+      "side": "BUY",
+      "shares": 2000,
+      "decision_ref": "D10",
+      "derivation_detail": "target_shares = floor(0.03×926,659,553 / 739 / 1000)×1000 = 37,000；現持 35,000 → BUY 2,000"
+    },
+    {
+      "ticker": "2882",
+      "side": "BUY",
+      "shares": 22000,
+      "decision_ref": "D11",
+      "derivation_detail": "target_shares = floor(0.029×926,659,553 / 112 / 1000)×1000 = 239,000；現持 217,000 → BUY 22,000"
+    },
+    {
+      "ticker": "4904",
+      "side": "BUY",
+      "shares": 22000,
+      "decision_ref": "D12",
+      "derivation_detail": "target_shares = floor(0.028×926,659,553 / 108 / 1000)×1000 = 240,000；現持 218,000 → BUY 22,000"
+    },
+    {
+      "ticker": "2880",
+      "side": "BUY",
+      "shares": 39000,
+      "decision_ref": "D13",
+      "derivation_detail": "target_shares = floor(0.027×926,659,553 / 50.5 / 1000)×1000 = 495,000；現持 456,000 → BUY 39,000"
+    },
+    {
+      "ticker": "3231",
+      "side": "BUY",
+      "shares": 12000,
+      "decision_ref": "D14",
+      "derivation_detail": "target_shares = floor(0.024×926,659,553 / 170 / 1000)×1000 = 130,000；現持 118,000 → BUY 12,000"
+    },
+    {
+      "ticker": "2368",
+      "side": "BUY",
+      "shares": 3000,
+      "decision_ref": "D15",
+      "derivation_detail": "target_shares = floor(0.022×926,659,553 / 975 / 1000)×1000 = 20,000；現持 17,000 → BUY 3,000"
+    }
+  ],
+  "execution_summary": {
+    "nav_tradable": 926659552.51,
+    "estimated_stock_value": 550649400.0,
+    "estimated_stock_weight": 0.5942,
+    "estimated_cash_value": 376010152.51,
+    "estimated_cash_ratio": 0.4058,
+    "target_cash_range": [
+      0.08,
+      0.18
+    ],
+    "cash_compliance": "CHECK_REQUIRED",
+    "active_shares": {
+      "00400A": 0.4605,
+      "00401A": 0.4284,
+      "00402A": 0.6181,
+      "00403A": 0.5254,
+      "00404A": 0.4648,
+      "00405A": 0.5853,
+      "00406A": 0.466,
+      "00407A": 0.4802,
+      "00408A": 0.4297,
+      "00409A": 0.6011,
+      "00410A": 0.5181,
+      "00411A": 0.6923,
+      "00412A": 0.4171,
+      "00413A": 0.5278,
+      "00415A": 0.5224,
+      "00416A": 0.5386,
+      "00418A": 0.515,
+      "00980A": 0.3911,
+      "00981A": 0.6032,
+      "00982A": 0.5526,
+      "00983A": 0.6223,
+      "00984A": 0.4263,
+      "00985A": 0.4547,
+      "00986A": 0.5551,
+      "00987A": 0.5759,
+      "00988A": 0.6264,
+      "00989A": 0.5418,
+      "00990A": 0.5721,
+      "00991A": 0.6293,
+      "00992A": 0.5186,
+      "00993A": 0.5147,
+      "00994A": 0.5689,
+      "00995A": 0.5196,
+      "00996A": 0.5601,
+      "00997A": 0.5274,
+      "00998A": 0.5387,
+      "00999A": 0.4194
+    },
+    "active_share_compliance": "PASS"
+  }
+}

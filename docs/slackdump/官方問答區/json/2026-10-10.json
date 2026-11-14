@@ -1,0 +1,723 @@
+[
+  {
+    "client_msg_id": "a552946c-a5f8-410e-8bce-0c0e8ad77d2a",
+    "type": "message",
+    "user": "U0C4DRD92EN",
+    "text": "主辦方好，請問競賽檢核id(ai cup上的)，大概甚麼時候會提供呢?",
+    "ts": "1791619056.356229",
+    "thread_ts": "1791619056.356229",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1791786259.299899"
+      }
+    ],
+    "latest_reply": "1791786259.299899",
+    "team": "T0C3BBR6687",
+    "reactions": [
+      {
+        "name": "white_check_mark",
+        "count": 1,
+        "users": [
+          "U0C3LFZUG3D"
+        ]
+      }
+    ],
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "Cg7wx",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦方好，請問競賽檢核id(ai cup上的)，大概甚麼時候會提供呢?"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-24/12178346039344_2dc9a9c682496323d2c2_72.jpg",
+      "first_name": "吳咨萱",
+      "real_name": "吳咨萱",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "wuzixuan1818",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "addbd605-14c5-4d36-b8e4-2a766844eccf",
+    "type": "message",
+    "user": "U0C3TGBJ2AJ",
+    "text": "主辦好，我10/2就已經傳完成課程的截圖給主辦單位了，但是到現在都沒收到序號，請問可以幫我確認一下嗎",
+    "ts": "1791632525.058139",
+    "thread_ts": "1791632525.058139",
+    "reply_count": 2,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1791776984.669509"
+      },
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1791784616.107689"
+      }
+    ],
+    "latest_reply": "1791784616.107689",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "B3QPu",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦好，我10/2就已經傳完成課程的截圖給主辦單位了，但是到現在都沒收到序號，請問可以幫我確認一下嗎"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/ca4869b7d0b97478f4422a73ae440faa.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0000-72.png",
+      "first_name": "fang",
+      "real_name": "fang",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "adamfang308",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "7618eb42-ce02-4bb0-867a-6ab5b013d1ef",
+    "type": "message",
+    "user": "U0C5092EJMA",
+    "text": "主辦您好，再麻煩您解答了謝謝!\n*Active Share 前 15 大持股的比較集合與缺項權重*\n*1.  計算時是否取雙方前 15 大股票的聯集？*\n*2.  若某股票僅出現在其中一方前 15 大，另一方是否一律視為權重 0，即使該股實際排名第 16 名以後？*\n*3.  投資組合前 15 大權重是否一律使用該股票市值占整體 NAV 的比例（包含現金作為 NAV 分母），而非只在前 15 大股票間重新正規化？*\n*若方便，懇請提供一個簡單的官方計算範例。*\n\n*ETF 資料適用時點與連續違規認定*\n*4.  交易日 D 的官方檢核採用哪一天公告、哪一個資料基準日的 ETF 持股？若資料於 D 日 08:55 提交截止後才公告，Agent 應如何事前掌握適用版本？*\n*5.  若 ETF 公告資料缺漏、延遲、修正或比較 ETF 尚未公布前 15 大持股，官方如何處理？*\n*6.  若僅因 ETF 公告持股變動，導致我方 Active Share 連續兩交易日低於 15%，是否仍依相同標準認定違規？*\n\n*官方帳本下載與 D-Plan 指南描述不一*\n*主辦方先前於 Slack 說明，競賽系統將提供持股、現金及 NAV 資料下載*\n*但《D-Plan 撰寫指南 v4.2》「orders」一節，同時提到參賽隊伍須自行記帳、競賽系統不提供，以及應以前日官方結算結果與後台庫存明細為準*\n*7.  競賽期間是否每天提供可下載的官方現金、持股、NAV 及應收權益資料？*\n*8.  可否提供下載檔案的範例、欄位名稱、股數單位、金額精度及更新時間？*\n*9.  若Agent 本地帳本與官方結算不一致，是否應一律以官方帳本作為下一交易日委託股數計算基準？*\n*10. 若當日交易因違規被判定無效，次日官方庫存檔是否會反映作廢後的實際庫存與現金？*\n\n*D-Plan 驗證、提交與平台測試*\n*5. D-Plan v4.2 文件中的拒收與警示判定衝突*\n*《D-Plan.schema_v4.2.json》對部分語意檢查描述為「拒收」，例如：*\n• *C12：委託後預估現金比例落在宣告區間之外。*\n• *C2：實際委託股數與官方公式推導不一致。*\n*但反例 D-Plan_TEAM_043_2026-10-27.json 的 _NOTE，將部分相關問題標示為「僅警示」。*\n*11.  實際上哪些情況會直接拒收 D-Plan？*\n*12.  哪些情況只顯示警示，但仍算提交成功？*\n*13.  哪些情況在提交時接受，卻可能於盤後被認定違規或當日交易無效？*\n*14.  最終判定以 Schema、範例 _NOTE、語意驗證器，還是平台實際判定為準？*\n\n*上櫃均價、停牌與無成交價的處理*\n*《比賽辦法》第六節（四）規定模擬交易全數成交，但《D-Plan 撰寫指南 v4.2》「orders」一節指出，個股無成交價時，委託可能未全部成交*\n*15.  上櫃股票的官方成交均價，具體使用櫃買中心哪一個資料表或欄位？*\n*16.  若股票暫停交易、整日無成交量或無成交均價，委託是取消、保留、視為未成交，還是使用替代成交價？*\n*17.  無法成交的訂單是否影響整份 D-Plan 的接受狀態、當日成功提交天數及持股數量限制？*\n*18.  官方帳本會如何反映未成交或作廢的委託？*\n\n*除權息、現金增資及每日 NAV 的計算口徑*\n*《比賽辦法》第六節（十二）指出，公司行動的影響納入每日 NAV 計算；但第10頁註1又說明，除息金額及除權股數於初賽結束時才一併納入最終 NAV*\n*19.  每日 NAV 是否包含已發生但尚未於期末結算的現金股利與股票股利權益？*\n*20.  現金比例、個股持股權重及 Active Share 使用的 NAV，是否包含這些待入帳權益？*\n*21.  若除權息後賣出原持股，先前已取得的權益是否保留至期末？*\n*22.  若個股發生現金增資，參賽隊伍是否不需且不得提出認購指令？原股東認購權、新股及相關現金流如何處理？*\n*23.  股票分割、減資與零股的調整方式，是否有可依循的正式結算規則？*\n\n*持股超限寬限期與費稅結算精度*\n*《比賽辦法》第10頁註3指出，若單一持股因價格波動超過上限，須於5個交易日內調整，第6個交易日仍超限才記警告*\n*24.  首次發現超限的當日結算日，是否計為寬限期第1個交易日？*\n*25.  例如週一首次超限且當週無休市，是否須於週五完成調整，下週一仍超限才記警告？*\n*再次謝謝主辦的回覆*\n\n*為了讓 Agent 本地帳本與官方一致，請問手續費、證交稅、成交金額及 NAV：*\n*26.  是逐筆計算後取整，還是每日彙總後取整？*\n*27.  各自保留至何種精度，採四捨五入、無條件捨去，或其他方式？*",
+    "ts": "1791652699.579789",
+    "thread_ts": "1791652699.579789",
+    "edited": {
+      "user": "U0C5092EJMA",
+      "ts": "1791652756.000000"
+    },
+    "reply_count": 2,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1791783475.185739"
+      },
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1791790972.779479"
+      }
+    ],
+    "latest_reply": "1791790972.779479",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "zuCsz",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦您好，再麻煩您解答了謝謝!\n"
+              },
+              {
+                "type": "text",
+                "text": "Active Share 前 15 大持股的比較集合與缺項權重",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "1.  計算時是否取雙方前 15 大股票的聯集？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "2.  若某股票僅出現在其中一方前 15 大，另一方是否一律視為權重 0，即使該股實際排名第 16 名以後？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "3.  投資組合前 15 大權重是否一律使用該股票市值占整體 NAV 的比例（包含現金作為 NAV 分母），而非只在前 15 大股票間重新正規化？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "若方便，懇請提供一個簡單的官方計算範例。",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n\n"
+              },
+              {
+                "type": "text",
+                "text": "ETF 資料適用時點與連續違規認定",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "4.  交易日 D 的官方檢核採用哪一天公告、哪一個資料基準日的 ETF 持股？若資料於 D 日 08:55 提交截止後才公告，Agent 應如何事前掌握適用版本？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "5.  若 ETF 公告資料缺漏、延遲、修正或比較 ETF 尚未公布前 15 大持股，官方如何處理？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "6.  若僅因 ETF 公告持股變動，導致我方 Active Share 連續兩交易日低於 15%，是否仍依相同標準認定違規？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n\n"
+              },
+              {
+                "type": "text",
+                "text": "官方帳本下載與 D-Plan 指南描述不一",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "主辦方先前於 Slack 說明，競賽系統將提供持股、現金及 NAV 資料下載",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "但《D-Plan 撰寫指南 v4.2》「orders」一節，同時提到參賽隊伍須自行記帳、競賽系統不提供，以及應以前日官方結算結果與後台庫存明細為準",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "7.  競賽期間是否每天提供可下載的官方現金、持股、NAV 及應收權益資料？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "8.  可否提供下載檔案的範例、欄位名稱、股數單位、金額精度及更新時間？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "9.  若Agent 本地帳本與官方結算不一致，是否應一律以官方帳本作為下一交易日委託股數計算基準？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "10. 若當日交易因違規被判定無效，次日官方庫存檔是否會反映作廢後的實際庫存與現金？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n\n"
+              },
+              {
+                "type": "text",
+                "text": "D-Plan 驗證、提交與平台測試",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "5. D-Plan v4.2 文件中的拒收與警示判定衝突",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "《D-Plan.schema_v4.2.json》對部分語意檢查描述為「拒收」，例如：",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "C12：委託後預估現金比例落在宣告區間之外。",
+                    "style": {
+                      "bold": true
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "C2：實際委託股數與官方公式推導不一致。",
+                    "style": {
+                      "bold": true
+                    }
+                  }
+                ]
+              }
+            ],
+            "style": "bullet",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "但反例 D-Plan_TEAM_043_2026-10-27.json 的 _NOTE，將部分相關問題標示為「僅警示」。",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "11.  實際上哪些情況會直接拒收 D-Plan？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "12.  哪些情況只顯示警示，但仍算提交成功？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "13.  哪些情況在提交時接受，卻可能於盤後被認定違規或當日交易無效？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "14.  最終判定以 Schema、範例 _NOTE、語意驗證器，還是平台實際判定為準？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n\n"
+              },
+              {
+                "type": "text",
+                "text": "上櫃均價、停牌與無成交價的處理",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "《比賽辦法》第六節（四）規定模擬交易全數成交，但《D-Plan 撰寫指南 v4.2》「orders」一節指出，個股無成交價時，委託可能未全部成交",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "15.  上櫃股票的官方成交均價，具體使用櫃買中心哪一個資料表或欄位？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "16.  若股票暫停交易、整日無成交量或無成交均價，委託是取消、保留、視為未成交，還是使用替代成交價？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "17.  無法成交的訂單是否影響整份 D-Plan 的接受狀態、當日成功提交天數及持股數量限制？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "18.  官方帳本會如何反映未成交或作廢的委託？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n\n"
+              },
+              {
+                "type": "text",
+                "text": "除權息、現金增資及每日 NAV 的計算口徑",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "《比賽辦法》第六節（十二）指出，公司行動的影響納入每日 NAV 計算；但第10頁註1又說明，除息金額及除權股數於初賽結束時才一併納入最終 NAV",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "19.  每日 NAV 是否包含已發生但尚未於期末結算的現金股利與股票股利權益？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "20.  現金比例、個股持股權重及 Active Share 使用的 NAV，是否包含這些待入帳權益？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "21.  若除權息後賣出原持股，先前已取得的權益是否保留至期末？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "22.  若個股發生現金增資，參賽隊伍是否不需且不得提出認購指令？原股東認購權、新股及相關現金流如何處理？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "23.  股票分割、減資與零股的調整方式，是否有可依循的正式結算規則？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n\n"
+              },
+              {
+                "type": "text",
+                "text": "持股超限寬限期與費稅結算精度",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "《比賽辦法》第10頁註3指出，若單一持股因價格波動超過上限，須於5個交易日內調整，第6個交易日仍超限才記警告",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "24.  首次發現超限的當日結算日，是否計為寬限期第1個交易日？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "25.  例如週一首次超限且當週無休市，是否須於週五完成調整，下週一仍超限才記警告？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "再次謝謝主辦的回覆",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n\n"
+              },
+              {
+                "type": "text",
+                "text": "為了讓 Agent 本地帳本與官方一致，請問手續費、證交稅、成交金額及 NAV：",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "26.  是逐筆計算後取整，還是每日彙總後取整？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "27.  各自保留至何種精度，採四捨五入、無條件捨去，或其他方式？",
+                "style": {
+                  "bold": true
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/35bb30bdbab5b51851fbca909734a270.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png",
+      "first_name": "pw",
+      "real_name": "pw",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "ert454aad",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  }
+]

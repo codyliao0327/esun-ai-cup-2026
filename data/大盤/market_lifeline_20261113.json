@@ -1,0 +1,9 @@
+{
+  "_format": "[value, date]",
+  "tw_market": {
+    "index_vs_ma5_pct": [1.91, "2026-11-12"],
+    "index_vs_ma20_pct": [-3.99, "2026-11-12"],
+    "ma5_change_3d_pct": [1.07, "2026-11-12"],
+    "ma20_change_5d_pct": [-3.77, "2026-11-12"]
+  }
+}

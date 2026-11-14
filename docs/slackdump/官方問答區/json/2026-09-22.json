@@ -1,0 +1,108 @@
+[
+  {
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "\u003c@U0C3LFZUG3D\u003e 已加入頻道",
+    "ts": "1790127626.348099",
+    "subtype": "channel_join",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "已將頻道從「新頻道」重新命名為「官方問答區」",
+    "ts": "1790127782.413559",
+    "subtype": "channel_name",
+    "name": "官方問答區",
+    "old_name": "新頻道",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "已設定頻道說明：有問題嗎？歡迎在這裡發問！\n發問前請先確認： :white_check_mark: 已閱讀競賽辦法 :white_check_mark: 已搜尋過頻道歷史訊息\n我們希望所有問題與回答公開透明，讓每位參賽者都能取得相同資訊，共同打造公平競賽環境。 :rocket::trophy:",
+    "ts": "1790130227.824379",
+    "pinned_to": [
+      "C0C3LG7BNNP"
+    ],
+    "subtype": "channel_purpose",
+    "purpose": "有問題嗎？歡迎在這裡發問！\n發問前請先確認： :white_check_mark: 已閱讀競賽辦法 :white_check_mark: 已搜尋過頻道歷史訊息\n我們希望所有問題與回答公開透明，讓每位參賽者都能取得相同資訊，共同打造公平競賽環境。 :rocket::trophy:",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "type": "message",
+    "user": "U0C3TL2A37C",
+    "text": "\u003c@U0C3TL2A37C\u003e 已加入頻道",
+    "ts": "1790142451.140749",
+    "subtype": "channel_join",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": null,
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/2505a788979433d7ac07fb63307c7571.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0026-72.png",
+      "first_name": "jya-11965",
+      "real_name": "jya-11965",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "jya-11965",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  }
+]

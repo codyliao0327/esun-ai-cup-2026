@@ -1,14 +1,8 @@
-# FinLab 資料與輸出(含授權資料,請勿上傳)
-data/
-*.csv
-*.parquet
-*.pkl
-*.feather
-
 # 憑證 / 金鑰
 .env
 *.env
 credentials.json
+docs/Google AI API Key.md
 .finlab/
 *.p12
 *.pfx
@@ -21,6 +15,12 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+
+# Google Drive 雲端捷徑
+*.gdoc
+*.gsheet
+*.gslides
+*.lnk
 
 # 系統檔
 .DS_Store

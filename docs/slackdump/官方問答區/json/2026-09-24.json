@@ -1,0 +1,145 @@
+[
+  {
+    "client_msg_id": "7a690fb7-cee4-4e39-8700-797292e3f2e9",
+    "type": "message",
+    "user": "U0C3T5612SF",
+    "text": "請問想要拿到第二點的credit，課程完成證明是要傳什麼截圖給主辦方email？不知道有範例嗎？謝謝\n五十分鐘一次做完五題有點困難，不知道能傳分次完成的截圖嗎？",
+    "ts": "1790241181.684569",
+    "thread_ts": "1790241181.684569",
+    "edited": {
+      "user": "U0C3T5612SF",
+      "ts": "1790257457.000000"
+    },
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1790651319.059619"
+      }
+    ],
+    "latest_reply": "1790651319.059619",
+    "files": [
+      {
+        "id": "F0C48NUUZN0",
+        "created": 1790241056,
+        "timestamp": 1790241056,
+        "name": "image.png",
+        "title": "image.png",
+        "mimetype": "image/png",
+        "image_exif_rotation": 0,
+        "filetype": "png",
+        "pretty_type": "PNG",
+        "user": "U0C3T5612SF",
+        "mode": "hosted",
+        "editable": false,
+        "is_external": false,
+        "external_type": "",
+        "size": 906509,
+        "url": "",
+        "url_download": "",
+        "url_private": "https://files.slack.com/files-pri/T0C3BBR6687-F0C48NUUZN0/image.png",
+        "url_private_download": "https://files.slack.com/files-pri/T0C3BBR6687-F0C48NUUZN0/download/image.png",
+        "original_h": 1022,
+        "original_w": 1632,
+        "thumb_64": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C48NUUZN0-643d12ef4f/image_64.png",
+        "thumb_80": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C48NUUZN0-643d12ef4f/image_80.png",
+        "thumb_160": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C48NUUZN0-643d12ef4f/image_160.png",
+        "thumb_360": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C48NUUZN0-643d12ef4f/image_360.png",
+        "thumb_360_gif": "",
+        "thumb_360_w": 360,
+        "thumb_360_h": 225,
+        "thumb_480": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C48NUUZN0-643d12ef4f/image_480.png",
+        "thumb_480_w": 480,
+        "thumb_480_h": 301,
+        "thumb_720": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C48NUUZN0-643d12ef4f/image_720.png",
+        "thumb_720_w": 720,
+        "thumb_720_h": 451,
+        "thumb_960": "",
+        "thumb_960_w": 0,
+        "thumb_960_h": 0,
+        "thumb_1024": "",
+        "thumb_1024_w": 0,
+        "thumb_1024_h": 0,
+        "permalink": "https://esunaiopencom-me19126.slack.com/files/U0C4M9YRDB5/F0C48NUUZN0/image.png",
+        "permalink_public": "https://slack-files.com/T0C3BBR6687-F0C48NUUZN0-b485aa20c8",
+        "edit_link": "",
+        "preview": "",
+        "preview_highlight": "",
+        "lines": 0,
+        "lines_more": 0,
+        "is_public": true,
+        "public_url_shared": false,
+        "channels": null,
+        "groups": null,
+        "ims": null,
+        "initial_comment": {},
+        "comments_count": 0,
+        "num_stars": 0,
+        "is_starred": false,
+        "shares": {
+          "public": null,
+          "private": null
+        },
+        "subject": "",
+        "to": null,
+        "from": null,
+        "cc": null,
+        "headers": {
+          "date": "",
+          "in_reply_to": "",
+          "reply_to": "",
+          "message_id": ""
+        },
+        "plain_text": "",
+        "preview_plain_text": ""
+      }
+    ],
+    "reactions": [
+      {
+        "name": "eyes",
+        "count": 1,
+        "users": [
+          "U0C6HJ2U8JC"
+        ]
+      }
+    ],
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "8eSyi",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "請問想要拿到第二點的credit，課程完成證明是要傳什麼截圖給主辦方email？不知道有範例嗎？謝謝\n五十分鐘一次做完五題有點困難，不知道能傳分次完成的截圖嗎？"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/ad49a329577f59cbf086325f6423cb87.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0017-72.png",
+      "first_name": "Ting",
+      "real_name": "Ting",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "jnes0824",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  }
+]

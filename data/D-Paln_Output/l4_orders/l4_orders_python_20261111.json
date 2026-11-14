@@ -1,0 +1,112 @@
+{
+  "trade_date": "20261111",
+  "calculation_timestamp": "2026-11-10T23:40:08+08:00",
+  "orders": [
+    {
+      "ticker": "3045",
+      "side": "SELL",
+      "shares": 48000,
+      "decision_ref": "D1",
+      "derivation_detail": "target_shares = floor(0.04×922,129,490 / 128 / 1000)×1000 = 288,000；現持 336,000 → SELL 48,000"
+    },
+    {
+      "ticker": "4904",
+      "side": "SELL",
+      "shares": 61000,
+      "decision_ref": "D2",
+      "derivation_detail": "target_shares = floor(0.025×922,129,490 / 105.5 / 1000)×1000 = 218,000；現持 279,000 → SELL 61,000"
+    },
+    {
+      "ticker": "2882",
+      "side": "SELL",
+      "shares": 36000,
+      "decision_ref": "D3",
+      "derivation_detail": "target_shares = floor(0.026×922,129,490 / 110 / 1000)×1000 = 217,000；現持 253,000 → SELL 36,000"
+    },
+    {
+      "ticker": "3231",
+      "side": "SELL",
+      "shares": 53000,
+      "decision_ref": "D4",
+      "derivation_detail": "target_shares = floor(0.022×922,129,490 / 171 / 1000)×1000 = 118,000；現持 171,000 → SELL 53,000"
+    },
+    {
+      "ticker": "2376",
+      "side": "SELL",
+      "shares": 27000,
+      "decision_ref": "D5",
+      "derivation_detail": "target_shares = floor(0.02×922,129,490 / 304.5 / 1000)×1000 = 60,000；現持 87,000 → SELL 27,000"
+    },
+    {
+      "ticker": "3034",
+      "side": "SELL",
+      "shares": 33000,
+      "decision_ref": "D6",
+      "derivation_detail": "target_shares = floor(0.02×922,129,490 / 477.5 / 1000)×1000 = 38,000；現持 71,000 → SELL 33,000"
+    },
+    {
+      "ticker": "2207",
+      "side": "SELL",
+      "shares": 16000,
+      "decision_ref": "D7",
+      "derivation_detail": "target_shares = floor(0.012×922,129,490 / 508 / 1000)×1000 = 21,000；現持 37,000 → SELL 16,000"
+    },
+    {
+      "ticker": "2404",
+      "side": "SELL",
+      "shares": 7000,
+      "decision_ref": "D8",
+      "derivation_detail": "target_shares = floor(0.01×922,129,490 / 948 / 1000)×1000 = 9,000；現持 16,000 → SELL 7,000"
+    }
+  ],
+  "execution_summary": {
+    "nav_tradable": 922129490.0,
+    "estimated_stock_value": 159526000.0,
+    "estimated_stock_weight": 0.173,
+    "estimated_cash_value": 762603490.0,
+    "estimated_cash_ratio": 0.827,
+    "target_cash_range": [
+      0.13,
+      0.2
+    ],
+    "cash_compliance": "CHECK_REQUIRED",
+    "active_shares": {
+      "00400A": 0.3795,
+      "00401A": 0.3317,
+      "00402A": 0.4089,
+      "00403A": 0.4213,
+      "00404A": 0.3323,
+      "00405A": 0.4522,
+      "00406A": 0.3779,
+      "00407A": 0.4021,
+      "00408A": 0.3681,
+      "00409A": 0.3834,
+      "00410A": 0.4113,
+      "00411A": 0.4662,
+      "00412A": 0.2968,
+      "00415A": 0.418,
+      "00416A": 0.4222,
+      "00980A": 0.3495,
+      "00981A": 0.4835,
+      "00982A": 0.3861,
+      "00983A": 0.4151,
+      "00984A": 0.272,
+      "00985A": 0.3296,
+      "00986A": 0.4196,
+      "00987A": 0.4267,
+      "00988A": 0.4411,
+      "00989A": 0.3345,
+      "00990A": 0.3999,
+      "00991A": 0.5442,
+      "00992A": 0.4264,
+      "00993A": 0.4007,
+      "00994A": 0.4832,
+      "00995A": 0.4165,
+      "00996A": 0.4194,
+      "00997A": 0.3335,
+      "00998A": 0.3218,
+      "00999A": 0.3234
+    },
+    "active_share_compliance": "PASS"
+  }
+}

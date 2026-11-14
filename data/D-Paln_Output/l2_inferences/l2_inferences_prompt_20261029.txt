@@ -1,0 +1,338 @@
+你是一位主動式 ETF 基金經理人與量化選股策略研究員。
+你的主要任務是根據 DataPack、個股客觀事實 (L1 observations) 及市場大盤環境 (L2M market_view)，
+基於「兼顧企業品質、營運改善與潛在成長動能」的投資理念，
+綜合評估個股在一個月競賽期間的投資機會與風險，
+並依據玉山人工智慧公開賽 D-Plan v4.3 規範，
+為建立包含 20～30 檔股票及現金的目標投資組合產生嚴格結構化的『L2 個股推論層 (inferences)』。
+
+## 今日日期與執行時間
+- 交易日基準：20261029
+- 系統時間：2026-10-29 01:13:12 (UTC+08:00)
+
+## ETF 基金投資主題與理念 (ETF Strategy)
+| 項目 | 內容 |
+| :--- | :--- |
+| **ETF 名稱** | 主動台灣多面向動態配置 |
+| **ETF 投資主題** | 結合企業基本面、市場趨勢與事件動向的主動式台股配置策略。 |
+| **ETF 投資理念** | 本基金採取主動式多面向資訊分析策略，綜合評估企業基本面、市場趨勢、資金動向與重要事件等多元構面，審慎發掘台灣上市櫃股票中具備相對投資吸引力的標的。投資理念強調不拘泥於單一財務特徵或固定投資風格，透過兼顧營運穩健企業與潛在改善機會，保持分析方法的彈性與投資原則的一致性。在投資組合管理上，依據市場環境與風險變化主動調整配置，並重視風險分散與資金配置原則，力求在控制潛在風險的前提下，為投資人追求長期的資本增值機會。 |
+
+## 今日市場大盤背景與姿態 (L2M Market View)
+- 市場走向 (regime): neutral
+- 操作姿態 (stance): neutral
+- 淨曝險意圖 (net_exposure_intent): hold
+- 目標現金比例區間: [0.12, 0.22]
+- 市場研判邏輯摘要: 依據事實 O1，加權指數收盤 47035.58 點，雖跌破 20 日均線 47930.33 點，但仍守於 60 日均線 46398.58 點之上，且 20MA > 60MA，近 20 日報酬率為 -2.33%，最大回撤為 -7.59%，呈現中期多頭結構下的短期技術修正；籌碼面外資 20 日累計大幅賣超 8777.25 億元形成上方壓力，但投信 20 日累計買超 1790.48 億元發揮撐盤效果，融資 5 日變動 -1.3 顯示槓桿籌碼適度降溫，市場漲跌家數比達 2.55 顯示市場廣度健康、中小類股活躍。整體市場判定為短期修正的中性格局 (neutral)。對照目前帳戶狀態，持股 25 檔且現金比例為 17.54% (約 1.78 億元)，具備足夠防護緩衝，故採取中性 (neutral) 姿態，意圖維持現有部位曝險 (hold)，淨買賣金額差距在 NAV 2% 容差內，NAV = (Σ 各持股張數 × 1,000 × 當日收盤價) + 現金部位，目標現金水位區間維持在 [0.12, 0.22] 進行防禦與再平衡。
+
+## 目前官方帳戶部位與快照 (DataPack 快照)
+# DataPack（官方每日帳戶/部位/合規快照）
+## 欄位說明（依官方 DataPack 規格書 v4.3）
+單位：金額=元；比率=小數(0.1125 表示 11.25%)；股數=整數股；日期=YYYY-MM-DD；時間=台北時間(+08:00)。
+- trade_date：本檔對應的交易日，即接下來要繳交的那一個交易日。
+- as_of_date：account 與 holdings 實際反映的交易日（有日期時為 trade_date 的前一交易日收盤結算後結果）。null=尚無結算資料：第一個交易日（account 為全現金、0 檔的真值），或前一交易日結算尚未產生（missing 含 prev_settlement，此時 account 整段為 null）。
+- missing：系統缺少的資料源，齊備時為 []。prev_settlement=前一交易日結算尚未產生，account、as_of_date、holdings 皆為 null；prev_close=收盤價尚未匯入，account.cash_ratio_tradable 為 null。
+- prev_day_orders.outcome：none=前一交易日未繳交，沒有委託；unknown=委託結果尚未判定；voided=已繳交但整批作廢、未成交；executed=有成交。
+- prev_day_orders.void_reasons：整批作廢的全部原因（outcome 為 voided 時至少一筆，其餘為 []）。值：insufficient_funds資金不足 / oversell賣出股數超過持股 / no_price委託標的缺當日成交均價且不在標的池內 / compliance_fail合規檢查未通過（持股檔數、標的池限制、現金部位、當日加碼個股權重之一，不細分） / dplan_reference_chain文件引用鏈不完整 / dplan_decision_coverage決策覆蓋不完整 / dplan_round_lot委託非整股。
+- prev_day_orders.excluded_codes：被排除、未成交，但其餘委託照常成交的證券代號（outcome 為 executed 時仍可能非空：該檔缺當日成交均價）。
+- account.cash：可動用現金（不含應收配息）。不等於當日買進上限，交割以淨額計，同日賣出款也計入結算。
+- account.cash_ratio_tradable：cash ÷ nav_tradable。missing 非空時為 null。
+- account.nav_tradable：可交易淨值 = cash + Σ(holdings.shares × holdings.close_price)，是計算現金比與個股權重的分母。
+- account.aum：總資產，另含應收配息與應收配股市值。不是 nav_tradable，不可用於計算比率。
+- account.receivable_cash：已生效的應收配息。計入 aum，賽期內不會到帳，不可用於下單。
+- account.holdings_count：持股檔數，只計 shares>0 的檔；與 holdings 的列數不一定相同。
+- holdings（逐檔一列，shares 與 receivable_shares 之一不為 0 即列出）：code=證券代號；shares=庫存持股，賣出不得超過此數；receivable_shares=應收配股，賽期內不可賣、不計入 holdings_count 與權重；close_price=as_of_date 收盤價，null=該檔查無行情，計算 nav_tradable 時以 0 計入；tradable_weight=個股權重(分母為 nav_tradable)，null=不適用（只有應收配股或無收盤價，不是 0）。
+  holdings 為 [] 只在成功建倉前，代表真的空手；為 null（結算未產生）則不是空手，兩者不同。
+- compliance.violations：違規天數（累計），為取消資格的依據（對應後台右上角「警告次數」）。compliance.notices：異常提示列數（累計），不計入取消資格。
+- compliance.incidents：違規與異常提示紀錄。status=fail 計入 violations；status=warn 計入 notices。message 為判定說明。
+
+## 資料
+schema_version: "3.0" | doc_type: "DataPack" | team_id: "TEAM_11402"
+trade_date: "2026-10-29" | as_of_date: "2026-10-28" | generated_at: "2026-10-28T22:39:24.754741+08:00"
+missing: []
+狀態判讀: account 與 holdings 為 2026-10-28 收盤結算後的狀態。
+
+### prev_day_orders
+outcome: "executed" | void_reasons: [] | excluded_codes: []
+
+### account
+cash: 178349792.06 | cash_ratio_tradable: 0.175426 | nav_tradable: 1016667892.06 | aum: 1016667892.06 | receivable_cash: 0 | holdings_count: 25
+
+### holdings
+code,shares,receivable_shares,close_price,tradable_weight
+1303,107000,0,319,0.033573
+1802,366000,0,65.6,0.023616
+2317,192000,0,251.5,0.047496
+2330,29000,0,2425,0.069172
+2368,23000,0,1185,0.026808
+2376,105000,0,362.5,0.037438
+2379,47000,0,791,0.036567
+2382,115000,0,330,0.037328
+2383,5000,0,5025,0.024713
+2404,16000,0,1100,0.017311
+2603,159000,0,263,0.041131
+2881,233000,0,161,0.036898
+2882,314000,0,115.5,0.035672
+2891,570000,0,74.2,0.041601
+3034,71000,0,598,0.041762
+3037,21000,0,1100,0.022721
+3189,15000,0,1035,0.01527
+3231,198000,0,194.5,0.03788
+3443,2000,0,8170,0.016072
+3533,16000,0,1955,0.030767
+4938,407000,0,108,0.043235
+4958,38000,0,550,0.020557
+6415,68000,0,525,0.035115
+6446,23000,0,1200,0.027148
+6505,244000,0,103,0.02472
+
+## 今日所有客觀事實觀察資料 (Observations 清單)
+以下為從今日 L1 資訊層擷取的全部客觀事實清單 (共 41 筆，包含大盤與各個股指標)：
+### [O1] tw_market
+- 事實摘要: 2026年10月28日加權指數收盤為47035.58點，低於20日均線47930.33點但高於60日均線46398.58點；近20日報酬率為-2.33%，最大回撤為-7.59%，外資20日累計賣超8777.25億元，投信20日累計買超1790.48億元。
+- 指標數據: listed_margin_balance_change_5d=-1.3, market_advance_decline_ratio=2.55, market_foreign_net_buy_20d=-877,724,908,116.00, market_trust_net_buy_20d=179,047,691,881.00, taiex_close_latest=47,035.58, taiex_ma20_latest=47,930.33, taiex_ma60_latest=46,398.58, taiex_max_drawdown_20d=-7.59, taiex_return_20d=-2.33
+
+### [O2] stock_1301
+- 事實摘要: 台塑(1301)最新收盤價為75.4元，5日跌幅為-3.58%，20日報酬率為19.49%，外資單日賣超-2047266股，情緒分數為38。
+- 指標數據: amount_ma20=6,251,184,994.65, close_latest=75.4, excess_return_20d=21.82, ma20_change_5d=3.68, price_vs_ma20=0.96, return_20d=19.49, return_5d=-3.58, rsi_14=53.96, volatility_10d=5.04, volume_ma5_to_ma20=0.54, revenue_mom_latest=7.33, revenue_yoy_latest=7.13, roe_latest=2.21, foreign_net_buy_1d=-2,047,266.00, foreign_net_buy_intensity_5d=-9.69, trust_net_buy_1d=3,000.00, trust_net_buy_intensity_5d=0.13, cmoney_sentiment_情緒分數=38.0, cmoney_sentiment_樣本數=26.0, cmoney_sentiment_極度樂觀=2.0, cmoney_sentiment_樂觀=7.0, cmoney_sentiment_中立=3.0, cmoney_sentiment_謹慎=4.0, cmoney_sentiment_極度謹慎=10.0
+
+### [O3] stock_1303
+- 事實摘要: 南亞(1303)最新收盤價為319.0元，5日漲跌幅為5.11%，20日超額報酬為42.55%，外資單日買超10803485股，情緒分數為48。
+- 指標數據: amount_ma20=29,961,078,195.40, close_latest=319.0, excess_return_20d=42.55, ma20_change_5d=6.54, price_vs_ma20=8.37, return_20d=40.22, return_5d=5.11, rsi_14=60.8, volatility_10d=6.51, volume_ma5_to_ma20=1.07, revenue_mom_latest=12.49, revenue_yoy_latest=55.25, roe_latest=6.13, foreign_net_buy_1d=10,803,485.00, foreign_net_buy_intensity_5d=-0.48, trust_net_buy_1d=559,000.00, trust_net_buy_intensity_5d=0.09, cmoney_sentiment_情緒分數=48.0, cmoney_sentiment_樣本數=183.0, cmoney_sentiment_極度樂觀=11.0, cmoney_sentiment_樂觀=48.0, cmoney_sentiment_中立=46.0, cmoney_sentiment_謹慎=70.0, cmoney_sentiment_極度謹慎=8.0
+
+### [O4] stock_1326
+- 事實摘要: 台化(1326)最新收盤價為75.5元，20日報酬率為15.44%，最新營收年增44.77%，情緒分數為52。
+- 指標數據: amount_ma20=3,257,146,991.20, close_latest=75.5, excess_return_20d=17.77, ma20_change_5d=2.52, price_vs_ma20=1.63, return_20d=15.44, return_5d=0.0, rsi_14=53.99, volatility_10d=5.36, volume_ma5_to_ma20=0.64, revenue_mom_latest=9.29, revenue_yoy_latest=44.77, roe_latest=1.34, foreign_net_buy_1d=-248,215.00, foreign_net_buy_intensity_5d=2.18, trust_net_buy_1d=0.0, trust_net_buy_intensity_5d=2.03, cmoney_sentiment_情緒分數=52.0, cmoney_sentiment_樣本數=16.0, cmoney_sentiment_極度樂觀=2.0, cmoney_sentiment_樂觀=4.0, cmoney_sentiment_中立=4.0, cmoney_sentiment_謹慎=5.0, cmoney_sentiment_極度謹慎=1.0
+
+### [O5] stock_1802
+- 事實摘要: 台玻(1802)最新收盤價為65.6元，外資單日賣超-11030825股，5日成交量比為1.72，情緒分數為31。
+- 指標數據: amount_ma20=6,678,132,156.75, close_latest=65.6, excess_return_20d=16.22, ma20_change_5d=3.16, price_vs_ma20=3.85, return_20d=13.89, return_5d=-0.61, rsi_14=56.41, volatility_10d=4.44, volume_ma5_to_ma20=1.72, revenue_mom_latest=8.18, revenue_yoy_latest=34.1, roe_latest=2.43, foreign_net_buy_1d=-11,030,825.00, foreign_net_buy_intensity_5d=-0.05, trust_net_buy_1d=-201,000.00, trust_net_buy_intensity_5d=0.46, cmoney_sentiment_情緒分數=31.0, cmoney_sentiment_樣本數=137.0, cmoney_sentiment_極度樂觀=6.0, cmoney_sentiment_樂觀=13.0, cmoney_sentiment_中立=17.0, cmoney_sentiment_謹慎=74.0, cmoney_sentiment_極度謹慎=27.0
+
+### [O6] stock_2313
+- 事實摘要: 華通(2313)最新收盤價為224.0元，5日跌幅為-9.68%，外資5日買超強度為-13.47%，情緒分數為38。
+- 指標數據: amount_ma20=8,049,332,501.85, close_latest=224.0, excess_return_20d=2.33, ma20_change_5d=0.71, price_vs_ma20=-5.46, return_20d=0.0, return_5d=-9.68, rsi_14=45.02, volatility_10d=5.2, volume_ma5_to_ma20=1.04, revenue_mom_latest=22.89, revenue_yoy_latest=15.01, roe_latest=3.1, foreign_net_buy_1d=1,307,235.00, foreign_net_buy_intensity_5d=-13.47, trust_net_buy_1d=-8,391.00, trust_net_buy_intensity_5d=0.8, cmoney_sentiment_情緒分數=38.0, cmoney_sentiment_樣本數=30.0, cmoney_sentiment_極度樂觀=0.0, cmoney_sentiment_樂觀=7.0, cmoney_sentiment_中立=9.0, cmoney_sentiment_謹慎=6.0, cmoney_sentiment_極度謹慎=8.0
+
+### [O7] stock_2317
+- 事實摘要: 鴻海(2317)最新收盤價為251.5元，5日漲幅為5.01%，外資單日買超11299686股，情緒分數為43。
+- 指標數據: amount_ma20=10,543,325,606.65, close_latest=251.5, excess_return_20d=0.57, ma20_change_5d=-0.49, price_vs_ma20=1.52, return_20d=-1.76, return_5d=5.01, rsi_14=53.99, volatility_10d=1.94, volume_ma5_to_ma20=0.97, revenue_mom_latest=25.69, revenue_yoy_latest=38.41, roe_latest=3.41, foreign_net_buy_1d=11,299,686.00, foreign_net_buy_intensity_5d=25.23, trust_net_buy_1d=216,503.00, trust_net_buy_intensity_5d=1.04, cmoney_sentiment_情緒分數=43.0, cmoney_sentiment_樣本數=50.0, cmoney_sentiment_極度樂觀=4.0, cmoney_sentiment_樂觀=10.0, cmoney_sentiment_中立=12.0, cmoney_sentiment_謹慎=16.0, cmoney_sentiment_極度謹慎=8.0
+
+### [O8] stock_2330
+- 事實摘要: 台積電(2330)最新收盤價為2425.0元，外資單日賣超-3175021股，投信單日買超844056股，情緒分數為49。
+- 指標數據: amount_ma20=69,275,838,626.90, close_latest=2,425.00, excess_return_20d=-0.67, ma20_change_5d=-0.58, price_vs_ma20=-2.16, return_20d=-3.0, return_5d=0.21, rsi_14=45.58, volatility_10d=1.1, volume_ma5_to_ma20=0.99, revenue_mom_latest=-0.57, revenue_yoy_latest=54.64, roe_latest=11.39, foreign_net_buy_1d=-3,175,021.00, foreign_net_buy_intensity_5d=-23.69, trust_net_buy_1d=844,056.00, trust_net_buy_intensity_5d=5.05, cmoney_sentiment_情緒分數=49.0, cmoney_sentiment_樣本數=82.0, cmoney_sentiment_極度樂觀=5.0, cmoney_sentiment_樂觀=22.0, cmoney_sentiment_中立=27.0, cmoney_sentiment_謹慎=21.0, cmoney_sentiment_極度謹慎=7.0
+
+### [O9] stock_2345
+- 事實摘要: 智邦(2345)最新收盤價為1815.0元，5日跌幅為-9.48%，RSI為41.19，情緒分數為34。
+- 指標數據: amount_ma20=9,293,912,386.00, close_latest=1,815.00, excess_return_20d=-1.64, ma20_change_5d=-0.42, price_vs_ma20=-6.55, return_20d=-3.97, return_5d=-9.48, rsi_14=41.19, volatility_10d=3.38, volume_ma5_to_ma20=0.96, revenue_mom_latest=-1.15, revenue_yoy_latest=66.12, roe_latest=16.42, foreign_net_buy_1d=800,730.00, foreign_net_buy_intensity_5d=-4.66, trust_net_buy_1d=-11,403.00, trust_net_buy_intensity_5d=3.97, cmoney_sentiment_情緒分數=34.0, cmoney_sentiment_樣本數=17.0, cmoney_sentiment_極度樂觀=2.0, cmoney_sentiment_樂觀=2.0, cmoney_sentiment_中立=2.0, cmoney_sentiment_謹慎=5.0, cmoney_sentiment_極度謹慎=6.0
+
+### [O10] stock_2357
+- 事實摘要: 華碩(2357)最新收盤價為988.0元，外資單日買超722755股，投信單日賣超-217872股，情緒分數為50。
+- 指標數據: amount_ma20=2,309,276,595.15, close_latest=988.0, excess_return_20d=5.46, ma20_change_5d=0.51, price_vs_ma20=1.23, return_20d=3.13, return_5d=1.86, rsi_14=54.73, volatility_10d=2.2, volume_ma5_to_ma20=1.02, revenue_mom_latest=2.4, revenue_yoy_latest=17.73, roe_latest=6.29, foreign_net_buy_1d=722,755.00, foreign_net_buy_intensity_5d=6.49, trust_net_buy_1d=-217,872.00, trust_net_buy_intensity_5d=-6.45, cmoney_sentiment_情緒分數=50.0, cmoney_sentiment_樣本數=13.0, cmoney_sentiment_極度樂觀=0.0, cmoney_sentiment_樂觀=4.0, cmoney_sentiment_中立=6.0, cmoney_sentiment_謹慎=2.0, cmoney_sentiment_極度謹慎=1.0
+
+### [O11] stock_2368
+- 事實摘要: 金像電(2368)最新收盤價為1185.0元，5日跌幅為-5.2%，投信單日買超1202066股，最新ROE為12.41%，情緒分數為58。
+- 指標數據: amount_ma20=14,128,131,871.00, close_latest=1,185.00, excess_return_20d=6.28, ma20_change_5d=2.45, price_vs_ma20=0.17, return_20d=3.95, return_5d=-5.2, rsi_14=52.56, volatility_10d=5.92, volume_ma5_to_ma20=0.77, revenue_mom_latest=-10.24, revenue_yoy_latest=55.46, roe_latest=12.41, foreign_net_buy_1d=-1,134,743.00, foreign_net_buy_intensity_5d=-7.96, trust_net_buy_1d=1,202,066.00, trust_net_buy_intensity_5d=7.39, cmoney_sentiment_情緒分數=58.0, cmoney_sentiment_樣本數=35.0, cmoney_sentiment_極度樂觀=2.0, cmoney_sentiment_樂觀=18.0, cmoney_sentiment_中立=5.0, cmoney_sentiment_謹慎=9.0, cmoney_sentiment_極度謹慎=1.0
+
+### [O12] stock_2376
+- 事實摘要: 技嘉(2376)最新收盤價為362.5元，5日漲幅為2.98%，最新營收年增125.44%，外資單日買超1110917股，情緒分數為62。
+- 指標數據: amount_ma20=2,057,181,394.80, close_latest=362.5, excess_return_20d=1.64, ma20_change_5d=-0.39, price_vs_ma20=0.31, return_20d=-0.68, return_5d=2.98, rsi_14=52.79, volatility_10d=1.95, volume_ma5_to_ma20=0.67, revenue_mom_latest=33.11, revenue_yoy_latest=125.44, roe_latest=10.95, foreign_net_buy_1d=1,110,917.00, foreign_net_buy_intensity_5d=15.3, trust_net_buy_1d=-3,209.00, trust_net_buy_intensity_5d=1.44, cmoney_sentiment_情緒分數=62.0, cmoney_sentiment_樣本數=17.0, cmoney_sentiment_極度樂觀=1.0, cmoney_sentiment_樂觀=9.0, cmoney_sentiment_中立=5.0, cmoney_sentiment_謹慎=1.0, cmoney_sentiment_極度謹慎=1.0
+
+### [O13] stock_2379
+- 事實摘要: 瑞昱(2379)最新收盤價為791.0元，20日報酬率為3.94%，RSI為61.63，情緒分數為50且樣本數為0。
+- 指標數據: amount_ma20=1,963,080,774.50, close_latest=791.0, excess_return_20d=6.27, ma20_change_5d=1.48, price_vs_ma20=3.33, return_20d=3.94, return_5d=1.54, rsi_14=61.63, volatility_10d=1.89, volume_ma5_to_ma20=1.19, revenue_mom_latest=-0.65, revenue_yoy_latest=23.35, roe_latest=7.96, foreign_net_buy_1d=217,445.00, foreign_net_buy_intensity_5d=16.86, trust_net_buy_1d=-21,771.00, trust_net_buy_intensity_5d=-2.28, cmoney_sentiment_情緒分數=50.0, cmoney_sentiment_樣本數=0.0, cmoney_sentiment_極度樂觀=0.0, cmoney_sentiment_樂觀=0.0, cmoney_sentiment_中立=0.0, cmoney_sentiment_謹慎=0.0, cmoney_sentiment_極度謹慎=0.0
+
+### [O14] stock_2382
+- 事實摘要: 廣達(2382)最新收盤價為330.0元，5日漲幅為4.93%，外資單日買超1405120股，情緒分數為50且樣本數為0。
+- 指標數據: amount_ma20=3,788,499,849.35, close_latest=330.0, excess_return_20d=-1.04, ma20_change_5d=-1.3, price_vs_ma20=0.78, return_20d=-3.37, return_5d=4.93, rsi_14=51.53, volatility_10d=1.8, volume_ma5_to_ma20=0.94, revenue_mom_latest=-23.27, revenue_yoy_latest=76.68, roe_latest=12.11, foreign_net_buy_1d=1,405,120.00, foreign_net_buy_intensity_5d=23.99, trust_net_buy_1d=2,987.00, trust_net_buy_intensity_5d=4.52, cmoney_sentiment_情緒分數=50.0, cmoney_sentiment_樣本數=0.0, cmoney_sentiment_極度樂觀=0.0, cmoney_sentiment_樂觀=0.0, cmoney_sentiment_中立=0.0, cmoney_sentiment_謹慎=0.0, cmoney_sentiment_極度謹慎=0.0
+
+### [O15] stock_2383
+- 事實摘要: 台光電(2383)最新收盤價為5025.0元，最新營收年增168.87%，最新ROE為18.58%，外資單日賣超-678719股，情緒分數為44。
+- 指標數據: amount_ma20=15,731,274,087.85, close_latest=5,025.00, excess_return_20d=2.43, ma20_change_5d=0.4, price_vs_ma20=-5.29, return_20d=0.1, return_5d=-1.95, rsi_14=45.12, volatility_10d=4.76, volume_ma5_to_ma20=1.21, revenue_mom_latest=6.88, revenue_yoy_latest=168.87, roe_latest=18.58, foreign_net_buy_1d=-678,719.00, foreign_net_buy_intensity_5d=-10.76, trust_net_buy_1d=24,346.00, trust_net_buy_intensity_5d=2.33, cmoney_sentiment_情緒分數=44.0, cmoney_sentiment_樣本數=16.0, cmoney_sentiment_極度樂觀=1.0, cmoney_sentiment_樂觀=7.0, cmoney_sentiment_中立=0.0, cmoney_sentiment_謹慎=3.0, cmoney_sentiment_極度謹慎=5.0
+
+### [O16] stock_2404
+- 事實摘要: 漢唐(2404)最新收盤價為1100.0元，20日報酬率為-12.0%，距20日均線為-8.26%，情緒分數為50且樣本數為0。
+- 指標數據: amount_ma20=1,859,330,911.50, close_latest=1,100.00, excess_return_20d=-9.67, ma20_change_5d=-0.85, price_vs_ma20=-8.26, return_20d=-12.0, return_5d=0.0, rsi_14=42.79, volatility_10d=2.89, volume_ma5_to_ma20=0.45, revenue_mom_latest=-13.02, revenue_yoy_latest=12.56, roe_latest=22.95, foreign_net_buy_1d=29,597.00, foreign_net_buy_intensity_5d=-15.25, trust_net_buy_1d=3,000.00, trust_net_buy_intensity_5d=7.99, cmoney_sentiment_情緒分數=50.0, cmoney_sentiment_樣本數=0.0, cmoney_sentiment_極度樂觀=0.0, cmoney_sentiment_樂觀=0.0, cmoney_sentiment_中立=0.0, cmoney_sentiment_謹慎=0.0, cmoney_sentiment_極度謹慎=0.0
+
+### [O17] stock_2409
+- 事實摘要: 友達(2409)最新收盤價為35.55元，外資單日買超68585188股，最新營收年增-4.26%，情緒分數為58。
+- 指標數據: amount_ma20=16,368,944,351.65, close_latest=35.55, excess_return_20d=4.78, ma20_change_5d=1.72, price_vs_ma20=-2.4, return_20d=2.45, return_5d=-3.13, rsi_14=52.75, volatility_10d=4.7, volume_ma5_to_ma20=0.71, revenue_mom_latest=1.3, revenue_yoy_latest=-4.26, roe_latest=1.29, foreign_net_buy_1d=68,585,188.00, foreign_net_buy_intensity_5d=-3.6, trust_net_buy_1d=181,713.00, trust_net_buy_intensity_5d=0.95, cmoney_sentiment_情緒分數=58.0, cmoney_sentiment_樣本數=123.0, cmoney_sentiment_極度樂觀=15.0, cmoney_sentiment_樂觀=41.0, cmoney_sentiment_中立=39.0, cmoney_sentiment_謹慎=25.0, cmoney_sentiment_極度謹慎=3.0
+
+### [O18] stock_2603
+- 事實摘要: 長榮(2603)最新收盤價為263.0元，外資單日買超1185417股，最新營收年增63.74%，情緒分數為63。
+- 指標數據: amount_ma20=3,382,330,391.70, close_latest=263.0, excess_return_20d=10.56, ma20_change_5d=1.85, price_vs_ma20=5.14, return_20d=8.23, return_5d=0.38, rsi_14=63.68, volatility_10d=1.86, volume_ma5_to_ma20=0.68, revenue_mom_latest=1.48, revenue_yoy_latest=63.74, roe_latest=2.75, foreign_net_buy_1d=1,185,417.00, foreign_net_buy_intensity_5d=13.73, trust_net_buy_1d=55,814.00, trust_net_buy_intensity_5d=-1.84, cmoney_sentiment_情緒分數=63.0, cmoney_sentiment_樣本數=13.0, cmoney_sentiment_極度樂觀=1.0, cmoney_sentiment_樂觀=5.0, cmoney_sentiment_中立=7.0, cmoney_sentiment_謹慎=0.0, cmoney_sentiment_極度謹慎=0.0
+
+### [O19] stock_2609
+- 事實摘要: 陽明(2609)最新收盤價為62.9元，最新營收年增69.93%，外資5日買超強度為13.76%，情緒分數為58。
+- 指標數據: amount_ma20=1,640,489,928.90, close_latest=62.9, excess_return_20d=7.34, ma20_change_5d=0.6, price_vs_ma20=2.33, return_20d=5.01, return_5d=-0.94, rsi_14=56.97, volatility_10d=1.67, volume_ma5_to_ma20=0.54, revenue_mom_latest=0.4, revenue_yoy_latest=69.93, roe_latest=1.77, foreign_net_buy_1d=144,329.00, foreign_net_buy_intensity_5d=13.76, trust_net_buy_1d=-46,000.00, trust_net_buy_intensity_5d=-2.98, cmoney_sentiment_情緒分數=58.0, cmoney_sentiment_樣本數=23.0, cmoney_sentiment_極度樂觀=3.0, cmoney_sentiment_樂觀=10.0, cmoney_sentiment_中立=5.0, cmoney_sentiment_謹慎=1.0, cmoney_sentiment_極度謹慎=4.0
+
+### [O20] stock_2881
+- 事實摘要: 富邦金(2881)最新收盤價為161.0元，20日報酬率為5.23%，外資單日買超1532917股，情緒分數為50且樣本數為0。
+- 指標數據: amount_ma20=2,553,992,384.75, close_latest=161.0, excess_return_20d=7.56, ma20_change_5d=0.95, price_vs_ma20=3.19, return_20d=5.23, return_5d=1.58, rsi_14=61.07, volatility_10d=1.88, volume_ma5_to_ma20=0.94, revenue_mom_latest=-51.99, revenue_yoy_latest=-63.8, roe_latest=5.54, foreign_net_buy_1d=1,532,917.00, foreign_net_buy_intensity_5d=11.47, trust_net_buy_1d=190,917.00, trust_net_buy_intensity_5d=0.29, cmoney_sentiment_情緒分數=50.0, cmoney_sentiment_樣本數=0.0, cmoney_sentiment_極度樂觀=0.0, cmoney_sentiment_樂觀=0.0, cmoney_sentiment_中立=0.0, cmoney_sentiment_謹慎=0.0, cmoney_sentiment_極度謹慎=0.0
+
+### [O21] stock_2882
+- 事實摘要: 國泰金(2882)最新收盤價為115.5元，外資單日買超5446888股，20日報酬率為3.59%，情緒分數為50且樣本數為0。
+- 指標數據: amount_ma20=2,416,614,263.65, close_latest=115.5, excess_return_20d=5.92, ma20_change_5d=0.36, price_vs_ma20=2.48, return_20d=3.59, return_5d=0.87, rsi_14=58.04, volatility_10d=2.08, volume_ma5_to_ma20=1.27, revenue_mom_latest=-30.79, revenue_yoy_latest=-47.38, roe_latest=4.61, foreign_net_buy_1d=5,446,888.00, foreign_net_buy_intensity_5d=10.34, trust_net_buy_1d=202,930.00, trust_net_buy_intensity_5d=0.54, cmoney_sentiment_情緒分數=50.0, cmoney_sentiment_樣本數=0.0, cmoney_sentiment_極度樂觀=0.0, cmoney_sentiment_樂觀=0.0, cmoney_sentiment_中立=0.0, cmoney_sentiment_謹慎=0.0, cmoney_sentiment_極度謹慎=0.0
+
+### [O22] stock_2883
+- 事實摘要: 開發金(2883)最新收盤價為38.55元，外資單日買超9688093股，投信單日買超741247股，情緒分數為50且樣本數為0。
+- 指標數據: amount_ma20=1,740,064,183.95, close_latest=38.55, excess_return_20d=0.3, ma20_change_5d=-1.01, price_vs_ma20=0.9, return_20d=-2.03, return_5d=0.92, rsi_14=54.94, volatility_10d=1.75, volume_ma5_to_ma20=0.96, revenue_mom_latest=-44.42, revenue_yoy_latest=-61.19, roe_latest=3.99, foreign_net_buy_1d=9,688,093.00, foreign_net_buy_intensity_5d=-4.01, trust_net_buy_1d=741,247.00, trust_net_buy_intensity_5d=3.5, cmoney_sentiment_情緒分數=50.0, cmoney_sentiment_樣本數=0.0, cmoney_sentiment_極度樂觀=0.0, cmoney_sentiment_樂觀=0.0, cmoney_sentiment_中立=0.0, cmoney_sentiment_謹慎=0.0, cmoney_sentiment_極度謹慎=0.0
+
+### [O23] stock_2887
+- 事實摘要: 台新金(2887)最新收盤價為42.0元，20日報酬率為-2.21%，外資單日賣超-166121股，情緒分數為55。
+- 指標數據: amount_ma20=1,951,675,986.90, close_latest=42.0, excess_return_20d=0.12, ma20_change_5d=-1.05, price_vs_ma20=0.26, return_20d=-2.21, return_5d=-0.83, rsi_14=51.71, volatility_10d=1.71, volume_ma5_to_ma20=0.97, revenue_mom_latest=-13.69, revenue_yoy_latest=-18.58, roe_latest=3.47, foreign_net_buy_1d=-166,121.00, foreign_net_buy_intensity_5d=-0.02, trust_net_buy_1d=-174,000.00, trust_net_buy_intensity_5d=-1.08, cmoney_sentiment_情緒分數=55.0, cmoney_sentiment_樣本數=23.0, cmoney_sentiment_極度樂觀=2.0, cmoney_sentiment_樂觀=7.0, cmoney_sentiment_中立=10.0, cmoney_sentiment_謹慎=2.0, cmoney_sentiment_極度謹慎=2.0
+
+### [O24] stock_2891
+- 事實摘要: 中信金(2891)最新收盤價為74.2元，20日報酬率為7.69%，投信單日買超576529股，情緒分數為50且樣本數為0。
+- 指標數據: amount_ma20=2,489,426,202.85, close_latest=74.2, excess_return_20d=10.02, ma20_change_5d=1.5, price_vs_ma20=4.82, return_20d=7.69, return_5d=1.09, rsi_14=63.42, volatility_10d=1.98, volume_ma5_to_ma20=1.06, revenue_mom_latest=-12.57, revenue_yoy_latest=12.81, roe_latest=2.53, foreign_net_buy_1d=-412,257.00, foreign_net_buy_intensity_5d=10.3, trust_net_buy_1d=576,529.00, trust_net_buy_intensity_5d=-4.16, cmoney_sentiment_情緒分數=50.0, cmoney_sentiment_樣本數=0.0, cmoney_sentiment_極度樂觀=0.0, cmoney_sentiment_樂觀=0.0, cmoney_sentiment_中立=0.0, cmoney_sentiment_謹慎=0.0, cmoney_sentiment_極度謹慎=0.0
+
+### [O25] stock_3008
+- 事實摘要: 大立光(3008)最新收盤價為6335.0元，最新營收月增15.3%、年增-7.31%，情緒分數為61。
+- 指標數據: amount_ma20=18,404,767,530.25, close_latest=6,335.00, excess_return_20d=4.67, ma20_change_5d=-0.61, price_vs_ma20=-1.92, return_20d=2.34, return_5d=1.44, rsi_14=49.43, volatility_10d=3.51, volume_ma5_to_ma20=0.89, revenue_mom_latest=15.3, revenue_yoy_latest=-7.31, roe_latest=2.49, foreign_net_buy_1d=225,951.00, foreign_net_buy_intensity_5d=-0.48, trust_net_buy_1d=75,130.00, trust_net_buy_intensity_5d=2.83, cmoney_sentiment_情緒分數=61.0, cmoney_sentiment_樣本數=24.0, cmoney_sentiment_極度樂觀=5.0, cmoney_sentiment_樂觀=7.0, cmoney_sentiment_中立=8.0, cmoney_sentiment_謹慎=2.0, cmoney_sentiment_極度謹慎=2.0
+
+### [O26] stock_3034
+- 事實摘要: 聯詠(3034)最新收盤價為598.0元，站上20日均線7.24%，RSI為65.58，情緒分數為29。
+- 指標數據: amount_ma20=1,920,577,500.00, close_latest=598.0, excess_return_20d=12.05, ma20_change_5d=1.69, price_vs_ma20=7.24, return_20d=9.72, return_5d=2.22, rsi_14=65.58, volatility_10d=2.13, volume_ma5_to_ma20=1.06, revenue_mom_latest=0.19, revenue_yoy_latest=24.99, roe_latest=8.98, foreign_net_buy_1d=137,368.00, foreign_net_buy_intensity_5d=18.46, trust_net_buy_1d=135,724.00, trust_net_buy_intensity_5d=-2.05, cmoney_sentiment_情緒分數=29.0, cmoney_sentiment_樣本數=18.0, cmoney_sentiment_極度樂觀=0.0, cmoney_sentiment_樂觀=3.0, cmoney_sentiment_中立=1.0, cmoney_sentiment_謹慎=10.0, cmoney_sentiment_極度謹慎=4.0
+
+### [O27] stock_3037
+- 事實摘要: 欣興(3037)最新收盤價為1100.0元，20日報酬率為-5.17%，外資單日賣超-1913667股，投信單日買超514522股，情緒分數為37。
+- 指標數據: amount_ma20=19,739,852,869.35, close_latest=1,100.00, excess_return_20d=-2.84, ma20_change_5d=0.77, price_vs_ma20=-6.62, return_20d=-5.17, return_5d=-1.79, rsi_14=48.03, volatility_10d=4.6, volume_ma5_to_ma20=1.29, revenue_mom_latest=5.1, revenue_yoy_latest=64.66, roe_latest=10.91, foreign_net_buy_1d=-1,913,667.00, foreign_net_buy_intensity_5d=-8.26, trust_net_buy_1d=514,522.00, trust_net_buy_intensity_5d=5.25, cmoney_sentiment_情緒分數=37.0, cmoney_sentiment_樣本數=91.0, cmoney_sentiment_極度樂觀=8.0, cmoney_sentiment_樂觀=15.0, cmoney_sentiment_中立=13.0, cmoney_sentiment_謹慎=30.0, cmoney_sentiment_極度謹慎=25.0
+
+### [O28] stock_3044
+- 事實摘要: 健鼎(3044)最新收盤價為544.0元，5日跌幅為-5.72%，最新營收年增53.5%，情緒分數為50且樣本數為0。
+- 指標數據: amount_ma20=1,686,501,103.20, close_latest=544.0, excess_return_20d=2.51, ma20_change_5d=1.32, price_vs_ma20=-3.1, return_20d=0.18, return_5d=-5.72, rsi_14=48.94, volatility_10d=3.72, volume_ma5_to_ma20=1.15, revenue_mom_latest=4.14, revenue_yoy_latest=53.5, roe_latest=6.83, foreign_net_buy_1d=210,817.00, foreign_net_buy_intensity_5d=4.12, trust_net_buy_1d=13,000.00, trust_net_buy_intensity_5d=-4.6, cmoney_sentiment_情緒分數=50.0, cmoney_sentiment_樣本數=0.0, cmoney_sentiment_極度樂觀=0.0, cmoney_sentiment_樂觀=0.0, cmoney_sentiment_中立=0.0, cmoney_sentiment_謹慎=0.0, cmoney_sentiment_極度謹慎=0.0
+
+### [O29] stock_3189
+- 事實摘要: 景碩(3189)最新收盤價為1035.0元，5日漲幅為5.4%，20日報酬率為14.24%，情緒分數為62。
+- 指標數據: amount_ma20=18,105,415,993.25, close_latest=1,035.00, excess_return_20d=16.57, ma20_change_5d=3.24, price_vs_ma20=1.9, return_20d=14.24, return_5d=5.4, rsi_14=56.96, volatility_10d=5.22, volume_ma5_to_ma20=1.02, revenue_mom_latest=7.72, revenue_yoy_latest=44.46, roe_latest=3.22, foreign_net_buy_1d=-1,988,802.00, foreign_net_buy_intensity_5d=-6.14, trust_net_buy_1d=30,000.00, trust_net_buy_intensity_5d=2.66, cmoney_sentiment_情緒分數=62.0, cmoney_sentiment_樣本數=34.0, cmoney_sentiment_極度樂觀=4.0, cmoney_sentiment_樂觀=14.0, cmoney_sentiment_中立=12.0, cmoney_sentiment_謹慎=2.0, cmoney_sentiment_極度謹慎=2.0
+
+### [O30] stock_3231
+- 事實摘要: 緯創(3231)最新收盤價為194.5元，5日漲幅為8.06%，外資單日買超9419395股，情緒分數為63。
+- 指標數據: amount_ma20=7,631,857,094.85, close_latest=194.5, excess_return_20d=10.38, ma20_change_5d=1.05, price_vs_ma20=3.87, return_20d=8.06, return_5d=8.06, rsi_14=57.79, volatility_10d=3.28, volume_ma5_to_ma20=1.26, revenue_mom_latest=-17.22, revenue_yoy_latest=87.18, roe_latest=8.6, foreign_net_buy_1d=9,419,395.00, foreign_net_buy_intensity_5d=25.23, trust_net_buy_1d=439,127.00, trust_net_buy_intensity_5d=2.72, cmoney_sentiment_情緒分數=63.0, cmoney_sentiment_樣本數=39.0, cmoney_sentiment_極度樂觀=9.0, cmoney_sentiment_樂觀=12.0, cmoney_sentiment_中立=10.0, cmoney_sentiment_謹慎=7.0, cmoney_sentiment_極度謹慎=1.0
+
+### [O31] stock_3443
+- 事實摘要: 創意(3443)最新收盤價為8170.0元，最新營收年增97.77%，情緒分數為79，樣本數為24。
+- 指標數據: amount_ma20=11,679,641,789.85, close_latest=8,170.00, excess_return_20d=-0.24, ma20_change_5d=0.57, price_vs_ma20=1.85, return_20d=-2.56, return_5d=4.34, rsi_14=58.11, volatility_10d=4.97, volume_ma5_to_ma20=1.22, revenue_mom_latest=22.34, revenue_yoy_latest=97.77, roe_latest=11.09, foreign_net_buy_1d=-190,383.00, foreign_net_buy_intensity_5d=0.51, trust_net_buy_1d=141,150.00, trust_net_buy_intensity_5d=4.34, cmoney_sentiment_情緒分數=79.0, cmoney_sentiment_樣本數=24.0, cmoney_sentiment_極度樂觀=12.0, cmoney_sentiment_樂觀=6.0, cmoney_sentiment_中立=4.0, cmoney_sentiment_謹慎=2.0, cmoney_sentiment_極度謹慎=0.0
+
+### [O32] stock_3533
+- 事實摘要: 嘉澤(3533)最新收盤價為1955.0元，5日漲幅為7.71%，20日超額報酬為18.01%，情緒分數為50且樣本數為0。
+- 指標數據: amount_ma20=3,302,130,567.50, close_latest=1,955.00, excess_return_20d=18.01, ma20_change_5d=3.19, price_vs_ma20=6.34, return_20d=15.68, return_5d=7.71, rsi_14=63.12, volatility_10d=3.53, volume_ma5_to_ma20=0.66, revenue_mom_latest=4.95, revenue_yoy_latest=16.12, roe_latest=4.53, foreign_net_buy_1d=-42,113.00, foreign_net_buy_intensity_5d=1.75, trust_net_buy_1d=7,200.00, trust_net_buy_intensity_5d=1.19, cmoney_sentiment_情緒分數=50.0, cmoney_sentiment_樣本數=0.0, cmoney_sentiment_極度樂觀=0.0, cmoney_sentiment_樂觀=0.0, cmoney_sentiment_中立=0.0, cmoney_sentiment_謹慎=0.0, cmoney_sentiment_極度謹慎=0.0
+
+### [O33] stock_3653
+- 事實摘要: 健策(3653)最新收盤價為6375.0元，距20日均線為-5.77%，最新營收年增79.96%，情緒分數為50且樣本數為0。
+- 指標數據: amount_ma20=9,325,612,449.45, close_latest=6,375.00, excess_return_20d=1.78, ma20_change_5d=1.94, price_vs_ma20=-5.77, return_20d=-0.55, return_5d=-2.82, rsi_14=49.84, volatility_10d=4.29, volume_ma5_to_ma20=1.22, revenue_mom_latest=-5.32, revenue_yoy_latest=79.96, roe_latest=10.3, foreign_net_buy_1d=-375,950.00, foreign_net_buy_intensity_5d=5.36, trust_net_buy_1d=112,428.00, trust_net_buy_intensity_5d=0.66, cmoney_sentiment_情緒分數=50.0, cmoney_sentiment_樣本數=0.0, cmoney_sentiment_極度樂觀=0.0, cmoney_sentiment_樂觀=0.0, cmoney_sentiment_中立=0.0, cmoney_sentiment_謹慎=0.0, cmoney_sentiment_極度謹慎=0.0
+
+### [O34] stock_3661
+- 事實摘要: 世芯-KY(3661)最新收盤價為3800.0元，最新營收年增495.99%，外資單日買超510589股，情緒分數為61。
+- 指標數據: amount_ma20=9,032,758,753.90, close_latest=3,800.00, excess_return_20d=3.39, ma20_change_5d=0.21, price_vs_ma20=-1.39, return_20d=1.06, return_5d=2.29, rsi_14=50.17, volatility_10d=4.76, volume_ma5_to_ma20=0.62, revenue_mom_latest=13.7, revenue_yoy_latest=495.99, roe_latest=3.16, foreign_net_buy_1d=510,589.00, foreign_net_buy_intensity_5d=4.12, trust_net_buy_1d=3,092.00, trust_net_buy_intensity_5d=1.26, cmoney_sentiment_情緒分數=61.0, cmoney_sentiment_樣本數=25.0, cmoney_sentiment_極度樂觀=3.0, cmoney_sentiment_樂觀=8.0, cmoney_sentiment_中立=12.0, cmoney_sentiment_謹慎=1.0, cmoney_sentiment_極度謹慎=1.0
+
+### [O35] stock_3711
+- 事實摘要: 日月光投控(3711)最新收盤價為695.0元，5日漲幅為3.73%，投信單日買超5189200股，情緒分數為64。
+- 指標數據: amount_ma20=11,176,713,733.65, close_latest=695.0, excess_return_20d=2.62, ma20_change_5d=0.31, price_vs_ma20=-1.29, return_20d=0.29, return_5d=3.73, rsi_14=53.21, volatility_10d=4.49, volume_ma5_to_ma20=1.1, revenue_mom_latest=7.15, revenue_yoy_latest=45.52, roe_latest=5.37, foreign_net_buy_1d=108,526.00, foreign_net_buy_intensity_5d=-14.28, trust_net_buy_1d=5,189,200.00, trust_net_buy_intensity_5d=13.81, cmoney_sentiment_情緒分數=64.0, cmoney_sentiment_樣本數=20.0, cmoney_sentiment_極度樂觀=3.0, cmoney_sentiment_樂觀=9.0, cmoney_sentiment_中立=4.0, cmoney_sentiment_謹慎=4.0, cmoney_sentiment_極度謹慎=0.0
+
+### [O36] stock_4938
+- 事實摘要: 和碩(4938)最新收盤價為108.0元，最新營收月增143.19%、年增86.87%，外資單日買超3157617股，情緒分數為75。
+- 指標數據: amount_ma20=1,786,083,104.75, close_latest=108.0, excess_return_20d=20.62, ma20_change_5d=3.95, price_vs_ma20=11.37, return_20d=18.29, return_5d=5.88, rsi_14=73.33, volatility_10d=2.43, volume_ma5_to_ma20=0.94, revenue_mom_latest=143.19, revenue_yoy_latest=86.87, roe_latest=2.51, foreign_net_buy_1d=3,157,617.00, foreign_net_buy_intensity_5d=23.34, trust_net_buy_1d=967,329.00, trust_net_buy_intensity_5d=-0.54, cmoney_sentiment_情緒分數=75.0, cmoney_sentiment_樣本數=15.0, cmoney_sentiment_極度樂觀=7.0, cmoney_sentiment_樂觀=3.0, cmoney_sentiment_中立=3.0, cmoney_sentiment_謹慎=2.0, cmoney_sentiment_極度謹慎=0.0
+
+### [O37] stock_4958
+- 事實摘要: 臻鼎-KY(4958)最新收盤價為550.0元，5日漲跌幅為0.55%，最新營收月增27.54%、年增36.12%，情緒分數為49。
+- 指標數據: amount_ma20=18,901,467,059.80, close_latest=550.0, excess_return_20d=18.61, ma20_change_5d=3.6, price_vs_ma20=0.24, return_20d=16.28, return_5d=0.55, rsi_14=52.6, volatility_10d=5.74, volume_ma5_to_ma20=1.03, revenue_mom_latest=27.54, revenue_yoy_latest=36.12, roe_latest=1.93, foreign_net_buy_1d=-55,345.00, foreign_net_buy_intensity_5d=-8.05, trust_net_buy_1d=296,574.00, trust_net_buy_intensity_5d=1.68, cmoney_sentiment_情緒分數=49.0, cmoney_sentiment_樣本數=46.0, cmoney_sentiment_極度樂觀=5.0, cmoney_sentiment_樂觀=10.0, cmoney_sentiment_中立=15.0, cmoney_sentiment_謹慎=11.0, cmoney_sentiment_極度謹慎=5.0
+
+### [O38] stock_6415
+- 事實摘要: 矽力*-KY(6415)最新收盤價為525.0元，5日漲幅為10.41%，站上20日均線15.51%，情緒分數為74。
+- 指標數據: amount_ma20=2,269,477,877.55, close_latest=525.0, excess_return_20d=25.57, ma20_change_5d=3.36, price_vs_ma20=15.51, return_20d=23.24, return_5d=10.41, rsi_14=66.08, volatility_10d=5.33, volume_ma5_to_ma20=1.36, revenue_mom_latest=3.9, revenue_yoy_latest=50.7, roe_latest=3.94, foreign_net_buy_1d=-305,289.00, foreign_net_buy_intensity_5d=-3.33, trust_net_buy_1d=47,000.00, trust_net_buy_intensity_5d=-0.15, cmoney_sentiment_情緒分數=74.0, cmoney_sentiment_樣本數=25.0, cmoney_sentiment_極度樂觀=4.0, cmoney_sentiment_樂觀=16.0, cmoney_sentiment_中立=5.0, cmoney_sentiment_謹慎=0.0, cmoney_sentiment_極度謹慎=0.0
+
+### [O39] stock_6446
+- 事實摘要: 藥華藥(6446)最新收盤價為1200.0元，最新營收年增99.97%，最新ROE為7.1%，情緒分數為58。
+- 指標數據: amount_ma20=2,130,766,677.25, close_latest=1,200.00, excess_return_20d=4.46, ma20_change_5d=0.08, price_vs_ma20=1.22, return_20d=2.13, return_5d=2.13, rsi_14=49.19, volatility_10d=2.71, volume_ma5_to_ma20=0.81, revenue_mom_latest=0.69, revenue_yoy_latest=99.97, roe_latest=7.1, foreign_net_buy_1d=-67,150.00, foreign_net_buy_intensity_5d=5.79, trust_net_buy_1d=13,000.00, trust_net_buy_intensity_5d=1.36, cmoney_sentiment_情緒分數=58.0, cmoney_sentiment_樣本數=15.0, cmoney_sentiment_極度樂觀=2.0, cmoney_sentiment_樂觀=2.0, cmoney_sentiment_中立=10.0, cmoney_sentiment_謹慎=1.0, cmoney_sentiment_極度謹慎=0.0
+
+### [O40] stock_6505
+- 事實摘要: 台塑化(6505)最新收盤價為103.0元，5日跌幅為-11.21%，外資單日買超4893758股，投信單日賣超-2530000股，情緒分數為40。
+- 指標數據: amount_ma20=4,851,199,068.75, close_latest=103.0, excess_return_20d=20.31, ma20_change_5d=4.73, price_vs_ma20=-2.79, return_20d=17.98, return_5d=-11.21, rsi_14=51.43, volatility_10d=6.27, volume_ma5_to_ma20=0.79, revenue_mom_latest=6.13, revenue_yoy_latest=65.59, roe_latest=4.76, foreign_net_buy_1d=4,893,758.00, foreign_net_buy_intensity_5d=25.09, trust_net_buy_1d=-2,530,000.00, trust_net_buy_intensity_5d=-13.43, cmoney_sentiment_情緒分數=40.0, cmoney_sentiment_樣本數=29.0, cmoney_sentiment_極度樂觀=2.0, cmoney_sentiment_樂觀=3.0, cmoney_sentiment_中立=9.0, cmoney_sentiment_謹慎=11.0, cmoney_sentiment_極度謹慎=4.0
+
+### [O41] stock_8046
+- 事實摘要: 南電(8046)最新收盤價為1300.0元，5日跌幅為-5.8%，距20日均線為-5.59%，外資單日賣超-1201087股，情緒分數為38。
+- 指標數據: amount_ma20=14,059,239,372.65, close_latest=1,300.00, excess_return_20d=9.77, ma20_change_5d=3.24, price_vs_ma20=-5.59, return_20d=7.44, return_5d=-5.8, rsi_14=49.28, volatility_10d=3.53, volume_ma5_to_ma20=0.88, revenue_mom_latest=4.35, revenue_yoy_latest=57.81, roe_latest=4.71, foreign_net_buy_1d=-1,201,087.00, foreign_net_buy_intensity_5d=-11.14, trust_net_buy_1d=278,000.00, trust_net_buy_intensity_5d=5.26, cmoney_sentiment_情緒分數=38.0, cmoney_sentiment_樣本數=26.0, cmoney_sentiment_極度樂觀=1.0, cmoney_sentiment_樂觀=4.0, cmoney_sentiment_中立=5.0, cmoney_sentiment_謹慎=13.0, cmoney_sentiment_極度謹慎=3.0
+
+可用事實 ID 清單：O1, O10, O11, O12, O13, O14, O15, O16, O17, O18, O19, O2, O20, O21, O22, O23, O24, O25, O26, O27, O28, O29, O3, O30, O31, O32, O33, O34, O35, O36, O37, O38, O39, O4, O40, O41, O5, O6, O7, O8, O9
+(注意：每筆推論的 premise_refs 必須至少包含 1 個上述可用 ID，且引用之事實必須與該個股直接對應)
+
+## 個股分析邏輯與選股決策準則
+### 【第一階段：個股多維度深入分析】
+請依序從下列面向客觀分析各檔股票，整理支持與不利證據，並辨識可能影響短期的機會、風險及不確定性：
+
+1. 企業營運與成長（基本面品質）
+   - 獲利能力：檢視最新 ROE (roe_latest)。若 ROE 偏低或為負，應特別關注獲利能力較弱或可能存在虧損之風險；高 ROE 則代表股東權益報酬良好、具備長線護城河。
+   - 營收成長：評估最新月營收年增率 (revenue_yoy_latest) 與月增率 (revenue_mom_latest) 的變化，雙成長為營運向上訊號，動能放緩需提防營運轉折。
+
+2. 價格趨勢與相對強弱（技術動能與結構）
+   - 報酬表現：比較近 5 日報酬 (return_5d) 與近 20 日報酬 (return_20d)，觀察短期及較長期間的價格方向。
+   - 相對大盤：檢視近 20 日相對大盤超額報酬 (excess_return_20d)。若個股絕對報酬為負，但相對報酬為正，可客觀判斷為該期間相對大盤抗跌。
+   - 均線結構與動能：結合價格相對 20 日均線位置 (price_vs_ma20) 以及 20 日均線近 5 日升降變化 (ma20_change_5d) 研判價格結構；搭配 14 日 RSI (rsi_14) 與近 10 日報酬波動率 (volatility_10d)，評估近期動能、超買超賣與波動風險。
+   - 交叉判斷：比較上述訊號是否一致，釐清價格表現、相對強弱及技術訊號之間的一致性或分歧。
+
+3. 交易活躍度與法人籌碼（籌碼與流動性）
+   - 量價配合：比較近 5 日與近 20 日均量比 (volume_ma5_to_ma20) 及 20 日日均成交值 (amount_ma20)，結合價格方向與成交量變化，觀察量價是否配合（如價漲量增、量縮價穩），並評估其對短期走勢的流動性與延續性意義。
+   - 法人動向：觀察外資 (foreign_net_buy_1d, foreign_net_buy_intensity_5d) 與投信 (trust_net_buy_1d, trust_net_buy_intensity_5d) 買賣超方向是否一致；若法人資金流向與價格走勢出現分歧（例如股價跌但法人連續逆勢買超，或股價漲但法人大幅調節），應明確說明該分歧可能影響短期動能之機制。
+
+4. 情緒與討論風向（市場心理與預期）
+   - 情緒參考性：依據 CMoney 情緒分數與分布評估市場討論氛圍。樣本數偏低時應適度降低情緒訊號之採信權重。
+   - 預期落差：將市場情緒與價格、量能及法人方向交叉比對。討論樂觀不等於實際買盤；若無客觀事件佐證，不得自行推斷存在利多，應留意市場過度期待與實際表現脫鉤的風險。
+
+5. 個股綜合評估
+   - 機會與風險：統整有資料支持的企業成長、營運改善、相對強勢或短期動能線索；同時檢視是否出現多個不利訊號並評估其嚴重性。
+   - 訊號分歧：各面向結果不一致時，應於 logic 中分別說明支持與不利依據，以及尚待確認的風險。
+   - 反面證據與不確定性：評估反面證據、訊號分歧及資料缺漏對該股票判斷的影響，並如實呈現在 counter_evidence 中。
+
+### 【第二階段：選股與組合決策推論】
+完成個股分析後，請綜合比較各檔股票，決定哪些股票納入目標投資組合，以及各自的配置比重規劃：
+
+1. 證據導向與綜合取捨
+   - 衡量各檔股票在一個月競賽期間內的潛在機會與風險，評估支持與不利證據的相對強度。
+   - 不因單一面向做出決定，依據整體分析進行客觀取捨，比較各檔股票的投資吸引力。
+   - 評估反面證據與不確定性是否影響選股或配置，說明其如何影響決策的判斷。
+
+2. 比較與取捨（組合角色）
+   - 當多檔股票都具備投資機會，而目標投資組合檔數（20～30 檔）有限時，應比較其機會、風險及對整體組合的貢獻。
+   - 對建議納入或保留的股票，說明其主要投資機會、風險、組合角色及目標比重的主要考量；對建議避開或調節的股票，說明讓位理由。
+
+3. 產業配置與風險控管
+   - 參考股票產業分類，比較同產業內各檔標的之投資機會、風險及組合需求，選擇相對符合投資理念及組合需求的股票。
+   - 產業配置不必刻意平均分配；不為了填補產業類別或追求產業分散，而納入缺乏足夠數據支持的股票。
+
+4. 目標權重與資金調度（引導 L3 決策與 L4 委託）
+   - 目標比重以 DataPack 中前一日結算淨值 account.nav_tradable 為基準。
+   - 目標投資組合須包含 20～30 檔股票，各股目標比重加總與現金目標比重應為 100%（單一個股上限 10%，台積電上限 25%）。
+   - 結論 (conclusion) 中明確提出操作方向與建議權重（例如：「新建倉 2330 作為核心權值，目標權重 5.0%」、「2891 具殖利率與防禦特性，建議納入目標權重 4.5%」等）。
+
+### 【第三階段：D-Plan v4.3 規格要求】
+1. premise_refs 引用規範：
+   - 每筆推論必須精確引用對應該個股的事實 ID (例如 2330 對應 O8、1301 對應 O2)，必要時可同時引用大盤 O1。
+   - 嚴格禁止引用不存在於事實清單中的 ID。
+2. 推導過程 (logic)：
+   - 必須明確引用實際數據數值 (如收盤價、近20日報酬率、營收年增率、ROE、法人買賣超、均線位置等)，禁止空泛陳述。
+   - 推論鏈條須完整：「客觀數據事證」 -> 「多維度分析與分歧檢視」 -> 「走勢與風險研判」 -> 「組合角色與目標權重意向」。
+   - 長度規範：20 ~ 1000 字元。
+3. 人讀結論 (conclusion)：
+   - 簡明總結該個股之操作建議、組合角色與目標權重 (300 字內)。
+4. 反向證據 (counter_evidence)：
+   - 誠實揭露不利數據、訊號背離、潛在風險或不確定性 (500 字內)；若無反向訊號則明確填 null。
+5. 筆數要求：產生 20 至 30 筆推論，涵蓋投資組合核心關注與欲納入/調整之標的。
+
+## 輸出格式要求 (嚴格遵循 D-Plan v4.3 JSON 結構)
+請產生符合下列結構的 JSON 回應：
+{
+  "inferences": [
+    {
+      "inf_id": "I1",
+      "premise_refs": ["O2"],
+      "logic": "推導過程：引用事實數據 (包含具體數值)、分析多面向表現與分歧、為何成立操作結論 (20~1000字)",
+      "conclusion": "簡明結論，明確說明投資機會、組合角色與建議目標權重 (300字內)",
+      "counter_evidence": "與本推論相反的客觀反向訊號、背離或不確定性 (500字內)；若無則填 null",
+      "confidence": 0.75
+    },
+    ...
+  ]
+}
+
+請特別注意：
+1. premise_refs 內引用的每個 ID 必須真實存在於上方事實清單中，未通過檢核將整份退回。
+2. logic 內必須提及引用的事實 ID (如 O2, O8) 並列出實際數據對照。
+3. 產生 20 至 30 筆個股推論，涵蓋投資組合核心關注標的。
+4. 若無反向訊號，counter_evidence 請填 null。

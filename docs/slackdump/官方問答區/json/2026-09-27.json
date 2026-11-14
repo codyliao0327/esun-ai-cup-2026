@@ -1,0 +1,77 @@
+[
+  {
+    "client_msg_id": "0defc2df-02c3-4837-8d56-fd4331e644b5",
+    "type": "message",
+    "user": "U0C4J5XEX98",
+    "text": "您好想請問 Active Share 檢核所使用的主動型 ETF 前十大持股與權重資料，初賽期間主辦方是否會提供？\n若需要參賽隊伍自行取得，Benchmark 的 Wi是直接使用基金公布的原始持股權重，還是會將前十大持股重新正規化為合計 100% 後再計算？",
+    "ts": "1790498929.610639",
+    "thread_ts": "1790498929.610639",
+    "reply_count": 3,
+    "reply_users": [
+      "U0C3LFZUG3D",
+      "U0C3XS72LS1"
+    ],
+    "replies": [
+      {
+        "user": "U0C3XS72LS1",
+        "ts": "1790665043.437029"
+      },
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1790666197.984719"
+      },
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1791271242.844299"
+      }
+    ],
+    "latest_reply": "1791271242.844299",
+    "team": "T0C3BBR6687",
+    "reactions": [
+      {
+        "name": "eyes",
+        "count": 1,
+        "users": [
+          "U0C4PKACSCE"
+        ]
+      }
+    ],
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "7SoZj",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好想請問 Active Share 檢核所使用的主動型 ETF 前十大持股與權重資料，初賽期間主辦方是否會提供？\n若需要參賽隊伍自行取得，Benchmark 的 Wi是直接使用基金公布的原始持股權重，還是會將前十大持股重新正規化為合計 100% 後再計算？"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-25/12182690043056_638376851e723395c9e2_72.jpg",
+      "first_name": "蔡旻烜",
+      "real_name": "蔡旻烜",
+      "display_name": "蔡旻烜",
+      "team": "T0C3BBR6687",
+      "name": "alex0988510150",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 2
+  }
+]

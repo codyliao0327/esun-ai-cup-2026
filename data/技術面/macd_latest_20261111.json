@@ -1,0 +1,467 @@
+{
+  "_format": "[value, date]",
+  "1301": {
+    "macd_dif": [-5.32, "2026-11-10"],
+    "macd_hist": [0.56, "2026-11-10"],
+    "macd_hist_change_3d": [3.36, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "1303": {
+    "macd_dif": [-21.49, "2026-11-10"],
+    "macd_hist": [2.64, "2026-11-10"],
+    "macd_hist_change_3d": [20.81, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "1326": {
+    "macd_dif": [-4.06, "2026-11-10"],
+    "macd_hist": [0.9, "2026-11-10"],
+    "macd_hist_change_3d": [3.56, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "1590": {
+    "macd_dif": [-38.09, "2026-11-10"],
+    "macd_hist": [5.26, "2026-11-10"],
+    "macd_hist_change_3d": [10.31, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [1, "2026-11-10"]
+  },
+  "1785": {
+    "macd_dif": [-13.89, "2026-11-10"],
+    "macd_hist": [3.1, "2026-11-10"],
+    "macd_hist_change_3d": [6.85, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "1802": {
+    "macd_dif": [0.76, "2026-11-10"],
+    "macd_hist": [1.04, "2026-11-10"],
+    "macd_hist_change_3d": [2.0, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "1815": {
+    "macd_dif": [-4.58, "2026-11-10"],
+    "macd_hist": [-0.61, "2026-11-10"],
+    "macd_hist_change_3d": [2.6, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [11, "2026-11-10"]
+  },
+  "2207": {
+    "macd_dif": [-8.46, "2026-11-10"],
+    "macd_hist": [-6.62, "2026-11-10"],
+    "macd_hist_change_3d": [-5.68, "2026-11-10"],
+    "macd_hist_increasing_days": [0, "2026-11-10"],
+    "macd_hist_decreasing_days": [1, "2026-11-10"],
+    "macd_cross_days_ago_20d": [4, "2026-11-10"]
+  },
+  "2301": {
+    "macd_dif": [-33.81, "2026-11-10"],
+    "macd_hist": [5.7, "2026-11-10"],
+    "macd_hist_change_3d": [14.18, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "2330": {
+    "macd_dif": [-108.31, "2026-11-10"],
+    "macd_hist": [9.01, "2026-11-10"],
+    "macd_hist_change_3d": [35.15, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "2345": {
+    "macd_dif": [-281.56, "2026-11-10"],
+    "macd_hist": [39.75, "2026-11-10"],
+    "macd_hist_change_3d": [110.99, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "2376": {
+    "macd_dif": [-45.71, "2026-11-10"],
+    "macd_hist": [-5.49, "2026-11-10"],
+    "macd_hist_change_3d": [4.9, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [8, "2026-11-10"]
+  },
+  "2379": {
+    "macd_dif": [-18.94, "2026-11-10"],
+    "macd_hist": [-3.28, "2026-11-10"],
+    "macd_hist_change_3d": [12.51, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [6, "2026-11-10"]
+  },
+  "2383": {
+    "macd_dif": [-661.93, "2026-11-10"],
+    "macd_hist": [28.66, "2026-11-10"],
+    "macd_hist_change_3d": [173.3, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "2404": {
+    "macd_dif": [-212.37, "2026-11-10"],
+    "macd_hist": [-7.45, "2026-11-10"],
+    "macd_hist_change_3d": [28.11, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [5, "2026-11-10"]
+  },
+  "2412": {
+    "macd_dif": [4.13, "2026-11-10"],
+    "macd_hist": [-1.36, "2026-11-10"],
+    "macd_hist_change_3d": [-1.22, "2026-11-10"],
+    "macd_hist_increasing_days": [0, "2026-11-10"],
+    "macd_hist_decreasing_days": [2, "2026-11-10"],
+    "macd_cross_days_ago_20d": [1, "2026-11-10"]
+  },
+  "2454": {
+    "macd_dif": [-489.44, "2026-11-10"],
+    "macd_hist": [130.15, "2026-11-10"],
+    "macd_hist_change_3d": [236.84, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [1, "2026-11-10"]
+  },
+  "2603": {
+    "macd_dif": [-4.15, "2026-11-10"],
+    "macd_hist": [-3.73, "2026-11-10"],
+    "macd_hist_change_3d": [-1.0, "2026-11-10"],
+    "macd_hist_increasing_days": [1, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [5, "2026-11-10"]
+  },
+  "2610": {
+    "macd_dif": [0.51, "2026-11-10"],
+    "macd_hist": [0.21, "2026-11-10"],
+    "macd_hist_change_3d": [0.09, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [6, "2026-11-10"]
+  },
+  "2618": {
+    "macd_dif": [0.72, "2026-11-10"],
+    "macd_hist": [0.23, "2026-11-10"],
+    "macd_hist_change_3d": [-0.01, "2026-11-10"],
+    "macd_hist_increasing_days": [1, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [6, "2026-11-10"]
+  },
+  "2880": {
+    "macd_dif": [0.6, "2026-11-10"],
+    "macd_hist": [-0.4, "2026-11-10"],
+    "macd_hist_change_3d": [0.28, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [9, "2026-11-10"]
+  },
+  "2881": {
+    "macd_dif": [-5.41, "2026-11-10"],
+    "macd_hist": [-1.54, "2026-11-10"],
+    "macd_hist_change_3d": [1.11, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [6, "2026-11-10"]
+  },
+  "2882": {
+    "macd_dif": [-3.09, "2026-11-10"],
+    "macd_hist": [-0.96, "2026-11-10"],
+    "macd_hist_change_3d": [0.41, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [5, "2026-11-10"]
+  },
+  "2883": {
+    "macd_dif": [-2.29, "2026-11-10"],
+    "macd_hist": [-0.03, "2026-11-10"],
+    "macd_hist_change_3d": [0.94, "2026-11-10"],
+    "macd_hist_increasing_days": [4, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [7, "2026-11-10"]
+  },
+  "2885": {
+    "macd_dif": [-2.06, "2026-11-10"],
+    "macd_hist": [-0.38, "2026-11-10"],
+    "macd_hist_change_3d": [0.96, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [7, "2026-11-10"]
+  },
+  "2886": {
+    "macd_dif": [-0.02, "2026-11-10"],
+    "macd_hist": [-0.68, "2026-11-10"],
+    "macd_hist_change_3d": [-0.04, "2026-11-10"],
+    "macd_hist_increasing_days": [1, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [9, "2026-11-10"]
+  },
+  "2891": {
+    "macd_dif": [1.39, "2026-11-10"],
+    "macd_hist": [-0.77, "2026-11-10"],
+    "macd_hist_change_3d": [0.2, "2026-11-10"],
+    "macd_hist_increasing_days": [0, "2026-11-10"],
+    "macd_hist_decreasing_days": [1, "2026-11-10"],
+    "macd_cross_days_ago_20d": [6, "2026-11-10"]
+  },
+  "3034": {
+    "macd_dif": [-114.06, "2026-11-10"],
+    "macd_hist": [-38.58, "2026-11-10"],
+    "macd_hist_change_3d": [5.94, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [7, "2026-11-10"]
+  },
+  "3037": {
+    "macd_dif": [-164.75, "2026-11-10"],
+    "macd_hist": [-5.89, "2026-11-10"],
+    "macd_hist_change_3d": [33.14, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [-1, "2026-11-10"]
+  },
+  "3045": {
+    "macd_dif": [-0.21, "2026-11-10"],
+    "macd_hist": [-1.97, "2026-11-10"],
+    "macd_hist_change_3d": [-1.09, "2026-11-10"],
+    "macd_hist_increasing_days": [0, "2026-11-10"],
+    "macd_hist_decreasing_days": [4, "2026-11-10"],
+    "macd_cross_days_ago_20d": [7, "2026-11-10"]
+  },
+  "3131": {
+    "macd_dif": [-298.02, "2026-11-10"],
+    "macd_hist": [25.79, "2026-11-10"],
+    "macd_hist_change_3d": [86.52, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "3189": {
+    "macd_dif": [-170.29, "2026-11-10"],
+    "macd_hist": [-17.82, "2026-11-10"],
+    "macd_hist_change_3d": [32.4, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [8, "2026-11-10"]
+  },
+  "3227": {
+    "macd_dif": [-5.28, "2026-11-10"],
+    "macd_hist": [0.69, "2026-11-10"],
+    "macd_hist_change_3d": [2.47, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "3231": {
+    "macd_dif": [-27.23, "2026-11-10"],
+    "macd_hist": [-2.85, "2026-11-10"],
+    "macd_hist_change_3d": [7.99, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [7, "2026-11-10"]
+  },
+  "3293": {
+    "macd_dif": [-114.97, "2026-11-10"],
+    "macd_hist": [-22.24, "2026-11-10"],
+    "macd_hist_change_3d": [39.98, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [6, "2026-11-10"]
+  },
+  "3363": {
+    "macd_dif": [-60.15, "2026-11-10"],
+    "macd_hist": [3.84, "2026-11-10"],
+    "macd_hist_change_3d": [10.74, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "3443": {
+    "macd_dif": [-421.15, "2026-11-10"],
+    "macd_hist": [58.34, "2026-11-10"],
+    "macd_hist_change_3d": [253.77, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "3491": {
+    "macd_dif": [-144.31, "2026-11-10"],
+    "macd_hist": [52.3, "2026-11-10"],
+    "macd_hist_change_3d": [69.59, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "3529": {
+    "macd_dif": [-201.59, "2026-11-10"],
+    "macd_hist": [20.2, "2026-11-10"],
+    "macd_hist_change_3d": [66.09, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "3533": {
+    "macd_dif": [-77.2, "2026-11-10"],
+    "macd_hist": [-5.15, "2026-11-10"],
+    "macd_hist_change_3d": [43.47, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [7, "2026-11-10"]
+  },
+  "3661": {
+    "macd_dif": [-143.4, "2026-11-10"],
+    "macd_hist": [42.23, "2026-11-10"],
+    "macd_hist_change_3d": [95.7, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "4123": {
+    "macd_dif": [-4.3, "2026-11-10"],
+    "macd_hist": [0.38, "2026-11-10"],
+    "macd_hist_change_3d": [0.02, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [3, "2026-11-10"]
+  },
+  "4749": {
+    "macd_dif": [-19.63, "2026-11-10"],
+    "macd_hist": [5.22, "2026-11-10"],
+    "macd_hist_change_3d": [12.33, "2026-11-10"],
+    "macd_hist_increasing_days": [3, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [1, "2026-11-10"]
+  },
+  "4772": {
+    "macd_dif": [-11.51, "2026-11-10"],
+    "macd_hist": [1.04, "2026-11-10"],
+    "macd_hist_change_3d": [4.03, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "4904": {
+    "macd_dif": [-2.96, "2026-11-10"],
+    "macd_hist": [-2.61, "2026-11-10"],
+    "macd_hist_change_3d": [-1.85, "2026-11-10"],
+    "macd_hist_increasing_days": [0, "2026-11-10"],
+    "macd_hist_decreasing_days": [4, "2026-11-10"],
+    "macd_cross_days_ago_20d": [9, "2026-11-10"]
+  },
+  "4938": {
+    "macd_dif": [-3.58, "2026-11-10"],
+    "macd_hist": [-1.79, "2026-11-10"],
+    "macd_hist_change_3d": [0.73, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [8, "2026-11-10"]
+  },
+  "4958": {
+    "macd_dif": [-65.18, "2026-11-10"],
+    "macd_hist": [-0.09, "2026-11-10"],
+    "macd_hist_change_3d": [23.75, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [18, "2026-11-10"]
+  },
+  "4979": {
+    "macd_dif": [-62.11, "2026-11-10"],
+    "macd_hist": [5.3, "2026-11-10"],
+    "macd_hist_change_3d": [18.64, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "5880": {
+    "macd_dif": [-0.14, "2026-11-10"],
+    "macd_hist": [-0.47, "2026-11-10"],
+    "macd_hist_change_3d": [-0.19, "2026-11-10"],
+    "macd_hist_increasing_days": [1, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [5, "2026-11-10"]
+  },
+  "5903": {
+    "macd_dif": [-1.02, "2026-11-10"],
+    "macd_hist": [-0.08, "2026-11-10"],
+    "macd_hist_change_3d": [0.06, "2026-11-10"],
+    "macd_hist_increasing_days": [1, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [9, "2026-11-10"]
+  },
+  "6023": {
+    "macd_dif": [-4.32, "2026-11-10"],
+    "macd_hist": [-0.67, "2026-11-10"],
+    "macd_hist_change_3d": [-0.04, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [5, "2026-11-10"]
+  },
+  "6139": {
+    "macd_dif": [-90.73, "2026-11-10"],
+    "macd_hist": [10.75, "2026-11-10"],
+    "macd_hist_change_3d": [28.66, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "6505": {
+    "macd_dif": [-10.18, "2026-11-10"],
+    "macd_hist": [-1.06, "2026-11-10"],
+    "macd_hist_change_3d": [2.27, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [14, "2026-11-10"]
+  },
+  "6510": {
+    "macd_dif": [-137.51, "2026-11-10"],
+    "macd_hist": [22.83, "2026-11-10"],
+    "macd_hist_change_3d": [63.6, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "6548": {
+    "macd_dif": [-118.55, "2026-11-10"],
+    "macd_hist": [13.4, "2026-11-10"],
+    "macd_hist_change_3d": [50.19, "2026-11-10"],
+    "macd_hist_increasing_days": [3, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "6919": {
+    "macd_dif": [-8.06, "2026-11-10"],
+    "macd_hist": [12.08, "2026-11-10"],
+    "macd_hist_change_3d": [9.87, "2026-11-10"],
+    "macd_hist_increasing_days": [4, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [3, "2026-11-10"]
+  },
+  "7734": {
+    "macd_dif": [-230.82, "2026-11-10"],
+    "macd_hist": [11.66, "2026-11-10"],
+    "macd_hist_change_3d": [55.26, "2026-11-10"],
+    "macd_hist_increasing_days": [2, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [0, "2026-11-10"]
+  },
+  "8069": {
+    "macd_dif": [-4.83, "2026-11-10"],
+    "macd_hist": [-0.88, "2026-11-10"],
+    "macd_hist_change_3d": [1.99, "2026-11-10"],
+    "macd_hist_increasing_days": [3, "2026-11-10"],
+    "macd_hist_decreasing_days": [0, "2026-11-10"],
+    "macd_cross_days_ago_20d": [8, "2026-11-10"]
+  }
+}

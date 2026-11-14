@@ -1,0 +1,255 @@
+{
+  "decisions": [
+    {
+      "decision_id": "D1",
+      "ticker": "2330",
+      "action": "BUY",
+      "target_weight": 0.07,
+      "inference_refs": [
+        "I1"
+      ],
+      "risk_check": "首日建立核心權值部位 7.0% <= 25% 上限；整體持股 25 檔符合 [20, 30] 規範，預留 10.0% 現金符合 [0.05, 0.15] 防禦區間。"
+    },
+    {
+      "decision_id": "D2",
+      "ticker": "2317",
+      "action": "BUY",
+      "target_weight": 0.045,
+      "inference_refs": [
+        "I2"
+      ],
+      "risk_check": "首日建立硬體代工核心 4.5% <= 10% 上限；營收雙成長具相對抗跌特質，整體持股與現金合規。"
+    },
+    {
+      "decision_id": "D3",
+      "ticker": "2383",
+      "action": "BUY",
+      "target_weight": 0.045,
+      "inference_refs": [
+        "I3"
+      ],
+      "risk_check": "首日建立高階材料成長部位 4.5% <= 10% 上限；ROE 與營收高增長，整體組合持股檔數與權重合規。"
+    },
+    {
+      "decision_id": "D4",
+      "ticker": "2891",
+      "action": "BUY",
+      "target_weight": 0.04,
+      "inference_refs": [
+        "I4"
+      ],
+      "risk_check": "首日建立金融防禦龍頭 4.0% <= 10% 上限；外資持續買超，在大盤 risk_off 下發揮組合防震效益。"
+    },
+    {
+      "decision_id": "D5",
+      "ticker": "3034",
+      "action": "BUY",
+      "target_weight": 0.04,
+      "inference_refs": [
+        "I5"
+      ],
+      "risk_check": "首日配置 IC 設計核心 4.0% <= 10% 上限；技術面突破均線且籌碼法人偏多，權重符合分散規範。"
+    },
+    {
+      "decision_id": "D6",
+      "ticker": "4938",
+      "action": "BUY",
+      "target_weight": 0.04,
+      "inference_refs": [
+        "I6"
+      ],
+      "risk_check": "首日建立高動能部位 4.0% <= 10% 上限；月營收大幅翻倍與外資強勁買超，單檔未逾限額。"
+    },
+    {
+      "decision_id": "D7",
+      "ticker": "2603",
+      "action": "BUY",
+      "target_weight": 0.04,
+      "inference_refs": [
+        "I7"
+      ],
+      "risk_check": "首日配置高現金流傳產龍頭 4.0% <= 10% 上限；土洋同步買超，有助平抑科技大盤震盪風險。"
+    },
+    {
+      "decision_id": "D8",
+      "ticker": "4958",
+      "action": "BUY",
+      "target_weight": 0.04,
+      "inference_refs": [
+        "I8"
+      ],
+      "risk_check": "首日建立 PCB 龍頭 4.0% <= 10% 上限；營收旺季顯著增長，近 20 日超額報酬強勢，部位合規。"
+    },
+    {
+      "decision_id": "D9",
+      "ticker": "2368",
+      "action": "BUY",
+      "target_weight": 0.035,
+      "inference_refs": [
+        "I9"
+      ],
+      "risk_check": "首日建立伺服器板部位 3.5% <= 10% 上限；ROE 逾 12% 且投信積極買超，拉回均線提供安全介入點。"
+    },
+    {
+      "decision_id": "D10",
+      "ticker": "2382",
+      "action": "BUY",
+      "target_weight": 0.035,
+      "inference_refs": [
+        "I10"
+      ],
+      "risk_check": "首日配置 AI 伺服器整機龍頭 3.5% <= 10% 上限；法人連續買超且獲利品質優異，部位合規。"
+    },
+    {
+      "decision_id": "D11",
+      "ticker": "3037",
+      "action": "BUY",
+      "target_weight": 0.035,
+      "inference_refs": [
+        "I11"
+      ],
+      "risk_check": "首日建立載板成長部位 3.5% <= 10% 上限；營收與 ROE 顯著復甦，單檔權重合規且利於分散。"
+    },
+    {
+      "decision_id": "D12",
+      "ticker": "3231",
+      "action": "BUY",
+      "target_weight": 0.035,
+      "inference_refs": [
+        "I12"
+      ],
+      "risk_check": "首日配置短線突破強勢股 3.5% <= 10% 上限；外資大舉回補，營收年增顯著，持股比例合規。"
+    },
+    {
+      "decision_id": "D13",
+      "ticker": "3443",
+      "action": "BUY",
+      "target_weight": 0.035,
+      "inference_refs": [
+        "I13"
+      ],
+      "risk_check": "首日配置高獲利 ASIC 龍頭 3.5% <= 10% 上限；月營收翻倍且 ROE 超過 11%，適度控制高價股波動。"
+    },
+    {
+      "decision_id": "D14",
+      "ticker": "2376",
+      "action": "BUY",
+      "target_weight": 0.035,
+      "inference_refs": [
+        "I14"
+      ],
+      "risk_check": "首日配置營收高爆發板卡龍頭 3.5% <= 10% 上限；法人同步站在買方，具低檔評價保護。"
+    },
+    {
+      "decision_id": "D15",
+      "ticker": "2379",
+      "action": "BUY",
+      "target_weight": 0.035,
+      "inference_refs": [
+        "I15"
+      ],
+      "risk_check": "首日建立網通防禦晶片部位 3.5% <= 10% 上限；波動率僅 1.76% 且外資大買，符合防禦姿態。"
+    },
+    {
+      "decision_id": "D16",
+      "ticker": "6415",
+      "action": "BUY",
+      "target_weight": 0.035,
+      "inference_refs": [
+        "I16"
+      ],
+      "risk_check": "首日配置週期復甦電源晶片 3.5% <= 10% 上限；價量同步轉強，營收年增逾 50%，權重合規。"
+    },
+    {
+      "decision_id": "D17",
+      "ticker": "2882",
+      "action": "BUY",
+      "target_weight": 0.035,
+      "inference_refs": [
+        "I17"
+      ],
+      "risk_check": "首日配置大型金控 3.5% <= 10% 上限；外資持續流入，低波動且抗跌性佳，有助防禦大盤下行風險。"
+    },
+    {
+      "decision_id": "D18",
+      "ticker": "2881",
+      "action": "BUY",
+      "target_weight": 0.035,
+      "inference_refs": [
+        "I18"
+      ],
+      "risk_check": "首日建立金控獲利旗艦 3.5% <= 10% 上限；外資買超力道穩固，防禦屬性契合整體組合風險控管。"
+    },
+    {
+      "decision_id": "D19",
+      "ticker": "1303",
+      "action": "BUY",
+      "target_weight": 0.035,
+      "inference_refs": [
+        "I19"
+      ],
+      "risk_check": "首日配置傳產景氣循環領頭羊 3.5% <= 10% 上限；營收雙位數強勁成長，兼顧非電子產業平衡。"
+    },
+    {
+      "decision_id": "D20",
+      "ticker": "6505",
+      "action": "BUY",
+      "target_weight": 0.035,
+      "inference_refs": [
+        "I20"
+      ],
+      "risk_check": "首日建立石化權值部位 3.5% <= 10% 上限；外資單日大幅回補，分散電子產業單一集中度風險。"
+    },
+    {
+      "decision_id": "D21",
+      "ticker": "1802",
+      "action": "BUY",
+      "target_weight": 0.024,
+      "inference_refs": [
+        "I21"
+      ],
+      "risk_check": "首日建立中小型動能部位 2.4% <= 10% 上限；內外資同步爆量加碼，價量齊揚，低權重控管波動。"
+    },
+    {
+      "decision_id": "D22",
+      "ticker": "2404",
+      "action": "BUY",
+      "target_weight": 0.024,
+      "inference_refs": [
+        "I22"
+      ],
+      "risk_check": "首日建立高 ROE 設備廠 2.4% <= 10% 上限；投信連買且獲利品質優異，負乖離拉回具高安全邊際。"
+    },
+    {
+      "decision_id": "D23",
+      "ticker": "6446",
+      "action": "BUY",
+      "target_weight": 0.024,
+      "inference_refs": [
+        "I23"
+      ],
+      "risk_check": "首日建立生技新藥非相關資產 2.4% <= 10% 上限；營收翻倍且與科技盤勢關聯度低，利於跨族群分散。"
+    },
+    {
+      "decision_id": "D24",
+      "ticker": "3533",
+      "action": "BUY",
+      "target_weight": 0.024,
+      "inference_refs": [
+        "I24"
+      ],
+      "risk_check": "首日配置伺服器連接組件龍頭 2.4% <= 10% 上限；投信持續力挺，超額報酬與規格升級趨勢穩健。"
+    },
+    {
+      "decision_id": "D25",
+      "ticker": "3189",
+      "action": "BUY",
+      "target_weight": 0.024,
+      "inference_refs": [
+        "I25"
+      ],
+      "risk_check": "首日配置載板動能部位 2.4% <= 10% 上限；投信單日大買逾百萬股，營收回溫明確，部位嚴格合規。"
+    }
+  ],
+  "no_trade_decisions": []
+}

@@ -1,0 +1,205 @@
+{
+  "decisions": [
+    {
+      "decision_id": "D1",
+      "ticker": "2368",
+      "action": "TRIM",
+      "target_weight": 0.018,
+      "inference_refs": [
+        "I5"
+      ],
+      "risk_check": "減碼至目標權重 1.8% <= 10% 上限；整體持股維持 25 檔在 [20, 30] 區間，預留現金提升以符防禦姿態。"
+    },
+    {
+      "decision_id": "D2",
+      "ticker": "2376",
+      "action": "TRIM",
+      "target_weight": 0.03,
+      "inference_refs": [
+        "I6"
+      ],
+      "risk_check": "減碼至目標權重 3.0% <= 10% 上限；整體持股維持 25 檔在 [20, 30] 區間，防禦外資去槓桿賣壓。"
+    },
+    {
+      "decision_id": "D3",
+      "ticker": "2383",
+      "action": "TRIM",
+      "target_weight": 0.018,
+      "inference_refs": [
+        "I9"
+      ],
+      "risk_check": "減碼至目標權重 1.8% <= 10% 上限；整體持股維持 25 檔在 [20, 30] 區間，降低高價股流動性修正曝險。"
+    },
+    {
+      "decision_id": "D4",
+      "ticker": "3037",
+      "action": "TRIM",
+      "target_weight": 0.015,
+      "inference_refs": [
+        "I16"
+      ],
+      "risk_check": "減碼至目標權重 1.5% <= 10% 上限；整體持股維持 25 檔在 [20, 30] 區間，防範短線技術破線賣壓。"
+    },
+    {
+      "decision_id": "D5",
+      "ticker": "3189",
+      "action": "TRIM",
+      "target_weight": 0.01,
+      "inference_refs": [
+        "I17"
+      ],
+      "risk_check": "減碼至目標權重 1.0% <= 10% 上限；整體持股維持 25 檔在 [20, 30] 區間，降低高波動度次核心個股曝險。"
+    },
+    {
+      "decision_id": "D6",
+      "ticker": "3231",
+      "action": "TRIM",
+      "target_weight": 0.032,
+      "inference_refs": [
+        "I18"
+      ],
+      "risk_check": "減碼至目標權重 3.2% <= 10% 上限；整體持股維持 25 檔在 [20, 30] 區間，因應外資大幅提款調節部位。"
+    },
+    {
+      "decision_id": "D7",
+      "ticker": "4958",
+      "action": "TRIM",
+      "target_weight": 0.012,
+      "inference_refs": [
+        "I22"
+      ],
+      "risk_check": "減碼至目標權重 1.2% <= 10% 上限；整體持股維持 25 檔在 [20, 30] 區間，規避短線重挫與外資拋售風險。"
+    },
+    {
+      "decision_id": "D8",
+      "ticker": "6505",
+      "action": "TRIM",
+      "target_weight": 0.02,
+      "inference_refs": [
+        "I25"
+      ],
+      "risk_check": "減碼至目標權重 2.0% <= 10% 上限；整體持股維持 25 檔在 [20, 30] 區間，因應投信出脫與破線補跌風險。"
+    }
+  ],
+  "no_trade_decisions": [
+    {
+      "ticker": "1303",
+      "reason_refs": [
+        "I1"
+      ],
+      "reason": "南亞營收年增 55.25% 且中波段相對強勢，作為傳產防禦與營運改善核心標的，續抱維持部位。"
+    },
+    {
+      "ticker": "1802",
+      "reason_refs": [
+        "I2"
+      ],
+      "reason": "台玻營收年增 34.1% 且外資積極回補，具備低基期抗跌優勢，續抱維持部位。"
+    },
+    {
+      "ticker": "2317",
+      "reason_refs": [
+        "I3"
+      ],
+      "reason": "鴻海營收雙增且波動率極低，外資籌碼相對穩定，為防禦核心權值，續抱維持部位。"
+    },
+    {
+      "ticker": "2330",
+      "reason_refs": [
+        "I4"
+      ],
+      "reason": "台積電具備 11.39% 高 ROE 與營收高成長，護城河極深，續抱維持旗艦核心部位。"
+    },
+    {
+      "ticker": "2379",
+      "reason_refs": [
+        "I7"
+      ],
+      "reason": "瑞昱逆勢站穩 MA20 且外資連買，技術與籌碼偏多，續抱維持強勢配置。"
+    },
+    {
+      "ticker": "2382",
+      "reason_refs": [
+        "I8"
+      ],
+      "reason": "廣達高 ROE 且投信積極承接，伺服器核心競爭力扎實，續抱維持部位。"
+    },
+    {
+      "ticker": "2404",
+      "reason_refs": [
+        "I10"
+      ],
+      "reason": "漢唐高 ROE 且投信強力吸籌，高殖利率具備防守保護，續抱維持部位。"
+    },
+    {
+      "ticker": "2603",
+      "reason_refs": [
+        "I11"
+      ],
+      "reason": "長榮近 20 日超額報酬高且法人同步大買，為強勢避險領頭羊，續抱維持部位。"
+    },
+    {
+      "ticker": "2881",
+      "reason_refs": [
+        "I12"
+      ],
+      "reason": "富邦金技術面站穩均線且法人籌碼偏多，提供資金避風港功能，續抱維持金融核心部位。"
+    },
+    {
+      "ticker": "2882",
+      "reason_refs": [
+        "I13"
+      ],
+      "reason": "國泰金逆勢抗跌且獲法人雙向力挺，防禦價值與流動性佳，續抱維持金融基石部位。"
+    },
+    {
+      "ticker": "2891",
+      "reason_refs": [
+        "I14"
+      ],
+      "reason": "中信金超額報酬亮眼且法人大舉買進，銀行獲利穩固，續抱維持主力配置。"
+    },
+    {
+      "ticker": "3034",
+      "reason_refs": [
+        "I15"
+      ],
+      "reason": "聯詠 ROE 良好且均線多方排列，營收年增穩健，續抱維持穩定配置。"
+    },
+    {
+      "ticker": "3443",
+      "reason_refs": [
+        "I19"
+      ],
+      "reason": "創意獲利品質佳且長線 ASIC 展望正向，續抱維持輕量精準配置。"
+    },
+    {
+      "ticker": "3533",
+      "reason_refs": [
+        "I20"
+      ],
+      "reason": "嘉澤逆勢抗跌且站回均線，法人齊步翻多，續抱維持伺服器升級配置。"
+    },
+    {
+      "ticker": "4938",
+      "reason_refs": [
+        "I21"
+      ],
+      "reason": "和碩營收倍增具強烈轉機動能，技術結構穩健偏多，續抱維持核心配置。"
+    },
+    {
+      "ticker": "6415",
+      "reason_refs": [
+        "I23"
+      ],
+      "reason": "矽力*-KY 超額報酬領先市場且均線多頭發散，動能強勁，續抱維持進攻配置。"
+    },
+    {
+      "ticker": "6446",
+      "reason_refs": [
+        "I24"
+      ],
+      "reason": "藥華藥營收倍增且具生技避險特性，投信重倉加碼，續抱維持配置。"
+    }
+  ]
+}

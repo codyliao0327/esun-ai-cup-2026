@@ -1,0 +1,715 @@
+[
+  {
+    "client_msg_id": "13ebbeee-5e38-43ff-9a28-edb05f07aa16",
+    "type": "message",
+    "user": "U0C7ENR6D4Y",
+    "text": "主辦單位您好。我看過前面的問答，但我還是看不太懂前十大持股及權重資料。根據10月2號的回覆[2.Active Share 係與每一檔主動型 ETF 分別進行計算與檢核，檢核時採用當日公告之 ETF 前十大持股及權重資料。] 所以我們要有辦法抓公告為準的30檔ETF的持股及權重然後一個一個去比對?畢竟若真的要避免人工介入的話 AI 需自行判定是否超過或違反規則。\n\n辛苦主辦方了。",
+    "ts": "1791270362.370839",
+    "thread_ts": "1791270362.370839",
+    "edited": {
+      "user": "U0C7ENR6D4Y",
+      "ts": "1791270865.000000"
+    },
+    "reply_count": 2,
+    "reply_users": [
+      "U0C3LFZUG3D",
+      "U0C7ENR6D4Y"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1791271462.076689"
+      },
+      {
+        "user": "U0C7ENR6D4Y",
+        "ts": "1791272312.465299"
+      }
+    ],
+    "latest_reply": "1791272312.465299",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "se6y9",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好。我看過前面的問答，但我還是看不太懂前十大持股及權重資料。根據10月2號的回覆[2.Active Share 係與每一檔主動型 ETF 分別進行計算與檢核，檢核時採用當日公告之 ETF 前十大持股及權重資料。] 所以我們要有辦法抓公告為準的30檔ETF的持股及權重然後一個一個去比對?畢竟若真的要避免人工介入的話 AI 需自行判定是否超過或違反規則。\n\n辛苦主辦方了。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-10-04/12219102437765_9eb5810e5c251c238018_72.gif",
+      "first_name": "陳先生",
+      "real_name": "陳先生",
+      "display_name": "陳先生",
+      "team": "T0C3BBR6687",
+      "name": "a0911953525",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 2
+  },
+  {
+    "client_msg_id": "08844695-a5ca-4003-9450-49db53277881",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，主辦方經再次檢視後，決定放寬 Active Share 檢核標準。考量現行主動式 ETF 持股多集中於大型權值股或特定產業，僅以前十大持股檢核易產生誤判，因此調整為比較 *前 15 大持股*，且 *Active Share 低於 15%* 始認定違規。\n相關規範請以最新公布之比賽辦法及公告區內容為準，煩請再次確認，謝謝！",
+    "ts": "1791271242.844299",
+    "thread_ts": "1790498929.610639",
+    "parent_user_id": "U0C4J5XEX98",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "r5Bkd",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，主辦方經再次檢視後，決定放寬 Active Share 檢核標準。考量現行主動式 ETF 持股多集中於大型權值股或特定產業，僅以前十大持股檢核易產生誤判，因此調整為比較 "
+              },
+              {
+                "type": "text",
+                "text": "前 15 大持股",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "，且 "
+              },
+              {
+                "type": "text",
+                "text": "Active Share 低於 15%",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 始認定違規。\n相關規範請以最新公布之比賽辦法及公告區內容為準，煩請再次確認，謝謝！"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "5cc17d04-9919-4f51-998b-6c1057ab429e",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，主辦方經再次檢視後，決定放寬 Active Share 檢核標準。考量現行主動式 ETF 持股多集中於大型權值股或特定產業，僅以前十大持股檢核易產生誤判，因此調整為比較 *前 15 大持股*，且 *Active Share 低於 15%* 始認定違規。\n相關規範請以最新公布之比賽辦法及公告區內容為準，煩請再次確認，謝謝！",
+    "ts": "1791271288.193119",
+    "thread_ts": "1790914873.007229",
+    "parent_user_id": "U0C478XU6PK",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "r5Bkd",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，主辦方經再次檢視後，決定放寬 Active Share 檢核標準。考量現行主動式 ETF 持股多集中於大型權值股或特定產業，僅以前十大持股檢核易產生誤判，因此調整為比較 "
+              },
+              {
+                "type": "text",
+                "text": "前 15 大持股",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "，且 "
+              },
+              {
+                "type": "text",
+                "text": "Active Share 低於 15%",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 始認定違規。\n相關規範請以最新公布之比賽辦法及公告區內容為準，煩請再次確認，謝謝！"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "3b6f304a-925c-4dd7-af76-e28fedcfbfb4",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，是的。Active Share 係與各檔主動型 ETF 分別進行計算，因此若隊伍希望自行檢核是否接近違規門檻，可自行取得各主動型 ETF 最新公告之前十大持股及權重資料進行比對。\n不過，競賽並未強制要求 Agent 必須自行完成 Active Share 檢核；最終仍以主辦單位依規則進行之檢核結果為準。參賽隊伍可依自身 Agent 設計需求，決定是否納入相關風險控管機制。\n\n另外提醒，主辦方經再次檢視後，決定放寬 Active Share 檢核標準。考量現行主動式 ETF 持股多集中於大型權值股或特定產業，僅以前十大持股檢核易產生誤判，因此調整為比較 前 15 大持股，且 Active Share 低於 15% 始認定違規。\n相關規範請以最新公布之比賽辦法及公告區內容為準，煩請再次確認，謝謝",
+    "ts": "1791271462.076689",
+    "thread_ts": "1791270362.370839",
+    "parent_user_id": "U0C7ENR6D4Y",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "UOrde",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，是的。Active Share 係與各檔主動型 ETF 分別進行計算，因此若隊伍希望自行檢核是否接近違規門檻，可自行取得各主動型 ETF 最新公告之前十大持股及權重資料進行比對。\n不過，競賽並未強制要求 Agent 必須自行完成 Active Share 檢核；最終仍以主辦單位依規則進行之檢核結果為準。參賽隊伍可依自身 Agent 設計需求，決定是否納入相關風險控管機制。\n\n另外提醒，主辦方經再次檢視後，決定放寬 Active Share 檢核標準。考量現行主動式 ETF 持股多集中於大型權值股或特定產業，僅以前十大持股檢核易產生誤判，因此調整為比較 前 15 大持股，且 Active Share 低於 15% 始認定違規。\n相關規範請以最新公布之比賽辦法及公告區內容為準，煩請再次確認，謝謝"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "121ebcf4-6b75-4ef3-bab7-ea5f993c2b7b",
+    "type": "message",
+    "user": "U0C7ENR6D4Y",
+    "text": "謝謝owob",
+    "ts": "1791272312.465299",
+    "thread_ts": "1791270362.370839",
+    "parent_user_id": "U0C7ENR6D4Y",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "vofji",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "謝謝owob"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-10-04/12219102437765_9eb5810e5c251c238018_72.gif",
+      "first_name": "陳先生",
+      "real_name": "陳先生",
+      "display_name": "陳先生",
+      "team": "T0C3BBR6687",
+      "name": "a0911953525",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "a32d01d9-8a68-4eaa-94ed-74cfe898a186",
+    "type": "message",
+    "user": "U0C5W1T0EKV",
+    "text": "補上 IAM 錯誤截圖",
+    "ts": "1791308358.459559",
+    "thread_ts": "1790732099.323839",
+    "parent_user_id": "U0C4639LS7N",
+    "files": [
+      {
+        "id": "F0C714VFUA1",
+        "created": 1791308316,
+        "timestamp": 1791308316,
+        "name": "截圖 2026-10-02 凌晨1.28.11.png",
+        "title": "截圖 2026-10-02 凌晨1.28.11.png",
+        "mimetype": "image/png",
+        "image_exif_rotation": 0,
+        "filetype": "png",
+        "pretty_type": "PNG",
+        "user": "U0C5W1T0EKV",
+        "mode": "hosted",
+        "editable": false,
+        "is_external": false,
+        "external_type": "",
+        "size": 778703,
+        "url": "",
+        "url_download": "",
+        "url_private": "https://files.slack.com/files-pri/T0C3BBR6687-F0C714VFUA1/_______2026-10-02_______1.28.11.png",
+        "url_private_download": "https://files.slack.com/files-pri/T0C3BBR6687-F0C714VFUA1/download/_______2026-10-02_______1.28.11.png",
+        "original_h": 1726,
+        "original_w": 2938,
+        "thumb_64": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C714VFUA1-a644933ed9/_______2026-10-02_______1.28.11_64.png",
+        "thumb_80": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C714VFUA1-a644933ed9/_______2026-10-02_______1.28.11_80.png",
+        "thumb_160": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C714VFUA1-a644933ed9/_______2026-10-02_______1.28.11_160.png",
+        "thumb_360": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C714VFUA1-a644933ed9/_______2026-10-02_______1.28.11_360.png",
+        "thumb_360_gif": "",
+        "thumb_360_w": 360,
+        "thumb_360_h": 211,
+        "thumb_480": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C714VFUA1-a644933ed9/_______2026-10-02_______1.28.11_480.png",
+        "thumb_480_w": 480,
+        "thumb_480_h": 282,
+        "thumb_720": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C714VFUA1-a644933ed9/_______2026-10-02_______1.28.11_720.png",
+        "thumb_720_w": 720,
+        "thumb_720_h": 423,
+        "thumb_960": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C714VFUA1-a644933ed9/_______2026-10-02_______1.28.11_960.png",
+        "thumb_960_w": 960,
+        "thumb_960_h": 564,
+        "thumb_1024": "https://files.slack.com/files-tmb/T0C3BBR6687-F0C714VFUA1-a644933ed9/_______2026-10-02_______1.28.11_1024.png",
+        "thumb_1024_w": 1024,
+        "thumb_1024_h": 602,
+        "permalink": "https://esunaiopencom-me19126.slack.com/files/U0C4M9YRDB5/F0C714VFUA1/_______2026-10-02_______1.28.11.png",
+        "permalink_public": "https://slack-files.com/T0C3BBR6687-F0C714VFUA1-5f74a39cef",
+        "edit_link": "",
+        "preview": "",
+        "preview_highlight": "",
+        "lines": 0,
+        "lines_more": 0,
+        "is_public": true,
+        "public_url_shared": false,
+        "channels": null,
+        "groups": null,
+        "ims": null,
+        "initial_comment": {},
+        "comments_count": 0,
+        "num_stars": 0,
+        "is_starred": false,
+        "shares": {
+          "public": null,
+          "private": null
+        },
+        "subject": "",
+        "to": null,
+        "from": null,
+        "cc": null,
+        "headers": {
+          "date": "",
+          "in_reply_to": "",
+          "reply_to": "",
+          "message_id": ""
+        },
+        "plain_text": "",
+        "preview_plain_text": ""
+      }
+    ],
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "8l6Xs",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "補上 IAM 錯誤截圖"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/00b5dc12321a058ecd0c382a707fd885.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png",
+      "first_name": "Kenny",
+      "real_name": "Kenny",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "kenny7012",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "398dfc14-f734-4333-84d9-ce7ad483cbdc",
+    "type": "message",
+    "user": "U0C4992J1K5",
+    "text": "主辦團隊您好，已閱讀 10/05 更新版比賽辦法及最新官方問答，以下僅詢問尚未明確的計算細節，避免自行加入競賽不支援的交易方式。\n\n*1. 現金增資如何處理？*\n辦法規定交易決策僅限現股，公司行動則由主辦方處理。若持股發生現金增資：\n\n• 參賽者是否不需要、也不能提交認購指令？\n• 系統如何處理原股東認購權、現金及新股？\n• 現增除權對每日與期末 NAV 的影響，採什麼計算方式？\n例如威剛（3260）2026/09/21 同時涉及現金股利與現金增資。我們已取得認購比例與認購價，但希望歷史回測遵循競賽帳務，而非自行模擬認購。\n\n*2. 期末累積權益與每日 NAV 的關係*\n新版註 1 已明列除息金額及除權股數累積至初賽結束時納入最終 NAV；六（十二）另提到相關影響納入每日 NAV。請問：\n• 期末之前，每日 NAV 是否完全不包含這些累積權益？現金比例及個股持股上限是否也使用不含權益的 NAV？\n• 權益依哪一天的持股認定？除權息後賣出原持股，已取得的權益是否仍保留？\n• 累積配股是否統一以初賽最後日收盤價計入期末 NAV？\n*3. 官方歷史公司行動資料來源*\n我們目前使用證交所、櫃買中心除權息資料，並補查公開資訊觀測站股利分派資料。部分來源只有當期資料。\n請問是否有建議的官方來源，可核對歷史事件的最終股利金額、配股比例、現金增資、股票分割及修訂資料？若無指定來源，是否有平台採用的來源或計算說明可參考？\n\n*4. 上櫃成交均價及無成交情況*\n先前已指定上市股票使用證交所日行情的成交金額／成交股數。請問上櫃股票對應哪個櫃買中心頁面或欄位？兩市場採用的成交範圍是否包含盤後、鉅額及零股？\n辦法規定訂單全數成交；若當日停牌或成交量為零、無法計算均價，平台會如何處理？\n\n*5. 費稅與金額取整*\n已知無最低手續費或折讓，結算以平台為準。請問手續費、證交稅、成交金額及 NAV：\n• 各自是逐筆計算取整，還是每日彙總後取整？\n• 保留到哪個精度，採四捨五入、無條件捨去或其他方式？\n*6. Active Share 的資料時點與缺項*\n已理解雙方均取前 15 大、使用原始權重，且 Agent 自行檢核不是強制功能。若隊伍自行管理違規風險，請問：\n• 檢核採用哪一天的 ETF 持股資料？若當日資料在臺灣時間 08:55 後才公布，提交前應使用哪個版本？\n• 股票只出現在一側前 15 大時，另一側是否按零計算，即使它可能位於另一側第 16 名以後？\n*7. 五個交易日寬限的起算*\n新版註 3 已說明五個交易日內調整、第六日仍超限記警告。請問首次因價格波動超限的結算日，是否就是第 1 日？例如週一首次超限且當週無休市，是否須週五結算前恢復合規，下週一仍超限才記警告？\n\n謝謝主辦團隊協助釐清。",
+    "ts": "1791324021.909469",
+    "thread_ts": "1791324021.909469",
+    "edited": {
+      "user": "U0C4992J1K5",
+      "ts": "1791324103.000000"
+    },
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1791773064.014719"
+      }
+    ],
+    "latest_reply": "1791773064.014719",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "JwmoD",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦團隊您好，已閱讀 10/05 更新版比賽辦法及最新官方問答，以下僅詢問尚未明確的計算細節，避免自行加入競賽不支援的交易方式。\n\n"
+              },
+              {
+                "type": "text",
+                "text": "1. 現金增資如何處理？",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n辦法規定交易決策僅限現股，公司行動則由主辦方處理。若持股發生現金增資：\n\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "參賽者是否不需要、也不能提交認購指令？"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "系統如何處理原股東認購權、現金及新股？"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "現增除權對每日與期末 NAV 的影響，採什麼計算方式？"
+                  }
+                ]
+              }
+            ],
+            "style": "bullet",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "\n例如威剛（3260）2026/09/21 同時涉及現金股利與現金增資。我們已取得認購比例與認購價，但希望歷史回測遵循競賽帳務，而非自行模擬認購。\n\n"
+              },
+              {
+                "type": "text",
+                "text": "2. 期末累積權益與每日 NAV 的關係",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n新版註 1 已明列除息金額及除權股數累積至初賽結束時納入最終 NAV；六（十二）另提到相關影響納入每日 NAV。請問：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "期末之前，每日 NAV 是否完全不包含這些累積權益？現金比例及個股持股上限是否也使用不含權益的 NAV？"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "權益依哪一天的持股認定？除權息後賣出原持股，已取得的權益是否仍保留？"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "累積配股是否統一以初賽最後日收盤價計入期末 NAV？"
+                  }
+                ]
+              }
+            ],
+            "style": "bullet",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "3. 官方歷史公司行動資料來源",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n我們目前使用證交所、櫃買中心除權息資料，並補查公開資訊觀測站股利分派資料。部分來源只有當期資料。\n請問是否有建議的官方來源，可核對歷史事件的最終股利金額、配股比例、現金增資、股票分割及修訂資料？若無指定來源，是否有平台採用的來源或計算說明可參考？\n\n"
+              },
+              {
+                "type": "text",
+                "text": "4. 上櫃成交均價及無成交情況",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n先前已指定上市股票使用證交所日行情的成交金額／成交股數。請問上櫃股票對應哪個櫃買中心頁面或欄位？兩市場採用的成交範圍是否包含盤後、鉅額及零股？\n辦法規定訂單全數成交；若當日停牌或成交量為零、無法計算均價，平台會如何處理？\n\n"
+              },
+              {
+                "type": "text",
+                "text": "5. 費稅與金額取整",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n已知無最低手續費或折讓，結算以平台為準。請問手續費、證交稅、成交金額及 NAV：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "各自是逐筆計算取整，還是每日彙總後取整？"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "保留到哪個精度，採四捨五入、無條件捨去或其他方式？"
+                  }
+                ]
+              }
+            ],
+            "style": "bullet",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "6. Active Share 的資料時點與缺項",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n已理解雙方均取前 15 大、使用原始權重，且 Agent 自行檢核不是強制功能。若隊伍自行管理違規風險，請問：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "檢核採用哪一天的 ETF 持股資料？若當日資料在臺灣時間 08:55 後才公布，提交前應使用哪個版本？"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "股票只出現在一側前 15 大時，另一側是否按零計算，即使它可能位於另一側第 16 名以後？"
+                  }
+                ]
+              }
+            ],
+            "style": "bullet",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "7. 五個交易日寬限的起算",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n新版註 3 已說明五個交易日內調整、第六日仍超限記警告。請問首次因價格波動超限的結算日，是否就是第 1 日？例如週一首次超限且當週無休市，是否須週五結算前恢復合規，下週一仍超限才記警告？\n\n謝謝主辦團隊協助釐清。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/63065b2947ce867d1386c9163bf2ef89.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0022-72.png",
+      "first_name": "楊博凱（Deity）",
+      "real_name": "楊博凱（Deity）",
+      "display_name": "Deity",
+      "team": "T0C3BBR6687",
+      "name": "tommy12333312",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  }
+]

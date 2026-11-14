@@ -1,0 +1,84 @@
+{
+  "trade_date": "20261112",
+  "calculation_timestamp": "2026-11-12T00:27:19+08:00",
+  "orders": [
+    {
+      "ticker": "4958",
+      "side": "SELL",
+      "shares": 24000,
+      "decision_ref": "D1",
+      "derivation_detail": "target_shares = floor(0×941,000,853 / 461 / 1000)×1000 = 0；現持 24,000 → SELL 24,000"
+    },
+    {
+      "ticker": "6505",
+      "side": "SELL",
+      "shares": 200000,
+      "decision_ref": "D2",
+      "derivation_detail": "target_shares = floor(0×941,000,853 / 91.2 / 1000)×1000 = 0；現持 200,000 → SELL 200,000"
+    },
+    {
+      "ticker": "1815",
+      "side": "BUY",
+      "shares": 100000,
+      "decision_ref": "D3",
+      "derivation_detail": "target_shares = floor(0.015×941,000,853 / 140.5 / 1000)×1000 = 100,000；現持 0 → BUY 100,000"
+    },
+    {
+      "ticker": "8069",
+      "side": "BUY",
+      "shares": 97000,
+      "decision_ref": "D4",
+      "derivation_detail": "target_shares = floor(0.015×941,000,853 / 145 / 1000)×1000 = 97,000；現持 0 → BUY 97,000"
+    }
+  ],
+  "execution_summary": {
+    "nav_tradable": 941000852.51,
+    "estimated_stock_value": 28115000.0,
+    "estimated_stock_weight": 0.0299,
+    "estimated_cash_value": 912885852.51,
+    "estimated_cash_ratio": 0.9701,
+    "target_cash_range": [
+      0.15,
+      0.21
+    ],
+    "cash_compliance": "CHECK_REQUIRED",
+    "active_shares": {
+      "00400A": 0.3079,
+      "00401A": 0.2793,
+      "00402A": 0.3374,
+      "00403A": 0.3498,
+      "00404A": 0.3063,
+      "00405A": 0.3806,
+      "00406A": 0.3064,
+      "00407A": 0.3305,
+      "00408A": 0.2966,
+      "00409A": 0.3118,
+      "00410A": 0.3398,
+      "00411A": 0.3947,
+      "00412A": 0.2253,
+      "00415A": 0.3683,
+      "00416A": 0.3506,
+      "00980A": 0.278,
+      "00981A": 0.412,
+      "00982A": 0.3338,
+      "00983A": 0.3436,
+      "00984A": 0.2005,
+      "00985A": 0.2778,
+      "00986A": 0.348,
+      "00987A": 0.3402,
+      "00988A": 0.3696,
+      "00989A": 0.2629,
+      "00990A": 0.3283,
+      "00991A": 0.4727,
+      "00992A": 0.3399,
+      "00993A": 0.3291,
+      "00994A": 0.4117,
+      "00995A": 0.3449,
+      "00996A": 0.3479,
+      "00997A": 0.262,
+      "00998A": 0.2502,
+      "00999A": 0.2519
+    },
+    "active_share_compliance": "PASS"
+  }
+}

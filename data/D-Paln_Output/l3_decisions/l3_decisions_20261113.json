@@ -1,0 +1,261 @@
+{
+  "decisions": [
+    {
+      "decision_id": "D1",
+      "ticker": "2330",
+      "action": "ADD",
+      "target_weight": 0.078,
+      "inference_refs": [
+        "I5"
+      ],
+      "risk_check": "加碼台積電至7.8% <= 25%單一上限；總持股30檔 ∈ [20, 30]；計入買進手續費後預估現金比降至約12.6% ∈ [0.08, 0.18]，安全遠離25%違規天花板。"
+    },
+    {
+      "decision_id": "D2",
+      "ticker": "2412",
+      "action": "ADD",
+      "target_weight": 0.056,
+      "inference_refs": [
+        "I11"
+      ],
+      "risk_check": "加碼中華電至5.6% <= 10%單一上限；總持股30檔合規；預估組合剩餘現金比約12.6%控制在22%安全線以下。"
+    },
+    {
+      "decision_id": "D3",
+      "ticker": "2886",
+      "action": "ADD",
+      "target_weight": 0.048,
+      "inference_refs": [
+        "I17"
+      ],
+      "risk_check": "加碼兆豐金至4.8% <= 10%單一上限；總持股30檔 ∈ [20, 30]；預估現金比約12.6%落於目標區間[0.08, 0.18]內。"
+    },
+    {
+      "decision_id": "D4",
+      "ticker": "2891",
+      "action": "ADD",
+      "target_weight": 0.048,
+      "inference_refs": [
+        "I18"
+      ],
+      "risk_check": "加碼中信金至4.8% <= 10%單一上限；總持股30檔合規；預估現金比約12.6%遠低於22%防禦上限。"
+    },
+    {
+      "decision_id": "D5",
+      "ticker": "1216",
+      "action": "ADD",
+      "target_weight": 0.045,
+      "inference_refs": [
+        "I1"
+      ],
+      "risk_check": "加碼統一至4.5% <= 10%單一上限；總持股30檔 ∈ [20, 30]；預估現金比約12.6%符合[0.08, 0.18]區間。"
+    },
+    {
+      "decision_id": "D6",
+      "ticker": "2317",
+      "action": "ADD",
+      "target_weight": 0.045,
+      "inference_refs": [
+        "I4"
+      ],
+      "risk_check": "加碼鴻海至4.5% <= 10%單一上限；總持股30檔合規；預估現金比約12.6%確保盤後不觸及25%天花板。"
+    },
+    {
+      "decision_id": "D7",
+      "ticker": "3045",
+      "action": "ADD",
+      "target_weight": 0.043,
+      "inference_refs": [
+        "I21"
+      ],
+      "risk_check": "加碼台灣大至4.3% <= 10%單一上限；總持股30檔 ∈ [20, 30]；預估現金比約12.6%合規。"
+    },
+    {
+      "decision_id": "D8",
+      "ticker": "1303",
+      "action": "ADD",
+      "target_weight": 0.04,
+      "inference_refs": [
+        "I2"
+      ],
+      "risk_check": "加碼南亞至4.0% <= 10%單一上限；總持股30檔合規；預估現金比約12.6%落於[0.08, 0.18]目標區間。"
+    },
+    {
+      "decision_id": "D9",
+      "ticker": "2881",
+      "action": "ADD",
+      "target_weight": 0.036,
+      "inference_refs": [
+        "I14"
+      ],
+      "risk_check": "加碼富邦金至3.6% <= 10%單一上限；總持股30檔 ∈ [20, 30]；預估現金比約12.6%低於22%安全線。"
+    },
+    {
+      "decision_id": "D10",
+      "ticker": "2379",
+      "action": "ADD",
+      "target_weight": 0.03,
+      "inference_refs": [
+        "I8"
+      ],
+      "risk_check": "加碼瑞昱至3.0% <= 10%單一上限；總持股30檔合規；預估現金比約12.6% ∈ [0.08, 0.18]。"
+    },
+    {
+      "decision_id": "D11",
+      "ticker": "2882",
+      "action": "ADD",
+      "target_weight": 0.029,
+      "inference_refs": [
+        "I15"
+      ],
+      "risk_check": "加碼國泰金至2.9% <= 10%單一上限；總持股30檔 ∈ [20, 30]；預估現金比約12.6%合規。"
+    },
+    {
+      "decision_id": "D12",
+      "ticker": "4904",
+      "action": "ADD",
+      "target_weight": 0.028,
+      "inference_refs": [
+        "I26"
+      ],
+      "risk_check": "加碼遠傳至2.8% <= 10%單一上限；總持股30檔合規；預估現金比約12.6%安全遠離25%上限。"
+    },
+    {
+      "decision_id": "D13",
+      "ticker": "2880",
+      "action": "ADD",
+      "target_weight": 0.027,
+      "inference_refs": [
+        "I13"
+      ],
+      "risk_check": "加碼華南金至2.7% <= 10%單一上限；總持股30檔 ∈ [20, 30]；預估現金比約12.6%合規。"
+    },
+    {
+      "decision_id": "D14",
+      "ticker": "3231",
+      "action": "ADD",
+      "target_weight": 0.024,
+      "inference_refs": [
+        "I23"
+      ],
+      "risk_check": "加碼緯創至2.4% <= 10%單一上限；總持股30檔合規；預估現金比約12.6%落於[0.08, 0.18]區間。"
+    },
+    {
+      "decision_id": "D15",
+      "ticker": "2368",
+      "action": "ADD",
+      "target_weight": 0.022,
+      "inference_refs": [
+        "I6"
+      ],
+      "risk_check": "加碼金像電至2.2% <= 10%單一上限；總持股30檔 ∈ [20, 30]；預估現金比約12.6% <= 22%安全線。"
+    }
+  ],
+  "no_trade_decisions": [
+    {
+      "ticker": "2207",
+      "reason_refs": [
+        "I3"
+      ],
+      "reason": "外資昨日轉買超32.32%且投信同步加碼，波動率僅1.98%具防禦性，為節省換股摩擦成本維持原部位續抱。"
+    },
+    {
+      "ticker": "2376",
+      "reason_refs": [
+        "I7"
+      ],
+      "reason": "月營收年增136.72%、ROE 10.95%基本面強勁，目前RSI 21.81極度超賣且獲投信逆勢承接，不殺低並維持既有股數等待反彈。"
+    },
+    {
+      "ticker": "2383",
+      "reason_refs": [
+        "I9"
+      ],
+      "reason": "月營收年增203.07%、ROE 22.01%基本面頂尖，昨日回檔獲外資與投信同步逢低買超，維持既有3,000股部位續抱。"
+    },
+    {
+      "ticker": "2404",
+      "reason_refs": [
+        "I10"
+      ],
+      "reason": "ROE達22.95%且月營收年月雙增，MACD柱狀體連4日遞增翻紅，維持既有9,000股配置。"
+    },
+    {
+      "ticker": "2603",
+      "reason_refs": [
+        "I12"
+      ],
+      "reason": "月營收年增96.13%、KD黃金交叉且獲投信近5日買超支撐，為避免交易稅費損耗並維持高曝險，續抱既有部位。"
+    },
+    {
+      "ticker": "2884",
+      "reason_refs": [
+        "I16"
+      ],
+      "reason": "月營收年增7.18%，外資單日大買39.09%且波動率低，維持既有持股有助穩定組合淨值。"
+    },
+    {
+      "ticker": "3034",
+      "reason_refs": [
+        "I19"
+      ],
+      "reason": "營收年增27.58%、ROE 8.43%，RSI 13.87極度超賣但MACD連4日改善且投信續買，維持原持股等待技術性反彈。"
+    },
+    {
+      "ticker": "3037",
+      "reason_refs": [
+        "I20"
+      ],
+      "reason": "月營收年增67.61%，KD與MACD雙雙維持黃金交叉且獲投信連買，考量摩擦成本維持既有14,000股配置。"
+    },
+    {
+      "ticker": "3189",
+      "reason_refs": [
+        "I22"
+      ],
+      "reason": "月營收年月雙增，雖短線回檔但量縮至0.49倍且RSI超賣、KD維持黃金交叉，部位僅0.72%故維持原持股觀望。"
+    },
+    {
+      "ticker": "3443",
+      "reason_refs": [
+        "I24"
+      ],
+      "reason": "月營收年增126.95%、ROE 15.56%，近5日大漲22.72%站穩月線且土洋同買，考量千金股高單價整股限制維持2,000股核心配置。"
+    },
+    {
+      "ticker": "3533",
+      "reason_refs": [
+        "I25"
+      ],
+      "reason": "MACD剛黃金交叉且獲外資與投信近5日同步買超，動能跑贏大盤，維持既有16,000股配置。"
+    },
+    {
+      "ticker": "4938",
+      "reason_refs": [
+        "I27"
+      ],
+      "reason": "月營收年增59.62%，RSI 28.35進入超賣區、KD維持黃金交叉且獲投信近5日高強度買超+9.9%護盤，維持既有部位續抱。"
+    },
+    {
+      "ticker": "4958",
+      "reason_refs": [
+        "I28"
+      ],
+      "reason": "月營收雙增、近5日超額報酬+5.49 pp、MACD黃金交叉且投信逆勢買超，維持既有部位續抱。"
+    },
+    {
+      "ticker": "5880",
+      "reason_refs": [
+        "I30"
+      ],
+      "reason": "站穩月線、波動率僅1.09%且獲外資與投信近5日同步買超，防禦性極佳，維持既有部位續抱。"
+    },
+    {
+      "ticker": "6505",
+      "reason_refs": [
+        "I34"
+      ],
+      "reason": "月營收年增76.0%，MACD剛黃金交叉且獲外資近5日買超強度+10.22%加持，維持既有部位續抱以省下換股成本。"
+    }
+  ]
+}

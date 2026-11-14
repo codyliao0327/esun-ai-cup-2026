@@ -1,0 +1,371 @@
+[
+  {
+    "client_msg_id": "5b2fbf5b-98a6-416c-af8f-b3b480304301",
+    "type": "message",
+    "user": "U0CA38JCGQZ",
+    "text": "主辦單位您好，我們是TEAM_11693，想要請問關於課程證明認列的部分，我們於10/17下午寄出，目前還沒有收到回覆，再煩請協助確認一下，謝謝！",
+    "ts": "1792550733.164669",
+    "thread_ts": "1792550733.164669",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792568579.391419"
+      }
+    ],
+    "latest_reply": "1792568579.391419",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "5/TYk",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好，我們是TEAM_11693，想要請問關於課程證明認列的部分，我們於10/17下午寄出，目前還沒有收到回覆，再煩請協助確認一下，謝謝！"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/c0b80ba75fe3dca76dba34c2b102cc1c.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0004-72.png",
+      "first_name": "snoopy",
+      "real_name": "snoopy",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "snoopy",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "fac789cf-2123-4257-9c9e-b24d384b1c9f",
+    "type": "message",
+    "user": "U0C9LMNJFCY",
+    "text": "主辦單位您好，想確認兩點：\n1. D-Plan 撰寫指南 v4.3 寫 hold 須「|買−賣| ≤ 2% 淨值」，但 D-Plan.schema_v4.3.json 寫容差為「server 參數，預設 2% NAV」。請問初賽期間此容差是否固定為 2%？若會調整，會如何公告？\n2. 比賽辦法第四節（一）寫最終排名依「初賽及複賽各別名次對應之積分加總」，但評分方式的範例是「初賽得分 = 隊伍 NAV ÷ Σ各隊伍 NAV」加上複賽募資金額占比。請問正式採用哪一種計分方式？\n謝謝！",
+    "ts": "1792551851.866829",
+    "thread_ts": "1792551851.866829",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792568765.208529"
+      }
+    ],
+    "latest_reply": "1792568765.208529",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "ctVpZ",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好，想確認兩點：\n1. D-Plan 撰寫指南 v4.3 寫 hold 須「|買−賣| ≤ 2% 淨值」，但 D-Plan.schema_v4.3.json 寫容差為「server 參數，預設 2% NAV」。請問初賽期間此容差是否固定為 2%？若會調整，會如何公告？\n2. 比賽辦法第四節（一）寫最終排名依「初賽及複賽各別名次對應之積分加總」，但評分方式的範例是「初賽得分 = 隊伍 NAV ÷ Σ各隊伍 NAV」加上複賽募資金額占比。請問正式採用哪一種計分方式？\n謝謝！"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/7d3dfa9ef5bc3d9e9baccfce5a17e8b8.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png",
+      "first_name": "han605",
+      "real_name": "han605",
+      "display_name": "han605",
+      "team": "T0C3BBR6687",
+      "name": "s11230023",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "866d1e98-209a-420b-a76d-8069dcc68bcb",
+    "type": "message",
+    "user": "U0CA3LFF6EA",
+    "text": "*主辦單位您好，為配合大會「無人工介入」規範並確保每日系統遞交的穩定性，團隊想進一步確認以下競賽細節（已更新提問內容）：*\n*【一、 系統容錯與防呆機制】*\n1. *錯誤自動重試*：若 Agent 產出的決策未通過本機端的合規預檢（如：現金比例超標），由程式自動將錯誤訊息交回給 Agent 要求重新生成決策（全程無手動修改參數或檔案），此機制是否允許？\n2. *極端狀況預設規則*：若 Agent 因外部連線逾時或多次重試仍無法產出合規決策，系統由程式自動觸發事先寫定的防呆規則（例如：直接送出「全數維持原持股續抱」的決策），以確保當日能送出合法格式的報告。這樣的自動備援設計，是否符合無人工介入規範？\n*【二、 抽檢標準與資料引用】*\n3. *LLM 抽檢一致性*：由於大型語言模型（LLM）每次生成結果可能存在微小變異，請問大會抽檢重跑時，會要求提供哪些輸入設定（如提示詞、溫度參數等）？系統對於重跑結果與原繳交檔案的差異容忍範圍為何？\n4. *DataPack 引用方式*：若 `observations` 的事實數據直接取自官方每日提供的 DataPack，請問在 `sources` 欄位中，`authority` 與 `url` 應該如何正確標示填寫？\n5. *10/21 首日提交屬性*：請問 10/21 繳交的首份 D-Plan 是僅作為上傳系統與 Schema 格式的封測，還是已正式計入初賽成績？若列入正式計算，因首日主要為驗證 API 與推導公式，是否允許團隊更正或補交該日檔案？\n*【三、 競賽規則與計分細節】*\n6. *2% 淨值容差邊界*：D-Plan 撰寫指南 v4.3 寫 hold 須「|買−賣| ≤ 2% 淨值」，但 D-Plan.schema_v4.3.json 寫容差為「server 參數，預設 2% NAV」。請問初賽期間此容差是否固定為 2%？若會調整，將透過何種管道公告？\n7. *計分方式確認*：比賽辦法第四節（一）寫最終排名依「初賽及複賽各別名次對應之積分加總」，但評分方式的範例是「初賽得分 = 隊伍 NAV ÷ Σ各隊伍 NAV」加上複賽募資金額占比。請問正式成績採用哪一種計分方式？\n\u003e 感謝挑戰賽工作小組撥冗協助釐清！",
+    "ts": "1792560353.729419",
+    "thread_ts": "1792560353.729419",
+    "edited": {
+      "user": "U0CA3LFF6EA",
+      "ts": "1792561001.000000"
+    },
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792569377.790459"
+      }
+    ],
+    "latest_reply": "1792569377.790459",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "frE3n",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好，為配合大會「無人工介入」規範並確保每日系統遞交的穩定性，團隊想進一步確認以下競賽細節（已更新提問內容）：",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              },
+              {
+                "type": "text",
+                "text": "【一、 系統容錯與防呆機制】",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "錯誤自動重試",
+                    "style": {
+                      "bold": true
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "：若 Agent 產出的決策未通過本機端的合規預檢（如：現金比例超標），由程式自動將錯誤訊息交回給 Agent 要求重新生成決策（全程無手動修改參數或檔案），此機制是否允許？"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "極端狀況預設規則",
+                    "style": {
+                      "bold": true
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "：若 Agent 因外部連線逾時或多次重試仍無法產出合規決策，系統由程式自動觸發事先寫定的防呆規則（例如：直接送出「全數維持原持股續抱」的決策），以確保當日能送出合法格式的報告。這樣的自動備援設計，是否符合無人工介入規範？"
+                  }
+                ]
+              }
+            ],
+            "style": "ordered",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "【二、 抽檢標準與資料引用】",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n3. "
+              },
+              {
+                "type": "text",
+                "text": "LLM 抽檢一致性",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "：由於大型語言模型（LLM）每次生成結果可能存在微小變異，請問大會抽檢重跑時，會要求提供哪些輸入設定（如提示詞、溫度參數等）？系統對於重跑結果與原繳交檔案的差異容忍範圍為何？\n4. "
+              },
+              {
+                "type": "text",
+                "text": "DataPack 引用方式",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "：若 "
+              },
+              {
+                "type": "text",
+                "text": "observations",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 的事實數據直接取自官方每日提供的 DataPack，請問在 "
+              },
+              {
+                "type": "text",
+                "text": "sources",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 欄位中，"
+              },
+              {
+                "type": "text",
+                "text": "authority",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 與 "
+              },
+              {
+                "type": "text",
+                "text": "url",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 應該如何正確標示填寫？\n5. "
+              },
+              {
+                "type": "text",
+                "text": "10/21 首日提交屬性",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "：請問 10/21 繳交的首份 D-Plan 是僅作為上傳系統與 Schema 格式的封測，還是已正式計入初賽成績？若列入正式計算，因首日主要為驗證 API 與推導公式，是否允許團隊更正或補交該日檔案？\n"
+              },
+              {
+                "type": "text",
+                "text": "【三、 競賽規則與計分細節】",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n6. "
+              },
+              {
+                "type": "text",
+                "text": "2% 淨值容差邊界",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "：D-Plan 撰寫指南 v4.3 寫 hold 須「|買−賣| ≤ 2% 淨值」，但 D-Plan.schema_v4.3.json 寫容差為「server 參數，預設 2% NAV」。請問初賽期間此容差是否固定為 2%？若會調整，將透過何種管道公告？\n7. "
+              },
+              {
+                "type": "text",
+                "text": "計分方式確認",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "：比賽辦法第四節（一）寫最終排名依「初賽及複賽各別名次對應之積分加總」，但評分方式的範例是「初賽得分 = 隊伍 NAV ÷ Σ各隊伍 NAV」加上複賽募資金額占比。請問正式成績採用哪一種計分方式？\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_quote",
+            "elements": [
+              {
+                "type": "text",
+                "text": "感謝挑戰賽工作小組撥冗協助釐清！"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/c80e6801ebf6bb20f9fc3c77cb45e27a.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png",
+      "first_name": "ljcisme",
+      "real_name": "ljcisme",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "ljcisme",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  }
+]

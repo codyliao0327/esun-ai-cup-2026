@@ -1,0 +1,344 @@
+[
+  {
+    "client_msg_id": "783916ab-40fd-4aeb-b24a-a9d9a63dfab3",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，\n感謝您的提問，回覆如下請參考：\n*1.* 現金增資之原股東認購權因自認購至增資新股正式上市之期間通常超過本競賽期間，且難以公平反映其價值於競賽最終資產淨值，故不適用本競賽。參賽隊伍無須、亦無法提交現金增資認購相關決策；惟增資新股上市可能影響市場價格，建議於投資決策時納入考量。\n*2.* `shares = 0`、但 `receivable_shares \u0026gt; 0`的標的不需要出現在 `decisions` 或 `no_trade_decisions`",
+    "ts": "1791973106.046459",
+    "thread_ts": "1791872052.959379",
+    "parent_user_id": "U0C6SUX3401",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "sZhbS",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，\n感謝您的提問，回覆如下請參考：\n"
+              },
+              {
+                "type": "text",
+                "text": "1.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 現金增資之原股東認購權因自認購至增資新股正式上市之期間通常超過本競賽期間，且難以公平反映其價值於競賽最終資產淨值，故不適用本競賽。參賽隊伍無須、亦無法提交現金增資認購相關決策；惟增資新股上市可能影響市場價格，建議於投資決策時納入考量。\n"
+              },
+              {
+                "type": "text",
+                "text": "2.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " "
+              },
+              {
+                "type": "text",
+                "text": "shares = 0",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "、但 "
+              },
+              {
+                "type": "text",
+                "text": "receivable_shares \u003e 0",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "的標的不需要出現在 "
+              },
+              {
+                "type": "text",
+                "text": "decisions",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 或 "
+              },
+              {
+                "type": "text",
+                "text": "no_trade_decisions",
+                "style": {
+                  "code": true
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "4ceaa95e-f1a7-4684-9e01-4dbe4c35d664",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，\n感謝您的提問，回覆如下請參考：\n*1.* Active Share 檢核僅以前 15 大持股及其權重進行比較；若某檔股票未出現在其中一方前 15 大持股中，則該方於 Active Share 計算時視為權重 0%。\n*2.* 比較範圍採雙方前 15 大持股之聯集進行計算。\n*3.* 例如：\n• ETF A：台積電 20%、聯發科 10%、台光電 8%\n• ETF B：台積電 18%、聯發科 9%、欣興 9%\n則差異總和為：(20%-18%)+(10%-9%)+(8%-0%)+(9%-0%)=20%\n因此 Active Share = 20% ÷ 2 = 10%\n\n4. 是，首日結算即須符合競賽辦法規定之持股限制，包括現金部位不得超過 NAV 25%，且持股數量須維持於 20 至 30 檔之間。\n5. 首日建倉並無額外寬限期，競賽開始後即依正式規則進行檢核；若結算結果不符合競賽規定，將依競賽辦法相關規定辦理。",
+    "ts": "1791973645.876959",
+    "thread_ts": "1791882261.723149",
+    "parent_user_id": "U0C3T5612SF",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "DUUjA",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，\n感謝您的提問，回覆如下請參考：\n"
+              },
+              {
+                "type": "text",
+                "text": "1.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " Active Share 檢核僅以前 15 大持股及其權重進行比較；若某檔股票未出現在其中一方前 15 大持股中，則該方於 Active Share 計算時視為權重 0%。\n"
+              },
+              {
+                "type": "text",
+                "text": "2.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 比較範圍採雙方前 15 大持股之聯集進行計算。\n"
+              },
+              {
+                "type": "text",
+                "text": "3.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 例如：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "ETF A：台積電 20%、聯發科 10%、台光電 8%"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "ETF B：台積電 18%、聯發科 9%、欣興 9%"
+                  }
+                ]
+              }
+            ],
+            "style": "bullet",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "則差異總和為：(20%-18%)+(10%-9%)+(8%-0%)+(9%-0%)=20%\n因此 Active Share = 20% ÷ 2 = 10%\n\n4. 是，首日結算即須符合競賽辦法規定之持股限制，包括現金部位不得超過 NAV 25%，且持股數量須維持於 20 至 30 檔之間。\n5. 首日建倉並無額外寬限期，競賽開始後即依正式規則進行檢核；若結算結果不符合競賽規定，將依競賽辦法相關規定辦理。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "e280eb5c-1589-4db1-a5aa-adf5c50e82ec",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，\n感謝您的提問，回覆如下請參考：\n*1.* 若 DataPack 中該標的 `shares = 0`、僅有 `receivable_shares`（應收配股），因其不屬於可交易持股，因此無須列入 `no_trade_decisions`。\n*2.* 可以。若為團隊自行整理之公開資料快照，可將 `authority` 填寫為 `other`",
+    "ts": "1791973750.433329",
+    "thread_ts": "1791946821.255289",
+    "parent_user_id": "U0C8CTY1V50",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "SQfBg",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，\n感謝您的提問，回覆如下請參考：\n"
+              },
+              {
+                "type": "text",
+                "text": "1.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 若 DataPack 中該標的 "
+              },
+              {
+                "type": "text",
+                "text": "shares = 0",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "、僅有 "
+              },
+              {
+                "type": "text",
+                "text": "receivable_shares",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "（應收配股），因其不屬於可交易持股，因此無須列入 "
+              },
+              {
+                "type": "text",
+                "text": "no_trade_decisions",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "。\n"
+              },
+              {
+                "type": "text",
+                "text": "2.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 可以。若為團隊自行整理之公開資料快照，可將 "
+              },
+              {
+                "type": "text",
+                "text": "authority",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 填寫為 "
+              },
+              {
+                "type": "text",
+                "text": "other",
+                "style": {
+                  "code": true
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  }
+]

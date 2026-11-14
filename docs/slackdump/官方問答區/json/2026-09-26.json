@@ -1,0 +1,192 @@
+[
+  {
+    "client_msg_id": "2F901FAD-7716-4390-BBA4-CA76A739337D",
+    "type": "message",
+    "user": "U0C4NSAC6LS",
+    "text": "您好，若 AI Agent 採系統化因子投資策略，由程式自主取得市場資料、計算因子訊號、決定投資組合權重並產生每日交易決策，全程無人工介入，但每日投資決策過程不一定呼叫 LLM，是否符合競賽所定義之 AI Agent 自主決策？",
+    "ts": "1790422761.813229",
+    "thread_ts": "1790422761.813229",
+    "reply_count": 2,
+    "reply_users": [
+      "U0C3LFZUG3D",
+      "U0C4NSAC6LS"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1790661555.005079"
+      },
+      {
+        "user": "U0C4NSAC6LS",
+        "ts": "1790724794.701629"
+      }
+    ],
+    "latest_reply": "1790724794.701629",
+    "team": "T0C3BBR6687",
+    "reactions": [
+      {
+        "name": "eyes",
+        "count": 1,
+        "users": [
+          "U0C3T5612SF"
+        ]
+      }
+    ],
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "r/+fk",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，"
+              },
+              {
+                "type": "text",
+                "text": "若 AI Agent 採系統化因子投資策略，由程式自主取得市場資料、計算因子訊號、決定投資組合權重並產生每日交易決策，全程無人工介入，但每日投資決策過程不一定呼叫 LLM，是否符合競賽所定義之 AI Agent 自主決策？"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-26/12143652908055_0c152ac36717b8e24923_72.png",
+      "first_name": "蔡秉宏",
+      "real_name": "蔡秉宏",
+      "display_name": "蔡秉宏",
+      "team": "T0C3BBR6687",
+      "name": "joejoe4902",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 2
+  },
+  {
+    "client_msg_id": "53b75020-c534-407e-86e6-08144a702173",
+    "type": "message",
+    "user": "U0C3XS72LS1",
+    "text": "想詢問能否先開放比照比賽規範的測試系統",
+    "ts": "1790433268.309539",
+    "thread_ts": "1790433268.309539",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1790666520.689969"
+      }
+    ],
+    "latest_reply": "1790666520.689969",
+    "team": "T0C3BBR6687",
+    "reactions": [
+      {
+        "name": "eyes",
+        "count": 4,
+        "users": [
+          "U0C4GC3QQ9Z",
+          "U0C3T5612SF",
+          "U0C4PKACSCE",
+          "U0C4992J1K5"
+        ]
+      }
+    ],
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "cLwJo",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "想詢問能否先開放比照比賽規範的測試系統"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/00fffa3410be6585b7192ff0107d65d9.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0001-72.png",
+      "first_name": "王賦禮",
+      "real_name": "王賦禮",
+      "display_name": "王賦禮",
+      "team": "T0C3BBR6687",
+      "name": "cnima7473",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "1a16b964-68ba-4d34-a655-904f288703bc",
+    "type": "message",
+    "user": "U0C3XS72LS1",
+    "text": "同問",
+    "ts": "1790433308.080429",
+    "thread_ts": "1790333585.587739",
+    "parent_user_id": "U0C4992J1K5",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "Mmi3l",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "同問"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/00fffa3410be6585b7192ff0107d65d9.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0001-72.png",
+      "first_name": "王賦禮",
+      "real_name": "王賦禮",
+      "display_name": "王賦禮",
+      "team": "T0C3BBR6687",
+      "name": "cnima7473",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  }
+]

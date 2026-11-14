@@ -1,0 +1,493 @@
+[
+  {
+    "client_msg_id": "5e224796-8ac1-4a4d-84fe-4c49024f8d16",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的提問，回覆如下請參考：\n文件於繳交期間截止前可重新上傳新的檔案覆蓋先前版本，系統將以截止時間前最後一次成功上傳的版本作為正式繳交內容。謝謝。",
+    "ts": "1792135118.588679",
+    "thread_ts": "1792054240.948139",
+    "parent_user_id": "U0C8ABAA7JM",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "eezwX",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的提問，回覆如下請參考：\n文件於繳交期間截止前可重新上傳新的檔案覆蓋先前版本，系統將以截止時間前最後一次成功上傳的版本作為正式繳交內容。謝謝。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "f0b4da9d-f98b-48e2-b37c-df9e4e115855",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的提問，回覆如下請參考：\n文件內容皆須透過 AI Agent 產製。相關產製範例格式請參閱玉山 AI 競技場「參考文件下載專區」所提供之文件。",
+    "ts": "1792135767.420829",
+    "thread_ts": "1792054360.588079",
+    "parent_user_id": "U0C9F65AA74",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "0IUC/",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的提問，回覆如下請參考：\n文件內容皆須透過 AI Agent 產製。相關產製範例格式請參閱玉山 AI 競技場「參考文件下載專區」所提供之文件。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "cf5193a4-9d54-402e-9e76-6213181a84db",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，經確認，貴隊之 Google Token Credit 已於 10/12 發送*。*若確認仍未收到，請再提供相關資訊與我們聯繫，我們將協助進一步確認。",
+    "ts": "1792135893.293879",
+    "thread_ts": "1792116572.795219",
+    "parent_user_id": "U0C5YM9NWMD",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "uk/5q",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，經確認，貴隊之 Google Token Credit 已於 10/12 發送"
+              },
+              {
+                "type": "text",
+                "text": "。",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "若確認仍未收到，請再提供相關資訊與我們聯繫，我們將協助進一步確認。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "1000ccb5-4313-4ad6-baa5-6bd037112e19",
+    "type": "message",
+    "user": "U0C5YM9NWMD",
+    "text": "您好，剛剛確認已經收到了，謝謝!",
+    "ts": "1792141085.152389",
+    "thread_ts": "1792116572.795219",
+    "parent_user_id": "U0C5YM9NWMD",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "VfgtL",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，剛剛確認已經收到了，謝謝!"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/57d19abf83f667c56328dac32877bedb.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0020-72.png",
+      "first_name": "Eric",
+      "real_name": "Eric",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "etericown",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "c4a80893-2780-4024-88f0-7ad855814d9d",
+    "type": "message",
+    "user": "U0C5W1T0EKV",
+    "text": "主辦單位您好，想確認： \u003chttp://go.aicup.tw|go.aicup.tw\u003e 選單中的「競賽報告檢核系統(demo)」（\u003chttp://aicupreport.csie.ncu.edu.tw|aicupreport.csie.ncu.edu.tw\u003e）與「Agent 基金經理人」競賽每日繳交「當日 Agent 決策報告及交易書」的關係為何？ 請回覆其中一項： （A）每日繳交使用此系統 （B）每日繳交使用「玉山 AI 競技場」參賽者後台，此系統僅用於賽後報告／程式碼繳交 （C）其他（請簡述） 另外若需要登入此系統，請說明 Team ID 與密碼的發放時間與方式。謝謝！",
+    "ts": "1792162454.807709",
+    "thread_ts": "1792162454.807709",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792394358.239719"
+      }
+    ],
+    "latest_reply": "1792394358.239719",
+    "team": "T0C3BBR6687",
+    "reactions": [
+      {
+        "name": "eyes",
+        "count": 1,
+        "users": [
+          "U0CA277B7ME"
+        ]
+      }
+    ],
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "9YY54",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好，想確認： "
+              },
+              {
+                "type": "link",
+                "url": "http://go.aicup.tw",
+                "text": "go.aicup.tw"
+              },
+              {
+                "type": "text",
+                "text": " 選單中的「競賽報告檢核系統(demo)」（"
+              },
+              {
+                "type": "link",
+                "url": "http://aicupreport.csie.ncu.edu.tw",
+                "text": "aicupreport.csie.ncu.edu.tw"
+              },
+              {
+                "type": "text",
+                "text": "）與「Agent 基金經理人」競賽每日繳交「當日 Agent 決策報告及交易書」的關係為何？ 請回覆其中一項： （A）每日繳交使用此系統 （B）每日繳交使用「玉山 AI 競技場」參賽者後台，此系統僅用於賽後報告／程式碼繳交 （C）其他（請簡述） 另外若需要登入此系統，請說明 Team ID 與密碼的發放時間與方式。謝謝！"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/00b5dc12321a058ecd0c382a707fd885.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0014-72.png",
+      "first_name": "Kenny",
+      "real_name": "Kenny",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "kenny7012",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "59a7e613-7141-4674-b99d-366ca1b64162",
+    "type": "message",
+    "user": "U0CA70PB2PJ",
+    "text": "主辦單位您好：有幾個問題想跟您指教/確認一下\n*一、Active Share 官方資料來源與檢核一致性*\n我們理解官方將使用各主動型 ETF 當日最新公告的前 15 大持股及權重，與參賽組合進行 Active Share 檢核。\n但部分 ETF 的持股權重資料可能無法於提交截止前取得，或公開資料僅提供 PCF、持股名單而未提供完整權重。\n想請教：\n1. 若參賽者已使用截止前最新可取得的公開資料，但與官方最終採用的資料版本不同，導致 Active Share 不符門檻，是否仍依一般違規規則處理？\n2. 官方是否會提供各指定 ETF 用於檢核的持股資料版本、資料日期或檢核結果明細，供參賽者確認與修正？\n3. 若某檔 ETF 缺乏公開權重資料，是否有官方建議的替代資料來源或處理方式？\n*二、量化 Agent 自主決策與人工介入的界線*\n我們理解官方已確認不強制使用 LLM，且可使用統計、因子或機器學習模型，由 Agent 自主完成分析與交易決策。\n想進一步確認：\n1. 若參賽者事先設計因子、權重公式、風控條件及再平衡規則，競賽期間由程式自動取得資料、計算、選股、配置並產製 D-Plan，是否符合自主 Agent 的要求？\n2. 若競賽期間由開發者調整模型參數、修正演算法或更新程式版本，但不直接指定當日買賣標的，是否允許？\n3. 賽前 ETF 投資策略說明文件須由 Agent 產製，是否可由參賽者先提供投資主題、策略約束與模型設計，再由 Agent 自主分析並產出最終文件？\n*三、D-Plan 自動化提交方式*\n由於我們希望建立每日自動執行的 Agent 流程，想請教：\n1. 正式競賽平台是否提供 API 或其他程式化方式提交 D-Plan JSON？\n2. 若僅支援網頁上傳，是否允許參賽者使用瀏覽器自動化工具進行登入及提交？\n3. 是否有辦法透過程式取得提交成功、驗證警告或拒收結果，以供 Agent 自動檢查及處理？\n",
+    "ts": "1792203505.953269",
+    "thread_ts": "1792203505.953269",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792395102.005799"
+      }
+    ],
+    "latest_reply": "1792395102.005799",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "5/qyX",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好：有幾個問題想跟您指教/確認一下\n"
+              },
+              {
+                "type": "text",
+                "text": "一、Active Share 官方資料來源與檢核一致性",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n我們理解官方將使用各主動型 ETF 當日最新公告的前 15 大持股及權重，與參賽組合進行 Active Share 檢核。\n但部分 ETF 的持股權重資料可能無法於提交截止前取得，或公開資料僅提供 PCF、持股名單而未提供完整權重。\n想請教：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "若參賽者已使用截止前最新可取得的公開資料，但與官方最終採用的資料版本不同，導致 Active Share 不符門檻，是否仍依一般違規規則處理？"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "官方是否會提供各指定 ETF 用於檢核的持股資料版本、資料日期或檢核結果明細，供參賽者確認與修正？"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "若某檔 ETF 缺乏公開權重資料，是否有官方建議的替代資料來源或處理方式？"
+                  }
+                ]
+              }
+            ],
+            "style": "ordered",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "二、量化 Agent 自主決策與人工介入的界線",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n我們理解官方已確認不強制使用 LLM，且可使用統計、因子或機器學習模型，由 Agent 自主完成分析與交易決策。\n想進一步確認：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "若參賽者事先設計因子、權重公式、風控條件及再平衡規則，競賽期間由程式自動取得資料、計算、選股、配置並產製 D-Plan，是否符合自主 Agent 的要求？"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "若競賽期間由開發者調整模型參數、修正演算法或更新程式版本，但不直接指定當日買賣標的，是否允許？"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "賽前 ETF 投資策略說明文件須由 Agent 產製，是否可由參賽者先提供投資主題、策略約束與模型設計，再由 Agent 自主分析並產出最終文件？"
+                  }
+                ]
+              }
+            ],
+            "style": "ordered",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "三、D-Plan 自動化提交方式",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n由於我們希望建立每日自動執行的 Agent 流程，想請教：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "正式競賽平台是否提供 API 或其他程式化方式提交 D-Plan JSON？"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "若僅支援網頁上傳，是否允許參賽者使用瀏覽器自動化工具進行登入及提交？"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "是否有辦法透過程式取得提交成功、驗證警告或拒收結果，以供 Agent 自動檢查及處理？"
+                  }
+                ]
+              }
+            ],
+            "style": "ordered",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          },
+          {
+            "type": "rich_text_section",
+            "elements": []
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/c81a581d8a4a59e38baa7105da1a0f1d.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0015-72.png",
+      "first_name": "Mike",
+      "real_name": "Mike Chi",
+      "display_name": "Mike",
+      "team": "T0C3BBR6687",
+      "name": "szunienchi1",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  }
+]

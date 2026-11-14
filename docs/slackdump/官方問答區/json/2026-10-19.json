@@ -1,0 +1,1095 @@
+[
+  {
+    "client_msg_id": "535b12d2-a3a0-46fe-ada0-19f72b60b96e",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的提問，回覆如下請參考：\n• 本競賽每日繳交之「當日 Agent 決策報告及交易書（D-Plan）」係透過 玉山 AI 競技場參賽者後台進行上傳，並非使用 AI CUP 報名網站中的「競賽報告檢核系統(demo)」。\n• AI CUP 報名網站中的「競賽報告檢核系統(demo)」，主要供競賽前 30 名且需接受教育部競賽成果檢核之隊伍使用，用於後續上傳競賽報告供審查委員審查；一般參賽隊伍於競賽期間無須使用該系統。",
+    "ts": "1792394358.239719",
+    "thread_ts": "1792162454.807709",
+    "parent_user_id": "U0C5W1T0EKV",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "SBLde",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的提問，回覆如下請參考：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "本競賽每日繳交之「當日 Agent 決策報告及交易書（D-Plan）」係透過 玉山 AI 競技場參賽者後台進行上傳，並非使用 AI CUP 報名網站中的「競賽報告檢核系統(demo)」。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "AI CUP 報名網站中的「競賽報告檢核系統(demo)」，主要供競賽前 30 名且需接受教育部競賽成果檢核之隊伍使用，用於後續上傳競賽報告供審查委員審查；一般參賽隊伍於競賽期間無須使用該系統。"
+                  }
+                ]
+              }
+            ],
+            "style": "bullet",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "24476d65-ff61-49c9-81c9-288e7071bd2e",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的提問，回覆如下請參考：\n*一、Active Share 官方資料來源與檢核一致性*\n• Active Share 檢核以主辦單位最終檢核結果為準，主辦單位目前不提供統一之 ETF 持股資料來源或檢核資料檔，請參賽隊伍自行取得公開資訊作為分析依據。\n*二、量化 Agent 自主決策與人工介入的界線*\n• 參賽者得事先設定 Agent 之投資主題、分析因子、風險偏好及其他設計參數，惟實際投資標的、配置比例及每日交易內容，仍須由 AI Agent 依據相關資訊自主分析及產生，不得由參賽者事先指定或於競賽期間人工介入決定。\n*三、D-Plan 自動化提交方式*\n• 不提供 API 提交功能，D-Plan 須透過競賽網站後台上傳。但允許參賽者 Agent 使用瀏覽器自動化工具進行操作\n• 提交後之驗證結果、警示及拒收訊息，請以競賽平台實際顯示內容為準，平台將於10/20 18:00 系統更新完成後開放3天進行活動測試。",
+    "ts": "1792395102.005799",
+    "thread_ts": "1792203505.953269",
+    "edited": {
+      "user": "U0C3LFZUG3D",
+      "ts": "1792404751.000000"
+    },
+    "parent_user_id": "U0CA70PB2PJ",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "QAtcY",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的提問，回覆如下請參考：\n"
+              },
+              {
+                "type": "text",
+                "text": "一、Active Share 官方資料來源與檢核一致性",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "Active Share 檢核以主辦單位最終檢核結果為準，主辦單位目前不提供統一之 ETF 持股資料來源或檢核資料檔，請參賽隊伍自行取得公開資訊作為分析依據。"
+                  }
+                ]
+              }
+            ],
+            "style": "bullet",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "二、量化 Agent 自主決策與人工介入的界線",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "參賽者得事先設定 Agent 之投資主題、分析因子、風險偏好及其他設計參數，惟實際投資標的、配置比例及每日交易內容，仍須由 AI Agent 依據相關資訊自主分析及產生，不得由參賽者事先指定或於競賽期間人工介入決定。"
+                  }
+                ]
+              }
+            ],
+            "style": "bullet",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "三、D-Plan 自動化提交方式",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "不提供 API 提交功能，D-Plan 須透過競賽網站後台上傳。但允許參賽者 Agent 使用瀏覽器自動化工具進行操作"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "提交後之驗證結果、警示及拒收訊息，請以競賽平台實際顯示內容為準，平台將於10/20 18:00 系統更新完成後開放3天進行活動測試。"
+                  }
+                ]
+              }
+            ],
+            "style": "bullet",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "410a53ff-a4d5-46da-ac5f-ca1254f938f6",
+    "type": "message",
+    "user": "U0CA2K2786S",
+    "text": "\u003c@U0C3LFZUG3D\u003e 想再次確認第七點\n在回測過程中發現 3665 貿聯-KY 在 6/10  停牌沒有交易，若是比賽期間遇到了要怎麼採計？交易指令如果有寫到此標的是否會違規？",
+    "ts": "1792397198.551129",
+    "thread_ts": "1790673822.251189",
+    "parent_user_id": "U0C5A0UTRDF",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "/rxDo",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "user",
+                "user_id": "U0C3LFZUG3D"
+              },
+              {
+                "type": "text",
+                "text": " 想再次確認第七點\n在回測過程中發現 3665 貿聯-KY 在 6/10  停牌沒有交易，若是比賽期間遇到了要怎麼採計？交易指令如果有寫到此標的是否會違規？"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-10-18/12348300506852_ea606cb57c9ac434b4ea_72.jpg",
+      "first_name": "kuo",
+      "real_name": "kuo po chen",
+      "display_name": "kuo po chen",
+      "team": "T0C3BBR6687",
+      "name": "b04201003",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "4c1781e3-513e-4af8-b4ea-88724cb0511a",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，經查 TEAM_11461 之 Google Token Credit 已於 10/07 18:02 發送。再請您確認，謝謝",
+    "ts": "1792399842.338639",
+    "thread_ts": "1792224787.316349",
+    "parent_user_id": "U0C7W220571",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "F7Xj+",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，經查 TEAM_11461 之 Google Token Credit 已於 10/07 18:02 發送。再請您確認，謝謝"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "588009b8-d8bd-414e-9fbf-6b238cd354a9",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，經查 TEAM_11514 之 Google Token Credit 已於 2026-10-07 15:41 發送。惟注意到您們沒有註冊登入本次賽事平台「玉山競技場」，還請您依循競賽規章第二節各點，加入本平台，以利順利獲得序號，謝謝",
+    "ts": "1792400050.054889",
+    "thread_ts": "1792315277.959679",
+    "parent_user_id": "U0C6DH6QQK0",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "h8PxN",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，經查 TEAM_11514 之 Google Token Credit 已於 2026-10-07 15:41 發送。惟注意到您們沒有註冊登入本次賽事平台「玉山競技場」，還請您依循競賽規章第二節各點，加入本平台，以利順利獲得序號，謝謝"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "bcb227b2-0ab4-46a0-911a-948402ef37d7",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的提問，回覆如下請參考：\n1. 若隔天為非台股交易日（例如週末、國定假日或其他休市日），則無須繳交 D-Plan。\n2. 若星期一為正常交易日，則須於星期日 19:30 至星期一 08:55期間完成 D-Plan 提交。",
+    "ts": "1792403064.304179",
+    "thread_ts": "1792332131.113569",
+    "parent_user_id": "U0C63R58YTW",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "C7f/e",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的提問，回覆如下請參考：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "若隔天為非台股交易日（例如週末、國定假日或其他休市日），則無須繳交 D-Plan。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "若星期一為正常交易日，則須於星期日 19:30 至星期一 08:55期間完成 D-Plan 提交。"
+                  }
+                ]
+              }
+            ],
+            "style": "ordered",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "585362d8-2cb8-486d-9b6f-7340c035b9db",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的提問，回覆如下請參考：\nDataPack 功能將於 10/20 18:00 系統更新完成後開放，並提供為期 3 天的活動測試期間供參賽隊伍使用。下載位置及操作方式請參考參考文件下載專區之 「2026 Agent 基金經理人競賽後台操作說明.pdf」，相關時程與注意事項亦請以競賽平台公告區最新公告為準。",
+    "ts": "1792403851.294789",
+    "thread_ts": "1792375781.144539",
+    "parent_user_id": "U0CAQLV5L0G",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "0ZKmH",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的提問，回覆如下請參考：\nDataPack 功能將於 10/20 18:00 系統更新完成後開放，並提供為期 3 天的活動測試期間供參賽隊伍使用。下載位置及操作方式請參考參考文件下載專區之 「2026 Agent 基金經理人競賽後台操作說明.pdf」，相關時程與注意事項亦請以競賽平台公告區最新公告為準。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "8fe89405-8f24-417a-bb61-b1b249896a4e",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的提問，回覆如下請參考：\n計算 Active Share 時，主動型 ETF 之前 15 大持股將以官方公告之投資組合持股明細為準，因此即使包含非台股或非 150 檔交易標的清單內之標的（例如海外股票），仍會納入 Active Share 計算。\n若該標的無法由參賽隊伍持有或未出現在參賽隊伍投資組合前 15 大持股中，則於 Active Share 計算時，參賽隊伍該標的權重視為 *0%* 進行比較。",
+    "ts": "1792403970.804499",
+    "thread_ts": "1792382756.834979",
+    "parent_user_id": "U0C983FDQMN",
+    "team": "T0C3BBR6687",
+    "reactions": [
+      {
+        "name": "+1",
+        "count": 1,
+        "users": [
+          "U0C983FDQMN"
+        ]
+      }
+    ],
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "gYH4O",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的提問，回覆如下請參考：\n計算 Active Share 時，主動型 ETF 之前 15 大持股將以官方公告之投資組合持股明細為準，因此即使包含非台股或非 150 檔交易標的清單內之標的（例如海外股票），仍會納入 Active Share 計算。\n若該標的無法由參賽隊伍持有或未出現在參賽隊伍投資組合前 15 大持股中，則於 Active Share 計算時，參賽隊伍該標的權重視為 "
+              },
+              {
+                "type": "text",
+                "text": "0%",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 進行比較。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "8ffa118a-7ff2-4bb8-b461-2d6d9f19716c",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的提問，回覆如下請參考：\n1. 個股若有停牌情形，實務上公司會提前公告，請參賽隊伍自行留意；持股超限之 5 個交易日寬限期不因停牌而順延。\n*2.* 若停牌導致減碼委託無法執行，該筆委託將視為無效；後續是否符合持股比例規範，仍依競賽系統結算結果進行檢核。\n3. 停牌期間相關價格、持股權重及 NAV 計算，原則上將沿用停牌前最後一個收盤價，並以競賽平台與 DataPack 實際提供之資料為準。\n*4.* 若前一交易日因停牌無收盤價，則以前一個可取得之收盤價作為計算依據，`target_shares`、`posture` 檢核及預估現金比等相關計算將採一致之價格基準辦理。",
+    "ts": "1792404197.513189",
+    "thread_ts": "1792253795.982239",
+    "parent_user_id": "U0C3T5612SF",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "gChTW",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的提問，回覆如下請參考：\n1. 個股若有停牌情形，實務上公司會提前公告，請參賽隊伍自行留意；持股超限之 5 個交易日寬限期不因停牌而順延。\n"
+              },
+              {
+                "type": "text",
+                "text": "2.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 若停牌導致減碼委託無法執行，該筆委託將視為無效；後續是否符合持股比例規範，仍依競賽系統結算結果進行檢核。\n3. 停牌期間相關價格、持股權重及 NAV 計算，原則上將沿用停牌前最後一個收盤價，並以競賽平台與 DataPack 實際提供之資料為準。\n"
+              },
+              {
+                "type": "text",
+                "text": "4.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 若前一交易日因停牌無收盤價，則以前一個可取得之收盤價作為計算依據，"
+              },
+              {
+                "type": "text",
+                "text": "target_shares",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": "、"
+              },
+              {
+                "type": "text",
+                "text": "posture",
+                "style": {
+                  "code": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 檢核及預估現金比等相關計算將採一致之價格基準辦理。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "6ef3783f-9e03-4e53-a58b-9d4bb0c1a8f9",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，\n1. 參賽者得事先設定 Agent 之投資主題、分析因子、風險偏好及其他設計參數，惟實際投資標的、配置比例及每日交易內容，仍須由 AI Agent 依據相關資訊自主分析及產生，不得由參賽者事先指定或於競賽期間人工介入決定。\n2. 若僅進行檔案格式轉換（例如轉為 PDF）而未修改 Agent 產生之內容，原則上不影響規範要求。\n3. 目前競賽辦法未規定產製 ETF 投資策略說明文件之 Agent，必須與每日產製 D-Plan 的 Agent 為同一套程式；惟實際投資行為仍應與所提交之投資主題、投資理念及選股邏輯保持一致。",
+    "ts": "1792404834.374159",
+    "thread_ts": "1792338460.888299",
+    "parent_user_id": "U0CA3LFF6EA",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "vmPk1",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "參賽者得事先設定 Agent 之投資主題、分析因子、風險偏好及其他設計參數，惟實際投資標的、配置比例及每日交易內容，仍須由 AI Agent 依據相關資訊自主分析及產生，不得由參賽者事先指定或於競賽期間人工介入決定。"
+                  }
+                ]
+              }
+            ],
+            "style": "ordered",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          },
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "2. 若僅進行檔案格式轉換（例如轉為 PDF）而未修改 Agent 產生之內容，原則上不影響規範要求。\n3. 目前競賽辦法未規定產製 ETF 投資策略說明文件之 Agent，必須與每日產製 D-Plan 的 Agent 為同一套程式；惟實際投資行為仍應與所提交之投資主題、投資理念及選股邏輯保持一致。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "ba860689-70ff-4a8e-be03-0c9e81abcd83",
+    "type": "message",
+    "user": "U0CA3LFF6EA",
+    "text": "請問在「實際投資標的、配置比例及每日交易內容須由 AI Agent 自主分析及產生」的前提下，若參賽者事先以程式寫定「因子計算與篩選規則」（例如以股東權益報酬率與波動度計算排名、設定流動性門檻與產業權重上限），由程式每日自動計算候選股票與因子數據，再由 AI Agent 在候選範圍內自主決定投資標的與權重並產出 D-Plan，這樣的設計是否符合規範？另外，若競賽期間調整這類參數（如門檻值），是否屬於人工介入？",
+    "ts": "1792435141.012369",
+    "thread_ts": "1792435141.012369",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792472769.011399"
+      }
+    ],
+    "latest_reply": "1792472769.011399",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "C5DMd",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "請問在「實際投資標的、配置比例及每日交易內容須由 AI Agent 自主分析及產生」的前提下，若參賽者事先以程式寫定「因子計算與篩選規則」（例如以股東權益報酬率與波動度計算排名、設定流動性門檻與產業權重上限），由程式每日自動計算候選股票與因子數據，再由 AI Agent 在候選範圍內自主決定投資標的與權重並產出 D-Plan，這樣的設計是否符合規範？另外，若競賽期間調整這類參數（如門檻值），是否屬於人工介入？"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/c80e6801ebf6bb20f9fc3c77cb45e27a.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-72.png",
+      "first_name": "ljcisme",
+      "real_name": "ljcisme",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "ljcisme",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "29b17d18-1370-4a61-9d51-5805368f164a",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的提問，回覆如下請參考：\n• 參賽者得事先設定 Agent 之投資主題、分析因子、風險偏好及其他設計參數。若由程式每日自動取得資料、計算因子、篩選候選標的，並由 AI Agent 依據相關資訊自主決定投資標的、配置比例及產生 D-Plan，原則上符合競賽規範。\n• 至於競賽期間調整因子門檻、風險參數或其他 Agent 設計參數，原則上亦屬 Agent 策略設計的一部分；惟實際投資標的、配置比例及每日交易內容，仍須由 AI Agent 依據相關資訊自主分析及產生，不得由參賽者事先指定或於競賽期間人工介入決定。",
+    "ts": "1792472769.011399",
+    "thread_ts": "1792435141.012369",
+    "parent_user_id": "U0CA3LFF6EA",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "nj+Ri",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的提問，回覆如下請參考：\n"
+              }
+            ]
+          },
+          {
+            "type": "rich_text_list",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "參賽者得事先設定 Agent 之投資主題、分析因子、風險偏好及其他設計參數。若由程式每日自動取得資料、計算因子、篩選候選標的，並由 AI Agent 依據相關資訊自主決定投資標的、配置比例及產生 D-Plan，原則上符合競賽規範。"
+                  }
+                ]
+              },
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "至於競賽期間調整因子門檻、風險參數或其他 Agent 設計參數，原則上亦屬 Agent 策略設計的一部分；惟實際投資標的、配置比例及每日交易內容，仍須由 AI Agent 依據相關資訊自主分析及產生，不得由參賽者事先指定或於競賽期間人工介入決定。"
+                  }
+                ]
+              }
+            ],
+            "style": "bullet",
+            "indent": 0,
+            "border": 0,
+            "offset": 0
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "c8c13595-2ef6-4d3a-8ccf-38a631d520ec",
+    "type": "message",
+    "user": "U0C93DUJ1U2",
+    "text": "主辦單位您好，我們是TEAM_11903，想要課程證明認列的問題，我們大概四天前寄出，目前沒有收到回覆，麻煩您幫我確認一下",
+    "ts": "1792477307.567779",
+    "thread_ts": "1792477307.567779",
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792477840.774519"
+      }
+    ],
+    "latest_reply": "1792477840.774519",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "AyeYV",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好，我們是TEAM_11903，想要課程證明認列的問題，我們大概四天前寄出，目前沒有收到回覆，麻煩您幫我確認一下"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://secure.gravatar.com/avatar/85d1690105442d1f4b6054d97b207841.jpg?s=72\u0026d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0001-72.png",
+      "first_name": "clyer",
+      "real_name": "clyer",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "clyer960318",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "82bfedce-406a-4b32-abe9-e0a032b8bf54",
+    "type": "message",
+    "user": "U0C8M9R8X0T",
+    "text": "```主辦單位您好 有以下問題詢問                                                                                                   1. 請問人為介入競賽的定義為何                                                                                          2. 現金部位每日須小於投資組合淨值之 25%。這個25%的分母是每日總資金嗎                      3. 資金是T+0還是T+2交割                                                                                                   謝謝主辦單位!```",
+    "ts": "1792477628.936339",
+    "thread_ts": "1792477628.936339",
+    "edited": {
+      "user": "U0C8M9R8X0T",
+      "ts": "1792478029.000000"
+    },
+    "reply_count": 1,
+    "reply_users": [
+      "U0C3LFZUG3D"
+    ],
+    "replies": [
+      {
+        "user": "U0C3LFZUG3D",
+        "ts": "1792478986.246609"
+      }
+    ],
+    "latest_reply": "1792478986.246609",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "luiOu",
+        "elements": [
+          {
+            "type": "rich_text_preformatted",
+            "elements": [
+              {
+                "type": "text",
+                "text": "主辦單位您好 有以下問題詢問                                                                                                   1. 請問人為介入競賽的定義為何                                                                                          2. 現金部位每日須小於投資組合淨值之 25%。這個25%的分母是每日總資金嗎                      3. 資金是T+0還是T+2交割                                                                                                   謝謝主辦單位!"
+              }
+            ],
+            "border": 0
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-10-13/12327939118960_a3738d875e22f9b19186_72.png",
+      "first_name": "安",
+      "real_name": "安",
+      "display_name": "安",
+      "team": "T0C3BBR6687",
+      "name": "a611783a",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    },
+    "reply_users_count": 1
+  },
+  {
+    "client_msg_id": "f13955f5-55c0-4ee5-9b36-bf8ad4072d1d",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，經查 TEAM_11903 之 Google Token Credit 已於 2026-10-19 09:18 發送。再請您確認，謝謝",
+    "ts": "1792477840.774519",
+    "thread_ts": "1792477307.567779",
+    "parent_user_id": "U0C93DUJ1U2",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "loZgc",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，經查 TEAM_11903 之 Google Token Credit 已於 2026-10-19 09:18 發送。再請您確認，謝謝"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  },
+  {
+    "client_msg_id": "e7cfac89-adae-4503-bbc8-724834e02e74",
+    "type": "message",
+    "user": "U0C3LFZUG3D",
+    "text": "您好，感謝您的提問，回覆如下請參考：\n*1.* 競賽所稱之人工介入，係指參賽者直接決定或指定當日投資標的、配置比例或交易內容等情形；參賽者得事先設定 Agent 之投資主題、分析因子、風險偏好及其他設計參數，但實際投資標的、配置比例及每日交易內容，仍須由 AI Agent 依據相關資訊自主分析及產生。\n*2.* 現金部位不得超過投資組合淨值（NAV）之 25%，其中分母為當日投資組合淨值（NAV），而非固定以初始資金計算。\n*3.* 本競賽採模擬交易機制，成交資金於系統結算時即納入帳務計算，不採實際股票市場之 T+2 交割制度；相關現金、持股及 NAV 請以競賽平台及 DataPack 結算結果為準。",
+    "ts": "1792478986.246609",
+    "thread_ts": "1792477628.936339",
+    "parent_user_id": "U0C8M9R8X0T",
+    "team": "T0C3BBR6687",
+    "replace_original": false,
+    "delete_original": false,
+    "metadata": {
+      "event_type": "",
+      "event_payload": null
+    },
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "qlV27",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "您好，感謝您的提問，回覆如下請參考：\n"
+              },
+              {
+                "type": "text",
+                "text": "1.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 競賽所稱之人工介入，係指參賽者直接決定或指定當日投資標的、配置比例或交易內容等情形；參賽者得事先設定 Agent 之投資主題、分析因子、風險偏好及其他設計參數，但實際投資標的、配置比例及每日交易內容，仍須由 AI Agent 依據相關資訊自主分析及產生。\n"
+              },
+              {
+                "type": "text",
+                "text": "2.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 現金部位不得超過投資組合淨值（NAV）之 25%，其中分母為當日投資組合淨值（NAV），而非固定以初始資金計算。\n"
+              },
+              {
+                "type": "text",
+                "text": "3.",
+                "style": {
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "text": " 本競賽採模擬交易機制，成交資金於系統結算時即納入帳務計算，不採實際股票市場之 T+2 交割制度；相關現金、持股及 NAV 請以競賽平台及 DataPack 結算結果為準。"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "user_team": "T0C3BBR6687",
+    "source_team": "T0C3BBR6687",
+    "user_profile": {
+      "avatar_hash": "",
+      "image_72": "https://avatars.slack-edge.com/2026-09-23/12158105403440_87116e826416affb96ff_72.jpg",
+      "first_name": "挑戰賽工作小組",
+      "real_name": "挑戰賽工作小組",
+      "display_name": "",
+      "team": "T0C3BBR6687",
+      "name": "intelligent-finance",
+      "is_restricted": false,
+      "is_ultra_restricted": false
+    }
+  }
+]
