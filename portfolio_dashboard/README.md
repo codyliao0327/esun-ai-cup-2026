@@ -28,11 +28,16 @@
 ```bash
 python run_update.py
 ```
-*(若希望更新完自動執行 git commit 與 git push，可直接加上 `--push`：)*
+*(其他常用參數：)*
 ```bash
-python run_update.py --push
+python run_update.py --push             # 更新完自動執行 git commit 與 git push
+python run_update.py --rebuild-candles  # 強制從玉山 historical.candles 重建 150 檔自 10/27 起完整歷史日線
+python run_update.py --reports-only     # 僅用本地快取行情快速重繪網頁（不呼叫玉山 API）
 ```
-- 腳本會自動登入玉山行情 SDK、抓取 150 檔最新行情、計算持股加權成本與損益、並重新生成 `dist/index.html`。
+- 腳本會自動讀取 `docs/API說明/esun api說明/config.ini` 登入玉山行情 SDK：
+  - **2330 官方開市日曆比對**：先以 `2330` 日 K 同步真實開市日曆；若偵測到 `market_cache.json` 缺漏交易日或混入非交易日資料，會自動觸發 `historical.candles` 清洗重建。
+  - **開發者方案高速抓取**：日常更新直接透過 `intraday.quote`（600 次/分鐘，無須分批冷卻）抓取 150 檔最新行情。
+  - **日期防呆**：存檔日期一律以 API 回傳之交易日（`date`）為準（凌晨或假日執行不會誤存成當日系統日期）；若於台股盤中（`09:00 ~ 13:35`）執行會自動顯示盤中即時價提醒。
 
 ### 步驟 3：查看網頁
 - **本機預覽**：直接雙擊打開 `code/portfolio_dashboard/dist/index.html` 即可在瀏覽器瀏覽！
@@ -66,7 +71,7 @@ python run_update.py --push
 ```text
 code/portfolio_dashboard/
 ├── tracker.py             # 成本與損益計算引擎 (解析 backend_reports/*.htm 與 Datapack/Raw/*.json)
-├── market_api.py          # 玉山行情 API 模組 (取得 150 檔標的行情與 10-27 起趨勢)
+├── market_api.py          # 玉山行情 API 模組 (config.ini 認證、intraday.quote 抓取、2330 日曆比對與自動重建)
 ├── builder.py             # 前端 HTML 產生器 (渲染 Fugle 版面與 Apple 毛玻璃特效)
 ├── run_update.py          # 每日一鍵執行調度腳本
 ├── market_cache.json      # 行情與日線趨勢本地快取

@@ -1,17 +1,18 @@
 """
 Market API Fetcher for 2026 玉山人工智慧挑戰賽
-100% 統一透過玉山證券行情 SDK (REST API) 抓取 150 檔官方標的即時收盤行情與歷史日線
-嚴格遵循玉山 API 速率限制 (Simulation 模擬環境 60 次/分鐘)：
-  - 智能批次分流：每批 50 檔，自動冷卻等待重置，保證 150 檔 100% 成功抓取無缺漏
-  - 遇到 429 自動等待 60 秒並重試，絕不放棄任何標的
-  - 支援斷點續抓：當日已抓取成功的標的不重複消耗配額
+100% 統一透過玉山證券行情 SDK (REST API) 抓取 150 檔官方標的收盤行情與歷史日線：
+  - 使用開發者權限之 intraday.quote 抓取 150 檔即時/收盤報價（600 次/分，無須分批冷卻，內建 429 重試）
+  - 以 2330 官方歷史日 K 作為台股開市日曆，並一律以 API 回傳之交易日 (api_date) 作為存檔 Key
+  - 自動比對快取與官方開市日曆：缺漏交易日或出現非交易日髒資料時自動觸發歷史重建
+  - 盤中防呆提醒：僅於 api_date == 本機今日 且 09:00 <= 現在時間 < 13:35 時發出盤中提示
 """
 import os
 import json
 import time
 import sys
+from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any, Optional, Tuple
 
 if sys.platform == "win32":
     try:
@@ -28,8 +29,10 @@ from esun_marketdata import EsunMarketdata
 
 DASHBOARD_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = DASHBOARD_DIR.parent.parent
-CONFIG_PATH = PROJECT_ROOT / "docs" / "API說明" / "esun api說明" / "config.simulation.ini"
+API_DOCS_DIR = PROJECT_ROOT / "docs" / "API說明" / "esun api說明"
+CONFIG_PATH = API_DOCS_DIR / "config.ini"
 CACHE_FILE = DASHBOARD_DIR / "market_cache.json"
+COMPETITION_START_DATE = "2026-10-27"
 
 
 def init_esun_client():
@@ -64,12 +67,139 @@ def save_cached_market_data(data: Dict[str, Any]):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
-def rebuild_full_candles(stocks_150: Dict[str, Dict[str, str]]) -> Dict[str, Dict[str, Any]]:
+def fetch_official_trading_dates(client, start_date: str = COMPETITION_START_DATE) -> List[str]:
+    """透過 2330 官方歷史日 K 取得自起始日以來的台股真實開市日曆（僅耗 1 次配額）"""
+    res = client.historical.candles(symbol="2330", timeframe="D")
+    data = res.get("data", []) if isinstance(res, dict) else []
+    dates = sorted({c["date"] for c in data if c.get("date", "") >= start_date})
+    return dates
+
+
+def _warn_if_intraday(api_date: str):
+    """僅於盤中時段 (09:00 ~ 13:35) 且 API 日期為今日時發出提醒，開盤前或盤後不誤報"""
+    now = datetime.now()
+    local_today = now.strftime("%Y-%m-%d")
+    hhmm = now.strftime("%H:%M")
+    if api_date == local_today and "09:00" <= hhmm < "13:35":
+        print(f"⚠️ [盤中提醒] 目前為台股盤中時段 ({hhmm})，API 回傳之 {api_date} 價格為盤中即時價，非最終收盤價！")
+
+
+def _fetch_single_intraday_quote(client, code: str, max_retries: int = 3) -> Optional[Dict[str, Any]]:
+    """呼叫 intraday.quote 抓取單檔報價，內建 429 自動冷卻重試"""
+    for _ in range(max_retries):
+        try:
+            q = client.intraday.quote(symbol=code)
+            if isinstance(q, dict) and q.get("statusCode") == 429:
+                print(f"   ⚠️ 觸發 429 限速，冷卻 62 秒後重試 {code}...")
+                time.sleep(62)
+                continue
+            return q
+        except Exception as e:
+            print(f"   ⚠️ 連線異常 ({code}): {e}，等待 3 秒重試...")
+            time.sleep(3)
+    return None
+
+
+def _parse_intraday_quote(q: Dict[str, Any], meta: Dict[str, str], fallback_date: str) -> Dict[str, Any]:
+    code = q.get("symbol") or meta.get("code", "")
+    name = meta.get("name", code)
+    market = meta.get("market", "上市")
+    close_price = float(q.get("closePrice") or 0.0)
+    prev_close = float(q.get("previousClose") or close_price)
+    change = float(q.get("change") or (close_price - prev_close))
+    change_pct = float(q.get("changePercent") or ((change / prev_close * 100) if prev_close else 0.0))
+    total = q.get("total") or {}
+    volume_lots = round(float(total.get("tradeVolume") or 0.0), 1)
+    quote_date = q.get("date") or fallback_date
+
+    return {
+        "code": code,
+        "name": name,
+        "market": market,
+        "close_price": round(close_price, 2),
+        "prev_close": round(prev_close, 2),
+        "change": round(change, 2),
+        "change_pct": round(change_pct, 2),
+        "volume_lots": volume_lots,
+        "trade_value": total.get("tradeValue") or 0,
+        "last_updated": quote_date,
+    }
+
+
+def _fetch_quotes_via_intraday(
+    client, stocks_150: Dict[str, Dict[str, str]]
+) -> Tuple[str, Dict[str, Dict[str, Any]]]:
+    """透過 intraday.quote 抓取 150 檔報價（開發者方案 600 次/分，無須分批冷卻）"""
+    symbols = list(stocks_150.keys())
+    parsed: Dict[str, Dict[str, Any]] = {}
+    api_date: Optional[str] = None
+
+    for idx, code in enumerate(symbols, start=1):
+        meta = stocks_150.get(code, {})
+        name = meta.get("name", code)
+
+        q = _fetch_single_intraday_quote(client, code)
+        if isinstance(q, dict) and q.get("closePrice"):
+            if not api_date and q.get("date"):
+                api_date = q["date"]
+            item = _parse_intraday_quote(q, meta, fallback_date=api_date or "")
+            parsed[code] = item
+            sign = "+" if item["change"] >= 0 else ""
+            print(f"[{idx:3d}/{len(symbols)}] {code} {name:<4s}: 現價 {item['close_price']:7.2f} ({sign}{item['change_pct']:5.2f}%)")
+        else:
+            print(f"[{idx:3d}/{len(symbols)}] ⚠️ {code} {name:<4s}: API 無法取得資料")
+
+    return api_date or "", parsed
+
+
+def _check_needs_history_rebuild(
+    cached_stocks: Dict[str, Any],
+    symbols: List[str],
+    official_dates: List[str],
+    api_date: str,
+) -> Tuple[bool, str]:
+    """比對快取與 2330 官方開市日曆，自動判斷是否需要重抓 150 檔歷史日線"""
+    if not cached_stocks:
+        return True, "本地快取為空"
+
+    if not official_dates:
+        return False, ""
+
+    official_set = set(official_dates)
+    expected_before_api = {d for d in official_dates if d < api_date}
+
+    for code in symbols:
+        item = cached_stocks.get(code)
+        if not item:
+            return True, f"缺少標的 {code} 的快取紀錄"
+
+        dates = item.get("dates") or []
+        trend = item.get("trend") or []
+        if not dates or not trend or len(dates) != len(trend):
+            return True, f"標的 {code} 歷史序列缺漏或長度不一致"
+
+        dates_set = set(dates)
+        missing_days = expected_before_api - dates_set
+        if missing_days:
+            return True, f"標的 {code} 缺少交易日: {sorted(missing_days)}"
+
+        invalid_days = [d for d in dates if d > api_date or (d < api_date and d not in official_set)]
+        if invalid_days:
+            return True, f"標的 {code} 含有非官方交易日資料: {invalid_days}"
+
+    return False, ""
+
+
+def rebuild_full_candles(
+    stocks_150: Dict[str, Dict[str, str]],
+    client=None,
+) -> Dict[str, Dict[str, Any]]:
     """調用官方 historical.candles 完整拉取自 2026-10-27 以來的所有官方真實日 K 線 (防呆覆蓋保證)"""
-    client = init_esun_client()
+    if client is None:
+        client = init_esun_client()
     symbols = list(stocks_150.keys())
     print(f"\n[market_api] 正在透過玉山 API historical.candles 完整重建 150 檔官方歷史日線...")
-    print(f"[market_api] 標的數量: {len(symbols)} 檔，分 3 批執行（配額保護 60 次/分）...")
+    print(f"[market_api] 標的數量: {len(symbols)} 檔，分 3 批執行（歷史行情配額保護 60 次/分）...")
 
     results = {}
     history_candles = {}
@@ -90,7 +220,7 @@ def rebuild_full_candles(stocks_150: Dict[str, Dict[str, str]]) -> Dict[str, Dic
         try:
             res = client.historical.candles(symbol=code, timeframe="D")
             data = res.get("data", [])
-            comp_candles = [c for c in data if c.get("date", "") >= "2026-10-27"]
+            comp_candles = [c for c in data if c.get("date", "") >= COMPETITION_START_DATE]
             comp_candles.sort(key=lambda x: x["date"])
 
             trend = [float(c["close"]) for c in comp_candles]
@@ -114,9 +244,9 @@ def rebuild_full_candles(stocks_150: Dict[str, Dict[str, str]]) -> Dict[str, Dic
                 "change_pct": change_pct,
                 "volume_lots": round(latest_c.get("volume", 0) / 1000.0, 1),
                 "trade_value": 0,
-                "last_updated": latest_c.get("date", time.strftime("%Y-%m-%d")),
+                "last_updated": latest_c.get("date", ""),
                 "trend": trend,
-                "dates": [c["date"] for c in comp_candles]
+                "dates": [c["date"] for c in comp_candles],
             }
             print(f"[{idx:3d}/150] {code} {name:<4s}: {len(trend)} 根日線, 現價 {close_price:7.2f} ({change:+.2f})")
         except Exception as e:
@@ -127,7 +257,7 @@ def rebuild_full_candles(stocks_150: Dict[str, Dict[str, str]]) -> Dict[str, Dic
     save_cached_market_data({
         "updated_at": time.strftime("%Y-%m-%d %H:%M:%S"),
         "stocks": results,
-        "history_candles": history_candles
+        "history_candles": history_candles,
     })
     print(f"\n[market_api] ✅ 150 檔官方歷史日線已 100% 完整覆蓋重建完畢！")
     return results
@@ -136,9 +266,9 @@ def rebuild_full_candles(stocks_150: Dict[str, Dict[str, str]]) -> Dict[str, Dic
 def fetch_all_150_quotes(
     stocks_150: Dict[str, Dict[str, str]],
     fetch_candles: bool = True,
-    force_refresh: bool = False
+    force_refresh: bool = False,
 ) -> Dict[str, Dict[str, Any]]:
-    """100% 透過玉山 API 依序抓取 150 檔行情，嚴格控管 60次/分 配額"""
+    """透過玉山 API 抓取 150 檔最新行情，並依 2330 官方開市日曆自動判斷是否需補抓歷史日線"""
     client = init_esun_client()
     cache = load_cached_market_data()
     cached_stocks = cache.get("stocks", {})
@@ -149,152 +279,82 @@ def fetch_all_150_quotes(
         print("[market_api] ⚠️ 警告：傳入的 150 檔標的清單為空！終止抓取以防止清空本地快取。")
         return cached_stocks
 
-    today_str = time.strftime("%Y-%m-%d")
-
-    print(f"\n[market_api] 正在透過玉山 API 統一抓取 150 檔收盤行情...")
-    print(f"[market_api] 速率規範：模擬環境嚴格限制 60 次/分，系統將自動分 3 批（每批 50 檔）執行...")
-
-    results = {}
-    # 先載入既有快取 (若當天已抓成功且數值齊全，避免重複耗費配額)
-    for code in symbols:
-        if code in cached_stocks and not force_refresh:
-            item = cached_stocks[code]
-            if (
-                item.get("close_price", 0) > 0 
-                and item.get("last_updated") == today_str
-                and (item.get("volume_lots", 0) > 0 or item.get("prev_close", 0) != item.get("close_price", 0))
-            ):
-                results[code] = item
-
-    to_fetch = [s for s in symbols if s not in results]
-    print(f"[market_api] 當日已完成: {len(results)} 檔，待抓取: {len(to_fetch)} 檔")
-
-    call_count = 0
-    BATCH_SIZE = 50  # 每批 50 次，嚴格低於 60次/分 門檻
-
-    for idx, code in enumerate(to_fetch, start=1):
-        meta = stocks_150.get(code, {})
-        name = meta.get("name", code)
-        market = meta.get("market", "上市")
-
-        # 每抓 50 檔自動安全冷卻 60 秒，重置 API 每分鐘計數器
-        if call_count > 0 and call_count % BATCH_SIZE == 0:
-            print(f"\n⏳ [配額保護] 已完成 {call_count} 次 API 請求，正在冷卻 62 秒以重置每分鐘配額...")
-            for remaining in range(62, 0, -10):
-                print(f"   冷卻倒數中... 剩餘 {remaining} 秒")
-                time.sleep(10)
-            time.sleep(2)
-            print("   ✅ 配額計數器已重置，繼續抓取下一批...")
-
-        # 呼叫 API 抓取個股報價，內建 429 自動重試機制
-        max_retries = 3
-        q = None
-        for attempt in range(max_retries):
-            call_count += 1
-            try:
-                q = client.intraday.quote(symbol=code)
-                if isinstance(q, dict) and q.get("statusCode") == 429:
-                    print(f"   ⚠️ 觸發 429 限速，強制冷卻 62 秒後重試 {code} ({name})...")
-                    time.sleep(62)
-                    continue
-                break
-            except Exception as e:
-                print(f"   ⚠️ 連線異常: {e}，等待 3 秒重試...")
-                time.sleep(3)
-
-        if isinstance(q, dict) and q.get("closePrice"):
-            close_price = float(q.get("closePrice") or 0.0)
-            prev_close = float(q.get("previousClose") or close_price)
-            change = float(q.get("change") or (close_price - prev_close))
-            change_pct = float(q.get("changePercent") or ((change / prev_close * 100) if prev_close else 0.0))
-            
-            total = q.get("total") or {}
-            trade_vol_shares = total.get("tradeVolume") or 0
-            trade_vol_lots = round(trade_vol_shares / 1000.0, 1)
-
-            results[code] = {
-                "code": code,
-                "name": name,
-                "market": market,
-                "close_price": round(close_price, 2),
-                "prev_close": round(prev_close, 2),
-                "change": round(change, 2),
-                "change_pct": round(change_pct, 2),
-                "volume_lots": trade_vol_lots,
-                "trade_value": total.get("tradeValue") or 0,
-                "last_updated": today_str
-            }
-            # 格式化輸出進度
-            sign = "+" if change >= 0 else ""
-            print(f"[{idx:3d}/{len(to_fetch)}] {code} {name:<4s}: 現價 {close_price:7.2f} ({sign}{change_pct:5.2f}%)")
-        else:
-            # 極端例外 fallback
-            cached_item = cached_stocks.get(code, {})
-            results[code] = {
-                "code": code,
-                "name": name,
-                "market": market,
-                "close_price": cached_item.get("close_price", 0.0),
-                "prev_close": cached_item.get("prev_close", 0.0),
-                "change": cached_item.get("change", 0.0),
-                "change_pct": cached_item.get("change_pct", 0.0),
-                "volume_lots": cached_item.get("volume_lots", 0),
-                "trade_value": cached_item.get("trade_value", 0),
-                "last_updated": today_str
-            }
-            print(f"[{idx:3d}/{len(to_fetch)}] {code} {name:<4s}: API 無法取得資料，保留原快取")
-
-        # 每次呼叫間隔 0.25 秒平滑流量
-        time.sleep(0.25)
-
-    # 取得歷史所有已知交易日列表作為基準 (防呆對齊)
-    ref_dates = []
+    # 1. 取得 2330 官方開市日曆（僅 1 次歷史 API 請求）
+    official_dates: List[str] = []
     try:
-        from tracker import load_datapack_history
-        ref_dates = [h["date"] for h in load_datapack_history()]
-    except Exception:
-        pass
+        official_dates = fetch_official_trading_dates(client)
+        print(f"[market_api] 📅 2330 官方開市日曆已同步（共 {len(official_dates)} 個交易日，最新至 {official_dates[-1] if official_dates else '無'}）")
+    except Exception as e:
+        print(f"[market_api] ⚠️ 無法取得 2330 官方日曆，將略過自動歷史比對: {e}")
 
-    # 處理趨勢 Sparkline (以真實交易日為 Key 的絕對覆蓋防呆架構，徹底杜絕重複 append 或漏接平盤)
-    for code, item in results.items():
+    # 2. 透過 intraday.quote 抓取 150 檔最新行情（開發者方案 600 次/分，無須分批冷卻）
+    print("\n[market_api] 正在透過玉山 API intraday.quote 抓取 150 檔最新行情...")
+    api_date, fetched_quotes = _fetch_quotes_via_intraday(client, stocks_150)
+
+    if not api_date:
+        print("[market_api] ⚠️ 無法取得 API 交易日期，保留本地快取。")
+        return cached_stocks
+
+    _warn_if_intraday(api_date)
+
+    # 3. 檢查是否需要自動觸發歷史日線重建（若 fetch_candles=True）
+    if fetch_candles and official_dates:
+        need_rebuild, reason = _check_needs_history_rebuild(cached_stocks, symbols, official_dates, api_date)
+        if need_rebuild:
+            print(f"\n[market_api] 🔄 自動偵測到需重建歷史日線（原因：{reason}），自動執行 rebuild_full_candles...")
+            cached_stocks = rebuild_full_candles(stocks_150, client=client)
+            history_candles = {c: v.get("trend", []) for c, v in cached_stocks.items()}
+
+    # 4. 以 API 回傳的 api_date 為 Key，將最新行情安全寫入/覆蓋對應交易日
+    results: Dict[str, Dict[str, Any]] = {}
+    for code in symbols:
+        meta = stocks_150.get(code, {})
         existing_item = cached_stocks.get(code, {})
+        fresh_item = fetched_quotes.get(code)
+
+        if fresh_item and fresh_item.get("close_price", 0) > 0:
+            item = fresh_item
+        else:
+            item = {
+                "code": code,
+                "name": meta.get("name", code),
+                "market": meta.get("market", "上市"),
+                "close_price": existing_item.get("close_price", 0.0),
+                "prev_close": existing_item.get("prev_close", 0.0),
+                "change": existing_item.get("change", 0.0),
+                "change_pct": existing_item.get("change_pct", 0.0),
+                "volume_lots": existing_item.get("volume_lots", 0.0),
+                "trade_value": existing_item.get("trade_value", 0),
+                "last_updated": existing_item.get("last_updated", api_date),
+            }
+
         existing_dates = existing_item.get("dates") or []
         existing_trend = history_candles.get(code, []) or existing_item.get("trend", [])
-        
-        # 建立日期對照字典
-        date_map = {}
+
+        date_map: Dict[str, float] = {}
         if existing_dates and len(existing_dates) == len(existing_trend):
             for d, p in zip(existing_dates, existing_trend):
-                date_map[d] = p
-        elif ref_dates and len(ref_dates) >= len(existing_trend):
-            # 若快取無日期，自動取官方 DataPack 歷史交易日精確對齊
-            matched_dates = [d for d in ref_dates if d < today_str][-len(existing_trend):] if len(existing_trend) > 0 else []
-            for d, p in zip(matched_dates, existing_trend):
-                date_map[d] = p
-        else:
-            for idx, p in enumerate(existing_trend):
-                date_map[f"day_{idx:03d}"] = p
+                if not official_dates or d in official_dates or d == api_date:
+                    date_map[d] = p
 
-        # 覆蓋今日收盤價
         latest_c = item.get("close_price", 0.0)
         if latest_c > 0:
-            date_map[today_str] = latest_c
+            date_map[item["last_updated"]] = latest_c
 
-        # 依日期鍵排序，重新生成乾淨無重複的序列
         sorted_keys = sorted(date_map.keys())
         trend = [date_map[k] for k in sorted_keys]
         item["dates"] = sorted_keys
         item["trend"] = trend
         history_candles[code] = trend
+        results[code] = item
 
-    # 儲存至本地快取
     save_cached_market_data({
         "updated_at": time.strftime("%Y-%m-%d %H:%M:%S"),
         "stocks": results,
-        "history_candles": history_candles
+        "history_candles": history_candles,
     })
 
-    print(f"\n[market_api] ✅ 150 檔行情已 100% 透過玉山證券 API 抓取同步完畢！")
+    print(f"\n[market_api] ✅ 150 檔行情已 100% 同步完畢（交易日：{api_date}）！")
     return results
 
 

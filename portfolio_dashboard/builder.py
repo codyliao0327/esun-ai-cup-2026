@@ -2288,6 +2288,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
           <div class="routing-pill">
             <span>L2M 市場走向</span>
             <span class="model-badge argon">gemini-4-argon</span>
+            <span class="code-exec-badge">🐍 Code Exec</span>
             <span style="color:var(--text-dim); font-size:11px;">備援: gemini-3.6-flash</span>
           </div>
           <div class="routing-pill">
@@ -2449,7 +2450,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
         </div>
         <div class="glass-card highlight-card">
           <div class="highlight-card-title"><span>🐍</span> 原生 Python 沙盒零數值幻覺</div>
-          <div class="highlight-card-desc">於 L2、L3、L4 核心階段全面啟用 Gemini 原生 Code Execution 沙盒，將權重精算、整股張數換算與風險指標交由程式執行，徹底避免 LLM 算術誤差。</div>
+          <div class="highlight-card-desc">於 L2M、L2、L3、L4 核心階段全面啟用 Gemini 原生 Code Execution 沙盒，將權重精算、整股張數換算與風險指標交由程式執行，徹底避免 LLM 算術誤差。</div>
         </div>
         <div class="glass-card highlight-card">
           <div class="highlight-card-title"><span>🧭</span> LiteLLM Multi-Model 動態路由</div>
