@@ -144,8 +144,10 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
     DIST_DIR.mkdir(parents=True, exist_ok=True)
 
     account = summary_data["account"]
+    friction = summary_data.get("friction", {})
     history = summary_data["history"]
     held_positions = summary_data["held_positions"]
+    trade_history = summary_data.get("trade_history", [])
     stocks_150 = summary_data["stocks_150"]
 
     held_codes = set(p["code"] for p in held_positions)
@@ -213,8 +215,10 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
         "as_of_date": summary_data["as_of_date"],
         "trade_date": summary_data["trade_date"],
         "account": account,
+        "friction": friction,
         "history": history,
         "stocks": all_stocks_list,
+        "trade_history": trade_history,
         "usage": usage_data,
         "reports": decision_reports
     }
@@ -479,6 +483,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       z-index: 50;
       border-radius: 24px;
       border: 1px solid transparent;
+      transform: translateZ(0);
       transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, padding 0.25s var(--spring-ease);
     }}
 
@@ -796,27 +801,26 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
     .segmented-control {{
       display: inline-flex;
       background: var(--well-bg);
-      backdrop-filter: blur(16px) saturate(150%);
-      -webkit-backdrop-filter: blur(16px) saturate(150%);
       padding: 6px;
       border-radius: 999px;
       border: 1px solid var(--well-border);
       box-shadow: var(--well-shadow), 0 10px 26px -8px rgba(0, 0, 0, 0.18);
       gap: 6px;
       position: relative;
+      isolation: isolate;
     }}
 
     .tab-btn {{
       border: 1px solid transparent;
       background: transparent;
       color: var(--text-muted);
-      padding: 10px 24px;
+      padding: 10px 20px;
       font-size: 14px;
       font-weight: 700;
       font-family: var(--font-sans);
       border-radius: 999px;
       cursor: pointer;
-      transition: all 0.28s var(--spring-ease);
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s var(--spring-ease);
       display: flex;
       align-items: center;
       gap: 8px;
@@ -850,6 +854,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       padding: 22px;
       box-shadow: var(--glass-shadow);
       position: relative;
+      isolation: isolate;
       transition: transform 0.25s var(--spring-ease), border-color 0.25s ease;
     }}
 
@@ -979,6 +984,8 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
 
     .search-box {{
       position: relative;
+      display: flex;
+      align-items: center;
       min-width: 248px;
     }}
 
@@ -1014,6 +1021,10 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       left: 14px;
       top: 50%;
       transform: translateY(-50%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
       font-size: 13px;
       color: var(--text-dim);
       pointer-events: none;
@@ -1067,6 +1078,17 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
 
     table.fugle-table th:active {{
       transform: scale(0.98);
+    }}
+
+    table.fugle-table th.no-sort {{
+      cursor: default;
+    }}
+    table.fugle-table th.no-sort:hover {{
+      color: var(--text-muted);
+      background: var(--table-header-bg);
+    }}
+    table.fugle-table th.no-sort:active {{
+      transform: none;
     }}
 
     table.fugle-table th .sort-icon {{
@@ -1336,9 +1358,6 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
         min-width: 0;
         text-align: center;
       }}
-      #tabBtn5 {{
-        grid-column: 1 / -1;
-      }}
       .kpi-grid {{
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10px;
@@ -1599,6 +1618,8 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       flex-wrap: wrap;
       align-items: center;
       gap: 10px;
+      max-width: 100%;
+      min-width: 0;
     }}
 
     .report-controls-right {{
@@ -1606,10 +1627,17 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       flex-wrap: wrap;
       align-items: center;
       gap: 10px;
+      max-width: 100%;
+      min-width: 0;
     }}
 
     .report-select {{
       appearance: none;
+      max-width: 100%;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       background: var(--btn-glass-bg);
       color: var(--text-main);
       border: 1px solid var(--btn-glass-border);
@@ -1650,6 +1678,10 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       border-radius: 999px;
       background: var(--glass-pill-bg);
       border: 1px solid var(--glass-border-subtle);
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }}
 
     .report-layout {{
@@ -2030,6 +2062,25 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
         padding: 18px 16px;
       }}
     }}
+
+    @media (max-width: 768px) {{
+      .report-toolbar {{
+        padding: 14px;
+      }}
+      .report-controls-left,
+      .report-controls-right {{
+        width: 100%;
+      }}
+      #reportDateSelect {{
+        width: 100%;
+        flex: 1 1 100%;
+        order: -1;
+      }}
+      .report-controls-left .report-action-btn {{
+        flex: 1 1 0;
+        justify-content: center;
+      }}
+    }}
   </style>
 </head>
 <body>
@@ -2068,16 +2119,19 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       <div class="tab-nav-container">
         <div class="segmented-control">
           <button class="tab-btn active" id="tabBtn1" onclick="switchTab('tab1')">
-            <span>📊</span> 帳戶總覽與庫存損益
+            <span>📊</span> 帳戶總覽
           </button>
           <button class="tab-btn" id="tabBtn2" onclick="switchTab('tab2')">
-            <span>📈</span> 自選行情觀察群組
+            <span>📈</span> 行情群組
           </button>
-          <button class="tab-btn" id="tabBtn3" onclick="switchTab('tab3')">
-            <span>🤖</span> AI 模型用量與成本監控
+          <button class="tab-btn" id="tabBtn6" onclick="switchTab('tab6')">
+            <span>🧾</span> 歷史成交明細
           </button>
           <button class="tab-btn" id="tabBtn4" onclick="switchTab('tab4')">
-            <span>📄</span> 每日決策報告
+            <span>📄</span> 決策報告
+          </button>
+          <button class="tab-btn" id="tabBtn3" onclick="switchTab('tab3')">
+            <span>🤖</span> AI 模型成本監控
           </button>
           <button class="tab-btn" id="tabBtn5" onclick="switchTab('tab5')">
             <span>💡</span> 專案亮點
@@ -2097,13 +2151,6 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
           <div class="kpi-subtext">初始資金 $1,000,000,000</div>
         </div>
         <div class="glass-card kpi-card">
-          <div class="kpi-label">累計總報酬率</div>
-          <div class="kpi-value {'badge-pnl up' if account['cum_return_pct'] >= 0 else 'badge-pnl down'}" style="display:inline-block; font-size:22px;">
-            {'+' if account['cum_return_pct'] >= 0 else ''}{account['cum_return_pct']:.2f}%
-          </div>
-          <div class="kpi-subtext">累計損益 ${account['cum_pnl']:,.0f}</div>
-        </div>
-        <div class="glass-card kpi-card">
           <div class="kpi-label">可動用現金 (Cash)</div>
           <div class="kpi-value">${account['cash']:,.0f}</div>
           <div class="kpi-subtext">現金比率 {account['cash_ratio_pct']:.2f}%</div>
@@ -2117,6 +2164,27 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
           <div class="kpi-label">持股檔數 / 合規</div>
           <div class="kpi-value">{account['holdings_count']} <span style="font-size:14px; color:var(--text-muted);">/ 20~30檔</span></div>
           <div class="kpi-subtext">⚠️ 違規 {account['violations']} 次 · 提示 {account['notices']} 次</div>
+        </div>
+        <div class="glass-card kpi-card">
+          <div class="kpi-label">累計總報酬率 / 當日</div>
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <div class="kpi-value {'badge-pnl up' if account['cum_return_pct'] >= 0 else 'badge-pnl down'}" style="display:inline-block; font-size:22px;">
+              {'+' if account['cum_return_pct'] >= 0 else ''}{account['cum_return_pct']:.2f}%
+            </div>
+            <span class="badge-pnl {'up' if account.get('day_return_pct', 0) >= 0 else 'down'}" style="font-size:12px;">
+              當日 {'+' if account.get('day_return_pct', 0) >= 0 else ''}{account.get('day_return_pct', 0):.2f}%
+            </span>
+          </div>
+          <div class="kpi-subtext">累計損益 ${account['cum_pnl']:,.0f}</div>
+        </div>
+        <div class="glass-card kpi-card">
+          <div class="kpi-label">競賽排名 (總 / 社會組)</div>
+          <div class="kpi-value" style="display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;">
+            <span>#{account.get('rank') or '--'}</span>
+            <span style="font-size:13px; color:var(--text-muted);">/ {account.get('total_teams') or '--'}</span>
+            {f"<span class='badge-pnl {'up' if account.get('rank_diff', 0) > 0 else ('down' if account.get('rank_diff', 0) < 0 else '')}' style='font-size:11px;'>{'▲' + str(account['rank_diff']) if account.get('rank_diff', 0) > 0 else ('▼' + str(abs(account['rank_diff'])) if account.get('rank_diff', 0) < 0 else '持平')}</span>" if account.get('rank') else ''}
+          </div>
+          <div class="kpi-subtext">社會組 #{account.get('group_rank') or '--'}/{account.get('group_total') or '--'} · 學生組 {account.get('student_total') or '--'} 隊</div>
         </div>
       </div>
 
@@ -2140,6 +2208,30 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
           </div>
           <div class="chart-wrapper">
             <canvas id="cumReturnChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- 競賽排名走勢與每日報酬率/集中度雙圖 -->
+      <div class="overview-charts-grid">
+        <div class="glass-card">
+          <div class="chart-header">
+            <div class="chart-title">
+              <span>🏆</span> 每日競賽排名走勢 (總排名 / 社會組)
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="rankHistoryChart"></canvas>
+          </div>
+        </div>
+        <div class="glass-card">
+          <div class="chart-header">
+            <div class="chart-title">
+              <span>📊</span> 單日報酬率 (%)
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="dayReturnChart"></canvas>
           </div>
         </div>
       </div>
@@ -2200,7 +2292,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
             </button>
           </div>
 
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
             <div class="filter-pills">
               <button class="filter-btn" id="sortGainBtn" onclick="setSortMode('gain')">📈 漲幅由大到小</button>
               <button class="filter-btn" id="sortLossBtn" onclick="setSortMode('loss')">📉 跌幅由大到小</button>
@@ -2295,16 +2387,19 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
             <span>L2 個股推論</span>
             <span class="model-badge argon">gemini-4-argon</span>
             <span class="code-exec-badge">🐍 Code Exec</span>
+            <span style="color:var(--text-dim); font-size:11px;">備援: gemini-3.6-flash</span>
           </div>
           <div class="routing-pill">
             <span>L3 投組決策</span>
             <span class="model-badge argon">gemini-4-argon</span>
             <span class="code-exec-badge">🐍 Code Exec</span>
+            <span style="color:var(--text-dim); font-size:11px;">備援: gemini-3.6-flash</span>
           </div>
           <div class="routing-pill">
             <span>L4 委託計算</span>
             <span class="model-badge argon">gemini-4-argon</span>
             <span class="code-exec-badge">🐍 Code Exec</span>
+            <span style="color:var(--text-dim); font-size:11px;">備援: gemini-3.6-flash</span>
           </div>
         </div>
       </div>
@@ -2471,6 +2566,78 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       </div>
     </div>
 
+    <!-- ================= 頁籤 6: 歷史成交明細與摩擦成本 ================= -->
+    <div id="tab6Content" style="display: none;">
+      <div class="kpi-grid">
+        <div class="glass-card kpi-card">
+          <div class="kpi-label">累計買進金額 ({friction.get('total_buy_count', 0)} 筆)</div>
+          <div class="kpi-value">${friction.get('total_buy_amount', 0):,.0f}</div>
+          <div class="kpi-subtext">總成交金額 ${friction.get('total_traded_amount', 0):,.0f}</div>
+        </div>
+        <div class="glass-card kpi-card">
+          <div class="kpi-label">累計賣出金額 ({friction.get('total_sell_count', 0)} 筆)</div>
+          <div class="kpi-value">${friction.get('total_sell_amount', 0):,.0f}</div>
+          <div class="kpi-subtext">共 {friction.get('total_buy_count', 0) + friction.get('total_sell_count', 0)} 筆成交</div>
+        </div>
+        <div class="glass-card kpi-card">
+          <div class="kpi-label">累計手續費 / 證交稅</div>
+          <div class="kpi-value">${friction.get('total_friction_cost', 0):,.2f}</div>
+          <div class="kpi-subtext">手續費 ${friction.get('total_fee', 0):,.2f} · 證交稅 ${friction.get('total_tax', 0):,.2f}</div>
+        </div>
+        <div class="glass-card kpi-card">
+          <div class="kpi-label">淨已實現損益 (扣費稅)</div>
+          <div class="kpi-value {'badge-pnl up' if friction.get('net_realized_pnl', 0) >= 0 else 'badge-pnl down'}" style="display:inline-block; font-size:22px;">
+            {'+' if friction.get('net_realized_pnl', 0) >= 0 else ''}${friction.get('net_realized_pnl', 0):,.0f}
+          </div>
+          <div class="kpi-subtext">毛已實現 {'+' if friction.get('gross_realized_pnl', 0) >= 0 else ''}${friction.get('gross_realized_pnl', 0):,.0f}</div>
+        </div>
+      </div>
+
+      <div class="glass-card">
+        <div class="table-toolbar">
+          <div>
+            <div class="chart-title">
+              <span>🧾</span> 歷史每日成交明細（來自官方後台 JSON 精確紀錄）
+            </div>
+            <div style="font-size:12px; color:var(--text-dim); margin-top:4px;" id="tradesFilterSummary">載入中...</div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+            <select id="tradesDateSelect" class="report-select" onchange="renderTradesTab()">
+              <option value="ALL">全部交易日</option>
+            </select>
+            <select id="tradesSideSelect" class="report-select" onchange="renderTradesTab()">
+              <option value="ALL">全部方向</option>
+              <option value="買進">買進</option>
+              <option value="賣出">賣出</option>
+            </select>
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" class="search-input" id="tradesSearchInput" placeholder="搜尋代號或名稱..." oninput="renderTradesTab()">
+            </div>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="fugle-table" id="tradesHistoryTable">
+            <thead>
+              <tr>
+                <th class="no-sort">交易日</th>
+                <th class="no-sort">買/賣</th>
+                <th class="no-sort" style="text-align: left;">代號/名稱</th>
+                <th class="no-sort">張數 (股數)</th>
+                <th class="no-sort">成交均價</th>
+                <th class="no-sort">成交金額 (元)</th>
+                <th class="no-sort">手續費 (元)</th>
+                <th class="no-sort">證交稅 (元)</th>
+              </tr>
+            </thead>
+            <tbody id="tradesHistoryTableBody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <!-- 頁尾 -->
     <footer class="app-footer">
       <div>
@@ -2559,17 +2726,21 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       document.getElementById('tabBtn3').classList.toggle('active', tabId === 'tab3');
       document.getElementById('tabBtn4').classList.toggle('active', tabId === 'tab4');
       document.getElementById('tabBtn5').classList.toggle('active', tabId === 'tab5');
+      document.getElementById('tabBtn6').classList.toggle('active', tabId === 'tab6');
       document.getElementById('tab1Content').style.display = tabId === 'tab1' ? 'block' : 'none';
       document.getElementById('tab2Content').style.display = tabId === 'tab2' ? 'block' : 'none';
       document.getElementById('tab3Content').style.display = tabId === 'tab3' ? 'block' : 'none';
       document.getElementById('tab4Content').style.display = tabId === 'tab4' ? 'block' : 'none';
       document.getElementById('tab5Content').style.display = tabId === 'tab5' ? 'block' : 'none';
+      document.getElementById('tab6Content').style.display = tabId === 'tab6' ? 'block' : 'none';
       if (tabId === 'tab2') {{
         renderWatchTable();
       }} else if (tabId === 'tab3') {{
         renderUsageTab();
       }} else if (tabId === 'tab4') {{
         renderReportsTab();
+      }} else if (tabId === 'tab6') {{
+        renderTradesTab();
       }}
     }}
 
@@ -2987,6 +3158,215 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
           }}
         }}
       }});
+
+      // 每日競賽排名走勢圖 (Y軸反轉，名次越小越上方)
+      const rankCtx = document.getElementById('rankHistoryChart').getContext('2d');
+      const totalRankData = DASHBOARD_DATA.history.map(h => h.rank || null);
+      const groupRankData = DASHBOARD_DATA.history.map(h => h.group_rank || null);
+      window.rankHistoryChartInst = new Chart(rankCtx, {{
+        type: 'line',
+        data: {{
+          labels: labels,
+          datasets: [
+            {{
+              label: '總排名',
+              data: totalRankData,
+              borderColor: '#f59e0b',
+              backgroundColor: 'rgba(245, 158, 11, 0.12)',
+              borderWidth: 2.5,
+              tension: 0.3,
+              fill: false,
+              pointBackgroundColor: '#f59e0b',
+              pointRadius: 4
+            }},
+            {{
+              label: '社會組排名',
+              data: groupRankData,
+              borderColor: '#8b5cf6',
+              backgroundColor: 'rgba(139, 92, 246, 0.12)',
+              borderWidth: 2.5,
+              tension: 0.3,
+              fill: false,
+              pointBackgroundColor: '#8b5cf6',
+              pointRadius: 4
+            }}
+          ]
+        }},
+        options: {{
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {{ mode: 'index', intersect: false }},
+          plugins: {{
+            legend: {{
+              position: 'top',
+              labels: {{ color: textColor, font: {{ family: 'Plus Jakarta Sans', size: 12, weight: '600' }} }}
+            }},
+            tooltip: {{
+              backgroundColor: isDark ? 'rgba(15, 23, 42, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+              titleColor: isDark ? '#f8fafc' : '#0f172a',
+              bodyColor: isDark ? '#cbd5e1' : '#334155',
+              borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+              borderWidth: 1,
+              padding: 12,
+              callbacks: {{
+                label: function(context) {{
+                  const h = DASHBOARD_DATA.history[context.dataIndex] || {{}};
+                  if (context.datasetIndex === 0) {{
+                    return `總排名: #${{context.parsed.y}} / ${{h.total_teams || '--'}}`;
+                  }}
+                  return `社會組: #${{context.parsed.y}} / ${{h.group_total || '--'}} (學生組 ${{h.student_total || '--'}} 隊)`;
+                }}
+              }}
+            }}
+          }},
+          scales: {{
+            x: {{
+              grid: {{ color: gridColor }},
+              ticks: {{ color: textColor, font: {{ family: 'JetBrains Mono' }} }}
+            }},
+            y: {{
+              reverse: true,
+              grid: {{ color: gridColor }},
+              ticks: {{
+                color: textColor,
+                precision: 0,
+                font: {{ family: 'JetBrains Mono' }},
+                callback: function(value) {{ return '#' + value; }}
+              }}
+            }}
+          }}
+        }}
+      }});
+
+      // 單日報酬率 (%) 柱狀圖
+      const dayCtx = document.getElementById('dayReturnChart').getContext('2d');
+      const dayRetData = DASHBOARD_DATA.history.map(h => Number(h.day_return_pct || 0));
+      const dayRetColors = dayRetData.map(v => v >= 0 ? 'rgba(244, 63, 94, 0.78)' : 'rgba(16, 185, 129, 0.78)');
+
+      window.dayReturnChartInst = new Chart(dayCtx, {{
+        type: 'bar',
+        data: {{
+          labels: labels,
+          datasets: [
+            {{
+              label: '單日報酬率 (%)',
+              data: dayRetData,
+              backgroundColor: dayRetColors,
+              borderRadius: 6
+            }}
+          ]
+        }},
+        options: {{
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {{ mode: 'index', intersect: false }},
+          plugins: {{
+            legend: {{
+              position: 'top',
+              labels: {{ color: textColor, font: {{ family: 'Plus Jakarta Sans', size: 12, weight: '600' }} }}
+            }},
+            tooltip: {{
+              backgroundColor: isDark ? 'rgba(15, 23, 42, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+              titleColor: isDark ? '#f8fafc' : '#0f172a',
+              bodyColor: isDark ? '#cbd5e1' : '#334155',
+              borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+              borderWidth: 1,
+              padding: 12,
+              callbacks: {{
+                label: function(context) {{
+                  const val = Number(context.parsed.y);
+                  return `單日報酬率: ${{val >= 0 ? '+' : ''}}${{val.toFixed(2)}}%`;
+                }}
+              }}
+            }}
+          }},
+          scales: {{
+            x: {{
+              grid: {{ color: gridColor }},
+              ticks: {{ color: textColor, font: {{ family: 'JetBrains Mono' }} }}
+            }},
+            y: {{
+              grid: {{ color: gridColor }},
+              ticks: {{
+                color: textColor,
+                font: {{ family: 'JetBrains Mono' }},
+                callback: function(v) {{ return (v >= 0 ? '+' : '') + Number(v).toFixed(2) + '%'; }}
+              }}
+            }}
+          }}
+        }}
+      }});
+    }}
+
+    let tradesDatePopulated = false;
+    function renderTradesTab() {{
+      const historyDays = DASHBOARD_DATA.trade_history || [];
+      const dateSel = document.getElementById('tradesDateSelect');
+      if (!tradesDatePopulated && dateSel) {{
+        historyDays.forEach(d => {{
+          const opt = document.createElement('option');
+          opt.value = d.date;
+          opt.textContent = `Day ${{d.day}} · ${{d.date}} (${{d.trades.length}} 筆)`;
+          dateSel.appendChild(opt);
+        }});
+        tradesDatePopulated = true;
+      }}
+
+      const selDate = dateSel ? dateSel.value : 'ALL';
+      const selSide = document.getElementById('tradesSideSelect').value;
+      const query = (document.getElementById('tradesSearchInput').value || '').trim().toLowerCase();
+
+      const rows = [];
+      let sumAmount = 0;
+      let sumFee = 0;
+      let sumTax = 0;
+
+      historyDays.forEach(d => {{
+        if (selDate !== 'ALL' && d.date !== selDate) return;
+        (d.trades || []).forEach(tr => {{
+          if (selSide !== 'ALL' && tr.side !== selSide) return;
+          if (query && !tr.code.toLowerCase().includes(query) && !tr.name.toLowerCase().includes(query)) return;
+          sumAmount += Number(tr.amount || 0);
+          sumFee += Number(tr.fee || 0);
+          sumTax += Number(tr.tax || 0);
+          rows.push({{ date: d.date, day: d.day, ...tr }});
+        }});
+      }});
+
+      const summaryEl = document.getElementById('tradesFilterSummary');
+      if (summaryEl) {{
+        summaryEl.textContent = `篩選結果共 ${{rows.length}} 筆 · 成交金額 $${{fmtNum(sumAmount, 0)}} · 手續費 $${{fmtNum(sumFee, 2)}} · 證交稅 $${{fmtNum(sumTax, 2)}}`;
+      }}
+
+      const tbody = document.getElementById('tradesHistoryTableBody');
+      if (!tbody) return;
+      if (rows.length === 0) {{
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-dim); padding:24px;">查無符合條件的成交紀錄</td></tr>';
+        return;
+      }}
+
+      tbody.innerHTML = rows.map(r => {{
+        const isBuy = r.side === '買進';
+        const lotsVal = Number(r.lots || 0);
+        const lotsStr = Number.isInteger(lotsVal) ? fmtNum(lotsVal, 0) : fmtNum(lotsVal, 3);
+        return `
+          <tr>
+            <td style="font-family:'JetBrains Mono', monospace;">${{r.date}} <span style="color:var(--text-dim); font-size:11px;">(D${{r.day}})</span></td>
+            <td><span class="badge-pnl ${{isBuy ? 'up' : 'down'}}">${{r.side}}</span></td>
+            <td>
+              <div class="stock-tag-box">
+                <span class="stock-code">${{r.code}}</span>
+                <span class="stock-name">${{r.name}}</span>
+              </div>
+            </td>
+            <td><strong>${{lotsStr}}</strong> 張 <span style="color:var(--text-dim); font-size:11px;">(${{fmtNum(r.shares, 0)}}股)</span></td>
+            <td style="font-family:'JetBrains Mono', monospace;">$${{fmtNum(r.price, 2)}}</td>
+            <td style="font-family:'JetBrains Mono', monospace;">$${{fmtNum(r.amount, 0)}}</td>
+            <td style="font-family:'JetBrains Mono', monospace;">$${{fmtNum(r.fee, 2)}}</td>
+            <td style="font-family:'JetBrains Mono', monospace;">$${{fmtNum(r.tax, 2)}}</td>
+          </tr>
+        `;
+      }}).join('');
     }}
 
     function updateChartTheme() {{
@@ -2994,7 +3374,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       const gridColor = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
       const textColor = isDark ? '#94a3b8' : '#64748b';
 
-      [window.assetChart, window.cumReturnChartInst, window.usageTrendChartInst, window.usageTokenStackChartInst].forEach(ch => {{
+      [window.assetChart, window.cumReturnChartInst, window.rankHistoryChartInst, window.dayReturnChartInst, window.usageTrendChartInst, window.usageTokenStackChartInst].forEach(ch => {{
         if (!ch || typeof ch.update !== 'function') return;
         if (ch.options.scales) {{
           Object.values(ch.options.scales).forEach(s => {{

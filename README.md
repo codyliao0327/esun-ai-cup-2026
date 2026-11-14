@@ -15,7 +15,7 @@
 flowchart LR
     subgraph Core1["【核心 1】Multi-Agent 自主量化決策產線 (D-Plan v4.3)"]
         L0["L0 多源資料收集\n(FinLab/CMoney/DataPack)"] --> L1["L1 客觀事實擷取\n(Compact Array JSON / stage-l1)"]
-        L1 --> L2M["L2M 市場走向研判\n(Regime & Stance / stage-l2m)"]
+        L1 --> L2M["L2M 市場走向研判\n(Regime & Stance + Code Execution / stage-l2m)"]
         L2M --> L2["L2 個股推論核心\n(58 檔標的 + Code Execution / stage-l2)"]
         L2 --> L3["L3 投組決策核心\n(20~30 檔持股控管 / stage-l3)"]
         L3 --> L4["L4 委託執行層\n(千股整股 + Active Share 檢驗 / stage-l4)"]
@@ -24,7 +24,7 @@ flowchart LR
     end
 
     subgraph Core2["【核心 2】Portfolio Dashboard 投資決策與持股看板"]
-        BACK["玉山後台數據\n(backend_reports/*.htm)"] --> TRACK["成本與損益計算引擎\n(tracker.py)"]
+        BACK["玉山後台數據\n(backend_all_history.json)"] --> TRACK["成本與損益計算引擎\n(tracker.py)"]
         ESUN_API["玉山行情 SDK\n(150 檔日線與行情)"] --> TRACK
         TRACK --> BUILD["單頁 SPA 渲染引擎\n(Fugle 專業佈局 + iOS 毛玻璃)"]
         BUILD --> DIST["dist/index.html\n(Cloudflare Pages 即時雲端部署)"]
@@ -33,19 +33,20 @@ flowchart LR
 
 ### 1. 🤖 Multi-Agent 自主量化投資決策系統
 - **LiteLLM 統一管理與 Multi-Model 路由**：全面改用 `litellm.Router` 集中管理大模型調用與自動 Fallback 備援。依任務特性精準分流：L1 客觀事實提取配置輕快且低成本的 `gemini-3.8-flash`；L2M、L2、L3、L4 等高階推理與數值運算階段配置 `gemini-4-argon`。
-- **Gemini 原生 Code Execution 強化**：在 L2 個股推論、L3 投組決策與 L4 委託計算階段全面啟用 Gemini 內建 Python 執行沙盒，徹底解決 LLM 在複雜權重配置、千股取整與風控比率時的數值幻覺。
+- **Gemini 原生 Code Execution 強化**：在 L2M 市場研判、L2 個股推論、L3 投組決策與 L4 委託計算階段全面啟用 Gemini 內建 Python 執行沙盒，徹底解決 LLM 在複雜權重配置、千股取整與風控比率時的數值幻覺。
 - **因果引用鏈完備**：嚴格落實 L0 ➔ L1 ➔ L2M ➔ L2 ➔ L3 ➔ L4 單向無循環引用，使用 Pydantic `extra='forbid'` 全量驗證，防範孤兒節點與格式錯誤。
 - **58 檔精選候選池**：精選 58 檔涵蓋半導體、AI 伺服器、電子零組件、網通、航運、金融與傳統產業代表標的，提供充沛的超額 Alpha 空間。
 - **19 項原生 Usage 監控與本地結算**：全量對齊 LiteLLM 原生標準命名（Tokens、Cost、Duration、Reasoning、Code Execution 呼叫明細等），自動合併結算至本地 `usage_history.json`。
 
 ### 2. 📊 Portfolio Dashboard 投資決策與持股看板
 - **設計風格**：富果 Fugle 專業看盤佈局 + Apple macOS 冷冽藍灰 / 冰川銀液態玻璃（Liquid Glassmorphism），具備**置頂單行懸浮導航膠囊**（下滑自動精簡為單行，零版面位移）與輕量化 GPU 合成優化。
-- **五大功能分頁**：
-  - **頁籤 1【📊 帳戶總覽與庫存損益】**：可交易淨值 (NAV)、現金水位、**NAV/Cash 與累計總報酬率 (%) 雙趨勢圖表**、庫存損益明細（含**個股持有天數**、**FIFO 分批買進明細展開抽屜**與即時多欄位排序）。
-  - **頁籤 2【📈 自選行情觀察群組】**：動態劃分「我的持股 (20~30 檔)」與「其餘標的」，具備漲跌幅排序、即時搜尋過濾、微型走勢圖 (Sparklines)。
-  - **頁籤 3【🤖 AI 模型用量與成本監控】**：視覺化呈現 19 項 LiteLLM Usage 指標、每日花費/Token 雙軸圖、L1~L4 階段費用佔比圓環圖與每日下鑽執行明細。
-  - **頁籤 4【📄 每日決策報告】**：內建安全 Markdown 渲染器（Marked + DOMPurify），支援歷史報告日期切換、自動生成章節目錄與一鍵複製原文。
-  - **頁籤 5【💡 專案亮點】**：L0 ➔ L4 決策架構概覽、6 大技術亮點卡片與 GitHub Repository 導覽連結。
+- **六大功能分頁**：
+  - **頁籤 1【📊 帳戶總覽】**：可交易淨值 (NAV)、現金水位、累計與當日報酬率、**競賽排名 (總/社會組)**、**NAV/Cash、累計總報酬率、競賽排名與單日報酬率趨勢圖表**、庫存損益明細（含**個股持有天數**、**FIFO 分批買進明細展開抽屜**與即時多欄位排序）。
+  - **頁籤 2【📈 行情群組】**：動態劃分「我的持股 (20~30 檔)」與「其餘標的」，具備漲跌幅排序、即時搜尋過濾、微型走勢圖 (Sparklines)。
+  - **頁籤 3【🧾 歷史成交明細】**：彙整官方後台 JSON 累計買賣金額、手續費、證交稅與淨已實現損益，並支援依交易日、買賣方向與個股即時篩選成交紀錄。
+  - **頁籤 4【📄 決策報告】**：內建安全 Markdown 渲染器（Marked + DOMPurify），支援歷史報告日期切換、自動生成章節目錄與一鍵複製原文。
+  - **頁籤 5【🤖 AI 模型成本監控】**：視覺化呈現 19 項 LiteLLM Usage 指標、每日花費/Token 雙軸圖、L1~L4 階段費用佔比、**全階段動態路由與備援架構 (`models_config.yaml`)** 及每日下鑽執行明細。
+  - **頁籤 6【💡 專案亮點】**：ETF 投資策略、L0 ➔ L4 決策架構概覽、6 大技術亮點卡片與 GitHub Repository 導覽連結。
 - **自動化發布**：每日一鍵更新腳本（支援 `--reports-only` 快速重建），綁定 Cloudflare Pages 免費全自動 Git CI/CD 部署，手機、平板、電腦端隨時檢視最新損益與行情。
 
 ---
@@ -84,12 +85,15 @@ flowchart LR
 10. **26 檔量化寬表全面 Compact Array JSON 快取**：
     - 大盤 9 檔 + 個股 17 檔指標全面優化為精簡 Compact Array JSON，大幅降低檔案體積與 L1 Prompt Token 消耗。
 11. **DataPack 帳戶路徑演變與持倉移動停利追蹤 (`datapack_loader.py`)**：
-    - 結合歷史 `DataPack/Raw/*.json` 與 `backend_reports/*.htm` 實際成交價，新增賽期進度、帳戶淨值演變（累計報酬、MDD、1D/3D/5D 變化率、連虧天數、近 5 日走勢），並將 `holdings` 合併為每檔單行 Compact JSON（含 `entry_date`、`holding_days`、`avg_cost`、`pnl_pct`、`peak_price`、`peak_pnl_pct`、`dd_from_peak_pct`），同步強化 L2M / L2 / L3 Prompt。
+    - 結合歷史 `DataPack/Raw/*.json` 與 `backend_reports/backend_all_history.json`（保留 4 位小數真實成交價；無 JSON 時退回 `*.htm`），新增賽期進度、帳戶淨值演變（累計報酬、MDD、1D/3D/5D 變化率、連虧天數、近 5 日走勢），並將 `holdings` 合併為每檔單行 Compact JSON（含 `entry_date`、`holding_days`、`avg_cost`、`pnl_pct`、`peak_price`、`peak_pnl_pct`、`dd_from_peak_pct`），同步強化 L2M / L2 / L3 Prompt。
 12. **CMoney 個股情緒合併進個股 Compact Array JSON 與確切日期追蹤**：
     - `cmoney_sentiment_crawler.py` 恢復 `統計開始時間` / `統計結束時間`；`fact_extractor.py` 新增情緒三占比計算（含樣本數為 0 防護）並併入個股指標 JSON，同時於 L1 / L2 Prompt 補充數值含意指引。
 13. **Portfolio Dashboard 5 分頁擴充與冷冽液態玻璃視覺重構 (`builder.py`, `tracker.py`)**：
     - 新增 **FIFO 分批買進明細**、**個股持有天數**與**累計總報酬率 (%) 趨勢圖**，並新增 Tab 3（AI 成本監控）、Tab 4（每日決策報告瀏覽器）與 Tab 5（專案架構與技術亮點 + GitHub 連結）。
     - 統一全站液態膠囊按鈕與 Model 水滴微膠囊標籤、重構為冷冽藍灰／冰川銀背景、實作下滑單行懸浮導航（零版面位移遲滯偵測），並移除高耗能濾鏡與重繪瓶頸大幅提升流暢度。
+14. **後台數據管線全面切換為 Tampermonkey JSON 直抓 (`datapack_loader.py`, `tracker.py`)**：
+    - 淘汰過去手動於瀏覽器 `Ctrl + S` 另存單日 `.htm` 的做法，改為透過 **Tampermonkey 擴充套件**直接抓取競賽後端 API 並匯出全賽期完整的 `data/backend_reports/backend_all_history.json`（同時保留 `*.htm` 作為備援）。
+    - 成交價精度由網頁四捨五入的 **2 位小數提升至後端原始 4 位小數**，並直接採用後端精確手續費／證交稅、官方單日／累計報酬率、持股市值與競賽排名（總排名／社會組／學生組），大幅降低成本與損益追蹤誤差並消除重複計算。
 
 ---
 
@@ -227,7 +231,7 @@ flowchart TD
 │   ├── L4_orders/                            # 【L4 委託執行層】
 │   │   └── order_calculator.py               # 官方千股整股演算法試算 + Active Share 檢驗 + Gemini 智能覆核 (預設啟用 Code Execution)
 │   ├── portfolio_dashboard/                  # 【即時投資決策與持股看板】
-│   │   ├── tracker.py                        # 成本與損益計算引擎 (解析 backend_reports/*.htm 與 Datapack/Raw/*.json)
+│   │   ├── tracker.py                        # 成本與損益計算引擎 (優先解析 backend_all_history.json 與 Datapack/Raw/*.json)
 │   │   ├── market_api.py                     # 玉山行情 API 模組 (取得 150 檔標的最新報價與歷史走勢)
 │   │   ├── builder.py                        # 前端單頁應用 HTML 產生器 (富果 Fugle 佈局 + iOS 毛玻璃)
 │   │   ├── run_update.py                     # 每日一鍵執行調度腳本 (支援 --push 自動發布至 Cloudflare Pages)
@@ -245,7 +249,7 @@ flowchart TD
 │
 ├── data/                                     # 【資料輸入與各階段生成產物】
 │   ├── Datapack/                             # 官方每日 DataPack 原始檔 (Raw/) 與解析結果 (Processed/)
-│   ├── backend_reports/                      # 玉山競賽後台每日數據 HTML 快照
+│   ├── backend_reports/                      # 玉山競賽後台歷史數據 JSON (backend_all_history.json) 與備援 HTML 快照
 │   ├── 大盤/, 基本面/, 技術面/, 籌碼面/       # FinLab 26 檔指標 Compact Array JSON 快取
 │   ├── CMoney_Sentiment/                     # CMoney 討論區情緒爬取結果
 │   ├── Active_ETF_Holdings/                  # 主動式 ETF 前 15 大持股標竿快照
@@ -270,7 +274,7 @@ flowchart TD
 
 | 階層 / 程式模組 | 主要輸入資料來源路徑 (Input) | 主要產出檔案路徑 (Output) | Prompt 留存與 Usage 統計 |
 | :--- | :--- | :--- | :--- |
-| **L0 Sources**<br>`datapack_loader.py` | 官方原始 DataPack JSON：<br>`data/Datapack/Raw/DataPack_*_YYYY-MM-DD.json` | 轉換後結構化 Markdown：<br>`data/Datapack/Processed/DataPack_Processed_YYYYMMDD.md` | *(純資料解析)* |
+| **L0 Sources**<br>`datapack_loader.py` | 官方原始 DataPack JSON：<br>`data/Datapack/Raw/DataPack_*_YYYY-MM-DD.json`<br>後台成交紀錄：`data/backend_reports/backend_all_history.json` | 轉換後結構化 Markdown：<br>`data/Datapack/Processed/DataPack_Processed_YYYYMMDD.md` | *(純資料解析)* |
 | **L0 Sources**<br>`finlab_market_loader.py`<br>`cmoney_sentiment_crawler.py`<br>`finlab_active_etf_loader.py` | FinLab API、CMoney API、主動 ETF 公開資訊 | Compact Array JSON 快取：<br>`data/大盤/*.json`, `data/技術面/*.json`,<br>`data/基本面/*.json`, `data/籌碼面/*.json`,<br>`data/CMoney_Sentiment/`, `data/Active_ETF_Holdings/`,<br>`data/D-Paln_Output/l0_sources/` | *(純資料下載與向量計算，失敗立即阻斷)* |
 | **Step 1: L1 Observations**<br>`fact_extractor.py` | `data/大盤/*.json`, `data/技術面/*.json`, `data/基本面/*.json`, `data/籌碼面/*.json`, `data/CMoney_Sentiment/` | `data/D-Paln_Output/l1_observations/`<br>👉 `l1_observations_YYYYMMDD.json` | **Prompt**:<br>`l1_observations_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l1_usage_YYYYMMDD.json` |
 | **Step 2: L2M Market View**<br>`market_view_agent.py`<br>*(預設啟用 Code Execution)* | `data/D-Paln_Output/l1_observations/` (大盤觀察),<br>`data/Datapack/Processed/` (帳戶快照) | `data/D-Paln_Output/l2m_market_view/`<br>👉 `l2m_market_view_YYYYMMDD.json` | **Prompt**:<br>`l2m_market_view_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l2m_usage_YYYYMMDD.json` |
@@ -279,7 +283,7 @@ flowchart TD
 | **Step 5: L4 Orders**<br>`order_calculator.py` | `data/D-Paln_Output/l3_decisions/`,<br>`data/Datapack/Processed/` (NAV 與現有持股),<br>`data/D-Paln_Output/l1_observations/` (收盤價),<br>`data/Active_ETF_Holdings/` | `data/D-Paln_Output/l4_orders/`<br>👉 `l4_orders_YYYYMMDD.json`<br>👉 `l4_orders_python_YYYYMMDD.json` | **Prompt**:<br>`l4_orders_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l4_usage_YYYYMMDD.json`<br>*(預設啟用 Code Execution)* |
 | **Step 6: D-Plan Assembler**<br>`build_dplan.py` | 讀入上述所有子目錄中的最新 JSON | `data/D-Paln_Output/final_dplan/`<br>👉 **`D-Plan_<team_id>_<trade_date>.json`** | *(總裝配器，校驗引用鏈並注入 metadata)* |
 | **Step 7: Review Report**<br>`generate_daily_report.py` | 最終 `D-Plan_*.json`、原始 `DataPack_*.json` | `data/D-Paln_Output/reports/`<br>👉 **`Daily_Decision_Report_<YYYYMMDD>.md`** | *(由 Python 產出真人檢視與風控對照報告)* |
-| **Portfolio Dashboard**<br>`run_update.py` | `data/backend_reports/*.htm` (後台數據),<br>`data/Datapack/Raw/`, 玉山行情 SDK | `code/portfolio_dashboard/dist/`<br>👉 **`index.html`** (單頁看板應用) | *(前端視覺化，支援 Cloudflare Pages 雲端發布)* |
+| **Portfolio Dashboard**<br>`run_update.py` | `data/backend_reports/backend_all_history.json` (後台歷史 JSON),<br>`data/Datapack/Raw/`, 玉山行情 SDK | `code/portfolio_dashboard/dist/`<br>👉 **`index.html`** (單頁看板應用) | *(前端視覺化，支援 Cloudflare Pages 雲端發布)* |
 
 ---
 
@@ -584,26 +588,28 @@ python generate_daily_report.py --dplan-path "path/to.json"   # 指定特定 D-P
 
 除了每日自動化產線產出官方 D-Plan JSON 與 Markdown 報告外，本專案提供富果 Fugle 專業看盤佈局與 Apple macOS 冷冽藍灰 / 冰川銀液態玻璃美學的即時互動視覺化看板（詳細部署說明請見 [code/portfolio_dashboard/README.md](code/portfolio_dashboard/README.md)）：
 
-### 1. 核心特色（5 大分頁）
-- **頁籤 1【📊 帳戶總覽與庫存損益】**：
-  - 即時呈現可交易淨值 (NAV)、現金餘額、帳戶累計報酬率。
-  - **NAV / Cash 與累計總報酬率 (%) 雙趨勢折線圖**。
+### 1. 核心特色（6 大分頁）
+- **頁籤 1【📊 帳戶總覽】**：
+  - 即時呈現可交易淨值 (NAV)、現金餘額、累計與當日報酬率、**競賽總排名／社會組排名**。
+  - **NAV / Cash、累計總報酬率 (%)、每日競賽排名走勢與單日報酬率 (%) 四組趨勢圖表**。
   - 持股損益明細表（支援**持有天數**、**FIFO 分批買進明細展開抽屜**與即時多欄位升降序排序）。
-- **頁籤 2【📈 自選行情觀察群組】**：
+- **頁籤 2【📈 行情群組】**：
   - 動態群組切換：「我的持股」與「其餘標的」。
   - 即時搜尋股票代碼與名稱，支援漲跌幅即時排序。
   - 嵌入微型股價走勢圖 (Sparklines)，一眼掌握標的近期價格趨勢。
-- **頁籤 3【🤖 AI 模型用量與成本監控】**：
-  - 視覺化呈現 19 項 LiteLLM Usage 指標、每日花費與 Token 消耗趨勢、L1~L4 階段費用佔比與每日下鑽執行明細。
-- **頁籤 4【📄 每日決策報告】**：
+- **頁籤 3【🧾 歷史成交明細】**：
+  - 統計累計買進／賣出金額、手續費與證交稅摩擦成本、扣費稅後淨已實現損益，並支援依交易日、買賣方向與關鍵字篩選每日成交明細。
+- **頁籤 4【📄 決策報告】**：
   - 內建安全 Markdown 渲染器（Marked + DOMPurify），支援歷史報告日期切換、自動章節目錄與一鍵複製原文。
-- **頁籤 5【💡 專案亮點】**：
-  - 呈現 L0 ➔ L4 決策架構概覽、6 大技術亮點與 GitHub Repository 導覽連結。
-- **雙主題、懸浮導航與 RWD 適配**：
-  - 支援深色模式（冷冽藍灰）與淺色模式（冰川銀灰），下滑自動精簡為單行懸浮導航膠囊，並針對手機、平板與電腦端提供輕量化流暢瀏覽體驗。
+- **頁籤 5【🤖 AI 模型成本監控】**：
+  - 視覺化呈現 19 項 LiteLLM Usage 指標、每日花費與 Token 消耗趨勢、L1~L4 階段費用佔比、全階段模型路由與備援降級架構及每日下鑽執行明細。
+- **頁籤 6【💡 專案亮點】**：
+  - 呈現 ETF 投資策略、L0 ➔ L4 決策架構概覽、6 大技術亮點與 GitHub Repository 導覽連結。
+- **三段式主題（淺色預設）、懸浮導航與 RWD 適配**：
+  - 支援淺色（預設，冰川銀灰）／深色（冷冽藍灰）／跟隨裝置三段切換（含 Android Chrome 動態網址列 `theme-color`），下滑自動精簡為單行懸浮導航膠囊，並針對手機、平板與電腦端提供輕量化流暢瀏覽體驗。
 
 ### 2. 每日收盤 3 步驟更新流程
-1. **下載後台網頁**：登入玉山比賽後台「每日數據」頁面，按 `Ctrl + S` 另存為 `.htm` 檔案（如 `每日數據_20261104.htm`），存放至 `data/backend_reports/`。
+1. **更新後台數據**：透過 **Tampermonkey 擴充套件**從玉山比賽後台直接抓取並匯出完整歷史紀錄至 `data/backend_reports/backend_all_history.json`（若無 JSON，亦可暫時另存後台「每日數據」`.htm` 作為備援）。
 2. **一鍵執行更新**：
    ```bash
    cd code/portfolio_dashboard

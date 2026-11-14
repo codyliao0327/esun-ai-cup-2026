@@ -159,17 +159,50 @@ class _TableHTMLParser(HTMLParser):
             self._cur_c.append(data)
 
 
-def load_backend_trades(
-    reports_dir: Path = BACKEND_REPORTS_DIR,
-    up_to_date: Optional[str] = None,
+_SIDE_MAP = {
+    "buy": "買進",
+    "sell": "賣出",
+    "買進": "買進",
+    "賣出": "賣出",
+}
+
+
+def _load_trades_from_json(
+    json_path: Path,
+    up_to_iso: Optional[str] = None,
 ) -> List[dict]:
-    """從 backend_reports/*.htm 讀取已成交交易明細，依交易日排序。"""
-    if not reports_dir.exists():
-        return []
-
-    up_to_iso = format_iso_trade_date(up_to_date) if up_to_date else None
+    """從 backend_all_history.json 讀取已成交交易明細（保留原始 4 位小數成交價）。"""
+    records = json.loads(json_path.read_text(encoding="utf-8"))
     trades: List[dict] = []
+    for day_entry in records:
+        t_date = str(day_entry.get("date") or "").strip()
+        if not t_date or (up_to_iso and t_date > up_to_iso):
+            continue
+        for tr in day_entry.get("trades") or []:
+            outcome = str(tr.get("outcome", "")).strip().lower()
+            if outcome and outcome != "filled":
+                continue
+            side = _SIDE_MAP.get(str(tr.get("side", "")).strip().lower())
+            code = str(tr.get("code", "")).strip()
+            shares = int(tr.get("shares", 0))
+            if not side or not code or shares <= 0:
+                continue
+            trades.append({
+                "date": t_date,
+                "side": side,
+                "code": code,
+                "shares": shares,
+                "price": float(tr["price"]),
+            })
+    return trades
 
+
+def _load_trades_from_htm(
+    reports_dir: Path,
+    up_to_iso: Optional[str] = None,
+) -> List[dict]:
+    """備援：從 backend_reports/*.htm 讀取已成交交易明細。"""
+    trades: List[dict] = []
     for htm_path in sorted(reports_dir.glob("*.htm")):
         parser = _TableHTMLParser()
         parser.feed(htm_path.read_text(encoding="utf-8"))
@@ -200,6 +233,23 @@ def load_backend_trades(
                     "shares": lots * LOT_SIZE,
                     "price": price,
                 })
+    return trades
+
+
+def load_backend_trades(
+    reports_dir: Path = BACKEND_REPORTS_DIR,
+    up_to_date: Optional[str] = None,
+) -> List[dict]:
+    """讀取已成交交易明細，依交易日排序。優先使用 backend_all_history.json，無則退回 *.htm。"""
+    if not reports_dir.exists():
+        return []
+
+    up_to_iso = format_iso_trade_date(up_to_date) if up_to_date else None
+    history_json = reports_dir / "backend_all_history.json"
+    if history_json.exists():
+        trades = _load_trades_from_json(history_json, up_to_iso=up_to_iso)
+    else:
+        trades = _load_trades_from_htm(reports_dir, up_to_iso=up_to_iso)
 
     trades.sort(key=lambda r: (r["date"], 0 if r["side"] == "買進" else 1, r["code"]))
     return trades

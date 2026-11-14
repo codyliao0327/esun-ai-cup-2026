@@ -89,11 +89,82 @@ def load_150_stocks() -> Dict[str, Dict[str, str]]:
     return stocks
 
 
-def parse_backend_reports() -> List[Dict[str, Any]]:
-    """解析 data/backend_reports/*.htm 抓取所有真實成交明細"""
-    if not BACKEND_REPORTS_DIR.exists():
+_SIDE_MAP = {
+    "buy": "買進",
+    "sell": "賣出",
+    "買進": "買進",
+    "賣出": "賣出",
+}
+
+
+def load_backend_history_all() -> List[Dict[str, Any]]:
+    """讀取 backend_all_history.json 完整每日紀錄（含 ranking、portfolio、trade_summary、trades）。"""
+    history_json = BACKEND_REPORTS_DIR / "backend_all_history.json"
+    if not history_json.exists():
+        return []
+    try:
+        records = json.loads(history_json.read_text(encoding="utf-8"))
+        records.sort(key=lambda x: str(x.get("date") or ""))
+        return records
+    except Exception as e:
+        print(f"[警告] 讀取 backend_all_history.json 失敗: {e}")
         return []
 
+
+def _parse_backend_history_json(json_path: Path) -> List[Dict[str, Any]]:
+    """從 backend_all_history.json 解析所有真實成交明細（保留小數 4 位成交價與精確金額）。"""
+    records = json.loads(json_path.read_text(encoding="utf-8"))
+    reports: List[Dict[str, Any]] = []
+    for day_entry in records:
+        real_date = str(day_entry.get("date") or "").strip()
+        if not real_date:
+            continue
+        summary = day_entry.get("trade_summary") or {}
+        fee = float(summary.get("fee", 0.0))
+        tax = float(summary.get("tax", 0.0))
+
+        trades: List[Dict[str, Any]] = []
+        for tr in day_entry.get("trades") or []:
+            outcome = str(tr.get("outcome", "")).strip().lower()
+            if outcome and outcome != "filled":
+                continue
+            t_action = _SIDE_MAP.get(str(tr.get("side", "")).strip().lower())
+            t_code = str(tr.get("code", "")).strip()
+            t_name = str(tr.get("name", "")).strip()
+            shares = int(tr.get("shares", 0))
+            if not t_action or not t_code or shares <= 0:
+                continue
+            t_price = float(tr.get("price", 0.0))
+            t_amount = float(tr.get("amount", t_price * shares))
+            trades.append({
+                "id": tr.get("id"),
+                "date": real_date,
+                "action": t_action,
+                "code": t_code,
+                "name": t_name,
+                "lots": shares / 1000.0,
+                "shares": shares,
+                "price": t_price,
+                "amount": t_amount,
+                "fee": float(tr.get("fee", 0.0)),
+                "tax": float(tr.get("tax", 0.0)),
+            })
+
+        if trades:
+            reports.append({
+                "file": json_path.name,
+                "date": real_date,
+                "fee": fee,
+                "tax": tax,
+                "trades": trades,
+            })
+
+    reports.sort(key=lambda x: x["date"])
+    return reports
+
+
+def _parse_backend_htm_files() -> List[Dict[str, Any]]:
+    """備援：解析 data/backend_reports/*.htm* 抓取所有真實成交明細"""
     reports = []
     htm_files = sorted(BACKEND_REPORTS_DIR.glob("*.htm*"))
     for f in htm_files:
@@ -119,7 +190,6 @@ def parse_backend_reports() -> List[Dict[str, Any]]:
                     t_name = cells[3]
                     t_lots = float(cells[4].replace(",", ""))
                     t_price = float(cells[5].replace(",", ""))
-                    t_amount_wan = float(cells[6].replace(",", ""))
                     trades.append({
                         "date": t_date,
                         "action": t_action,
@@ -154,6 +224,17 @@ def parse_backend_reports() -> List[Dict[str, Any]]:
     for rep in reports:
         dedup_reports[rep["date"]] = rep
     return list(dedup_reports.values())
+
+
+def parse_backend_reports() -> List[Dict[str, Any]]:
+    """解析後台成交明細。優先使用 backend_all_history.json，無則退回 *.htm*"""
+    if not BACKEND_REPORTS_DIR.exists():
+        return []
+
+    history_json = BACKEND_REPORTS_DIR / "backend_all_history.json"
+    if history_json.exists():
+        return _parse_backend_history_json(history_json)
+    return _parse_backend_htm_files()
 
 
 def calculate_portfolio_costs(backend_reports: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
@@ -228,9 +309,15 @@ def calculate_portfolio_costs(backend_reports: List[Dict[str, Any]]) -> Dict[str
 
 
 def load_datapack_history() -> List[Dict[str, Any]]:
-    """讀取 data/Datapack/Raw/ 下所有歷史 DataPack，建立資產歷史時間序列"""
+    """讀取 data/Datapack/Raw/ 與 backend_all_history.json，建立資產歷史時間序列（優先採用官方後台精確數值）"""
     if not DATAPACK_RAW_DIR.exists():
         return []
+
+    backend_map: Dict[str, Dict[str, Any]] = {
+        str(entry.get("date")): entry
+        for entry in load_backend_history_all()
+        if entry.get("date")
+    }
 
     history = []
     files = sorted(DATAPACK_RAW_DIR.glob("*.json"))
@@ -245,26 +332,63 @@ def load_datapack_history() -> List[Dict[str, Any]]:
 
             dt = d.get("as_of_date") or d.get("trade_date")
             trade_dt = d.get("trade_date")
-            
-            nav = float(acc.get("nav_tradable", 0.0))
-            cash = float(acc.get("cash", 0.0))
-            aum = float(acc.get("aum", nav))
-            cash_ratio = float(acc.get("cash_ratio_tradable", 0.0)) if acc.get("cash_ratio_tradable") is not None else (cash / nav if nav > 0 else 0.0)
-            holdings_count = int(acc.get("holdings_count", 0))
 
-            # 計算累計報酬率 (相較初始資金 1,000,000,000)
-            cum_return_pct = ((nav - 1_000_000_000.0) / 1_000_000_000.0) * 100.0
+            b_entry = backend_map.get(dt) or {}
+            b_port = b_entry.get("portfolio") or {}
+            b_break = b_port.get("aum_breakdown") or {}
+            b_rank = b_entry.get("ranking") or {}
+            b_tsum = b_entry.get("trade_summary") or {}
+
+            nav = float(acc.get("nav_tradable", 0.0))
+            if b_port:
+                aum = float(b_port.get("aum", nav))
+                cash = float(b_break.get("cash", acc.get("cash", 0.0)))
+                stock_value = float(b_break.get("holdings_value", aum - cash))
+                cash_ratio_pct = float(b_port.get("cash_ratio", 0.0))
+                stock_ratio_pct = float(b_port.get("stock_ratio", 0.0))
+                holdings_count = int(b_port.get("holdings_count", acc.get("holdings_count", 0)))
+                cum_return_pct = float(b_port.get("cum_return", 0.0))
+                day_return_pct = float(b_port.get("day_return", 0.0))
+                top10_weight = float(b_port.get("top10_weight", 0.0))
+            else:
+                cash = float(acc.get("cash", 0.0))
+                aum = float(acc.get("aum", nav))
+                stock_value = nav - cash
+                cash_ratio = float(acc.get("cash_ratio_tradable", 0.0)) if acc.get("cash_ratio_tradable") is not None else (cash / nav if nav > 0 else 0.0)
+                cash_ratio_pct = round(cash_ratio * 100.0, 2)
+                stock_ratio_pct = round(100.0 - cash_ratio_pct, 2)
+                holdings_count = int(acc.get("holdings_count", 0))
+                cum_return_pct = round(((nav - 1_000_000_000.0) / 1_000_000_000.0) * 100.0, 2)
+                day_return_pct = 0.0
+                top10_weight = 0.0
+
+            total_teams = int(b_rank.get("total_teams", 0)) if b_rank else 0
+            group_total = int(b_rank.get("group_total", 0)) if b_rank else 0
+            ranking_info = {
+                "rank": b_rank.get("rank"),
+                "total_teams": total_teams,
+                "group_rank": b_rank.get("group_rank"),
+                "group_total": group_total,
+                "student_total": max(0, total_teams - group_total),
+            } if b_rank else None
 
             history.append({
+                "day": b_entry.get("day"),
                 "date": dt,
                 "trade_date": trade_dt,
                 "nav": nav,
                 "cash": cash,
                 "aum": aum,
-                "stock_value": nav - cash,
-                "cash_ratio_pct": round(cash_ratio * 100.0, 2),
+                "stock_value": stock_value,
+                "cash_ratio_pct": cash_ratio_pct,
+                "stock_ratio_pct": stock_ratio_pct,
                 "holdings_count": holdings_count,
-                "cum_return_pct": round(cum_return_pct, 2),
+                "cum_return_pct": cum_return_pct,
+                "day_return_pct": day_return_pct,
+                "top10_weight": top10_weight,
+                "ranking": ranking_info,
+                "fee": float(b_tsum.get("fee", 0.0)),
+                "tax": float(b_tsum.get("tax", 0.0)),
                 "holdings": d.get("holdings") or [],
                 "compliance": d.get("compliance") or {"violations": 0, "notices": 0}
             })
@@ -294,10 +418,13 @@ def get_latest_portfolio_summary() -> Dict[str, Any]:
     prev_holdings_map = {h["code"]: float(h.get("close_price") or 0.0) for h in (prev_dp.get("holdings") or [])} if prev_dp else {}
 
     nav = latest_dp["nav"]
+    aum = latest_dp["aum"]
     cash = latest_dp["cash"]
     stock_value = latest_dp["stock_value"]
-    cum_pnl = nav - 1_000_000_000.0
-    cum_return_pct = (cum_pnl / 1_000_000_000.0) * 100.0
+    cum_pnl = aum - 1_000_000_000.0
+    cum_return_pct = latest_dp["cum_return_pct"]
+    day_return_pct = latest_dp.get("day_return_pct", 0.0)
+    top10_weight = latest_dp.get("top10_weight", 0.0)
 
     # 今日持股部位
     raw_holdings = latest_dp["holdings"]
@@ -406,30 +533,146 @@ def get_latest_portfolio_summary() -> Dict[str, Any]:
     # 依權重由大至小排序
     held_positions.sort(key=lambda x: x["weight_pct"], reverse=True)
 
+    # 彙整後台完整歷史紀錄（排名、交易摩擦成本、週轉率、歷史每日成交明細）
+    backend_all = load_backend_history_all()
+    total_fee = 0.0
+    total_tax = 0.0
+    total_buy_amount = 0.0
+    total_sell_amount = 0.0
+    total_buy_count = 0
+    total_sell_count = 0
+    trade_history = []
+
+    for entry in backend_all:
+        tsum = entry.get("trade_summary") or {}
+        day_fee = float(tsum.get("fee", 0.0))
+        day_tax = float(tsum.get("tax", 0.0))
+        day_buy_amt = float(tsum.get("buy_amount", 0.0))
+        day_sell_amt = float(tsum.get("sell_amount", 0.0))
+        day_buy_cnt = int(tsum.get("buy_count", 0))
+        day_sell_cnt = int(tsum.get("sell_count", 0))
+
+        total_fee += day_fee
+        total_tax += day_tax
+        total_buy_amount += day_buy_amt
+        total_sell_amount += day_sell_amt
+        total_buy_count += day_buy_cnt
+        total_sell_count += day_sell_cnt
+
+        day_trades = []
+        for tr in entry.get("trades") or []:
+            outcome = str(tr.get("outcome", "")).strip().lower()
+            if outcome and outcome != "filled":
+                continue
+            side_cn = _SIDE_MAP.get(str(tr.get("side", "")).strip().lower(), str(tr.get("side", "")))
+            shares = int(tr.get("shares", 0))
+            day_trades.append({
+                "id": tr.get("id"),
+                "side": side_cn,
+                "code": str(tr.get("code", "")).strip(),
+                "name": str(tr.get("name", "")).strip(),
+                "shares": shares,
+                "lots": round(shares / 1000.0, 1),
+                "price": float(tr.get("price", 0.0)),
+                "amount": float(tr.get("amount", 0.0)),
+                "fee": float(tr.get("fee", 0.0)),
+                "tax": float(tr.get("tax", 0.0)),
+            })
+
+        b_port = entry.get("portfolio") or {}
+        b_rank = entry.get("ranking") or {}
+        trade_history.append({
+            "day": entry.get("day"),
+            "date": entry.get("date"),
+            "day_return": float(b_port.get("day_return", 0.0)),
+            "cum_return": float(b_port.get("cum_return", 0.0)),
+            "rank": b_rank.get("rank"),
+            "group_rank": b_rank.get("group_rank"),
+            "buy_count": day_buy_cnt,
+            "sell_count": day_sell_cnt,
+            "buy_amount": day_buy_amt,
+            "sell_amount": day_sell_amt,
+            "fee": day_fee,
+            "tax": day_tax,
+            "trades": day_trades,
+        })
+
+    # 歷史成交明細預設依日期由新到舊排列
+    trade_history.sort(key=lambda x: str(x.get("date") or ""), reverse=True)
+
+    total_friction_cost = total_fee + total_tax
+    total_traded_amount = total_buy_amount + total_sell_amount
+    avg_aum = (sum(h["aum"] for h in dp_history) / len(dp_history)) if dp_history else aum
+    turnover_pct = (total_traded_amount / avg_aum * 100.0) if avg_aum > 0 else 0.0
+    gross_realized_pnl = sum(c.get("realized_pnl", 0.0) for c in costs_by_code.values())
+    net_realized_pnl = gross_realized_pnl - total_friction_cost
+
+    curr_rank = latest_dp.get("ranking") or {}
+    prev_rank = (prev_dp.get("ranking") or {}) if prev_dp else {}
+    rank_diff = (prev_rank["rank"] - curr_rank["rank"]) if (curr_rank.get("rank") and prev_rank.get("rank")) else 0
+    group_rank_diff = (prev_rank["group_rank"] - curr_rank["group_rank"]) if (curr_rank.get("group_rank") and prev_rank.get("group_rank")) else 0
+
     return {
         "as_of_date": latest_dp["date"],
         "trade_date": latest_dp["trade_date"],
         "account": {
+            "day": latest_dp.get("day"),
             "nav": round(nav, 0),
-            "aum": round(latest_dp["aum"], 0),
+            "aum": round(aum, 0),
             "cash": round(cash, 0),
             "stock_value": round(stock_value, 0),
             "cash_ratio_pct": latest_dp["cash_ratio_pct"],
+            "stock_ratio_pct": latest_dp.get("stock_ratio_pct", round(100.0 - latest_dp["cash_ratio_pct"], 2)),
             "cum_pnl": round(cum_pnl, 0),
-            "cum_return_pct": round(cum_return_pct, 2),
+            "cum_return_pct": cum_return_pct,
+            "day_return_pct": day_return_pct,
+            "top10_weight": top10_weight,
             "unrealized_pnl": round(total_unrealized_pnl, 0),
-            "holdings_count": len(held_positions),
+            "holdings_count": latest_dp.get("holdings_count", len(held_positions)),
             "violations": latest_dp["compliance"].get("violations", 0),
             "notices": latest_dp["compliance"].get("notices", 0),
+            "rank": curr_rank.get("rank"),
+            "total_teams": curr_rank.get("total_teams"),
+            "group_rank": curr_rank.get("group_rank"),
+            "group_total": curr_rank.get("group_total"),
+            "student_total": curr_rank.get("student_total"),
+            "rank_diff": rank_diff,
+            "group_rank_diff": group_rank_diff,
+        },
+        "friction": {
+            "total_fee": round(total_fee, 2),
+            "total_tax": round(total_tax, 2),
+            "total_friction_cost": round(total_friction_cost, 2),
+            "friction_cost_pct": round((total_friction_cost / 1_000_000_000.0) * 100.0, 4),
+            "total_buy_amount": round(total_buy_amount, 0),
+            "total_sell_amount": round(total_sell_amount, 0),
+            "total_traded_amount": round(total_traded_amount, 0),
+            "total_buy_count": total_buy_count,
+            "total_sell_count": total_sell_count,
+            "turnover_pct": round(turnover_pct, 2),
+            "gross_realized_pnl": round(gross_realized_pnl, 0),
+            "net_realized_pnl": round(net_realized_pnl, 0),
         },
         "held_positions": held_positions,
+        "trade_history": trade_history,
         "history": [{
+            "day": h.get("day"),
             "date": h["date"],
             "nav": round(h["nav"], 0),
+            "aum": round(h["aum"], 0),
             "cash": round(h["cash"], 0),
             "stock_value": round(h["stock_value"], 0),
             "cash_ratio_pct": h["cash_ratio_pct"],
-            "cum_return_pct": h["cum_return_pct"]
+            "cum_return_pct": h["cum_return_pct"],
+            "day_return_pct": h.get("day_return_pct", 0.0),
+            "top10_weight": h.get("top10_weight", 0.0),
+            "rank": (h.get("ranking") or {}).get("rank"),
+            "total_teams": (h.get("ranking") or {}).get("total_teams"),
+            "group_rank": (h.get("ranking") or {}).get("group_rank"),
+            "group_total": (h.get("ranking") or {}).get("group_total"),
+            "student_total": (h.get("ranking") or {}).get("student_total"),
+            "fee": h.get("fee", 0.0),
+            "tax": h.get("tax", 0.0),
         } for h in dp_history],
         "stocks_150": stocks_150
     }
