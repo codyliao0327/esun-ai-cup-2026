@@ -191,6 +191,29 @@ class EsunChallengeClient:
         resp.raise_for_status()
         return resp.json()
 
+    def _post_json_with_csrf(
+        self,
+        url: str,
+        payload: Dict[str, Any],
+        timeout: int = 30,
+    ) -> requests.Response:
+        """發送帶 X-CSRFToken 的 JSON POST 請求，遇 401/403 自動重新登入並重試一次。"""
+        csrf_token = self.session.cookies.get("csrftoken", "")
+        headers = {
+            "accept": "application/json",
+            "content-type": "application/json",
+            "origin": self.BASE_SUB,
+            "referer": f"{self.BASE_SUB}/docs",
+            "x-csrftoken": csrf_token,
+        }
+        resp = self.session.post(url, headers=headers, json=payload, timeout=timeout)
+        if resp.status_code in (401, 403):
+            print("⚠️ 憑證或 CSRF Token 失效，正在重新執行 SSO 登入...")
+            self.login()
+            headers["x-csrftoken"] = self.session.cookies.get("csrftoken", "")
+            resp = self.session.post(url, headers=headers, json=payload, timeout=timeout)
+        return resp
+
     def fetch_all_trades_for_date(self, date_str: str) -> Dict[str, Any]:
         """抓完指定日期的所有分頁交易明細（處理 next 分頁並去除重複 trade_date 欄位）。"""
         all_results: List[Dict[str, Any]] = []
