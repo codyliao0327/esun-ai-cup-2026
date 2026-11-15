@@ -3,7 +3,7 @@
 
 - **參賽隊伍**：`TEAM_11402`
 - **競賽主題**：2026 Agent 基金經理人公開挑戰賽
-- **核心架構**：階層式因果推論 Multi-Agent 產線 (L0 ➔ L1 ➔ L2M ➔ L2 ➔ L3 ➔ L4 ➔ D-Plan 總組裝 ➔ 每日決策回顧報告) + 即時資產與持股監控看板 (Portfolio Dashboard)
+- **核心架構**：階層式因果推論 Multi-Agent 產線 (L0 ➔ L1 ➔ L2M ➔ L2 ➔ L3 ➔ L4 ➔ D-Plan 總組裝 ➔ 官方預檢核與自動繳交 ➔ 每日決策回顧報告) + 即時資產與持股監控看板 (Portfolio Dashboard)
 - **規範標準**：嚴格遵循官方 **D-Plan Schema v4.3** 與 **D-Plan 撰寫指南 v4.3**
 - **模型核心**：LiteLLM Router + Google Gemini 雙軌分流路由架構 (`stage-l1` 採用 `gemini-3.8-flash`，其餘核心決策採用 `gemini-4-argon`，並配置自動 Fallback 降級備援機制與 Gemini 原生 Code Execution 程式碼執行器)
 
@@ -100,7 +100,11 @@ flowchart LR
     - **全自動驗證與容錯**：程式啟動時透過 `ensure_guest_token()` 自動抓取討論區 HTML 並萃取出 `eyJ...` 訪客 Token，搭配 `is_token_valid()` 解碼 JWT 檢查 `exp` 效期（預留 60 秒緩衝）與動態生成的 `DEVICE_ID`，且在遭遇 `401` 時自動強制重抓憑證並重試，實現零人工介入的全自動批次抓取。
 16. **DataPack API 全自動下載與 D-Plan / 看板端到端連動 (`datapack_loader.py`, `run_daily_dplan.py`, `run_update.py`)**：
     - **淘汰手動下載 DataPack**：`datapack_loader.py` 複用 `EsunChallengeClient` 的 OAuth2 SSO 登入，自動呼叫後台 `/api/data-pack/` 下載並原子更新 `data/Datapack/Raw/` 最新檔案（若指定過去日期會自動退回本地歷史檔，亦提供 `--no-fetch` 離線模式）。
-    - **後端與看板單向自動連動**：`run_daily_dplan.py` 擴充為 **Step 0～Step 8** 端到端全自動產線，於 Step 7 產出決策報告與結算 Usage 後，**Step 8** 自動呼叫 `portfolio_dashboard/run_update.py --skip-backend-fetch` 同步更新看板（不重複登入後台 API）；而日常單獨執行 `run_update.py` 則會同步最新後台歷史、最新 DataPack 與看板，不會觸發 D-Plan 產線。
+    - **後端與看板單向自動連動**：`run_daily_dplan.py` 自動化產線最後會自動呼叫 `portfolio_dashboard/run_update.py --skip-backend-fetch` 同步更新看板（不重複登入後台 API，加上 `--push-dashboard` 可自動 `git commit & push` 部署至 Cloudflare Pages）；而日常單獨執行 `run_update.py` 則會同步最新後台歷史、最新 DataPack 與看板，不會觸發 D-Plan 產線。
+17. **官方後台線上預檢核、正式自動繳交與 L4 市值精算修正 (`validate_dplan_api.py`, `submit_dplan_api.py`, `order_calculator.py`)**：
+    - **Step 7 官方預檢核 (`validate_dplan_api.py`)**：於 D-Plan 組裝完成後自動上傳 `/api/submissions/dplan/validate/` 進行線上預檢核，並以易讀中文格式彙整各分組（如 `交易規則`、`警告`）之 `bad` / `warn` 項目；預設採嚴格模式，任何未通過（`bad > 0` 或 `warn > 0`）即立刻中止流程，阻擋後續繳交。
+    - **Step 8 官方正式自動繳交 (`submit_dplan_api.py`)**：僅於 Step 7 預檢核完全通過後才呼叫 `/api/submissions/dplan/` 正式送出，並嚴格驗證 `2xx` 回應、`counts.bad == 0` 與官方收據欄位（`id` / `status=received` / `stored.gcs_path`），同步顯示繳交編號與今日剩餘次數（支援 `--dry-run` 安全測試）。
+    - **L4 預估持股市值與現金修正 (`order_calculator.py`)**：修正 `calculate_orders_python()` 過去僅計算有異動決策 (`decisions`) 而遺漏續抱部位的問題，改以全量既有持股為基準更新目標股數，並以 DataPack `close_price` 補齊 L1 缺漏收盤價，確保預估股票市值、剩餘現金比率與 Active Share 完全精確。
 
 ---
 
@@ -176,7 +180,15 @@ flowchart TD
         OUT["官方 JSON 繳交檔：\ndata/D-Paln_Output/final_dplan/D-Plan_<team_id>_<trade_date>.json"]
     end
 
-    subgraph ReviewReport["【Step 7: 真人決策回顧報告】generate_daily_report.py"]
+    subgraph Validate["【Step 7: 官方線上預檢核】validate_dplan_api.py"]
+        PRECHK["POST /api/submissions/dplan/validate/\n(任一 bad / warn 即立即中止阻擋)"]
+    end
+
+    subgraph Submit["【Step 8: 官方正式自動繳交】submit_dplan_api.py"]
+        POSTSUB["POST /api/submissions/dplan/\n(驗證 HTTP 2xx 與官方收據 id / received)"]
+    end
+
+    subgraph ReviewReport["【Step 9: 真人決策回顧報告】generate_daily_report.py"]
         REP["產出 Markdown 決策檢驗報告：\ndata/D-Paln_Output/reports/Daily_Decision_Report_<YYYYMMDD>.md\n(帳戶資訊/L2M承諾/原本部位/買賣理由/現金與區間對照)"]
     end
 
@@ -190,6 +202,8 @@ flowchart TD
     L3 & DP & O_STK -->|decision_ref| L4
     L0 & L1 & L2M & L2 & L3 & L4 --> Assembler
     Assembler --> OUT
+    OUT --> Validate
+    Validate -->|全數通過| Submit
     OUT & DP --> ReviewReport
 ```
 
@@ -249,8 +263,10 @@ flowchart TD
 │   ├── convert_slack_qa/                     # 官方競賽 Slack 諮詢問答轉換與整理工具
 │   ├── archive/                              # 舊版腳本與歷史封存檔案
 │   ├── build_dplan.py                        # 【D-Plan 總組裝與驗證器】全層合規校驗，輸出至 final_dplan
+│   ├── validate_dplan_api.py                 # 【官方線上預檢核】上傳 /validate/ 嚴格檢查 bad/warn，未通過即阻擋
+│   ├── submit_dplan_api.py                   # 【官方正式繳交】上傳 /dplan/ 正式送出並驗證收據與剩餘次數
 │   ├── generate_daily_report.py              # 【每日決策與帳戶回顧報告】Python 自動生成高品質 Markdown 審視報告
-│   ├── run_daily_dplan.py                    # 【每日自動化端到端主產線】排程/一鍵循序執行 Step 0 ~ Step 7
+│   ├── run_daily_dplan.py                    # 【每日自動化端到端主產線】排程/一鍵循序執行 Step 0 ~ Step 10
 │   ├── requirements.txt                      # 專案相依 Python 套件清單
 │   ├── credentials.json                      # [本地] 舊版憑證 (已由 .gitignore 忽略保護)
 │   └── .env                                  # [本地] 環境變數與 API 金鑰 (已由 .gitignore 忽略保護)
@@ -291,8 +307,10 @@ flowchart TD
 | **Step 4: L3 Decisions**<br>`portfolio_decision_agent.py` | `data/D-Paln_Output/l2_inferences/`,<br>`data/D-Paln_Output/l2m_market_view/`,<br>`data/Datapack/Processed/` (昨日持股明細),<br>`data/Active_ETF_Holdings/` (前 15 大標竿) | `data/D-Paln_Output/l3_decisions/`<br>👉 `l3_decisions_YYYYMMDD.json` | **Prompt**:<br>`l3_decisions_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l3_usage_YYYYMMDD.json`<br>*(預設啟用 Code Execution)* |
 | **Step 5: L4 Orders**<br>`order_calculator.py` | `data/D-Paln_Output/l3_decisions/`,<br>`data/Datapack/Processed/` (NAV 與現有持股),<br>`data/D-Paln_Output/l1_observations/` (收盤價),<br>`data/Active_ETF_Holdings/` | `data/D-Paln_Output/l4_orders/`<br>👉 `l4_orders_YYYYMMDD.json`<br>👉 `l4_orders_python_YYYYMMDD.json` | **Prompt**:<br>`l4_orders_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l4_usage_YYYYMMDD.json`<br>*(預設啟用 Code Execution)* |
 | **Step 6: D-Plan Assembler**<br>`build_dplan.py` | 讀入上述所有子目錄中的最新 JSON | `data/D-Paln_Output/final_dplan/`<br>👉 **`D-Plan_<team_id>_<trade_date>.json`** | *(總裝配器，校驗引用鏈並注入 metadata)* |
-| **Step 7: Review Report**<br>`generate_daily_report.py` | 最終 `D-Plan_*.json`、原始 `DataPack_*.json` | `data/D-Paln_Output/reports/`<br>👉 **`Daily_Decision_Report_<YYYYMMDD>.md`** | *(由 Python 產出真人檢視與風控對照報告)* |
-| **Step 8 / 獨立執行: Portfolio Dashboard**<br>`run_update.py` | `data/backend_reports/backend_all_history.json` (後台歷史 JSON),<br>`data/Datapack/Raw/`, 玉山行情 SDK | `code/portfolio_dashboard/dist/`<br>👉 **`index.html`** (單頁看板應用) | *(由 `run_daily_dplan.py` Step 8 自動連動，或單獨執行；支援 `--skip-backend-fetch` 與 `--push`)* |
+| **Step 7: Official Pre-Validation**<br>`validate_dplan_api.py` | 最終 `D-Plan_<team_id>_<trade_date>.json` | 終端機精簡中文檢核摘要 | *(呼叫官方 `/api/submissions/dplan/validate/`；有 `bad`/`warn` 即中斷阻擋)* |
+| **Step 8: Official Submission**<br>`submit_dplan_api.py` | 最終 `D-Plan_<team_id>_<trade_date>.json` | 官方後台收據（`id`、`status=received`、`attempts_remaining`） | *(僅於 Step 7 通過後送出 `/api/submissions/dplan/`；支援 `--dry-run`)* |
+| **Step 9: Review Report**<br>`generate_daily_report.py` | 最終 `D-Plan_*.json`、原始 `DataPack_*.json` | `data/D-Paln_Output/reports/`<br>👉 **`Daily_Decision_Report_<YYYYMMDD>.md`** | *(由 Python 產出真人檢視與風控對照報告)* |
+| **Step 10 / 獨立執行: Portfolio Dashboard**<br>`run_update.py` | `data/backend_reports/backend_all_history.json` (後台歷史 JSON),<br>`data/Datapack/Raw/`, 玉山行情 SDK | `code/portfolio_dashboard/dist/`<br>👉 **`index.html`** (單頁看板應用) | *(由 `run_daily_dplan.py` Step 10 自動連動，或單獨執行；支援 `--skip-backend-fetch` 與 `--push`)* |
 
 ---
 
@@ -377,7 +395,7 @@ flowchart TD
 
 ## 五、端到端每日產線入口 (`run_daily_dplan.py`)
 
-`run_daily_dplan.py` 是每日自動化產線的核心調度器，完整串接 Step 0 到 Step 8：
+`run_daily_dplan.py` 是每日自動化產線的核心調度器，完整串接 Step 0 到 Step 10：
 
 ```text
 Step 0: L0 多源資料收集 (backend_history -> datapack -> cmoney -> finlab_market -> finlab_active_etf，任一失敗即報錯中斷)
@@ -387,8 +405,10 @@ Step 3: L2 個股推論 (stock_inference_agent.py, 啟用 Code Execution)
 Step 4: L3 投資組合配置決策 (portfolio_decision_agent.py, 啟用 Code Execution)
 Step 5: L4 委託單計算與智能覆核 (order_calculator.py, 啟用 Code Execution)
 Step 6: D-Plan 總組裝與全量合規校驗 (build_dplan.py) -> 產出 D-Plan_<team_id>_<trade_date>.json
-Step 7: 每日投資決策與投資組合回顧報告生成 (generate_daily_report.py) -> 產出 Markdown 報告供真人回顧
-Step 8: 結算 LiteLLM Usage 並同步更新 Portfolio Dashboard (portfolio_dashboard/run_update.py --skip-backend-fetch)
+Step 7: 官方後台線上預檢核 (validate_dplan_api.py) -> 任一 bad / warn 即立即中止，阻擋後續繳交
+Step 8: 官方後台正式繳交 (submit_dplan_api.py) -> 僅於預檢核通過後送出並驗證收據成功
+Step 9: 每日投資決策與投資組合回顧報告生成 (generate_daily_report.py) -> 產出 Markdown 報告供真人回顧
+Step 10: 結算 LiteLLM Usage 並同步更新 Portfolio Dashboard (portfolio_dashboard/run_update.py --skip-backend-fetch)
 ```
 
 ### 命令列常用開關
@@ -398,9 +418,11 @@ Step 8: 結算 LiteLLM Usage 並同步更新 Portfolio Dashboard (portfolio_dash
 - `--skip-l0`：跳過 L0 資料收集階段（使用本地既有快取）。
 - `--skip-l1`：跳過 L1 事實提取。
 - `--skip-l2m` / `--skip-l2` / `--skip-l3` / `--skip-l4`：跳過指定 Agent 階段。
-- `--skip-report`：跳過 Markdown 決策回顧報告產出。
-- `--skip-dashboard`：跳過 Step 8 同步更新 Portfolio Dashboard 網頁。
-- `--push-dashboard`：Step 8 更新完看板後自動執行 `git commit & push`。
+- `--skip-validate`：跳過 Step 7 官方後台線上預檢核。
+- `--skip-submit`：跳過 Step 8 官方後台正式繳交（僅產出、檢核與更新看板，不實際送出繳交）。
+- `--skip-report`：跳過 Step 9 Markdown 決策回顧報告產出。
+- `--skip-dashboard`：跳過 Step 10 同步更新 Portfolio Dashboard 網頁。
+- `--push-dashboard`：Step 10 更新完看板後自動執行 `git commit & push`（部署至 Cloudflare Pages）。
 
 ---
 
@@ -519,11 +541,14 @@ python -m finlab login
 
 ### 1. 端到端一鍵完整生成
 ```bash
-# 啟動每日自動化產線 (循序執行 Step 0 至 Step 8，產出 D-Plan JSON、回顧報告並同步更新看板)
+# 啟動每日全自動產線 (循序執行 Step 0 至 Step 10：抓取資料、決策、線上預檢核、正式繳交、報告與更新看板)
 python run_daily_dplan.py
 
-# 明確指定交易日期
-python run_daily_dplan.py --date 20261113
+# 全自動產線 + 更新完看板後自動 git commit & push (含 Cloudflare Pages 自動部署)
+python run_daily_dplan.py --push-dashboard
+
+# 明確指定交易日期（若僅測試產出但不實際送出正式繳交，可加上 --skip-submit）
+python run_daily_dplan.py --date 20261113 --skip-submit
 
 # 抽樣測試模式 (讀取 20261112 輸入、測試輸出至 20261113，並僅抽樣前 3 檔標的)
 python run_daily_dplan.py --date 20261113 --input-date 20261112 --max-stocks 3 --skip-l0
@@ -595,6 +620,12 @@ python L4_orders/order_calculator.py --dry-run
 python build_dplan.py                                         # 自動組裝最新日期產出至 final_dplan
 python build_dplan.py --date 20261027                         # 指定組裝日期
 python build_dplan.py --trade-date 2026-10-27                 # 手動指定宣告之 trade_date
+
+# --- 官方後台線上預檢核與正式繳交 ---
+python validate_dplan_api.py                                  # 預檢核最新 D-Plan (有 bad/warn 即結束碼 1)
+python validate_dplan_api.py --file "path/to/D-Plan.json"     # 預檢核指定檔案 (加 --allow-warn 可僅阻擋 bad)
+python submit_dplan_api.py --dry-run                          # 測試 SSO 登入與讀檔，不實際送出繳交 POST
+python submit_dplan_api.py --file "path/to/D-Plan.json"       # 正式送出 D-Plan 並驗證官方收據
 
 # --- 每日決策與帳戶回顧 Markdown 報告 ---
 python generate_daily_report.py                               # 根據最新 D-Plan 產出回顧報告
