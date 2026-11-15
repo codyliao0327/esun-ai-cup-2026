@@ -82,7 +82,15 @@ def sync_latest_datapack_raw(raw_dir: Path = RAW_DIR) -> Path:
     if existing:
         out_path = existing[0]
     else:
-        team_tag = str(dp.get("team_id") or os.getenv("TEAM_ID") or "TEAM").strip()
+        # 沿用既有 Raw 檔的數字隊伍編號前綴（例如 DataPack_275_YYYY-MM-DD.json）
+        team_tag = None
+        for p in sorted(raw_dir.glob("DataPack_*.json"), reverse=True):
+            m = re.match(r"^DataPack_(\d+)_\d{4}-\d{2}-\d{2}$", p.stem)
+            if m:
+                team_tag = m.group(1)
+                break
+        if not team_tag:
+            team_tag = str(dp.get("team_id") or os.getenv("TEAM_ID") or "275").strip()
         out_path = raw_dir / f"DataPack_{team_tag}_{dp_trade_date}.json"
 
     tmp_path = out_path.with_suffix(".json.tmp")
