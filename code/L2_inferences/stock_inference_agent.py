@@ -364,11 +364,7 @@ def load_optional_datapack(target_date: str) -> str:
 
     if file_path and file_path.exists():
         try:
-            text = file_path.read_text(encoding="utf-8")
-            # 擷取關鍵摘要部分避免過長
-            lines = text.splitlines()
-            # 取前 60 行
-            return "\n".join(lines[:60])
+            return file_path.read_text(encoding="utf-8")
         except Exception:
             pass
     return f"  (日期 {clean_date} 無可用之 DataPack 快照)"

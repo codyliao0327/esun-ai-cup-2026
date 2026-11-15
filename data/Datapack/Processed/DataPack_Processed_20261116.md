@@ -27,7 +27,7 @@
 
 ## 資料
 schema_version: "3.0" | doc_type: "DataPack" | team_id: "TEAM_11402"
-trade_date: "2026-11-16" | as_of_date: "2026-11-13" | generated_at: "2026-11-15T22:18:52.824301+08:00"
+trade_date: "2026-11-16" | as_of_date: "2026-11-13" | generated_at: "2026-11-15T23:22:20.901737+08:00"
 missing: []
 狀態判讀: account 與 holdings 為 2026-11-13 收盤結算後的狀態。
 
