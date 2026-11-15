@@ -291,7 +291,7 @@ def calculate_orders_python(
     total_sell_shares = 0
     total_buy_amount = 0.0
     total_sell_amount = 0.0
-    est_target_shares_dict: Dict[str, int] = {}
+    est_target_shares_dict: Dict[str, int] = dict(current_holdings_dict)
 
     for dec in decisions:
         ticker = dec["ticker"].strip()
@@ -463,8 +463,13 @@ def run_order_calculator(
     }
     print(f"[OrderCalculator] 載入 DataPack: {dp_file} | NAV: {nav:,.0f} 元, 現有持股: {len(current_holdings_dict)} 檔")
 
-    # 3. 讀入個股前日收盤價
+    # 3. 讀入個股前日收盤價 (並以 DataPack 既有持股的 close_price 補齊缺漏)
     stock_prices = load_stock_prices(in_date)
+    for h in holdings:
+        code = str(h.get("code", "")).strip()
+        cp = h.get("close_price")
+        if code and cp is not None and float(cp) > 0:
+            stock_prices.setdefault(code, float(cp))
     print(f"[OrderCalculator] 載入個股收盤價資料: 共 {len(stock_prices)} 檔")
 
     # 4. 讀入 L2M 目標現金區間與 Active ETF 前 15 大
