@@ -16,12 +16,20 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
 from datetime import date, timedelta
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
+
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
 
 # 設定 code/ 為匯入路徑
 CODE_DIR = Path(__file__).resolve().parents[1]
@@ -43,6 +51,45 @@ COMPETITION_START_DATE = "2026-10-27"
 COMPETITION_END_DATE = "2026-11-27"
 INITIAL_NAV = 1_000_000_000.0
 LOT_SIZE = 1000
+
+
+def sync_latest_datapack_raw(raw_dir: Path = RAW_DIR) -> Path:
+    """透過 OAuth2 SSO 從玉山後台 /api/data-pack/ 自動下載最新 DataPack Raw JSON。"""
+    from L0_sources.backend_history_loader import EsunChallengeClient, _load_env_file
+
+    _load_env_file(CODE_DIR / ".env")
+    email = os.getenv("ESUN_EMAIL", "").strip()
+    password = os.getenv("ESUN_PASSWORD", "").strip()
+    if not email or not password:
+        raise RuntimeError(
+            "找不到 ESUN_EMAIL 或 ESUN_PASSWORD 環境變數！請於 code/.env 中設定。"
+        )
+
+    client = EsunChallengeClient(email=email, password=password)
+    client.login()
+    dp = client._get_json(f"{EsunChallengeClient.BASE_SUB}/api/data-pack/")
+
+    dp_trade_date = str(dp.get("trade_date") or "").strip()
+    if not dp_trade_date:
+        raise RuntimeError(f"後台 /api/data-pack/ 回傳缺少 trade_date：{list(dp.keys())}")
+
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    # 若目錄下已有同交易日檔案 (例如 DataPack_275_2026-11-16.json)，直接覆寫該檔以保持檔名一致
+    existing = [
+        p for p in raw_dir.glob("*.json")
+        if p.stem.endswith(f"_{dp_trade_date}") or p.stem.endswith(f"_{dp_trade_date.replace('-', '')}")
+    ]
+    if existing:
+        out_path = existing[0]
+    else:
+        team_tag = str(dp.get("team_id") or os.getenv("TEAM_ID") or "TEAM").strip()
+        out_path = raw_dir / f"DataPack_{team_tag}_{dp_trade_date}.json"
+
+    tmp_path = out_path.with_suffix(".json.tmp")
+    tmp_path.write_text(json.dumps(dp, ensure_ascii=False, indent=2), encoding="utf-8")
+    tmp_path.replace(out_path)
+    print(f"[datapack_loader] 已從後台 API 同步最新 DataPack ({dp_trade_date}) -> {out_path.name}")
+    return out_path
 
 
 def find_datapack_raw(target_date: Optional[str] = None) -> Path:
@@ -576,9 +623,29 @@ def process_datapack(
     raw_path: Optional[Path] = None,
     target_date: Optional[str] = None,
     out_dir: Path = PROCESSED_DIR,
+    fetch_api: bool = True,
 ) -> Path:
-    """讀入 Raw JSON，輸出 DataPack_Processed_YYYYMMDD.md（優先依指定日期，或取自原始檔名）。"""
-    actual_path = raw_path or find_datapack_raw(target_date)
+    """讀入 Raw JSON（預設先從後台 API 同步最新 DataPack），輸出 DataPack_Processed_YYYYMMDD.md。"""
+    actual_path = raw_path
+    if not actual_path:
+        if fetch_api:
+            fetched_path = sync_latest_datapack_raw(RAW_DIR)
+            if not target_date:
+                actual_path = fetched_path
+            else:
+                iso_target = format_iso_trade_date(target_date)
+                fetched_data = load_datapack(fetched_path)
+                if fetched_data.get("trade_date") == iso_target:
+                    actual_path = fetched_path
+                else:
+                    print(
+                        f"[datapack_loader] API 最新 DataPack 為 {fetched_data.get('trade_date')}，"
+                        f"改讀取本地歷史檔 ({iso_target})..."
+                    )
+                    actual_path = find_datapack_raw(target_date)
+        else:
+            actual_path = find_datapack_raw(target_date)
+
     if not actual_path or not actual_path.exists():
         raise FileNotFoundError(f"找不到 DataPack Raw JSON 檔案 (搜尋目錄: {RAW_DIR}, 目標日期: {target_date})")
 
@@ -615,16 +682,21 @@ def main():
     parser = argparse.ArgumentParser(description="讀取官方每日 DataPack JSON 並轉換為 Processed Markdown")
     parser.add_argument("--date", type=str, default=None, help="目標交易日期 (格式如 20261028 或 2026-10-28)")
     parser.add_argument("--raw-path", type=str, default=None, help="直接指定 DataPack Raw JSON 檔案路徑")
+    parser.add_argument("--no-fetch", action="store_true", help="跳過後台 /api/data-pack/ 自動下載，僅使用本地 Raw 檔案")
     args = parser.parse_args()
 
     custom_raw = Path(args.raw_path) if args.raw_path else None
     target_date = args.date
 
-    # 若未指定檔案且未傳入日期，詢問交易日期
-    if not custom_raw and not target_date:
+    # 僅在跳過 API 下載且未指定檔案/日期時，才詢問交易日期
+    if args.no_fetch and not custom_raw and not target_date:
         target_date = prompt_trade_date(prompt_text="DataPack 轉換 - 交易日期")
 
-    out_file = process_datapack(raw_path=custom_raw, target_date=target_date)
+    out_file = process_datapack(
+        raw_path=custom_raw,
+        target_date=target_date,
+        fetch_api=not args.no_fetch,
+    )
     print(f"已產出 Processed 檔案: {out_file}")
 
 

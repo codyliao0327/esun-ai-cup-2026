@@ -91,13 +91,16 @@ flowchart LR
 13. **Portfolio Dashboard 5 分頁擴充與冷冽液態玻璃視覺重構 (`builder.py`, `tracker.py`)**：
     - 新增 **FIFO 分批買進明細**、**個股持有天數**與**累計總報酬率 (%) 趨勢圖**，並新增 Tab 3（AI 成本監控）、Tab 4（每日決策報告瀏覽器）與 Tab 5（專案架構與技術亮點 + GitHub 連結）。
     - 統一全站液態膠囊按鈕與 Model 水滴微膠囊標籤、重構為冷冽藍灰／冰川銀背景、實作下滑單行懸浮導航（零版面位移遲滯偵測），並移除高耗能濾鏡與重繪瓶頸大幅提升流暢度。
-14. **後台數據管線全面切換為 Tampermonkey JSON 直抓 (`datapack_loader.py`, `tracker.py`)**：
-    - 淘汰過去手動於瀏覽器 `Ctrl + S` 另存單日 `.htm` 的做法，改為透過 **Tampermonkey 擴充套件**直接抓取競賽後端 API 並匯出全賽期完整的 `data/backend_reports/backend_all_history.json`（同時保留 `*.htm` 作為備援）。
-    - 成交價精度由網頁四捨五入的 **2 位小數提升至後端原始 4 位小數**，並直接採用後端精確手續費／證交稅、官方單日／累計報酬率、持股市值與競賽排名（總排名／社會組／學生組），大幅降低成本與損益追蹤誤差並消除重複計算。
+14. **後台數據管線全面升級為 Python OAuth2 SSO 全自動直抓 (`backend_history_loader.py`)**：
+    - 淘汰過去手動另存 `.htm` 與 Tampermonkey 手動匯出，改由 `L0_sources/backend_history_loader.py` 透過官方 OAuth2 SSO 自動登入並抓取後台 API，輸出全賽期完整的 `data/backend_reports/backend_all_history.json`（保留 `*.htm` 為備援）。
+    - 採「增量更新 + 重抓最新 1 日」模式（支援 `--full` 全量重抓）與原子寫入，並直接整合進 `run_daily_dplan.py`（Step 0a，先於 `datapack_loader.py` 執行）與 `portfolio_dashboard/run_update.py`，提供 4 位小數精確成交價、手續費／證交稅、官方單日／累計報酬率與競賽排名給下游 `datapack_loader.py` 與 `tracker.py`。
 15. **CMoney 個股情緒 API 免登入全自動訪客憑證萃取 (`cmoney_sentiment_crawler.py`)**：
     - 淘汰過去需每日手動從瀏覽器複製 `Authorization` Bearer Token 與 Session 的繁瑣流程，徹底消除超過 24 小時即驗證失效導致自動化產線中斷的痛點。
     - **核心運作原理**：利用 CMoney 採用 **SSR（伺服器端渲染）** 架構的特性，每次以無狀態請求訪問討論區 HTML 時，後端皆會在原始碼內嵌一組全新的 24 小時訪客 JWT（`is_guest: true`、`app_id: 21`）。
     - **全自動驗證與容錯**：程式啟動時透過 `ensure_guest_token()` 自動抓取討論區 HTML 並萃取出 `eyJ...` 訪客 Token，搭配 `is_token_valid()` 解碼 JWT 檢查 `exp` 效期（預留 60 秒緩衝）與動態生成的 `DEVICE_ID`，且在遭遇 `401` 時自動強制重抓憑證並重試，實現零人工介入的全自動批次抓取。
+16. **DataPack API 全自動下載與 D-Plan / 看板端到端連動 (`datapack_loader.py`, `run_daily_dplan.py`, `run_update.py`)**：
+    - **淘汰手動下載 DataPack**：`datapack_loader.py` 複用 `EsunChallengeClient` 的 OAuth2 SSO 登入，自動呼叫後台 `/api/data-pack/` 下載並原子更新 `data/Datapack/Raw/` 最新檔案（若指定過去日期會自動退回本地歷史檔，亦提供 `--no-fetch` 離線模式）。
+    - **後端與看板單向自動連動**：`run_daily_dplan.py` 擴充為 **Step 0～Step 8** 端到端全自動產線，於 Step 7 產出決策報告與結算 Usage 後，**Step 8** 自動呼叫 `portfolio_dashboard/run_update.py --skip-backend-fetch` 同步更新看板（不重複登入後台 API）；而日常單獨執行 `run_update.py` 則會同步最新後台歷史、最新 DataPack 與看板，不會觸發 D-Plan 產線。
 
 ---
 
@@ -207,7 +210,7 @@ flowchart TD
 │
 ├── code/                                     # 【核心程式碼與自動化產線】
 │   ├── models_config.yaml                    # LiteLLM Multi-Model 路由群組與 Fallback 設定檔
-│   ├── .env.example                          # 環境變數安全範本 (GEMINI_API_KEY, TEAM_ID)
+│   ├── .env.example                          # 環境變數安全範本 (GEMINI_API_KEY, TEAM_ID, ESUN_EMAIL, ESUN_PASSWORD)
 │   ├── configs/                              # 專案環境與共用工具
 │   │   ├── settings.py                       # 環境變數 (.env) 載入、路徑常數與金鑰管理
 │   │   ├── gemini_client.py                  # LiteLLM Router 封裝 (支援串流、結構化輸出、Code Execution 與 19 項標準 Usage 統計)
@@ -217,6 +220,7 @@ flowchart TD
 │   │   ├── dplan_models.py                   # 依 D-Plan Schema v4.3 建立的嚴格 Pydantic 資料模型
 │   │   └── verify_dplan.ipynb                # D-Plan JSON 格式校驗、斷鏈檢測與測試 Notebook
 │   ├── L0_sources/                           # 【L0 資料來源與爬取層】(嚴格防漏，任一失敗即報錯中斷)
+│   │   ├── backend_history_loader.py         # 透過 OAuth2 SSO 自動抓取競賽後台歷史數據 (輸出 backend_all_history.json)
 │   │   ├── datapack_loader.py                # 讀取官方每日 DataPack JSON (取現金、庫存、NAV、合規狀態)
 │   │   ├── finlab_market_loader.py           # 透過 FinLab API 計算 26 檔指標並輸出為 Compact Array JSON
 │   │   ├── finlab_active_etf_loader.py       # 下載主動式 ETF 前 15 大成分股快照與權重
@@ -278,7 +282,8 @@ flowchart TD
 
 | 階層 / 程式模組 | 主要輸入資料來源路徑 (Input) | 主要產出檔案路徑 (Output) | Prompt 留存與 Usage 統計 |
 | :--- | :--- | :--- | :--- |
-| **L0 Sources**<br>`datapack_loader.py` | 官方原始 DataPack JSON：<br>`data/Datapack/Raw/DataPack_*_YYYY-MM-DD.json`<br>後台成交紀錄：`data/backend_reports/backend_all_history.json` | 轉換後結構化 Markdown：<br>`data/Datapack/Processed/DataPack_Processed_YYYYMMDD.md` | *(純資料解析)* |
+| **L0 Sources**<br>`backend_history_loader.py` | 玉山競賽後台 OAuth2 SSO + API (`dashboard` / `portfolio` / `trades`) | 官方後台歷史 JSON：<br>`data/backend_reports/backend_all_history.json` | *(增量更新 + 重抓最新 1 日；`--full` 全量重建)* |
+| **L0 Sources**<br>`datapack_loader.py` | 玉山競賽後台 `/api/data-pack/` (自動下載最新)、<br>本地 `data/Datapack/Raw/DataPack_*_YYYY-MM-DD.json`、<br>後台成交紀錄：`data/backend_reports/backend_all_history.json` | 原始 JSON：`data/Datapack/Raw/DataPack_*.json`<br>轉換後 Markdown：`data/Datapack/Processed/DataPack_Processed_YYYYMMDD.md` | *(支援 `--no-fetch` 離線模式)* |
 | **L0 Sources**<br>`finlab_market_loader.py`<br>`cmoney_sentiment_crawler.py`<br>`finlab_active_etf_loader.py` | FinLab API、CMoney API、主動 ETF 公開資訊 | Compact Array JSON 快取：<br>`data/大盤/*.json`, `data/技術面/*.json`,<br>`data/基本面/*.json`, `data/籌碼面/*.json`,<br>`data/CMoney_Sentiment/`, `data/Active_ETF_Holdings/`,<br>`data/D-Paln_Output/l0_sources/` | *(純資料下載與向量計算，失敗立即阻斷)* |
 | **Step 1: L1 Observations**<br>`fact_extractor.py` | `data/大盤/*.json`, `data/技術面/*.json`, `data/基本面/*.json`, `data/籌碼面/*.json`, `data/CMoney_Sentiment/` | `data/D-Paln_Output/l1_observations/`<br>👉 `l1_observations_YYYYMMDD.json` | **Prompt**:<br>`l1_observations_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l1_usage_YYYYMMDD.json` |
 | **Step 2: L2M Market View**<br>`market_view_agent.py`<br>*(預設啟用 Code Execution)* | `data/D-Paln_Output/l1_observations/` (大盤觀察),<br>`data/Datapack/Processed/` (帳戶快照) | `data/D-Paln_Output/l2m_market_view/`<br>👉 `l2m_market_view_YYYYMMDD.json` | **Prompt**:<br>`l2m_market_view_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l2m_usage_YYYYMMDD.json` |
@@ -287,7 +292,7 @@ flowchart TD
 | **Step 5: L4 Orders**<br>`order_calculator.py` | `data/D-Paln_Output/l3_decisions/`,<br>`data/Datapack/Processed/` (NAV 與現有持股),<br>`data/D-Paln_Output/l1_observations/` (收盤價),<br>`data/Active_ETF_Holdings/` | `data/D-Paln_Output/l4_orders/`<br>👉 `l4_orders_YYYYMMDD.json`<br>👉 `l4_orders_python_YYYYMMDD.json` | **Prompt**:<br>`l4_orders_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l4_usage_YYYYMMDD.json`<br>*(預設啟用 Code Execution)* |
 | **Step 6: D-Plan Assembler**<br>`build_dplan.py` | 讀入上述所有子目錄中的最新 JSON | `data/D-Paln_Output/final_dplan/`<br>👉 **`D-Plan_<team_id>_<trade_date>.json`** | *(總裝配器，校驗引用鏈並注入 metadata)* |
 | **Step 7: Review Report**<br>`generate_daily_report.py` | 最終 `D-Plan_*.json`、原始 `DataPack_*.json` | `data/D-Paln_Output/reports/`<br>👉 **`Daily_Decision_Report_<YYYYMMDD>.md`** | *(由 Python 產出真人檢視與風控對照報告)* |
-| **Portfolio Dashboard**<br>`run_update.py` | `data/backend_reports/backend_all_history.json` (後台歷史 JSON),<br>`data/Datapack/Raw/`, 玉山行情 SDK | `code/portfolio_dashboard/dist/`<br>👉 **`index.html`** (單頁看板應用) | *(前端視覺化，支援 Cloudflare Pages 雲端發布)* |
+| **Step 8 / 獨立執行: Portfolio Dashboard**<br>`run_update.py` | `data/backend_reports/backend_all_history.json` (後台歷史 JSON),<br>`data/Datapack/Raw/`, 玉山行情 SDK | `code/portfolio_dashboard/dist/`<br>👉 **`index.html`** (單頁看板應用) | *(由 `run_daily_dplan.py` Step 8 自動連動，或單獨執行；支援 `--skip-backend-fetch` 與 `--push`)* |
 
 ---
 
@@ -295,7 +300,8 @@ flowchart TD
 
 ### L0 資料來源與爬取層 (`L0_sources`)
 - **嚴格防漏機制**：資料收集是後續推論基礎，各模組皆設有嚴格驗證。**任何一項下載或爬取失敗，立即拋出 `RuntimeError` 並中斷整個產線**，絕不容許缺漏資料進入模型。
-- **`datapack_loader.py`**：解析官方 DataPack JSON，提取 `cash`、`nav_tradable`、`holdings` 及 `compliance` 違規次數。
+- **`backend_history_loader.py`**：透過官方 OAuth2 SSO 自動登入玉山競賽後台，以「增量 + 最新日覆核」模式抓取每日排名、投組績效與完整分頁成交明細（4 位小數成交價、手續費與證交稅），寫入 `data/backend_reports/backend_all_history.json`。
+- **`datapack_loader.py`**：透過 OAuth2 SSO 自動從後台 `/api/data-pack/` 下載最新 DataPack JSON（支援 `--no-fetch` 離線模式與歷史日退回），並結合 `backend_all_history.json` 計算持倉成本與移動停利追蹤，輸出 `DataPack_Processed_YYYYMMDD.md`。
 - **`cmoney_sentiment_crawler.py`**：透過解析 CMoney SSR 網頁原始碼自動萃取 24 小時訪客 JWT Token（免登入、無需手動複製憑證，並內建 JWT `exp` 效期檢查與 401 自動重取重試機制），爬取討論區個股多空評分與社群熱度；**必須全數標的抓取成功**，若有失敗檔數立即報錯中斷。
 - **`finlab_market_loader.py`**：透過 FinLab API 計算 26 檔市場特徵（個股 17 + 大盤 9），輸出為 Compact Array JSON 格式儲存；若有任何指標計算失敗即終止進程。
 - **`stock_indicators.py` 基本面動態遞補演算法**：
@@ -371,10 +377,10 @@ flowchart TD
 
 ## 五、端到端每日產線入口 (`run_daily_dplan.py`)
 
-`run_daily_dplan.py` 是每日自動化產線的核心調度器，完整串接 Step 0 到 Step 7：
+`run_daily_dplan.py` 是每日自動化產線的核心調度器，完整串接 Step 0 到 Step 8：
 
 ```text
-Step 0: L0 多源資料收集 (datapack -> cmoney -> finlab_market -> finlab_active_etf，任一失敗即報錯中斷)
+Step 0: L0 多源資料收集 (backend_history -> datapack -> cmoney -> finlab_market -> finlab_active_etf，任一失敗即報錯中斷)
 Step 1: L1 事實提取 (fact_extractor.py)
 Step 2: L2M 市場整體判斷 (market_view_agent.py, 啟用 Code Execution)
 Step 3: L2 個股推論 (stock_inference_agent.py, 啟用 Code Execution)
@@ -382,6 +388,7 @@ Step 4: L3 投資組合配置決策 (portfolio_decision_agent.py, 啟用 Code Ex
 Step 5: L4 委託單計算與智能覆核 (order_calculator.py, 啟用 Code Execution)
 Step 6: D-Plan 總組裝與全量合規校驗 (build_dplan.py) -> 產出 D-Plan_<team_id>_<trade_date>.json
 Step 7: 每日投資決策與投資組合回顧報告生成 (generate_daily_report.py) -> 產出 Markdown 報告供真人回顧
+Step 8: 結算 LiteLLM Usage 並同步更新 Portfolio Dashboard (portfolio_dashboard/run_update.py --skip-backend-fetch)
 ```
 
 ### 命令列常用開關
@@ -392,6 +399,8 @@ Step 7: 每日投資決策與投資組合回顧報告生成 (generate_daily_repo
 - `--skip-l1`：跳過 L1 事實提取。
 - `--skip-l2m` / `--skip-l2` / `--skip-l3` / `--skip-l4`：跳過指定 Agent 階段。
 - `--skip-report`：跳過 Markdown 決策回顧報告產出。
+- `--skip-dashboard`：跳過 Step 8 同步更新 Portfolio Dashboard 網頁。
+- `--push-dashboard`：Step 8 更新完看板後自動執行 `git commit & push`。
 
 ---
 
@@ -470,6 +479,8 @@ cp code/.env.example code/.env
 ```ini
 GEMINI_API_KEY="AIzaSy..."
 TEAM_ID="TEAM_11402"
+ESUN_EMAIL="your_email@example.com"
+ESUN_PASSWORD="your_password"
 ```
 
 ### 3. LiteLLM 路由設定 (`code/models_config.yaml`)
@@ -508,7 +519,7 @@ python -m finlab login
 
 ### 1. 端到端一鍵完整生成
 ```bash
-# 啟動每日自動化產線 (循序執行 Step 0 至 Step 7，產出 D-Plan JSON 與 Markdown 回顧報告)
+# 啟動每日自動化產線 (循序執行 Step 0 至 Step 8，產出 D-Plan JSON、回顧報告並同步更新看板)
 python run_daily_dplan.py
 
 # 明確指定交易日期
@@ -525,9 +536,14 @@ python run_daily_dplan.py --date 20261113 --skip-l0 --skip-l1 --skip-l2m --skip-
 
 #### 【L0 資料下載與預處理】
 ```bash
-# --- DataPack 原始檔解析與轉 Markdown ---
-python L0_sources/datapack_loader.py                           # 互動式輸入日期 (Enter 帶入今日)
-python L0_sources/datapack_loader.py --date 20261028           # 指定轉換特定日期之 DataPack JSON
+# --- 玉山競賽後台歷史數據自動抓取 (OAuth2 SSO) ---
+python L0_sources/backend_history_loader.py                    # 增量更新 + 重抓最新 1 日至 backend_all_history.json
+python L0_sources/backend_history_loader.py --full             # 從 Day 1 全量重抓並覆蓋
+
+# --- DataPack 自動下載、解析與轉 Markdown ---
+python L0_sources/datapack_loader.py                           # 自動從 /api/data-pack/ 下載最新 DataPack 並轉換
+python L0_sources/datapack_loader.py --date 20261028           # 指定日期 (若非 API 最新日則自動退回本地歷史 Raw 檔)
+python L0_sources/datapack_loader.py --no-fetch --date 20261028 # 跳過 API 下載，僅使用本地 Raw 檔
 
 # --- FinLab 市場資料與 Compact Array JSON 下載 ---
 python L0_sources/finlab_market_loader.py                      # 下載 26 檔指標並快取為 Compact JSON
@@ -612,8 +628,8 @@ python generate_daily_report.py --dplan-path "path/to.json"   # 指定特定 D-P
 - **三段式主題（淺色預設）、懸浮導航與 RWD 適配**：
   - 支援淺色（預設，冰川銀灰）／深色（冷冽藍灰）／跟隨裝置三段切換（含 Android Chrome 動態網址列 `theme-color`），下滑自動精簡為單行懸浮導航膠囊，並針對手機、平板與電腦端提供輕量化流暢瀏覽體驗。
 
-### 2. 每日收盤 3 步驟更新流程
-1. **更新後台數據**：透過 **Tampermonkey 擴充套件**從玉山比賽後台直接抓取並匯出完整歷史紀錄至 `data/backend_reports/backend_all_history.json`（若無 JSON，亦可暫時另存後台「每日數據」`.htm` 作為備援）。
+### 2. 每日收盤自動更新流程
+1. **確認環境憑證**：於 `code/.env` 設定 `ESUN_EMAIL` 與 `ESUN_PASSWORD`（`run_update.py` 與 `run_daily_dplan.py` 執行時會自動登入後台 API 同步 `data/backend_reports/backend_all_history.json` 與最新 `data/Datapack/Raw/`）。
 2. **一鍵執行更新**：
    ```bash
    cd code/portfolio_dashboard
@@ -630,7 +646,7 @@ python generate_daily_report.py --dplan-path "path/to.json"   # 指定特定 D-P
 ## 十三、競賽法規檢核與重要實測注意事項
 
 1. **資料收集零漏抓原則**：
-   - 每日資料收集（DataPack、CMoney 58 檔、FinLab 26 檔指標、Active ETF）為後續推論命脈，任一模組抓取異常或資料缺漏會直接中止產線，請確保網路與憑證正常。
+   - 每日資料收集（後台歷史數據、DataPack、CMoney 58 檔、FinLab 26 檔指標、Active ETF）為後續推論命脈，任一模組抓取異常或資料缺漏會直接中止產線，請確保網路與憑證正常。
 2. **千股整股與禁止零股**：
    - L4 委託計算一律取 `floor(... / 1000) * 1000`，委託單股數必須為 1,000 的正整數倍，不可含有零股。
 3. **持股檔數限制 (20 ~ 30 檔)**：

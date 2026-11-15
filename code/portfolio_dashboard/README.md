@@ -18,8 +18,8 @@
 
 每天收盤後（下午或晚上），只要做這三件事：
 
-### 步驟 1：更新後台數據並放入資料夾
-1. 透過 **Tampermonkey 擴充套件**從玉山比賽後台直接抓取完整歷史數據，並將匯出的檔案存為專案的 **`data/backend_reports/backend_all_history.json`**（保留 4 位小數成交價、每日手續費／證交稅、官方報酬率與排名）。
+### 步驟 1：確認環境憑證（全自動同步後台與 DataPack）
+1. 確認 `code/.env` 已設定 `ESUN_EMAIL` 與 `ESUN_PASSWORD`；執行 `run_update.py` 時會自動呼叫 `L0_sources/backend_history_loader.py` 與 `L0_sources/datapack_loader.py`，同步最新後台歷史數據至 **`data/backend_reports/backend_all_history.json`** 與最新 DataPack 至 **`data/Datapack/Raw/`**。
 2. 若暫無最新 JSON，亦可另存後台「每日數據」`.htm` 至 `data/backend_reports/` 作為備援。
 > 註：若當日 DataPack 有更新，也請一併將 `DataPack_*.json` 放入 `data/Datapack/Raw/`。
 

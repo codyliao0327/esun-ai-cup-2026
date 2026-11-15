@@ -2007,14 +2007,14 @@
       "top10_weight": 47.4936,
       "aum_breakdown": {
         "cash": 120863016.33,
-        "holdings_value": 820305650,
-        "receivable_shares_value": 0,
-        "receivable_cash": 0,
-        "upcoming_receivable_cash": 0,
-        "residual": 0
+        "holdings_value": 820305650.0,
+        "receivable_shares_value": 0.0,
+        "receivable_cash": 0.0,
+        "upcoming_receivable_cash": 0.0,
+        "residual": 0.0
       },
       "corporate_actions": {
-        "cash": 0,
+        "cash": 0.0,
         "shares": 0,
         "count": 0
       },
@@ -2030,9 +2030,9 @@
       "buy_amount": 62871144.8,
       "sell_count": 0,
       "sell_shares": 0,
-      "sell_amount": 0,
+      "sell_amount": 0.0,
       "fee": 89591.38,
-      "tax": 0,
+      "tax": 0.0,
       "voided_count": 0
     },
     "trades": [
@@ -2045,7 +2045,7 @@
         "price": 78.0292,
         "amount": 3589343.2,
         "fee": 5114.81,
-        "tax": 0,
+        "tax": 0.0,
         "outcome": "filled"
       },
       {
@@ -2057,7 +2057,7 @@
         "price": 309.6828,
         "amount": 5883973.2,
         "fee": 8384.66,
-        "tax": 0,
+        "tax": 0.0,
         "outcome": "filled"
       },
       {
@@ -2067,9 +2067,9 @@
         "name": "鴻海",
         "shares": 24000,
         "price": 240.4625,
-        "amount": 5771100,
+        "amount": 5771100.0,
         "fee": 8223.82,
-        "tax": 0,
+        "tax": 0.0,
         "outcome": "filled"
       },
       {
@@ -2079,9 +2079,9 @@
         "name": "台積電",
         "shares": 7000,
         "price": 2367.43,
-        "amount": 16572010,
+        "amount": 16572010.0,
         "fee": 23615.11,
-        "tax": 0,
+        "tax": 0.0,
         "outcome": "filled"
       },
       {
@@ -2093,7 +2093,7 @@
         "price": 1057.0531,
         "amount": 3171159.3,
         "fee": 4518.9,
-        "tax": 0,
+        "tax": 0.0,
         "outcome": "filled"
       },
       {
@@ -2105,7 +2105,7 @@
         "price": 760.0112,
         "amount": 1520022.4,
         "fee": 2166.03,
-        "tax": 0,
+        "tax": 0.0,
         "outcome": "filled"
       },
       {
@@ -2115,9 +2115,9 @@
         "name": "中華電",
         "shares": 20000,
         "price": 163.7288,
-        "amount": 3274576,
+        "amount": 3274576.0,
         "fee": 4666.27,
-        "tax": 0,
+        "tax": 0.0,
         "outcome": "filled"
       },
       {
@@ -2129,7 +2129,7 @@
         "price": 51.4591,
         "amount": 2006904.9,
         "fee": 2859.84,
-        "tax": 0,
+        "tax": 0.0,
         "outcome": "filled"
       },
       {
@@ -2139,9 +2139,9 @@
         "name": "富邦金",
         "shares": 28000,
         "price": 162.029,
-        "amount": 4536812,
+        "amount": 4536812.0,
         "fee": 6464.96,
-        "tax": 0,
+        "tax": 0.0,
         "outcome": "filled"
       },
       {
@@ -2151,9 +2151,9 @@
         "name": "國泰金",
         "shares": 22000,
         "price": 114.382,
-        "amount": 2516404,
+        "amount": 2516404.0,
         "fee": 3585.88,
-        "tax": 0,
+        "tax": 0.0,
         "outcome": "filled"
       },
       {
@@ -2163,9 +2163,9 @@
         "name": "兆豐金",
         "shares": 65000,
         "price": 55.0252,
-        "amount": 3576638,
+        "amount": 3576638.0,
         "fee": 5096.71,
-        "tax": 0,
+        "tax": 0.0,
         "outcome": "filled"
       },
       {
@@ -2177,7 +2177,7 @@
         "price": 78.3882,
         "amount": 3684245.4,
         "fee": 5250.05,
-        "tax": 0,
+        "tax": 0.0,
         "outcome": "filled"
       },
       {
@@ -2187,9 +2187,9 @@
         "name": "台灣大",
         "shares": 18000,
         "price": 129.1305,
-        "amount": 2324349,
+        "amount": 2324349.0,
         "fee": 3312.2,
-        "tax": 0,
+        "tax": 0.0,
         "outcome": "filled"
       },
       {
@@ -2199,9 +2199,9 @@
         "name": "緯創",
         "shares": 12000,
         "price": 171.225,
-        "amount": 2054700,
+        "amount": 2054700.0,
         "fee": 2927.95,
-        "tax": 0,
+        "tax": 0.0,
         "outcome": "filled"
       },
       {
@@ -2213,7 +2213,7 @@
         "price": 108.5867,
         "amount": 2388907.4,
         "fee": 3404.19,
-        "tax": 0,
+        "tax": 0.0,
         "outcome": "filled"
       }
     ]

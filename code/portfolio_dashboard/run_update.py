@@ -43,11 +43,22 @@ def refresh_dashboard_with_cached_quotes() -> Path:
     return build_dashboard_html(summary, quotes)
 
 
-def run_update(auto_push: bool = False, fetch_candles: bool = True, rebuild_candles: bool = False):
+def run_update(auto_push: bool = False, fetch_candles: bool = True, rebuild_candles: bool = False, skip_backend_fetch: bool = False):
     from market_api import fetch_all_150_quotes, rebuild_full_candles
     print("=" * 65)
     print("🚀 啟動 2026 玉山 AI 經理人投資看板 - 每日收盤數據自動更新產線")
     print("=" * 65)
+
+    # 0. 自動同步競賽後台最新歷史數據 (backend_all_history.json) 與最新 DataPack Raw JSON
+    if not skip_backend_fetch:
+        print("\n[Step 0/3] 正在同步玉山比賽後台歷史數據與最新 DataPack...")
+        if str(CODE_DIR) not in sys.path:
+            sys.path.insert(0, str(CODE_DIR))
+        from L0_sources.backend_history_loader import sync_backend_history
+        from L0_sources.datapack_loader import sync_latest_datapack_raw
+
+        sync_backend_history()
+        sync_latest_datapack_raw()
 
     # 1. 解析後台成交資料與 DataPack
     print("\n[Step 1/3] 正在解析後台真實成交明細與每日 DataPack 快照...")
@@ -118,10 +129,16 @@ if __name__ == "__main__":
     parser.add_argument("--no-candles", action="store_true", help="跳過歷史 K 線，僅抓取今日最新現價")
     parser.add_argument("--rebuild-candles", action="store_true", help="強制重新自玉山 API historical.candles 完整拉取自 10/27 起官方歷史 K 線")
     parser.add_argument("--reports-only", action="store_true", help="僅使用本地快取行情快速重新生成網頁（同步最新每日決策報告）")
+    parser.add_argument("--skip-backend-fetch", action="store_true", help="跳過自動抓取競賽後台歷史數據，直接使用本地 backend_all_history.json")
     args = parser.parse_args()
 
     if args.reports_only:
         out_file = refresh_dashboard_with_cached_quotes()
         print(f"✅ 已使用快取行情同步最新報告至網頁: {out_file}")
     else:
-        run_update(auto_push=args.push, fetch_candles=not args.no_candles, rebuild_candles=args.rebuild_candles)
+        run_update(
+            auto_push=args.push,
+            fetch_candles=not args.no_candles,
+            rebuild_candles=args.rebuild_candles,
+            skip_backend_fetch=args.skip_backend_fetch,
+        )
