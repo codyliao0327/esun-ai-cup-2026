@@ -1,0 +1,340 @@
+{
+  "decisions": [
+    {
+      "decision_id": "D1",
+      "ticker": "3491",
+      "action": "BUY",
+      "target_weight": 0.025,
+      "inference_refs": [
+        "I21"
+      ],
+      "risk_check": "新建倉強勢動能股 2.5% <= 10% 單一上限；調整後總持股 28 檔 ∈ [20, 30]，預估剩餘現金約 18.00% 落在 [0.15, 0.20] 區間且安全低於 22% 警戒線。"
+    },
+    {
+      "decision_id": "D2",
+      "ticker": "2610",
+      "action": "BUY",
+      "target_weight": 0.02,
+      "inference_refs": [
+        "I8"
+      ],
+      "risk_check": "新建倉外資認養航運股 2.0% <= 10% 上限；調整後總持股 28 檔 ∈ [20, 30]，預估現金比率約 18.00% 符合 [0.15, 0.20] 目標並拉開與 25% 天花板距離。"
+    },
+    {
+      "decision_id": "D3",
+      "ticker": "3293",
+      "action": "BUY",
+      "target_weight": 0.02,
+      "inference_refs": [
+        "I22"
+      ],
+      "risk_check": "新建倉高 ROE 低波動標的 2.0% <= 10% 上限；調整後總持股 28 檔 ∈ [20, 30]，預估現金比率約 18.00% 控制在 22% 安全線以下。"
+    },
+    {
+      "decision_id": "D4",
+      "ticker": "2412",
+      "action": "ADD",
+      "target_weight": 0.065,
+      "inference_refs": [
+        "I2"
+      ],
+      "risk_check": "加碼第一大防禦核心至 6.5% <= 10% 上限；整體持股 28 檔合規，預估剩餘現金約 18.00% 落在 [0.15, 0.20] 區間內。"
+    },
+    {
+      "decision_id": "D5",
+      "ticker": "1216",
+      "action": "ADD",
+      "target_weight": 0.055,
+      "inference_refs": [
+        "I1"
+      ],
+      "risk_check": "加碼內需防禦核心至 5.5% <= 10% 上限；整體持股 28 檔 ∈ [20, 30]，預估剩餘現金約 18.00% 低於 22% 安全上限。"
+    },
+    {
+      "decision_id": "D6",
+      "ticker": "2603",
+      "action": "ADD",
+      "target_weight": 0.038,
+      "inference_refs": [
+        "I6"
+      ],
+      "risk_check": "加碼高營收成長航運股至 3.8% <= 10% 上限；整體持股 28 檔合規，預估現金比率約 18.00% 符合目標區間。"
+    },
+    {
+      "decision_id": "D7",
+      "ticker": "4904",
+      "action": "ADD",
+      "target_weight": 0.035,
+      "inference_refs": [
+        "I4"
+      ],
+      "risk_check": "加碼電信防禦部位至 3.5% <= 10% 上限；整體持股 28 檔 ∈ [20, 30]，預估現金比率約 18.00% 安全低於 22%。"
+    },
+    {
+      "decision_id": "D8",
+      "ticker": "2618",
+      "action": "ADD",
+      "target_weight": 0.032,
+      "inference_refs": [
+        "I7"
+      ],
+      "risk_check": "加碼外資強買航空股至 3.2% <= 10% 上限；整體持股 28 檔合規，預估現金比率約 18.00% 落在 [0.15, 0.20]。"
+    },
+    {
+      "decision_id": "D9",
+      "ticker": "2884",
+      "action": "ADD",
+      "target_weight": 0.02,
+      "inference_refs": [
+        "I10"
+      ],
+      "risk_check": "加碼強勢金控至 2.0% <= 10% 上限；整體持股 28 檔 ∈ [20, 30]，預估現金比率約 18.00% 嚴守 22% 安全線。"
+    },
+    {
+      "decision_id": "D10",
+      "ticker": "2330",
+      "action": "TRIM",
+      "target_weight": 0.07,
+      "inference_refs": [
+        "I16"
+      ],
+      "risk_check": "微幅減碼調節波動並保留核心權重 7.0% <= 25% 上限；整體持股 28 檔合規，預估現金比率約 18.00% 安全低於 22%。",
+      "funding_for": [
+        "D4"
+      ]
+    },
+    {
+      "decision_id": "D11",
+      "ticker": "2881",
+      "action": "TRIM",
+      "target_weight": 0.025,
+      "inference_refs": [
+        "I14"
+      ],
+      "risk_check": "減碼破月線金控至 2.5% <= 10% 上限以控管下行風險；整體持股 28 檔合規，預估剩餘現金約 18.00% ∈ [0.15, 0.20]。",
+      "funding_for": [
+        "D5"
+      ]
+    },
+    {
+      "decision_id": "D12",
+      "ticker": "2882",
+      "action": "TRIM",
+      "target_weight": 0.025,
+      "inference_refs": [
+        "I15"
+      ],
+      "risk_check": "適度減碼至 2.5% <= 10% 上限；整體持股 28 檔 ∈ [20, 30]，預估現金比率約 18.00% 安全低於 22% 警戒水位。",
+      "funding_for": [
+        "D9"
+      ]
+    },
+    {
+      "decision_id": "D13",
+      "ticker": "2379",
+      "action": "TRIM",
+      "target_weight": 0.025,
+      "inference_refs": [
+        "I23"
+      ],
+      "risk_check": "減碼破線 IC 設計股至 2.5% <= 10% 上限；整體持股 28 檔合規，預估現金比率約 18.00% 符合 [0.15, 0.20] 區間。",
+      "funding_for": [
+        "D7"
+      ]
+    },
+    {
+      "decision_id": "D14",
+      "ticker": "3533",
+      "action": "TRIM",
+      "target_weight": 0.025,
+      "inference_refs": [
+        "I24"
+      ],
+      "risk_check": "減碼高波動電子股至 2.5% <= 10% 上限；整體持股 28 檔 ∈ [20, 30]，預估現金比率約 18.00% 低於 22% 安全線。",
+      "funding_for": [
+        "D6"
+      ]
+    },
+    {
+      "decision_id": "D15",
+      "ticker": "1303",
+      "action": "TRIM",
+      "target_weight": 0.02,
+      "inference_refs": [
+        "I26"
+      ],
+      "risk_check": "大幅減碼破月線傳產股至 2.0% <= 10% 上限；整體持股 28 檔合規，預估現金比率約 18.00% 落在 [0.15, 0.20]。",
+      "funding_for": [
+        "D3"
+      ]
+    },
+    {
+      "decision_id": "D16",
+      "ticker": "2317",
+      "action": "TRIM",
+      "target_weight": 0.02,
+      "inference_refs": [
+        "I27"
+      ],
+      "risk_check": "大幅減碼破底權值股至 2.0% <= 10% 上限以防範風險；整體持股 28 檔 ∈ [20, 30]，預估現金約 18.00% 低於 22%。",
+      "funding_for": [
+        "D2"
+      ]
+    },
+    {
+      "decision_id": "D17",
+      "ticker": "3443",
+      "action": "TRIM",
+      "target_weight": 0.015,
+      "inference_refs": [
+        "I18"
+      ],
+      "risk_check": "依移動停利原則微幅調節至 1.5% <= 10% 上限；整體持股 28 檔合規，預估現金比率約 18.00% 落在 [0.15, 0.20]。",
+      "funding_for": [
+        "D4"
+      ]
+    },
+    {
+      "decision_id": "D18",
+      "ticker": "6505",
+      "action": "TRIM",
+      "target_weight": 0.013,
+      "inference_refs": [
+        "I28"
+      ],
+      "risk_check": "減碼弱勢久抱股至 1.3% <= 10% 上限；整體持股 28 檔 ∈ [20, 30]，預估現金比率約 18.00% 安全低於 22%。",
+      "funding_for": [
+        "D8"
+      ]
+    },
+    {
+      "decision_id": "D19",
+      "ticker": "2368",
+      "action": "SELL_ALL",
+      "target_weight": 0.0,
+      "inference_refs": [
+        "I29"
+      ],
+      "risk_check": "跌停且法人同步拋售，執行停損出清降至 0.0%；出清後總持股 28 檔 ∈ [20, 30]，預估現金約 18.00% 低於 22% 安全線。",
+      "funding_for": [
+        "D1"
+      ]
+    },
+    {
+      "decision_id": "D20",
+      "ticker": "2383",
+      "action": "SELL_ALL",
+      "target_weight": 0.0,
+      "inference_refs": [
+        "I30"
+      ],
+      "risk_check": "技術面破底且虧損逾 22%，全數停損出清降至 0.0%；調整後總持股 28 檔合規，預估現金約 18.00% 落在 [0.15, 0.20]。",
+      "funding_for": [
+        "D1",
+        "D3"
+      ]
+    },
+    {
+      "decision_id": "D21",
+      "ticker": "3231",
+      "action": "SELL_ALL",
+      "target_weight": 0.0,
+      "inference_refs": [
+        "I31"
+      ],
+      "risk_check": "放量破底且 MACD 翻負，全數停損出清降至 0.0% 汰弱換強；調整後總持股 28 檔 ∈ [20, 30]，預估現金約 18.00% 低於 22%。",
+      "funding_for": [
+        "D1",
+        "D2"
+      ]
+    },
+    {
+      "decision_id": "D22",
+      "ticker": "4958",
+      "action": "SELL_ALL",
+      "target_weight": 0.0,
+      "inference_refs": [
+        "I32"
+      ],
+      "risk_check": "跌停重挫且法人同步賣超，全數停損出清降至 0.0%；調整後總持股 28 檔合規，預估現金約 18.00% 控制在 22% 安全線內。",
+      "funding_for": [
+        "D5",
+        "D6",
+        "D7",
+        "D8"
+      ]
+    }
+  ],
+  "no_trade_decisions": [
+    {
+      "ticker": "2891",
+      "reason_refs": [
+        "I12"
+      ],
+      "reason": "穩居月線與週線之上，投信中期買盤與外資單日回補提供支撐，目前權重 5.01% 已符目標 5.0%，續抱作為核心金融防禦配置。"
+    },
+    {
+      "ticker": "2886",
+      "reason_refs": [
+        "I11"
+      ],
+      "reason": "獲外資近 5 日高強度買超支撐，均線多頭且波動率極低，目前權重 4.93% 接近目標 5.0%，免除交易摩擦續抱。"
+    },
+    {
+      "ticker": "3045",
+      "reason_refs": [
+        "I3"
+      ],
+      "reason": "波動率極低且 KD 維持黃金交叉向上，目前權重 4.37% 與目標 4.4% 相符，續抱發揮電信核心防禦功效。"
+    },
+    {
+      "ticker": "2880",
+      "reason_refs": [
+        "I9"
+      ],
+      "reason": "均線結構維持多頭且帳面保持正報酬，目前權重 2.78% 符合目標 2.8%，考量交易成本摩擦維持原部位續抱。"
+    },
+    {
+      "ticker": "2454",
+      "reason_refs": [
+        "I17"
+      ],
+      "reason": "近 5 日仍具正報酬且布林位置守在中軌之上，昨日剛建倉目前權重 2.52% 符合目標 2.5%，避免無謂換手成本續抱觀察。"
+    },
+    {
+      "ticker": "3661",
+      "reason_refs": [
+        "I19"
+      ],
+      "reason": "營收年增逾五倍且股價穩守月線之上，外資與投信逆勢買超，目前權重 2.03% 符合目標 2.0%，續抱作為高成長攻擊部位。"
+    },
+    {
+      "ticker": "5880",
+      "reason_refs": [
+        "I13"
+      ],
+      "reason": "具全市場極低波動與外資連續買超優勢，目前權重 2.00% 與目標偏離極小，為避免微小調整摩擦成本續抱防禦。"
+    },
+    {
+      "ticker": "6510",
+      "reason_refs": [
+        "I20"
+      ],
+      "reason": "營收高成長且獲投信認養與外資逆勢承接，股價守穩月線，目前權重 1.33% 符合目標 1.3%，續抱等待反彈。"
+    },
+    {
+      "ticker": "2207",
+      "reason_refs": [
+        "I5"
+      ],
+      "reason": "技術面出現 KD 與 MACD 雙重黃金交叉且外資回補，目前權重 1.22% 具備內需抗跌韌性，考量流動性與摩擦成本維持續抱。"
+    },
+    {
+      "ticker": "2404",
+      "reason_refs": [
+        "I25"
+      ],
+      "reason": "具備 22.32% 高 ROE 與營收雙增基本面且外資偏多，目前權重 0.94% 接近目標 1.0%，避免零星調整成本維持續抱。"
+    }
+  ]
+}

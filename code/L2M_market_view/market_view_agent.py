@@ -182,6 +182,10 @@ PROMPT_TEMPLATE = """\
 - `market_foreign_net_buy_5d` / `market_foreign_net_buy_1d`：市場外資近 5 日累計與昨日單日淨買賣超金額 (元)。
 - `market_trust_net_buy_5d` / `market_trust_net_buy_1d`：市場投信近 5 日累計與昨日單日淨買賣超金額 (元)。
 - `taiex_close_latest`：最新加權指數收盤點位。
+- **上市各產業相對強弱 (RS，其中 RS ＝ 產業收盤點數 ÷ 大盤收盤點數)**：
+  - `<產業指數>_return_1d`：該產業指數當日漲跌幅 (%)。
+  - `<產業指數>_rs_change_1d` / `<產業指數>_rs_change_3d` / `<產業指數>_rs_change_5d`：該產業近 1 日 / 近 3 日 / 近 5 日 RS 相對大盤強弱變化率 (%)。正值代表該期間表現強於大盤、負值代表弱於大盤。
+  - `<產業指數>_rs_momentum_change`：該產業近 3 日 RS 變化率較昨日增減 (百分點 pp ＝ 今日近 3 日 RS 變化率 － 昨日近 3 日 RS 變化率)。正值代表相對強弱動能加速轉強、負值代表動能轉弱。
 
 ## 大盤分析邏輯與決策準則
 {market_analysis_guidelines}

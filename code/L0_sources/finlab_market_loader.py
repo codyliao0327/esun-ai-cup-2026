@@ -1,6 +1,6 @@
 """透過 FinLab API 計算台股個股指標（基本面、技術面、籌碼面）及大盤指標並存檔。
 
-每個指標由 stock_indicators.py（個股 29 個）與 market_indicators.py（大盤 15 個）定義，
+每個指標由 stock_indicators.py（個股 29 個）與 market_indicators.py（大盤 16 個）定義，
 並於 ALL_INDICATORS 登記。本程式負責排程執行、Compact Array JSON 儲存與 D-Plan L0 sources 產出。
 
 存檔位置：
@@ -15,7 +15,7 @@
 
 用法::
 
-    python finlab_market_loader.py                       # 計算全部指標 (個股 29 + 大盤 15 共 44 個)
+    python finlab_market_loader.py                       # 計算全部指標 (個股 29 + 大盤 16 共 45 個)
     python finlab_market_loader.py --only 大盤            # 只算大盤指標
     python finlab_market_loader.py --only 技術面          # 只算個股技術面
     python finlab_market_loader.py --only taiex          # 只算加權指數相關

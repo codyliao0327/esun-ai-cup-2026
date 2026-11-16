@@ -1993,9 +1993,9 @@
     "date": "2026-11-13",
     "ranking": {
       "rank": 162,
-      "total_teams": 399,
+      "total_teams": 393,
       "group_rank": 28,
-      "group_total": 89
+      "group_total": 87
     },
     "portfolio": {
       "aum": 941168666.33,
@@ -2213,6 +2213,164 @@
         "price": 108.5867,
         "amount": 2388907.4,
         "fee": 3404.19,
+        "tax": 0.0,
+        "outcome": "filled"
+      }
+    ]
+  },
+  {
+    "day": 15,
+    "date": "2026-11-16",
+    "ranking": {
+      "rank": 127,
+      "total_teams": 393,
+      "group_rank": 24,
+      "group_total": 87
+    },
+    "portfolio": {
+      "aum": 903724302.1,
+      "day_return": -3.9785,
+      "cum_return": -9.6276,
+      "stock_ratio": 85.8431,
+      "cash_ratio": 14.1569,
+      "holdings_count": 29,
+      "top10_weight": 46.7645,
+      "aum_breakdown": {
+        "cash": 127939152.1,
+        "holdings_value": 775785150.0,
+        "receivable_shares_value": 0.0,
+        "receivable_cash": 0.0,
+        "upcoming_receivable_cash": 0.0,
+        "residual": 0.0
+      },
+      "corporate_actions": {
+        "cash": 0.0,
+        "shares": 0,
+        "count": 0
+      },
+      "carry": {
+        "is_carried_forward": false,
+        "reason": "",
+        "reason_text": ""
+      }
+    },
+    "trade_summary": {
+      "buy_count": 4,
+      "buy_shares": 505000,
+      "buy_amount": 78618880.9,
+      "sell_count": 5,
+      "sell_shares": 530000,
+      "sell_amount": 86188432.4,
+      "fee": 234850.43,
+      "tax": 258565.3,
+      "voided_count": 0
+    },
+    "trades": [
+      {
+        "id": 74116,
+        "side": "sell",
+        "code": "2376",
+        "name": "技嘉",
+        "shares": 60000,
+        "price": 283.2658,
+        "amount": 16995948.0,
+        "fee": 24219.23,
+        "tax": 50987.84,
+        "outcome": "filled"
+      },
+      {
+        "id": 74117,
+        "side": "buy",
+        "code": "2454",
+        "name": "聯發科",
+        "shares": 6000,
+        "price": 3912.0048,
+        "amount": 23472028.8,
+        "fee": 33447.64,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 74118,
+        "side": "buy",
+        "code": "2618",
+        "name": "長榮航",
+        "shares": 490000,
+        "price": 48.1376,
+        "amount": 23587424.0,
+        "fee": 33612.08,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 74119,
+        "side": "sell",
+        "code": "3034",
+        "name": "聯詠",
+        "shares": 38000,
+        "price": 459.4426,
+        "amount": 17458818.8,
+        "fee": 24878.82,
+        "tax": 52376.46,
+        "outcome": "filled"
+      },
+      {
+        "id": 74120,
+        "side": "sell",
+        "code": "3037",
+        "name": "欣興",
+        "shares": 14000,
+        "price": 721.1066,
+        "amount": 10095492.4,
+        "fee": 14386.08,
+        "tax": 30286.48,
+        "outcome": "filled"
+      },
+      {
+        "id": 74121,
+        "side": "sell",
+        "code": "3189",
+        "name": "景碩",
+        "shares": 10000,
+        "price": 607.8362,
+        "amount": 6078362.0,
+        "fee": 8661.67,
+        "tax": 18235.09,
+        "outcome": "filled"
+      },
+      {
+        "id": 74122,
+        "side": "buy",
+        "code": "3661",
+        "name": "世芯-KY",
+        "shares": 5000,
+        "price": 3821.4753,
+        "amount": 19107376.5,
+        "fee": 27228.01,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 74123,
+        "side": "sell",
+        "code": "4938",
+        "name": "和碩",
+        "shares": 408000,
+        "price": 87.1564,
+        "amount": 35559811.2,
+        "fee": 50672.73,
+        "tax": 106679.43,
+        "outcome": "filled"
+      },
+      {
+        "id": 74124,
+        "side": "buy",
+        "code": "6510",
+        "name": "精測",
+        "shares": 4000,
+        "price": 3113.0129,
+        "amount": 12452051.6,
+        "fee": 17744.17,
         "tax": 0.0,
         "outcome": "filled"
       }

@@ -248,6 +248,45 @@ def listed_market_lifeline() -> dict:
     }
 
 
+def industry_relative_strength() -> dict:
+    """上市各產業相對大盤強弱 (RS) 與動能變化 (單位：% / pp)。"""
+    from finlab import data
+
+    index_close = data.get("stock_index_price:收盤指數", start=START_DATE).sort_index()
+    benchmark = index_close["上市發行量加權股價指數"]
+    industry_cols = index_close.columns[index_close.columns.str.match(r"^上市.+類指數$")]
+    industry_prices = index_close[industry_cols]
+
+    # 僅保留大盤有效交易日，並篩選掉近 6 個交易日內有缺值或 <= 0 的產業
+    industry_prices = industry_prices.loc[benchmark > 0]
+    benchmark = benchmark.loc[benchmark > 0]
+    industry_prices = industry_prices.where(industry_prices > 0)
+    industry_prices = industry_prices.loc[:, industry_prices.iloc[-6:].notna().all(axis=0)]
+
+    industry_rs = industry_prices.div(benchmark, axis=0)
+
+    return_1d = ((industry_prices.iloc[-1] / industry_prices.iloc[-2] - 1) * 100).round(2)
+    rs_change_1d = ((industry_rs.iloc[-1] / industry_rs.iloc[-2] - 1) * 100).round(2)
+    rs_change_3d = ((industry_rs.iloc[-1] / industry_rs.iloc[-4] - 1) * 100).round(2)
+    rs_change_5d = ((industry_rs.iloc[-1] / industry_rs.iloc[-6] - 1) * 100).round(2)
+    rs_change_3d_prev = ((industry_rs.iloc[-2] / industry_rs.iloc[-5] - 1) * 100).round(2)
+    rs_momentum_change = (rs_change_3d - rs_change_3d_prev).round(2)
+
+    last_date = str(industry_prices.index[-1])[:10]
+    tw_market: dict = {}
+    for name in industry_prices.columns:
+        tw_market[f"{name}_return_1d"] = [float(return_1d[name]), last_date]
+        tw_market[f"{name}_rs_change_1d"] = [float(rs_change_1d[name]), last_date]
+        tw_market[f"{name}_rs_change_3d"] = [float(rs_change_3d[name]), last_date]
+        tw_market[f"{name}_rs_change_5d"] = [float(rs_change_5d[name]), last_date]
+        tw_market[f"{name}_rs_momentum_change"] = [float(rs_momentum_change[name]), last_date]
+
+    return {
+        "_format": "[value, date]",
+        "tw_market": tw_market,
+    }
+
+
 # --------------------------------------------------------------------------- #
 # 大盤指標總清單登記
 # --------------------------------------------------------------------------- #
@@ -267,4 +306,5 @@ ALL_MARKET_INDICATORS: list[MarketIndicator] = [
     MarketIndicator("listed_margin_balance_change_5d", "大盤", listed_margin_balance_change_5d, "上市融資餘額近5日變化率 (%)"),
     MarketIndicator("market_alignment", "大盤", market_alignment, "全市場多空排列家數差 (家)"),
     MarketIndicator("market_lifeline", "大盤", listed_market_lifeline, "加權報酬指數生命線與均線關係 (%)"),
+    MarketIndicator("industry_relative_strength", "大盤", industry_relative_strength, "上市各產業相對大盤強弱(RS)與動能變化 (% / pp)"),
 ]

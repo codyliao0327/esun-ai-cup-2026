@@ -1,0 +1,239 @@
+{
+  "schema_version": "3.0",
+  "doc_type": "DataPack",
+  "team_id": "TEAM_11402",
+  "trade_date": "2026-11-17",
+  "as_of_date": "2026-11-16",
+  "generated_at": "2026-11-16T19:58:53.574708+08:00",
+  "missing": [],
+  "prev_day_orders": {
+    "outcome": "executed",
+    "void_reasons": [],
+    "excluded_codes": []
+  },
+  "account": {
+    "cash": 127939152.1,
+    "cash_ratio_tradable": 0.141569,
+    "nav_tradable": 903724302.1,
+    "aum": 903724302.1,
+    "receivable_cash": 0.0,
+    "holdings_count": 29
+  },
+  "holdings": [
+    {
+      "code": "1216",
+      "shares": 535000,
+      "receivable_shares": 0,
+      "close_price": 78.5,
+      "tradable_weight": 0.046472
+    },
+    {
+      "code": "1303",
+      "shares": 126000,
+      "receivable_shares": 0,
+      "close_price": 274.0,
+      "tradable_weight": 0.038202
+    },
+    {
+      "code": "2207",
+      "shares": 21000,
+      "receivable_shares": 0,
+      "close_price": 526.0,
+      "tradable_weight": 0.012223
+    },
+    {
+      "code": "2317",
+      "shares": 173000,
+      "receivable_shares": 0,
+      "close_price": 218.5,
+      "tradable_weight": 0.041827
+    },
+    {
+      "code": "2330",
+      "shares": 30000,
+      "receivable_shares": 0,
+      "close_price": 2215.0,
+      "tradable_weight": 0.073529
+    },
+    {
+      "code": "2368",
+      "shares": 20000,
+      "receivable_shares": 0,
+      "close_price": 927.0,
+      "tradable_weight": 0.020515
+    },
+    {
+      "code": "2379",
+      "shares": 37000,
+      "receivable_shares": 0,
+      "close_price": 716.0,
+      "tradable_weight": 0.029314
+    },
+    {
+      "code": "2383",
+      "shares": 3000,
+      "receivable_shares": 0,
+      "close_price": 3795.0,
+      "tradable_weight": 0.012598
+    },
+    {
+      "code": "2404",
+      "shares": 9000,
+      "receivable_shares": 0,
+      "close_price": 944.0,
+      "tradable_weight": 0.009401
+    },
+    {
+      "code": "2412",
+      "shares": 320000,
+      "receivable_shares": 0,
+      "close_price": 163.5,
+      "tradable_weight": 0.057894
+    },
+    {
+      "code": "2454",
+      "shares": 6000,
+      "receivable_shares": 0,
+      "close_price": 3795.0,
+      "tradable_weight": 0.025196
+    },
+    {
+      "code": "2603",
+      "shares": 111000,
+      "receivable_shares": 0,
+      "close_price": 257.0,
+      "tradable_weight": 0.031566
+    },
+    {
+      "code": "2618",
+      "shares": 490000,
+      "receivable_shares": 0,
+      "close_price": 47.4,
+      "tradable_weight": 0.0257
+    },
+    {
+      "code": "2880",
+      "shares": 495000,
+      "receivable_shares": 0,
+      "close_price": 50.7,
+      "tradable_weight": 0.02777
+    },
+    {
+      "code": "2881",
+      "shares": 209000,
+      "receivable_shares": 0,
+      "close_price": 152.0,
+      "tradable_weight": 0.035152
+    },
+    {
+      "code": "2882",
+      "shares": 239000,
+      "receivable_shares": 0,
+      "close_price": 110.0,
+      "tradable_weight": 0.029091
+    },
+    {
+      "code": "2884",
+      "shares": 289000,
+      "receivable_shares": 0,
+      "close_price": 48.3,
+      "tradable_weight": 0.015446
+    },
+    {
+      "code": "2886",
+      "shares": 817000,
+      "receivable_shares": 0,
+      "close_price": 54.5,
+      "tradable_weight": 0.04927
+    },
+    {
+      "code": "2891",
+      "shares": 589000,
+      "receivable_shares": 0,
+      "close_price": 76.8,
+      "tradable_weight": 0.050054
+    },
+    {
+      "code": "3045",
+      "shares": 306000,
+      "receivable_shares": 0,
+      "close_price": 129.0,
+      "tradable_weight": 0.043679
+    },
+    {
+      "code": "3231",
+      "shares": 130000,
+      "receivable_shares": 0,
+      "close_price": 159.0,
+      "tradable_weight": 0.022872
+    },
+    {
+      "code": "3443",
+      "shares": 2000,
+      "receivable_shares": 0,
+      "close_price": 7750.0,
+      "tradable_weight": 0.017151
+    },
+    {
+      "code": "3533",
+      "shares": 16000,
+      "receivable_shares": 0,
+      "close_price": 1730.0,
+      "tradable_weight": 0.030629
+    },
+    {
+      "code": "3661",
+      "shares": 5000,
+      "receivable_shares": 0,
+      "close_price": 3660.0,
+      "tradable_weight": 0.02025
+    },
+    {
+      "code": "4904",
+      "shares": 240000,
+      "receivable_shares": 0,
+      "close_price": 109.0,
+      "tradable_weight": 0.028947
+    },
+    {
+      "code": "4958",
+      "shares": 24000,
+      "receivable_shares": 0,
+      "close_price": 396.0,
+      "tradable_weight": 0.010516
+    },
+    {
+      "code": "5880",
+      "shares": 641000,
+      "receivable_shares": 0,
+      "close_price": 28.25,
+      "tradable_weight": 0.020037
+    },
+    {
+      "code": "6505",
+      "shares": 200000,
+      "receivable_shares": 0,
+      "close_price": 89.6,
+      "tradable_weight": 0.019829
+    },
+    {
+      "code": "6510",
+      "shares": 4000,
+      "receivable_shares": 0,
+      "close_price": 3005.0,
+      "tradable_weight": 0.013301
+    }
+  ],
+  "compliance": {
+    "violations": 1,
+    "notices": 0,
+    "incidents": [
+      {
+        "date": "2026-11-12",
+        "check_code": "decision_consistency",
+        "status": "fail",
+        "message": "當日未於繳交窗口內完成申報"
+      }
+    ]
+  }
+}
