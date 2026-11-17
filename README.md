@@ -16,7 +16,7 @@ flowchart LR
     subgraph Core1["【核心 1】Multi-Agent 自主量化決策產線 (D-Plan v4.3)"]
         L0["L0 多源資料收集\n(FinLab/CMoney/DataPack)"] --> L1["L1 客觀事實擷取\n(Compact Array JSON / stage-l1)"]
         L1 --> L2M["L2M 市場走向研判\n(Regime & Stance + Code Execution / stage-l2m)"]
-        L2M --> L2["L2 個股推論核心\n(66 檔標的 + Code Execution / stage-l2)"]
+        L2M --> L2["L2 個股推論核心\n(68 檔標的 + Code Execution / stage-l2)"]
         L2 --> L3["L3 投組決策核心\n(20~30 檔持股控管 / stage-l3)"]
         L3 --> L4["L4 委託執行層\n(千股整股 + Active Share 檢驗 / stage-l4)"]
         L4 --> OUT["官方 JSON 繳交檔\n(D-Plan_<team_id>_<date>.json)"]
@@ -35,7 +35,7 @@ flowchart LR
 - **LiteLLM 統一管理與 Multi-Model 路由**：全面改用 `litellm.Router` 集中管理大模型調用與自動 Fallback 備援。依任務特性精準分流：L1 客觀事實提取配置輕快且低成本的 `gemini-3.8-flash`；L2M、L2、L3、L4 等高階推理與數值運算階段配置 `gemini-4-argon`。
 - **Gemini 原生 Code Execution 強化**：在 L2M 市場研判、L2 個股推論、L3 投組決策與 L4 委託計算階段全面啟用 Gemini 內建 Python 執行沙盒，徹底解決 LLM 在複雜權重配置、千股取整與風控比率時的數值幻覺。
 - **因果引用鏈完備**：嚴格落實 L0 ➔ L1 ➔ L2M ➔ L2 ➔ L3 ➔ L4 單向無循環引用，使用 Pydantic `extra='forbid'` 全量驗證，防範孤兒節點與格式錯誤。
-- **66 檔精選候選池**：精選 66 檔涵蓋半導體、AI 伺服器、電子零組件、網通、航運、金融與傳統產業代表標的，提供充沛的超額 Alpha 空間。
+- **68 檔精選候選池**：精選 68 檔涵蓋半導體、AI 伺服器、電子零組件、網通、航運、金融與傳統產業代表標的，提供充沛的超額 Alpha 空間。
 - **19 項原生 Usage 監控與本地結算**：全量對齊 LiteLLM 原生標準命名（Tokens、Cost、Duration、Reasoning、Code Execution 呼叫明細等），自動合併結算至本地 `usage_history.json`。
 
 ### 2. 📊 Portfolio Dashboard 投資決策與持股看板
@@ -76,8 +76,8 @@ flowchart LR
      - **動態回溯最新非空值 (Not-NaN)**：每檔股票獨立檢驗歷史序列，有 Q3 則取 Q3，尚未公布則自動往前遞補取 Q2；有當月營收（如 11 月）則取當月，尚未公布則向前遞補取前一月（如 10 月）。
      - **Compact Array JSON 字典輸出**：回傳 `{"_format": "[value, date]", "個股代碼": {"指標名稱": [數值, 日期/季度]}}`，完整保留每檔股票真實數據對應的發布時間戳。
      - **L1 自動對齊**：由 `fact_extractor.py` 自動提取各自的日期/季度標籤並注入 Prompt，徹底消除過去鎖定單一歷史日期或因空值導致特徵缺失的瓶頸。
-8. **候選股票池更新為精選 66 檔**：
-   - 依據 `docs/股票池/20261117_66檔股票池.csv`，將全產線候選標的池校準為 66 檔龍頭標的（涵蓋 2330 台積電、2454 聯發科、3443 創意、3661 世芯-KY、2603 長榮等），全量同步至 L0 資料爬取、L1 客觀事實、L2 個股推論與 L3 投組決策。
+8. **候選股票池更新為精選 68 檔**：
+   - 依據 `docs/股票池/20261117_68檔股票池.csv`，將全產線候選標的池校準為 68 檔龍頭標的（涵蓋 2330 台積電、2454 聯發科、3443 創意、3661 世芯-KY、2603 長榮等），全量同步至 L0 資料爬取、L1 客觀事實、L2 個股推論與 L3 投組決策。
 9. **L2 自訂分析邏輯專區升級 (CUSTOM_STOCK_ANALYSIS_LOGIC)**：
    - 在 `stock_inference_agent.py` 確立兩階段推論標準規範：
      - **第一階段（個股深入分析）**：多維度考量企業品質 (ROE/營收)、技術動能結構 (均線/KD/MACD/布林通道)、法人籌碼強度 (外資/投信) 與市場社群討論熱度，並強制產出客觀的反面證據思考 (`counter_evidence`)。
@@ -143,7 +143,7 @@ flowchart TD
     subgraph Data_Inputs["外部真實資料輸入 (Step 0: L0 嚴格防漏收集)"]
         DP["官方每日 DataPack\n(Processed / Raw)"]
         FL["FinLab 26 檔量化寬表\n(個股 17 + 大盤 9 Compact Array JSON)"]
-        CM["CMoney 66 檔個股討論區\n(社群情緒與多空量化評分)"]
+        CM["CMoney 68 檔個股討論區\n(社群情緒與多空量化評分)"]
         ETF_H["主動式 ETF 前 15 大成分股\n(同業持股快照)"]
         ETF_S["主動式 ETF 投資理念說明\n(核心理念與因子架構)"]
     end
@@ -155,7 +155,7 @@ flowchart TD
 
     subgraph L1["【Step 1: L1 資訊擷取層】observations"]
         O_MKT["O1: tw_market (大盤客觀事實)"]
-        O_STK["O2..On: stock_<代碼> (66 檔個股數值事實)"]
+        O_STK["O2..On: stock_<代碼> (68 檔個股數值事實)"]
     end
 
     subgraph L2M["【Step 2: L2M 市場研判核心】market_view (Code Execution)"]
@@ -163,7 +163,7 @@ flowchart TD
     end
 
     subgraph L2["【Step 3: L2 個股推論核心】inferences (Code Execution)"]
-        INF["I1..In: 66 檔個股深度推論\n(多維度論點、反面證據 counter_evidence、建議權重)\n由 Gemini Python 執行器驗算數值"]
+        INF["I1..In: 68 檔個股深度推論\n(多維度論點、反面證據 counter_evidence、建議權重)\n由 Gemini Python 執行器驗算數值"]
     end
 
     subgraph L3["【Step 4: L3 決策核心】decisions (Code Execution)"]
@@ -238,16 +238,16 @@ flowchart TD
 │   │   ├── datapack_loader.py                # 讀取官方每日 DataPack JSON (取現金、庫存、NAV、合規狀態)
 │   │   ├── finlab_market_loader.py           # 透過 FinLab API 計算 26 檔指標並輸出為 Compact Array JSON
 │   │   ├── finlab_active_etf_loader.py       # 下載主動式 ETF 前 15 大成分股快照與權重
-│   │   ├── cmoney_sentiment_crawler.py       # 爬取 CMoney 討論區 66 檔個股情緒與多空量化分數
+│   │   ├── cmoney_sentiment_crawler.py       # 爬取 CMoney 討論區 68 檔個股情緒與多空量化分數
 │   │   ├── market_indicators.py              # 大盤多維度量化指標計算 (均線、報酬、回撤、融資、多空家數差)
-│   │   ├── stock_indicators.py               # 66 檔個股多維度量化指標計算 (ROE、營收動能、量價比、法人買賣超)
+│   │   ├── stock_indicators.py               # 68 檔個股多維度量化指標計算 (ROE、營收動能、量價比、法人買賣超)
 │   │   └── esun_trial_loader.ipynb           # 玉山證券行情 Web API 盤前試撮資料快照測試
 │   ├── L1_observations/                      # 【L1 資訊擷取層】
 │   │   └── fact_extractor.py                 # 提取客觀事實陳述，解析 Compact Array JSON，呼叫 Gemini 並記錄 Prompt 與 Usage
 │   ├── L2M_market_view/                      # 【L2M 市場研判核心】
 │   │   └── market_view_agent.py              # 研判市場走勢 (regime)、操作態度 (stance) 與目標水位 (posture)，支援 Code Execution 並存檔 Prompt
 │   ├── L2_inferences/                        # 【L2 個股推論核心】
-│   │   └── stock_inference_agent.py          # 結合 66 檔標的與 ETF 理念產出深入推論與反思 (預設啟用 Code Execution)
+│   │   └── stock_inference_agent.py          # 結合 68 檔標的與 ETF 理念產出深入推論與反思 (預設啟用 Code Execution)
 │   ├── L3_decisions/                         # 【L3 投資組合決策層】
 │   │   └── portfolio_decision_agent.py       # 執行持股全覆蓋分配 (decisions + no_trade)，控管 20~30 檔 (預設啟用 Code Execution)
 │   ├── L4_orders/                            # 【L4 委託執行層】
@@ -282,7 +282,7 @@ flowchart TD
 │
 └── docs/                                     # 【競賽參考文件、架構圖與研究資料】
     ├── 官方參考文件/                          # 官方競賽辦法、D-Plan Schema v4.3、DataPack 規格書與範例
-    ├── 股票池/                                # 候選股票池篩選紀錄與歷次清單 (40/58/59/62/66 檔)
+    ├── 股票池/                                # 候選股票池篩選紀錄與歷次清單 (40/58/59/62/68 檔)
     ├── 架構圖/                                # Multi-Agent 系統架構圖 (.drawio / .png)
     ├── API說明/                               # 相關 API 參考文件
     ├── slackdump/                            # 官方 Slack 問答備份壓縮檔
@@ -303,7 +303,7 @@ flowchart TD
 | **L0 Sources**<br>`finlab_market_loader.py`<br>`cmoney_sentiment_crawler.py`<br>`finlab_active_etf_loader.py` | FinLab API、CMoney API、主動 ETF 公開資訊 | Compact Array JSON 快取：<br>`data/大盤/*.json`, `data/技術面/*.json`,<br>`data/基本面/*.json`, `data/籌碼面/*.json`,<br>`data/CMoney_Sentiment/`, `data/Active_ETF_Holdings/`,<br>`data/D-Paln_Output/l0_sources/` | *(純資料下載與向量計算，失敗立即阻斷)* |
 | **Step 1: L1 Observations**<br>`fact_extractor.py` | `data/大盤/*.json`, `data/技術面/*.json`, `data/基本面/*.json`, `data/籌碼面/*.json`, `data/CMoney_Sentiment/` | `data/D-Paln_Output/l1_observations/`<br>👉 `l1_observations_YYYYMMDD.json` | **Prompt**:<br>`l1_observations_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l1_usage_YYYYMMDD.json` |
 | **Step 2: L2M Market View**<br>`market_view_agent.py`<br>*(預設啟用 Code Execution)* | `data/D-Paln_Output/l1_observations/` (大盤觀察),<br>`data/Datapack/Processed/` (帳戶快照) | `data/D-Paln_Output/l2m_market_view/`<br>👉 `l2m_market_view_YYYYMMDD.json` | **Prompt**:<br>`l2m_market_view_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l2m_usage_YYYYMMDD.json` |
-| **Step 3: L2 Inferences**<br>`stock_inference_agent.py` | `data/D-Paln_Output/l1_observations/` (66 檔個股與大盤),<br>`data/D-Paln_Output/l2m_market_view/`,<br>`data/ETF_Strategy/etf_strategy.md`,<br>`data/Datapack/Processed/` | `data/D-Paln_Output/l2_inferences/`<br>👉 `l2_inferences_YYYYMMDD.json` | **Prompt**:<br>`l2_inferences_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l2_usage_YYYYMMDD.json`<br>*(預設啟用 Code Execution)* |
+| **Step 3: L2 Inferences**<br>`stock_inference_agent.py` | `data/D-Paln_Output/l1_observations/` (68 檔個股與大盤),<br>`data/D-Paln_Output/l2m_market_view/`,<br>`data/ETF_Strategy/etf_strategy.md`,<br>`data/Datapack/Processed/` | `data/D-Paln_Output/l2_inferences/`<br>👉 `l2_inferences_YYYYMMDD.json` | **Prompt**:<br>`l2_inferences_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l2_usage_YYYYMMDD.json`<br>*(預設啟用 Code Execution)* |
 | **Step 4: L3 Decisions**<br>`portfolio_decision_agent.py` | `data/D-Paln_Output/l2_inferences/`,<br>`data/D-Paln_Output/l2m_market_view/`,<br>`data/Datapack/Processed/` (昨日持股明細),<br>`data/Active_ETF_Holdings/` (前 15 大標竿) | `data/D-Paln_Output/l3_decisions/`<br>👉 `l3_decisions_YYYYMMDD.json` | **Prompt**:<br>`l3_decisions_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l3_usage_YYYYMMDD.json`<br>*(預設啟用 Code Execution)* |
 | **Step 5: L4 Orders**<br>`order_calculator.py` | `data/D-Paln_Output/l3_decisions/`,<br>`data/Datapack/Processed/` (NAV 與現有持股),<br>`data/D-Paln_Output/l1_observations/` (收盤價),<br>`data/Active_ETF_Holdings/` | `data/D-Paln_Output/l4_orders/`<br>👉 `l4_orders_YYYYMMDD.json`<br>👉 `l4_orders_python_YYYYMMDD.json` | **Prompt**:<br>`l4_orders_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l4_usage_YYYYMMDD.json`<br>*(預設啟用 Code Execution)* |
 | **Step 6: D-Plan Assembler**<br>`build_dplan.py` | 讀入上述所有子目錄中的最新 JSON | `data/D-Paln_Output/final_dplan/`<br>👉 **`D-Plan_<team_id>_<trade_date>.json`** | *(總裝配器，校驗引用鏈並注入 metadata)* |
@@ -333,7 +333,7 @@ flowchart TD
 - **職責**：將 raw data 提煉為客觀事實陳述，**嚴禁推論與預測**。
 - **精簡 Compact Array JSON 整合**：直接讀取 `data/大盤/`, `data/基本面/`, `data/技術面/`, `data/籌碼面/` 下的 JSON 檔案，以 `[數值, 日期/季度]` 格式注入 Prompt，顯著減少 Token 佔用並提升解析速度。
 - **大盤事實 (`tw_market`)**：恰好生成 1 筆大盤關鍵數據（指數點位、20MA/60MA、報酬率、最大回撤、法人買賣超、多空排列家數差）。
-- **個股事實 (`stock_<ticker>`)**：針對 66 檔候選池逐檔生成 1 筆客觀事實，提取關鍵數值後由系統以資料原值完整補齊 `values` 字典。
+- **個股事實 (`stock_<ticker>`)**：針對 68 檔候選池逐檔生成 1 筆客觀事實，提取關鍵數值後由系統以資料原值完整補齊 `values` 字典。
 
 ### L2M 市場判斷鏈 (`L2M_market_view/market_view_agent.py`)
 - **走向 (`regime`)**：`risk_on` / `neutral` / `risk_off`。
@@ -575,8 +575,8 @@ python L0_sources/finlab_market_loader.py                      # 下載 26 檔�
 python L0_sources/finlab_market_loader.py --date 20261027      # 指定特定日期
 python L0_sources/finlab_market_loader.py --overwrite          # 強制重新下載覆寫既有快取
 
-# --- CMoney 輿情討論與情緒爬取 (66 檔) ---
-python L0_sources/cmoney_sentiment_crawler.py                  # 爬取 66 檔熱門股討論熱度與量化情緒
+# --- CMoney 輿情討論與情緒爬取 (68 檔) ---
+python L0_sources/cmoney_sentiment_crawler.py                  # 爬取 68 檔熱門股討論熱度與量化情緒
 python L0_sources/cmoney_sentiment_crawler.py --date 20261027  # 指定爬取基準日
 
 # --- 主動式 ETF 前 15 大成分股快照 ---
@@ -598,7 +598,7 @@ python L2M_market_view/market_view_agent.py --no-code-exec     # 關閉 Code Exe
 python L2M_market_view/market_view_agent.py --date 20261027
 python L2M_market_view/market_view_agent.py --dry-run
 
-# --- L2 個股推論 (66 檔) ---
+# --- L2 個股推論 (68 檔) ---
 python L2_inferences/stock_inference_agent.py                 # 個股多維度分析 + Code Execution 驗算
 python L2_inferences/stock_inference_agent.py --date 20261027
 python L2_inferences/stock_inference_agent.py --no-code-exec  # 關閉 Code Execution
@@ -677,7 +677,7 @@ python generate_daily_report.py --dplan-path "path/to.json"   # 指定特定 D-P
 ## 十三、競賽法規檢核與重要實測注意事項
 
 1. **資料收集零漏抓原則**：
-   - 每日資料收集（後台歷史數據、DataPack、CMoney 66 檔、FinLab 26 檔指標、Active ETF）為後續推論命脈，任一模組抓取異常或資料缺漏會直接中止產線，請確保網路與憑證正常。
+   - 每日資料收集（後台歷史數據、DataPack、CMoney 68 檔、FinLab 26 檔指標、Active ETF）為後續推論命脈，任一模組抓取異常或資料缺漏會直接中止產線，請確保網路與憑證正常。
 2. **千股整股與禁止零股**：
    - L4 委託計算一律取 `floor(... / 1000) * 1000`，委託單股數必須為 1,000 的正整數倍，不可含有零股。
 3. **持股檔數限制 (20 ~ 30 檔)**：
