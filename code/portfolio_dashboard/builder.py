@@ -1582,6 +1582,15 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.35), 0 2px 6px -2px rgba(16, 185, 129, 0.25);
     }}
 
+    .model-badge.carbon {{
+      background:
+        radial-gradient(100% 80% at 50% 8%, rgba(255, 255, 255, 0.24) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(148, 163, 184, 0.28) 0%, rgba(71, 85, 105, 0.16) 100%);
+      color: #f1f5f9;
+      border: 1px solid rgba(203, 213, 225, 0.42);
+      box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.35), 0 2px 6px -2px rgba(15, 23, 42, 0.35);
+    }}
+
     .model-badge.argon {{
       background:
         radial-gradient(100% 80% at 50% 8%, rgba(255, 255, 255, 0.28) 0%, transparent 60%),
@@ -1616,6 +1625,15 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       color: #047857;
       border-color: rgba(16, 185, 129, 0.42);
       box-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 1), 0 2px 6px -2px rgba(16, 185, 129, 0.18);
+    }}
+
+    html.theme-light .model-badge.carbon {{
+      background:
+        radial-gradient(100% 80% at 50% 8%, rgba(255, 255, 255, 0.75) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(51, 65, 85, 0.16) 0%, rgba(100, 116, 139, 0.08) 100%);
+      color: #1e293b;
+      border-color: rgba(71, 85, 105, 0.38);
+      box-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 0.9), 0 2px 6px -2px rgba(15, 23, 42, 0.14);
     }}
 
     html.theme-light .model-badge.argon {{
@@ -2547,31 +2565,31 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
           <div class="routing-pill">
             <span>L1 事實擷取</span>
             <span class="model-badge flash">gemini-3.8-flash</span>
-            <span style="color:var(--text-dim); font-size:11px;">備援: gemini-3.5-flash-lite</span>
+            <span style="color:var(--text-dim); font-size:11px;">備援: gemini-3.6-flash</span>
           </div>
           <div class="routing-pill">
             <span>L2M 市場走向</span>
-            <span class="model-badge argon">gemini-4-argon</span>
+            <span class="model-badge carbon">gemini-4-carbon</span>
             <span class="code-exec-badge">🐍 Code Exec</span>
-            <span style="color:var(--text-dim); font-size:11px;">備援: gemini-3.6-flash</span>
+            <span style="color:var(--text-dim); font-size:11px;">備援: gemini-4-argon</span>
           </div>
           <div class="routing-pill">
             <span>L2 個股推論</span>
-            <span class="model-badge argon">gemini-4-argon</span>
+            <span class="model-badge carbon">gemini-4-carbon</span>
             <span class="code-exec-badge">🐍 Code Exec</span>
-            <span style="color:var(--text-dim); font-size:11px;">備援: gemini-3.6-flash</span>
+            <span style="color:var(--text-dim); font-size:11px;">備援: gemini-4-argon</span>
           </div>
           <div class="routing-pill">
             <span>L3 投組決策</span>
-            <span class="model-badge argon">gemini-4-argon</span>
+            <span class="model-badge carbon">gemini-4-carbon</span>
             <span class="code-exec-badge">🐍 Code Exec</span>
-            <span style="color:var(--text-dim); font-size:11px;">備援: gemini-3.6-flash</span>
+            <span style="color:var(--text-dim); font-size:11px;">備援: gemini-4-argon</span>
           </div>
           <div class="routing-pill">
             <span>L4 委託計算</span>
-            <span class="model-badge argon">gemini-4-argon</span>
+            <span class="model-badge carbon">gemini-4-carbon</span>
             <span class="code-exec-badge">🐍 Code Exec</span>
-            <span style="color:var(--text-dim); font-size:11px;">備援: gemini-3.6-flash</span>
+            <span style="color:var(--text-dim); font-size:11px;">備援: gemini-4-argon</span>
           </div>
         </div>
       </div>
@@ -3596,6 +3614,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
 
     function getModelBadgeClass(modelName) {{
       const m = String(modelName || '').toLowerCase();
+      if (m.includes('carbon')) return 'carbon';
       if (m.includes('argon')) return 'argon';
       if (m.includes('lite')) return 'fallback';
       return 'flash';

@@ -1,13 +1,25 @@
 Title: Google AI Studio
 
-URL Source: https://aistudio.google.com/docs/get-started?codelanguage=python
+URL Source: https://aistudio.google.com/docs/get-started
+
+Warning: Target URL returned error 401: Unauthorized
 
 Markdown Content:
 ## Getting started
 
-This guide gets you started with the Gemini API using the [Interactions API](https://aistudio.google.com/docs/interactions-overview?codelanguage=python). You'll make your first API call in under a minute and explore text generation, multimodal understanding, image generation,structured output, tools, function calling, agents, and background execution.
+This guide gets you started with the Gemini API using the [Interactions API](https://aistudio.google.com/docs/interactions-overview). You'll make your first API call in under a minute and explore text generation, multimodal understanding, image generation,structured output, tools, function calling, agents, and background execution.
 
 The Interactions API is available through the[Python](https://github.com/googleapis/python-genai) and[JavaScript](https://github.com/googleapis/js-genai) SDKs, as well as through REST.
+
+Building with an AI coding agent? Copy this setup prompt into your agent, or connect our [MCP server and skills](https://aistudio.google.com/docs/coding-agents) for live documentation updates.
+
+```
+Set up my Gemini API project using the Interactions API and the latest models. Read https://aistudio.google.com/docs/get-started.md first (every page under https://aistudio.google.com/docs/ is available as Markdown when you add `.md`, or via https://aistudio.google.com/llms.txt).
+1. Install `google-genai` (Python) or `@google/genai` (JS/TS) for this project.
+2. Check `GEMINI_API_KEY`, or prompt me to create one at https://aistudio.google.com/apikey.
+3. Ask if I want to add the `gemini-api-dev` skill and Docs MCP server from https://aistudio.google.com/docs/coding-agents.md.
+4. When we are set up, run one `client.interactions.create` test call, show me the reply, and ask what I want to build.
+```
 
 ## 1. Get an API key
 
@@ -15,6 +27,7 @@ To use the Gemini API, you need to have an API key to authenticate your requests
 
 *   Google AI Studio automatically creates a project and API key for new users.You can copy it from the [API keys page](https://aistudio.google.com/api-keys).
 *   If you need a new key, click **Create API key** in AI Studio and follow the dialog to add a new key-project pair.
+*   Additional projects and projects imported from Google Cloud may need[project verification](https://aistudio.google.com/docs/verification) before they can use the free tier.
 
 [Create a Gemini API Key](https://aistudio.google.com/apikey)
 
@@ -22,15 +35,7 @@ Set your key as an environment variable:
 
 `export GEMINI_API_KEY="YOUR_API_KEY"`
 
-### Upgrade to the paid tier
-
-Upgrading to the paid tier increases your rate limits and requires setting up Cloud Billing.
-
-*   Click **Set up billing** on the AI Studio [API keys](https://aistudio.google.com/api-keys) or[Projects](https://aistudio.google.com/projects) pages.
-*   Follow the Cloud Billing dialog to create or link a billing account, add a payment method, and prepay a minimum of $5 (or currency equivalent) in paid credits.
-*   View your API usage in [Google AI Studio](https://aistudio.google.com/usage)under **Dashboard**>**Usage**.
-
-See the [Billing page](https://aistudio.google.com/docs/billing?codelanguage=python) for more information.
+To increase your rate limits, click **Set up billing** on the [API keys](https://aistudio.google.com/api-keys) page or see the [Billing guide](https://aistudio.google.com/docs/billing).
 
 ## 2. Install the SDK and make your first call
 
@@ -48,17 +53,13 @@ from google import genai
 client = genai.Client()
 
 interaction = client.interactions.create(
-    model="gemini-3.8-flash",
+    model="gemini-4-hydrogen",
     input="Explain how AI works in a few words"
 )
 print(interaction.output_text)
 ```
 
-While the SDKs expose the full response, they also provide convenience properties like `interaction.output_text` and `interaction.output_image` to access final outputs directly. Learn more about the response structure in the[Interactions overview](https://aistudio.google.com/docs/interactions-overview?codelanguage=python) or read the [text generation guide](https://aistudio.google.com/docs/text-generation?codelanguage=python) for details on system instructions and generation config.
-
-**Building with an AI coding agent?** Install the skill and then paste the prompt to get started with the Gemini API using Interactions:
-
-`npx skills add google-gemini/gemini-skills --skill gemini-api-dev`
+While the SDKs expose the full response, they also provide convenience properties like `interaction.output_text` and `interaction.output_image` to access final outputs directly. Learn more about the response structure in the[Interactions overview](https://aistudio.google.com/docs/interactions-overview) or read the [text generation guide](https://aistudio.google.com/docs/text-generation) for details on system instructions and generation config.
 
 ## 3. Stream the response
 
@@ -70,7 +71,7 @@ from google import genai
 client = genai.Client()
 
 stream = client.interactions.create(
-    model="gemini-3.8-flash",
+    model="gemini-4-hydrogen",
     input="Explain how AI works",
     stream=True
 )
@@ -78,7 +79,7 @@ for event in stream:
     print(event)
 ```
 
-For a detailed look at handling streaming events and delta types, see the[streaming interactions guide](https://aistudio.google.com/docs/streaming?codelanguage=python).
+For a detailed look at handling streaming events and delta types, see the[streaming interactions guide](https://aistudio.google.com/docs/streaming).
 
 ## 4. Multi-turn conversations
 
@@ -96,13 +97,13 @@ client = genai.Client()
 
 # Server-side state (recommended)
 interaction1 = client.interactions.create(
-    model="gemini-3.8-flash",
+    model="gemini-4-hydrogen",
     input="I have 2 dogs in my house.",
 )
 print("Response 1:", interaction1.output_text)
 
 interaction2 = client.interactions.create(
-    model="gemini-3.8-flash",
+    model="gemini-4-hydrogen",
     input="How many paws are in my house?",
     previous_interaction_id=interaction1.id,
 )
@@ -125,7 +126,7 @@ with open("sample.jpg", "rb") as f:
 image_b64 = base64.b64encode(image_bytes).decode("utf-8")
 
 interaction = client.interactions.create(
-    model="gemini-3.8-flash",
+    model="gemini-4-hydrogen",
     input=[
         {"type": "text", "text": "Compare this local image and this remote audio file."},
         {
@@ -143,11 +144,11 @@ interaction = client.interactions.create(
 print(interaction.output_text)
 ```
 
-Explore how to pass images, video, and audio files in the [image understanding guide](https://aistudio.google.com/docs/image-understanding?codelanguage=python).
+Explore how to pass images, video, and audio files in the [image understanding guide](https://aistudio.google.com/docs/image-understanding).
 
 ## 6. Multimodal generation
 
-Gemini can generate images natively using the [Nano Banana](https://aistudio.google.com/docs/image-generation?codelanguage=python) image models.
+Gemini can generate images natively using the [Nano Banana](https://aistudio.google.com/docs/image-generation) image models.
 
 ```
 import base64
@@ -164,7 +165,7 @@ with open("generated_image.png", "wb") as f:
     f.write(base64.b64decode(interaction.output_image.data))
 ```
 
-When the model generates an image, it returns the base64-encoded image data in a step within the `steps` array, as well as via the `output_image` convenience property. Check out the [image generation guide](https://aistudio.google.com/docs/image-generation?codelanguage=python) to learn about aspect ratios, image editing, and references.
+When the model generates an image, it returns the base64-encoded image data in a step within the `steps` array, as well as via the `output_image` convenience property. Check out the [image generation guide](https://aistudio.google.com/docs/image-generation) to learn about aspect ratios, image editing, and references.
 
 ## 7. Use structured output
 
@@ -183,7 +184,7 @@ class Recipe(BaseModel):
 client = genai.Client()
 
 interaction = client.interactions.create(
-    model="gemini-3.8-flash",
+    model="gemini-4-hydrogen",
     input="Give me a recipe for banana bread",
     response_format={
         "type": "text",
@@ -196,7 +197,7 @@ recipe = Recipe.model_validate_json(interaction.output_text)
 print(recipe)
 ```
 
-The output text block contains a valid JSON string conforming exactly to the requested schema. To learn how to define more complex structures and recursive schemas, see the [structured output guide](https://aistudio.google.com/docs/structured-output?codelanguage=python).
+The output text block contains a valid JSON string conforming exactly to the requested schema. To learn how to define more complex structures and recursive schemas, see the [structured output guide](https://aistudio.google.com/docs/structured-output).
 
 ## 8. Use tools
 
@@ -208,7 +209,7 @@ from google import genai
 client = genai.Client()
 
 interaction = client.interactions.create(
-    model="gemini-3.8-flash",
+    model="gemini-4-hydrogen",
     input="Who won the euro 2024?",
     tools=[{"type": "google_search"}]
 )
@@ -228,7 +229,7 @@ for step in interaction.steps:
 
 The search steps are detailed within the interaction history, and the final output includes inline citations pointing to web sources.
 
-You can learn how to extract search citations in the [Google Search grounding guide](https://aistudio.google.com/docs/google-search?codelanguage=python), or see how to combine multiple tools in the [tool combination guide](https://aistudio.google.com/docs/tool-combination?codelanguage=python).
+You can learn how to extract search citations in the [Google Search grounding guide](https://aistudio.google.com/docs/google-search), or see how to combine multiple tools in the [tool combination guide](https://aistudio.google.com/docs/tool-combination).
 
 ## 9. Call your own functions
 
@@ -267,7 +268,7 @@ previous_id = None
 
 while True:
     interaction = client.interactions.create(
-        model="gemini-3.8-flash",
+        model="gemini-4-hydrogen",
         input=user_input,
         tools=[weather_tool],
         previous_interaction_id=previous_id,
@@ -294,7 +295,7 @@ while True:
 print(interaction.output_text)
 ```
 
-For advanced features like parallel function calling or function choice modes,see the [function calling guide](https://aistudio.google.com/docs/function-calling?codelanguage=python).
+For advanced features like parallel function calling or function choice modes,see the [function calling guide](https://aistudio.google.com/docs/function-calling).
 
 ## 10. Run a managed agent
 
@@ -303,7 +304,7 @@ Managed agents run in a remote sandbox with access to tools like code execution 
 ```
 from google import genai
 
-client = genai.Client()
+client = genai.Client(http_options={"api_version": "v1beta"})
 
 interaction = client.interactions.create(
     agent="antigravity-preview-09-2026",
@@ -314,7 +315,7 @@ print(f"Environment: {interaction.environment_id}")
 print(interaction.output_text)
 ```
 
-You can also define and save [custom agents](https://aistudio.google.com/docs/custom-agents?codelanguage=python) with your own instructions, skills, and data sources.
+You can also define and save [custom agents](https://aistudio.google.com/docs/custom-agents) with your own instructions, skills, and data sources.
 
 ## 11. Run tasks in the background
 
@@ -327,7 +328,7 @@ from google import genai
 client = genai.Client()
 
 interaction = client.interactions.create(
-    model="gemini-3.8-flash",
+    model="gemini-4-hydrogen",
     input="Write a detailed analysis of the impact of artificial intelligence on modern healthcare.",
     background=True,
 )
@@ -347,16 +348,16 @@ while True:
     time.sleep(5)
 ```
 
-Read about running models and agents asynchronously in the [background execution guide](https://aistudio.google.com/docs/background-execution?codelanguage=python).
+Read about running models and agents asynchronously in the [background execution guide](https://aistudio.google.com/docs/background-execution).
 
 ## What's next
 
-*   [Text generation](https://aistudio.google.com/docs/text-generation?codelanguage=python): System instructions, generation config, and advanced text patterns.
-*   [Image generation](https://aistudio.google.com/docs/image-generation?codelanguage=python): Aspect ratios, image editing,and style references.
-*   [Image understanding](https://aistudio.google.com/docs/image-understanding?codelanguage=python): Classification, object detection, and visual Q&A.
-*   [Thinking](https://aistudio.google.com/docs/thinking?codelanguage=python): Use chain-of-thought reasoning for complex tasks.
-*   [Function calling](https://aistudio.google.com/docs/function-calling?codelanguage=python): Parallel, compositional, and constrained function modes.
-*   [Google Search](https://aistudio.google.com/docs/google-search?codelanguage=python): Grounding, citations, and search suggestions.
-*   [Managed Agents](https://aistudio.google.com/docs/managed-agents-quickstart?codelanguage=python): Pre-built agents with code execution and file management.
-*   [Deep Research](https://aistudio.google.com/docs/deep-research?codelanguage=python): Autonomous multi-step research with planning and synthesis.
-*   [Structured output](https://aistudio.google.com/docs/structured-output?codelanguage=python): JSON schemas, enums, and recursive type definitions.
+*   [Text generation](https://aistudio.google.com/docs/text-generation): System instructions, generation config, and advanced text patterns.
+*   [Image generation](https://aistudio.google.com/docs/image-generation): Aspect ratios, image editing,and style references.
+*   [Image understanding](https://aistudio.google.com/docs/image-understanding): Classification, object detection, and visual Q&A.
+*   [Thinking](https://aistudio.google.com/docs/thinking): Use chain-of-thought reasoning for complex tasks.
+*   [Function calling](https://aistudio.google.com/docs/function-calling): Parallel, compositional, and constrained function modes.
+*   [Google Search](https://aistudio.google.com/docs/google-search): Grounding, citations, and search suggestions.
+*   [Managed Agents](https://aistudio.google.com/docs/managed-agents-quickstart): Pre-built agents with code execution and file management.
+*   [Deep Research](https://aistudio.google.com/docs/deep-research): Autonomous multi-step research with planning and synthesis.
+*   [Structured output](https://aistudio.google.com/docs/structured-output): JSON schemas, enums, and recursive type definitions.

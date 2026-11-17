@@ -5,7 +5,7 @@
 - **競賽主題**：2026 Agent 基金經理人公開挑戰賽
 - **核心架構**：階層式因果推論 Multi-Agent 產線 (L0 ➔ L1 ➔ L2M ➔ L2 ➔ L3 ➔ L4 ➔ D-Plan 總組裝 ➔ 官方預檢核與自動繳交 ➔ 每日決策回顧報告) + 即時資產與持股監控看板 (Portfolio Dashboard)
 - **規範標準**：嚴格遵循官方 **D-Plan Schema v4.3** 與 **D-Plan 撰寫指南 v4.3**
-- **模型核心**：LiteLLM Router + Google Gemini 雙軌分流路由架構 (`stage-l1` 採用 `gemini-3.8-flash`，其餘核心決策採用 `gemini-4-argon`，並配置自動 Fallback 降級備援機制與 Gemini 原生 Code Execution 程式碼執行器)
+- **模型核心**：LiteLLM Router + Google Gemini 雙軌分流路由架構 (`stage-l1` 採用 `gemini-3.8-flash`，其餘核心決策採用 `gemini-4-carbon`，並配置自動 Fallback 降級備援機制與 Gemini 原生 Code Execution 程式碼執行器)
 
 ---
 
@@ -32,7 +32,7 @@ flowchart LR
 ```
 
 ### 1. 🤖 Multi-Agent 自主量化投資決策系統
-- **LiteLLM 統一管理與 Multi-Model 路由**：全面改用 `litellm.Router` 集中管理大模型調用與自動 Fallback 備援。依任務特性精準分流：L1 客觀事實提取配置輕快且低成本的 `gemini-3.8-flash`；L2M、L2、L3、L4 等高階推理與數值運算階段配置 `gemini-4-argon`。
+- **LiteLLM 統一管理與 Multi-Model 路由**：全面改用 `litellm.Router` 集中管理大模型調用與自動 Fallback 備援。依任務特性精準分流：L1 客觀事實提取配置輕快且低成本的 `gemini-3.8-flash`；L2M、L2、L3、L4 等高階推理與數值運算階段配置 `gemini-4-carbon`。
 - **Gemini 原生 Code Execution 強化**：在 L2M 市場研判、L2 個股推論、L3 投組決策與 L4 委託計算階段全面啟用 Gemini 內建 Python 執行沙盒，徹底解決 LLM 在複雜權重配置、千股取整與風控比率時的數值幻覺。
 - **因果引用鏈完備**：嚴格落實 L0 ➔ L1 ➔ L2M ➔ L2 ➔ L3 ➔ L4 單向無循環引用，使用 Pydantic `extra='forbid'` 全量驗證，防範孤兒節點與格式錯誤。
 - **68 檔精選候選池**：精選 68 檔涵蓋半導體、AI 伺服器、電子零組件、網通、航運、金融與傳統產業代表標的，提供充沛的超額 Alpha 空間。
@@ -56,8 +56,8 @@ flowchart LR
 1. **全面接入 LiteLLM Router 與 Multi-Model 動態路由架構**：
    - 建立集中式路由設定檔 `code/models_config.yaml`，透過 `litellm.Router` 統一大模型調用與例外降級。
    - 依任務階層分流規則：
-     - `stage-l1`：預設主力 `gemini/gemini-3.8-flash`（Fallback 備援：`gemini/gemini-3.5-flash-lite`）。
-     - `stage-l2m`、`stage-l2`、`stage-l3`、`stage-l4`：預設主力高階推理模型 `gemini/gemini-4-argon`（Fallback 備援：`gemini/gemini-3.6-flash`）。
+     - `stage-l1`：預設主力 `gemini/gemini-3.8-flash`（Fallback 備援：`gemini/gemini-3.6-flash`）。
+     - `stage-l2m`、`stage-l2`、`stage-l3`、`stage-l4`：預設主力高階推理模型 `gemini/gemini-4-carbon`（Fallback 備援：`gemini/gemini-4-argon`）。
    - 具備自動重試 (`num_retries=2`) 與遇 Rate Limit、超時或異常時無縫降級切換至備援模型之高可用架構。
 2. **升級 19 項標準 LiteLLM Usage 指標與歷史自動結算**：
    - 淘汰舊版自訂命名，全面對齊 LiteLLM 原生標準欄位：`timestamp`, `date`, `provider`, `model`, `model_group`, `stage`, `status`, `finish_reason`, `duration_seconds`, `prompt_tokens`, `completion_tokens`, `total_tokens`, `cached_tokens`, `tool_use_tokens`, `reasoning_tokens`, `response_cost`, `code_execution_used`, `code_execution_call_count`, `executed_codes`。
@@ -512,19 +512,31 @@ model_list:
   - model_name: stage-l1
     litellm_params:
       model: gemini/gemini-3.8-flash
-  - model_name: stage-l1-fallback
+  - model_name: stage-l2m
     litellm_params:
-      model: gemini/gemini-3.5-flash-lite
+      model: gemini/gemini-4-carbon
   - model_name: stage-l2
     litellm_params:
-      model: gemini/gemini-4-argon
-  - model_name: stage-l2-fallback
+      model: gemini/gemini-4-carbon
+  - model_name: stage-l3
+    litellm_params:
+      model: gemini/gemini-4-carbon
+  - model_name: stage-l4
+    litellm_params:
+      model: gemini/gemini-4-carbon
+  - model_name: stage-l1-fallback
     litellm_params:
       model: gemini/gemini-3.6-flash
+  - model_name: stage-pro-fallback
+    litellm_params:
+      model: gemini/gemini-4-argon
 router_settings:
   fallbacks:
     - stage-l1: ["stage-l1-fallback"]
-    - stage-l2: ["stage-l2-fallback"]
+    - stage-l2m: ["stage-pro-fallback"]
+    - stage-l2: ["stage-pro-fallback"]
+    - stage-l3: ["stage-pro-fallback"]
+    - stage-l4: ["stage-pro-fallback"]
 ```
 
 ### 4. FinLab 登入認證

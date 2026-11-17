@@ -1,6 +1,6 @@
 Title: Google AI Studio
 
-URL Source: https://aistudio.google.com/docs/api-key?codelanguage=python
+URL Source: https://aistudio.google.com/docs/api-key
 
 Warning: Target URL returned error 401: Unauthorized
 
@@ -53,13 +53,15 @@ By default, Google AI Studio does not display all of your Google Cloud projects.
 
 5.   Once imported, navigate to the **API Keys** page in the dashboard to create a key in that project.
 
+Imported projects may need [project verification](https://aistudio.google.com/docs/verification) before they can use the Gemini API free tier. You can also[set up billing](https://aistudio.google.com/docs/billing#setup-billing) to use the paid tier instead.
+
 ### Troubleshooting key creation permissions
 
 If the **Create API key** button is unavailable and displays the message:_"You do not have permission to create a key in this project"_, you lack the required IAM permissions.
 
 Ask your Google Cloud project or organization administrator to grant you a role containing the following permissions (such as Project Editor):
 
-*   `resourcemanager.projects.get`: Allows AI Studio to verify the project.
+*   `resourcemanager.projects.get`: Allows AI Studio to look up the project.
 
 *   `apikeys.keys.create`: Allows key generation.
 
@@ -71,9 +73,13 @@ Ask your Google Cloud project or organization administrator to grant you a role 
 
 If you cannot get administrative access, you can create a new Google Cloud project that is not associated with an organization to generate your keys.
 
+### Unknown keys on the Usage page
+
+The [Usage page](https://aistudio.google.com/usage) in Google AI Studio groups requests it can't match to a named API key in the project under**(unknown keys)**. This includes keys deleted more than 30 days ago, keys without a display name, and requests made with other credentials, such as OAuth.
+
 ## Creating keys in the Google Cloud console
 
-Google AI Studio only displays keys that are unrestricted or restricted to the Gemini API. If you can't use AI Studio, or you want to manage all of your API keys in one place, follow the Cloud documentation on [creating an API key](https://cloud.google.com/docs/authentication/api-keys#create).Creating a Gemini API key requires binding it to a[service account](https://cloud.google.com/iam/docs/service-account-overview).
+Google AI Studio only displays keys that are unrestricted or restricted to the Gemini API. If you can't use AI Studio, or you want to manage all of your API keys in one place, follow the Cloud documentation on [creating an API key](https://cloud.google.com/docs/authentication/api-keys#create).Creating a Gemini API key requires binding it to a[service account](https://cloud.google.com/iam/docs/service-account-overview).Projects created outside Google AI Studio may need[project verification](https://aistudio.google.com/docs/verification) before they can use the free tier.
 
 ## Setting up your environment
 
@@ -111,7 +117,7 @@ from google import genai
 client = genai.Client(api_key="YOUR_API_KEY")
 
 interaction = client.interactions.create(
-    model="gemini-3.8-flash",
+    model="gemini-4-hydrogen",
     input="Explain how AI works in a few words"
 )
 print(interaction.output_text)
@@ -217,7 +223,7 @@ Follow these steps to create a new auth API key and update your applications:
 
 7.   Once verified, delete or revoke your old traffic key to prevent misuse.
 
-If you don't see your keys, you may need to import your Cloud projects into AI Studio. Refer to the [import projects](https://aistudio.google.com/docs/api-key?codelanguage=python#import-projects) section for instructions.
+If you don't see your keys, you may need to import your Cloud projects into AI Studio. Refer to the [import projects](https://aistudio.google.com/docs/api-key#import-projects) section for instructions.
 
 ## Limitations
 

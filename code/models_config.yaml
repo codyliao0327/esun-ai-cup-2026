@@ -21,25 +21,25 @@ model_list:
   # L2M: 大盤觀點與多空環境推論 (高階推理 + Gemini 原生 Code Execution)
   - model_name: stage-l2m
     litellm_params:
-      model: gemini/gemini-4-argon
+      model: gemini/gemini-4-carbon
       api_key: os.environ/GEMINI_API_KEY
 
   # L2: 個股多空推論與評分 (高階推理 + Gemini 原生 Code Execution)
   - model_name: stage-l2
     litellm_params:
-      model: gemini/gemini-4-argon
+      model: gemini/gemini-4-carbon
       api_key: os.environ/GEMINI_API_KEY
 
   # L3: 投資組合權重決策 (高階推理 + Gemini 原生 Code Execution)
   - model_name: stage-l3
     litellm_params:
-      model: gemini/gemini-4-argon
+      model: gemini/gemini-4-carbon
       api_key: os.environ/GEMINI_API_KEY
 
   # L4: 委託單數量與現金流試算 (高階推理 + Gemini 原生 Code Execution)
   - model_name: stage-l4
     litellm_params:
-      model: gemini/gemini-4-argon
+      model: gemini/gemini-4-carbon
       api_key: os.environ/GEMINI_API_KEY
 
   # ---------------------------------------------------------------------------
@@ -49,13 +49,13 @@ model_list:
   # L1 專屬輕量備援模型
   - model_name: stage-l1-fallback
     litellm_params:
-      model: gemini/gemini-3.5-flash-lite
+      model: gemini/gemini-3.6-flash
       api_key: os.environ/GEMINI_API_KEY
 
   # L2M / L2 / L3 / L4 高階推理階段備援模型
   - model_name: stage-pro-fallback
     litellm_params:
-      model: gemini/gemini-3.6-flash
+      model: gemini/gemini-4-argon
       api_key: os.environ/GEMINI_API_KEY
 
 router_settings:
