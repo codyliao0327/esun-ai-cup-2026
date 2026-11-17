@@ -220,7 +220,8 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
         "stocks": all_stocks_list,
         "trade_history": trade_history,
         "usage": usage_data,
-        "reports": decision_reports
+        "reports": decision_reports,
+        "leaderboard": summary_data.get("leaderboard") or {"meta": {}, "count": 0, "results": []},
     }
     safe_json_payload = json.dumps(json_data_payload, ensure_ascii=False).replace("</", "<\\/")
 
@@ -902,6 +903,108 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       display: flex;
       align-items: center;
       gap: 6px;
+    }}
+
+    .kpi-card-interactive {{
+      cursor: pointer;
+    }}
+
+    .kpi-card-interactive:hover {{
+      border-color: var(--primary-accent);
+      box-shadow: 0 12px 28px -10px var(--primary-glow), var(--glass-shadow);
+    }}
+
+    .kpi-action-pill {{
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--well-bg);
+      border: 1px solid var(--glass-border);
+      color: var(--primary-accent);
+      white-space: nowrap;
+    }}
+
+    .ranking-subview-header {{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }}
+
+    .ranking-my-team-banner {{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding: 14px 18px;
+      margin-bottom: 18px;
+      border-color: rgba(56, 189, 248, 0.30);
+    }}
+
+    html.theme-light .ranking-my-team-banner {{
+      border-color: rgba(2, 132, 199, 0.24);
+    }}
+
+    tr.ranking-my-team-row td {{
+      background: rgba(56, 189, 248, 0.12);
+      font-weight: 700;
+    }}
+
+    html.theme-light tr.ranking-my-team-row td {{
+      background: rgba(2, 132, 199, 0.08);
+    }}
+
+    tr.ranking-my-team-row td:first-child {{
+      box-shadow: inset 3px 0 0 var(--primary-accent);
+    }}
+
+    .group-badge {{
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid var(--glass-border);
+      background: var(--well-bg);
+      color: var(--text-muted);
+      white-space: nowrap;
+    }}
+
+    .group-badge.society {{
+      color: var(--primary-accent);
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.35);
+    }}
+
+    html.theme-light .group-badge.society {{
+      background: rgba(2, 132, 199, 0.10);
+      border-color: rgba(2, 132, 199, 0.30);
+    }}
+
+    .ranking-toolbar-controls {{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      max-width: 100%;
+    }}
+
+    @media (max-width: 768px) {{
+      .ranking-toolbar-controls {{
+        width: 100%;
+      }}
+      .ranking-toolbar-controls .search-box {{
+        flex: 1 1 100%;
+        min-width: 0;
+      }}
+      .ranking-toolbar-controls .report-select {{
+        flex: 1 1 auto;
+      }}
     }}
 
     /* 歷史圖表區域 (雙欄並排：NAV/現金 + 累計總報酬率) */
@@ -2143,6 +2246,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
 
     <!-- ================= 頁籤 1: 帳戶總覽與庫存損益 ================= -->
     <div id="tab1Content">
+      <div id="tab1OverviewView">
       <!-- 頂部 KPI 卡片 -->
       <div class="kpi-grid">
         <div class="glass-card kpi-card">
@@ -2177,8 +2281,11 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
           </div>
           <div class="kpi-subtext">累計損益 ${account['cum_pnl']:,.0f}</div>
         </div>
-        <div class="glass-card kpi-card">
-          <div class="kpi-label">競賽排名 (總 / 社會組)</div>
+        <div class="glass-card kpi-card kpi-card-interactive" onclick="openRankingView()" title="點擊查看全體競賽排行榜">
+          <div class="kpi-label" style="justify-content:space-between; width:100%;">
+            <span>競賽排名 (總 / 社會組)</span>
+            <span class="kpi-action-pill">🏆 完整榜單 →</span>
+          </div>
           <div class="kpi-value" style="display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;">
             <span>#{account.get('rank') or '--'}</span>
             <span style="font-size:13px; color:var(--text-muted);">/ {account.get('total_teams') or '--'}</span>
@@ -2219,6 +2326,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
             <div class="chart-title">
               <span>🏆</span> 每日競賽排名走勢 (總排名 / 社會組)
             </div>
+            <button type="button" class="report-action-btn" onclick="openRankingView()" style="font-size:12px; padding:6px 12px;">🏆 完整榜單 →</button>
           </div>
           <div class="chart-wrapper">
             <canvas id="rankHistoryChart"></canvas>
@@ -2274,6 +2382,70 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
           </table>
         </div>
       </div>
+      </div> <!-- /#tab1OverviewView -->
+
+      <!-- Tab 1 內嵌子視圖：競賽全體排行榜 -->
+      <div id="tab1RankingView" style="display: none;">
+        <div class="ranking-subview-header">
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <button type="button" class="report-action-btn" onclick="closeRankingView()">← 返回帳戶總覽</button>
+            <div class="chart-title" style="font-size:18px;">
+              <span>🏆</span> 競賽全體即時排行榜
+            </div>
+          </div>
+        </div>
+
+        <div class="kpi-grid" id="rankingKpiGrid"></div>
+
+        <div class="glass-card ranking-my-team-banner" id="rankingMyTeamBanner" style="display:none;"></div>
+
+        <div class="glass-card">
+          <div class="table-toolbar">
+            <div>
+              <div class="chart-title">
+                <span>📋</span> 各隊績效與淨值排行明細
+              </div>
+              <div style="font-size:12px; color:var(--text-dim); margin-top:4px;">支援組別篩選、隊伍搜尋與點擊表頭排序 · 淨值以億元顯示</div>
+            </div>
+            <div class="ranking-toolbar-controls">
+              <div class="filter-pills">
+                <button type="button" class="filter-btn active" id="rankFilterAll" onclick="setRankingGroup('all')">全部</button>
+                <button type="button" class="filter-btn" id="rankFilterSociety" onclick="setRankingGroup('society')">社會組</button>
+                <button type="button" class="filter-btn" id="rankFilterStudent" onclick="setRankingGroup('student')">學生組</button>
+              </div>
+              <select class="report-select" id="rankingLimitSelect" onchange="renderRankingTable()">
+                <option value="50">顯示前 50 名</option>
+                <option value="100" selected>顯示前 100 名</option>
+                <option value="0">顯示全部隊伍</option>
+              </select>
+              <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" id="rankingSearchInput" placeholder="搜尋隊伍 (如 TEAM_11402)..." oninput="renderRankingTable()">
+              </div>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table class="fugle-table" id="rankingTable">
+              <thead>
+                <tr>
+                  <th onclick="sortRankingTable('rank')">總排名 <span class="sort-icon">⇅</span></th>
+                  <th onclick="sortRankingTable('team')">隊伍代號 <span class="sort-icon">⇅</span></th>
+                  <th onclick="sortRankingTable('group')" style="text-align:left;">組別 <span class="sort-icon">⇅</span></th>
+                  <th onclick="sortRankingTable('group_rank')">組別排名 <span class="sort-icon">⇅</span></th>
+                  <th onclick="sortRankingTable('rank_diff')" id="rankDiffHeader">總名次變動 <span class="sort-icon">⇅</span></th>
+                  <th onclick="sortRankingTable('cum_return')">累計報酬率 <span class="sort-icon">⇅</span></th>
+                  <th onclick="sortRankingTable('day_return')">當日報酬率 <span class="sort-icon">⇅</span></th>
+                  <th onclick="sortRankingTable('aum')">淨值 (AUM) <span class="sort-icon">⇅</span></th>
+                </tr>
+              </thead>
+              <tbody id="rankingTableBody">
+                <!-- JS 動態渲染 -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div> <!-- /#tab1RankingView -->
     </div>
 
     <!-- ================= 頁籤 2: 自選行情觀察群組 ================= -->
@@ -2733,7 +2905,9 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       document.getElementById('tab4Content').style.display = tabId === 'tab4' ? 'block' : 'none';
       document.getElementById('tab5Content').style.display = tabId === 'tab5' ? 'block' : 'none';
       document.getElementById('tab6Content').style.display = tabId === 'tab6' ? 'block' : 'none';
-      if (tabId === 'tab2') {{
+      if (tabId === 'tab1') {{
+        closeRankingView(false);
+      }} else if (tabId === 'tab2') {{
         renderWatchTable();
       }} else if (tabId === 'tab3') {{
         renderUsageTab();
@@ -3865,6 +4039,235 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
           requestAnimationFrame(updateDock);
         }}
       }}, {{ passive: true }});
+    }}
+
+    // =========================================================================
+    // Tab 1 內嵌子視圖：競賽全體排行榜
+    // =========================================================================
+    let rankingGroupFilter = 'all';
+    let rankingSortCol = 'rank';
+    let rankingSortAsc = true;
+    const MY_TEAM_ID = 'TEAM_11402';
+
+    function formatAumYi(aum) {{
+      if (aum === null || aum === undefined || isNaN(aum)) return '--';
+      const yi = Number(aum) / 100000000;
+      return `${{yi.toFixed(3)}} 億`;
+    }}
+
+    function formatRankDiffBadge(prevRank, currRank) {{
+      if (!prevRank || !currRank) return '<span style="color:var(--text-dim);">--</span>';
+      const diff = Number(prevRank) - Number(currRank);
+      if (diff > 0) return `<span class="badge-pnl up">▲ ${{diff}}</span>`;
+      if (diff < 0) return `<span class="badge-pnl down">▼ ${{Math.abs(diff)}}</span>`;
+      return '<span style="color:var(--text-dim); font-size:12px;">持平</span>';
+    }}
+
+    function openRankingView() {{
+      const overviewEl = document.getElementById('tab1OverviewView');
+      const rankingEl = document.getElementById('tab1RankingView');
+      if (!overviewEl || !rankingEl) return;
+      overviewEl.style.display = 'none';
+      rankingEl.style.display = 'block';
+      renderRankingView();
+      window.scrollTo({{ top: 0, behavior: 'smooth' }});
+    }}
+
+    function closeRankingView(scrollTop = true) {{
+      const overviewEl = document.getElementById('tab1OverviewView');
+      const rankingEl = document.getElementById('tab1RankingView');
+      if (!overviewEl || !rankingEl) return;
+      rankingEl.style.display = 'none';
+      overviewEl.style.display = 'block';
+      if (scrollTop) {{
+        window.scrollTo({{ top: 0, behavior: 'smooth' }});
+      }}
+    }}
+
+    function setRankingGroup(grp) {{
+      rankingGroupFilter = grp;
+      document.getElementById('rankFilterAll').classList.toggle('active', grp === 'all');
+      document.getElementById('rankFilterSociety').classList.toggle('active', grp === 'society');
+      document.getElementById('rankFilterStudent').classList.toggle('active', grp === 'student');
+      renderRankingTable();
+    }}
+
+    function sortRankingTable(col) {{
+      if (rankingSortCol === col) {{
+        rankingSortAsc = !rankingSortAsc;
+      }} else {{
+        rankingSortCol = col;
+        rankingSortAsc = (col === 'rank' || col === 'group_rank' || col === 'team' || col === 'group');
+      }}
+      renderRankingTable();
+    }}
+
+    function renderRankingView() {{
+      const lb = DASHBOARD_DATA.leaderboard || {{}};
+      const meta = lb.meta || {{}};
+      const rows = lb.results || [];
+      const groups = meta.groups || {{}};
+
+      const myRow = rows.find(r => r.team === MY_TEAM_ID);
+      const top1All = rows.find(r => r.rank === 1) || rows[0];
+      const top1Soc = rows.find(r => r.group === 'society' && r.group_rank === 1) || rows.find(r => r.group === 'society');
+
+      const kpiGrid = document.getElementById('rankingKpiGrid');
+      if (kpiGrid) {{
+        const societyCnt = groups.society ?? rows.filter(r => r.group === 'society').length;
+        const studentCnt = groups.student ?? rows.filter(r => r.group === 'student').length;
+        const participants = meta.participants || '--';
+        const gapAll = (myRow && top1All) ? (myRow.cum_return - top1All.cum_return) : null;
+        const gapSoc = (myRow && top1Soc) ? (myRow.cum_return - top1Soc.cum_return) : null;
+        const allTopPct = (myRow && rows.length) ? ((myRow.rank / rows.length) * 100).toFixed(1) : '--';
+        const socTopPct = (myRow && societyCnt) ? ((myRow.group_rank / societyCnt) * 100).toFixed(1) : '--';
+
+        const top1Cum = top1All ? Number(top1All.cum_return) : null;
+        const top1Up = top1Cum !== null && top1Cum >= 0;
+        const top1GroupLabel = top1All ? (top1All.group === 'society' ? '社會組' : '學生組') : '--';
+        const gapSocUp = gapSoc !== null && gapSoc >= 0;
+        const gapAllStr = gapAll !== null ? `${{gapAll >= 0 ? '+' : ''}}${{fmtNum(gapAll, 2)}}%` : '--';
+        const top1SocNote = (top1Soc && top1All && top1Soc.team === top1All.team)
+          ? `同為全體與社會組 #1 · 淨值 ${{formatAumYi(top1Soc.aum)}}`
+          : (top1Soc ? `社會組 #1：${{top1Soc.team}} (${{top1Soc.cum_return >= 0 ? '+' : ''}}${{fmtNum(top1Soc.cum_return, 2)}}%)` : '--');
+
+        kpiGrid.innerHTML = `
+          <div class="glass-card kpi-card">
+            <div class="kpi-label">我方總排名 (上榜 ${{rows.length}} 隊)</div>
+            <div class="kpi-value">${{myRow ? '#' + myRow.rank : '--'}} <span style="font-size:14px; color:var(--text-muted);">/ ${{rows.length}}</span></div>
+            <div class="kpi-subtext">前 ${{allTopPct}}% · 總參賽 ${{participants}} 隊</div>
+          </div>
+          <div class="glass-card kpi-card">
+            <div class="kpi-label">我方社會組排名</div>
+            <div class="kpi-value">${{myRow ? '#' + myRow.group_rank : '--'}} <span style="font-size:14px; color:var(--text-muted);">/ ${{societyCnt}} 隊</span></div>
+            <div class="kpi-subtext">社會組前 ${{socTopPct}}% · 學生組 ${{studentCnt}} 隊</div>
+          </div>
+          <div class="glass-card kpi-card">
+            <div class="kpi-label">全體榜首 (${{top1All ? top1All.team : '--'}})</div>
+            <div class="kpi-value ${{top1Cum !== null ? ('badge-pnl ' + (top1Up ? 'up' : 'down')) : ''}}" style="display:inline-block; font-size:21px;">
+              ${{top1Cum !== null ? ((top1Up ? '+' : '') + fmtNum(top1Cum, 2) + '%') : '--'}}
+            </div>
+            <div class="kpi-subtext">${{top1GroupLabel}} #1 · 淨值 ${{top1All ? formatAumYi(top1All.aum) : '--'}}</div>
+          </div>
+          <div class="glass-card kpi-card">
+            <div class="kpi-label">距社會組榜首差距</div>
+            <div class="kpi-value ${{gapSoc !== null ? ('badge-pnl ' + (gapSocUp ? 'up' : 'down')) : ''}}" style="display:inline-block; font-size:21px;">
+              ${{gapSoc !== null ? ((gapSocUp ? '+' : '') + fmtNum(gapSoc, 2) + '%') : '--'}}
+            </div>
+            <div class="kpi-subtext">${{top1SocNote}} · 距全體 #1：${{gapAllStr}}</div>
+          </div>
+        `;
+      }}
+
+      const banner = document.getElementById('rankingMyTeamBanner');
+      if (banner) {{
+        if (myRow) {{
+          const cumUp = myRow.cum_return >= 0;
+          const dayUp = myRow.day_return >= 0;
+          const groupDiffHtml = (myRow.prev_group_rank && myRow.group_rank)
+            ? formatRankDiffBadge(myRow.prev_group_rank, myRow.group_rank)
+            : '';
+          banner.style.display = 'flex';
+          banner.innerHTML = `
+            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+              <span class="kpi-action-pill">我方隊伍</span>
+              <strong style="font-family:var(--font-mono); font-size:15px;">${{myRow.team}}</strong>
+              <span class="group-badge society">社會組 #${{myRow.group_rank}}</span>
+              ${{groupDiffHtml}}
+              <span style="font-family:var(--font-mono); font-size:13px; color:var(--text-muted);">總排名 <strong>#${{myRow.rank}}</strong></span>
+              ${{formatRankDiffBadge(myRow.prev_rank, myRow.rank)}}
+            </div>
+            <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap; font-family:var(--font-mono); font-size:13px;">
+              <span>累計：<span class="badge-pnl ${{cumUp ? 'up' : 'down'}}">${{cumUp ? '+' : ''}}${{fmtNum(myRow.cum_return, 2)}}%</span></span>
+              <span>當日：<span class="badge-pnl ${{dayUp ? 'up' : 'down'}}">${{dayUp ? '+' : ''}}${{fmtNum(myRow.day_return, 2)}}%</span></span>
+              <span title="NT$ ${{fmtNum(myRow.aum, 0)}}">淨值：<strong>${{formatAumYi(myRow.aum)}}</strong></span>
+            </div>
+          `;
+        }} else {{
+          banner.style.display = 'none';
+        }}
+      }}
+
+      renderRankingTable();
+    }}
+
+    function renderRankingTable() {{
+      const tbody = document.getElementById('rankingTableBody');
+      if (!tbody) return;
+      const diffHeader = document.getElementById('rankDiffHeader');
+      const useGroupDiff = (rankingGroupFilter !== 'all');
+      if (diffHeader) {{
+        diffHeader.innerHTML = `${{useGroupDiff ? '組名次變動' : '總名次變動'}} <span class="sort-icon">⇅</span>`;
+      }}
+
+      const rows = (DASHBOARD_DATA.leaderboard && DASHBOARD_DATA.leaderboard.results) || [];
+      if (!rows.length) {{
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:28px; color:var(--text-dim);">尚未同步排行榜資料，請執行後台同步後重試。</td></tr>';
+        return;
+      }}
+
+      const query = (document.getElementById('rankingSearchInput').value || '').trim().toLowerCase();
+      const limitVal = Number(document.getElementById('rankingLimitSelect').value || 0);
+
+      let filtered = rows.filter(r => {{
+        if (rankingGroupFilter !== 'all' && r.group !== rankingGroupFilter) return false;
+        if (query && !String(r.team || '').toLowerCase().includes(query)) return false;
+        return true;
+      }});
+
+      filtered.sort((a, b) => {{
+        const getDiff = (item) => {{
+          const prev = useGroupDiff ? item.prev_group_rank : item.prev_rank;
+          const curr = useGroupDiff ? item.group_rank : item.rank;
+          return (prev && curr) ? (Number(prev) - Number(curr)) : null;
+        }};
+        if (rankingSortCol === 'rank_diff') {{
+          const d1 = getDiff(a);
+          const d2 = getDiff(b);
+          if (d1 === null && d2 === null) return 0;
+          if (d1 === null) return 1;
+          if (d2 === null) return -1;
+          return rankingSortAsc ? (d1 - d2) : (d2 - d1);
+        }}
+        const v1 = a[rankingSortCol];
+        const v2 = b[rankingSortCol];
+        if (v1 === null || v1 === undefined) return 1;
+        if (v2 === null || v2 === undefined) return -1;
+        if (typeof v1 === 'string' && typeof v2 === 'string') {{
+          return rankingSortAsc ? v1.localeCompare(v2) : v2.localeCompare(v1);
+        }}
+        return rankingSortAsc ? (Number(v1) - Number(v2)) : (Number(v2) - Number(v1));
+      }});
+
+      const displayRows = (!query && limitVal > 0) ? filtered.slice(0, limitVal) : filtered;
+      if (!displayRows.length) {{
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:24px; color:var(--text-dim);">找不到符合條件的隊伍。</td></tr>';
+        return;
+      }}
+
+      tbody.innerHTML = displayRows.map(r => {{
+        const isMe = r.team === MY_TEAM_ID;
+        const isSoc = r.group === 'society';
+        const hasCum = r.cum_return !== null && r.cum_return !== undefined && !isNaN(r.cum_return);
+        const hasDay = r.day_return !== null && r.day_return !== undefined && !isNaN(r.day_return);
+        const cumUp = hasCum && Number(r.cum_return) >= 0;
+        const dayUp = hasDay && Number(r.day_return) >= 0;
+        const aumExact = fmtNum(r.aum, 0);
+        const diffPrev = useGroupDiff ? r.prev_group_rank : r.prev_rank;
+        const diffCurr = useGroupDiff ? r.group_rank : r.rank;
+        return `
+          <tr class="${{isMe ? 'ranking-my-team-row' : ''}}">
+            <td style="font-family:var(--font-mono); font-weight:700;">#${{r.rank}}</td>
+            <td style="font-family:var(--font-mono);">${{r.team}}${{isMe ? ' <span class="kpi-action-pill" style="margin-left:6px;">我方</span>' : ''}}</td>
+            <td style="text-align:left;"><span class="group-badge ${{isSoc ? 'society' : 'student'}}">${{isSoc ? '社會組' : '學生組'}}</span></td>
+            <td style="font-family:var(--font-mono);">#${{r.group_rank}}</td>
+            <td>${{formatRankDiffBadge(diffPrev, diffCurr)}}</td>
+            <td>${{hasCum ? `<span class="badge-pnl ${{cumUp ? 'up' : 'down'}}">${{cumUp ? '+' : ''}}${{fmtNum(r.cum_return, 2)}}%</span>` : '<span style="color:var(--text-dim);">--</span>'}}</td>
+            <td>${{hasDay ? `<span class="badge-pnl ${{dayUp ? 'up' : 'down'}}">${{dayUp ? '+' : ''}}${{fmtNum(r.day_return, 2)}}%</span>` : '<span style="color:var(--text-dim);">--</span>'}}</td>
+            <td style="font-family:var(--font-mono);" title="NT$ ${{aumExact}}">${{formatAumYi(r.aum)}}</td>
+          </tr>
+        `;
+      }}).join('');
     }}
 
     // 初始化渲染

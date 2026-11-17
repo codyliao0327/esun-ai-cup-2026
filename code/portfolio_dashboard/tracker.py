@@ -97,6 +97,21 @@ _SIDE_MAP = {
 }
 
 
+def load_backend_ranking() -> Optional[Dict[str, Any]]:
+    """讀取 backend_ranking_latest.json 官方競賽全體排行榜快照。"""
+    ranking_json = BACKEND_REPORTS_DIR / "backend_ranking_latest.json"
+    if not ranking_json.exists():
+        return None
+    try:
+        data = json.loads(ranking_json.read_text(encoding="utf-8"))
+        if isinstance(data, dict) and isinstance(data.get("results"), list):
+            return data
+        return None
+    except Exception as e:
+        print(f"[警告] 讀取 backend_ranking_latest.json 失敗: {e}")
+        return None
+
+
 def load_backend_history_all() -> List[Dict[str, Any]]:
     """讀取 backend_all_history.json 完整每日紀錄（含 ranking、portfolio、trade_summary、trades）。"""
     history_json = BACKEND_REPORTS_DIR / "backend_all_history.json"
@@ -674,7 +689,8 @@ def get_latest_portfolio_summary() -> Dict[str, Any]:
             "fee": h.get("fee", 0.0),
             "tax": h.get("tax", 0.0),
         } for h in dp_history],
-        "stocks_150": stocks_150
+        "stocks_150": stocks_150,
+        "leaderboard": load_backend_ranking(),
     }
 
 

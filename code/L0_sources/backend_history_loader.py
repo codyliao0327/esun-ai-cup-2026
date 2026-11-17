@@ -22,7 +22,7 @@ import secrets
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-from urllib.parse import parse_qs, quote, urlparse
+from urllib.parse import parse_qs, quote, urljoin, urlparse
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -38,6 +38,7 @@ if sys.platform == "win32":
 CODE_DIR = Path(__file__).resolve().parents[1]
 ROOT = CODE_DIR.parent
 DEFAULT_OUTPUT_PATH = ROOT / "data" / "backend_reports" / "backend_all_history.json"
+DEFAULT_RANKING_OUTPUT_PATH = ROOT / "data" / "backend_reports" / "backend_ranking_latest.json"
 
 
 def _load_env_file(env_path: Path) -> None:
@@ -303,6 +304,55 @@ class EsunChallengeClient:
         merged = sorted(by_date.values(), key=lambda x: (int(x.get("day", 0)), str(x.get("date", ""))))
         return merged
 
+    def fetch_ranking(self) -> Dict[str, Any]:
+        """抓完官方 /api/ranking/ 全部分頁榜單，回傳 meta 與完整 results。"""
+        all_results: List[Dict[str, Any]] = []
+        meta: Dict[str, Any] = {}
+        next_url: Optional[str] = f"{self.BASE_SUB}/api/ranking/?page=1"
+        page_num = 0
+
+        while next_url:
+            page_num += 1
+            data = self._get_json(next_url)
+            if not meta and isinstance(data.get("meta"), dict):
+                meta = data["meta"]
+            results = data.get("results") or []
+            all_results.extend(results)
+            raw_next = data.get("next")
+            next_url = urljoin(self.BASE_SUB, raw_next) if raw_next else None
+
+        print(f"🏆 競賽排行榜抓取完成（共 {page_num} 頁，{len(all_results)} 支隊伍）")
+        return {
+            "meta": meta,
+            "count": len(all_results),
+            "results": all_results,
+        }
+
+
+def sync_backend_ranking(
+    output_path: Path = DEFAULT_RANKING_OUTPUT_PATH,
+    client: Optional[EsunChallengeClient] = None,
+) -> Path:
+    """登入後台（或複用既有 client）並同步最新競賽排行榜至指定 JSON 路徑（原子寫入）。"""
+    if client is None:
+        _load_env_file(CODE_DIR / ".env")
+        email = os.getenv("ESUN_EMAIL", "").strip()
+        password = os.getenv("ESUN_PASSWORD", "").strip()
+        if not email or not password:
+            raise RuntimeError(
+                "找不到 ESUN_EMAIL 或 ESUN_PASSWORD 環境變數！請於 code/.env 中設定。"
+            )
+        client = EsunChallengeClient(email=email, password=password)
+        client.login()
+
+    ranking_data = client.fetch_ranking()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path = output_path.with_suffix(".json.tmp")
+    tmp_path.write_text(json.dumps(ranking_data, ensure_ascii=False, indent=2), encoding="utf-8")
+    tmp_path.replace(output_path)
+    print(f"🎉 最新競賽排行榜已儲存至：{output_path}")
+    return output_path
+
 
 def sync_backend_history(
     output_path: Path = DEFAULT_OUTPUT_PATH,
@@ -337,6 +387,12 @@ def sync_backend_history(
     tmp_path.replace(output_path)
 
     print(f"🎉 後台歷史數據同步完成！共 {len(history_data)} 個交易日，已儲存至：{output_path}")
+
+    try:
+        sync_backend_ranking(client=client)
+    except Exception as exc:
+        print(f"⚠️ 同步競賽排行榜失敗（不影響主歷史數據）：{exc}")
+
     return output_path
 
 
