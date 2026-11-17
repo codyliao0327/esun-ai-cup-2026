@@ -1,0 +1,151 @@
+{
+  "orders": [
+    {
+      "ticker": "2412",
+      "side": "BUY",
+      "shares": 22000,
+      "decision_ref": "D1",
+      "derivation_detail": "target_shares = floor(0.07×895,808,196 / 164.5 / 1000)×1000 = 381,000；現持 359,000 → BUY 22,000"
+    },
+    {
+      "ticker": "1216",
+      "side": "BUY",
+      "shares": 102000,
+      "decision_ref": "D2",
+      "derivation_detail": "target_shares = floor(0.065×895,808,196 / 79.2 / 1000)×1000 = 735,000；現持 633,000 → BUY 102,000"
+    },
+    {
+      "ticker": "2891",
+      "side": "BUY",
+      "shares": 104000,
+      "decision_ref": "D3",
+      "derivation_detail": "target_shares = floor(0.06×895,808,196 / 77.5 / 1000)×1000 = 693,000；現持 589,000 → BUY 104,000"
+    },
+    {
+      "ticker": "2886",
+      "side": "BUY",
+      "shares": 83000,
+      "decision_ref": "D4",
+      "derivation_detail": "target_shares = floor(0.055×895,808,196 / 54.7 / 1000)×1000 = 900,000；現持 817,000 → BUY 83,000"
+    },
+    {
+      "ticker": "2618",
+      "side": "BUY",
+      "shares": 228000,
+      "decision_ref": "D5",
+      "derivation_detail": "target_shares = floor(0.045×895,808,196 / 48.1 / 1000)×1000 = 838,000；現持 610,000 → BUY 228,000"
+    },
+    {
+      "ticker": "3491",
+      "side": "BUY",
+      "shares": 5000,
+      "decision_ref": "D6",
+      "derivation_detail": "target_shares = floor(0.035×895,808,196 / 1445 / 1000)×1000 = 21,000；現持 16,000 → BUY 5,000"
+    },
+    {
+      "ticker": "3293",
+      "side": "BUY",
+      "shares": 16000,
+      "decision_ref": "D7",
+      "derivation_detail": "target_shares = floor(0.035×895,808,196 / 790 / 1000)×1000 = 39,000；現持 23,000 → BUY 16,000"
+    },
+    {
+      "ticker": "2880",
+      "side": "BUY",
+      "shares": 34000,
+      "decision_ref": "D8",
+      "derivation_detail": "target_shares = floor(0.03×895,808,196 / 50.8 / 1000)×1000 = 529,000；現持 495,000 → BUY 34,000"
+    },
+    {
+      "ticker": "2610",
+      "side": "BUY",
+      "shares": 367000,
+      "decision_ref": "D9",
+      "derivation_detail": "target_shares = floor(0.03×895,808,196 / 23.1 / 1000)×1000 = 1,163,000；現持 796,000 → BUY 367,000"
+    },
+    {
+      "ticker": "2207",
+      "side": "BUY",
+      "shares": 29000,
+      "decision_ref": "D10",
+      "derivation_detail": "target_shares = floor(0.03×895,808,196 / 531 / 1000)×1000 = 50,000；現持 21,000 → BUY 29,000"
+    },
+    {
+      "ticker": "5876",
+      "side": "BUY",
+      "shares": 336000,
+      "decision_ref": "D11",
+      "derivation_detail": "target_shares = floor(0.02×895,808,196 / 53.3 / 1000)×1000 = 336,000；現持 0 → BUY 336,000"
+    },
+    {
+      "ticker": "2892",
+      "side": "BUY",
+      "shares": 425000,
+      "decision_ref": "D12",
+      "derivation_detail": "target_shares = floor(0.02×895,808,196 / 42.1 / 1000)×1000 = 425,000；現持 0 → BUY 425,000"
+    },
+    {
+      "ticker": "2330",
+      "side": "SELL",
+      "shares": 6000,
+      "decision_ref": "D13",
+      "derivation_detail": "target_shares = floor(0.055×895,808,196 / 2170 / 1000)×1000 = 22,000；現持 28,000 → SELL 6,000"
+    },
+    {
+      "ticker": "2881",
+      "side": "SELL",
+      "shares": 59000,
+      "decision_ref": "D14",
+      "derivation_detail": "target_shares = floor(0.015×895,808,196 / 150.5 / 1000)×1000 = 89,000；現持 148,000 → SELL 59,000"
+    },
+    {
+      "ticker": "3533",
+      "side": "SELL",
+      "shares": 7000,
+      "decision_ref": "D15",
+      "derivation_detail": "target_shares = floor(0.012×895,808,196 / 1680 / 1000)×1000 = 6,000；現持 13,000 → SELL 7,000"
+    },
+    {
+      "ticker": "1303",
+      "side": "SELL",
+      "shares": 65000,
+      "decision_ref": "D16",
+      "derivation_detail": "target_shares = floor(0×895,808,196 / 261.5 / 1000)×1000 = 0；現持 65,000 → SELL 65,000"
+    },
+    {
+      "ticker": "2317",
+      "side": "SELL",
+      "shares": 82000,
+      "decision_ref": "D17",
+      "derivation_detail": "target_shares = floor(0×895,808,196 / 219 / 1000)×1000 = 0；現持 82,000 → SELL 82,000"
+    },
+    {
+      "ticker": "2404",
+      "side": "SELL",
+      "shares": 9000,
+      "decision_ref": "D18",
+      "derivation_detail": "target_shares = floor(0×895,808,196 / 928 / 1000)×1000 = 0；現持 9,000 → SELL 9,000"
+    },
+    {
+      "ticker": "3443",
+      "side": "SELL",
+      "shares": 1000,
+      "decision_ref": "D19",
+      "derivation_detail": "target_shares = floor(0×895,808,196 / 6975 / 1000)×1000 = 0；現持 1,000 → SELL 1,000"
+    },
+    {
+      "ticker": "6505",
+      "side": "SELL",
+      "shares": 131000,
+      "decision_ref": "D20",
+      "derivation_detail": "target_shares = floor(0×895,808,196 / 89.6 / 1000)×1000 = 0；現持 131,000 → SELL 131,000"
+    },
+    {
+      "ticker": "6510",
+      "side": "SELL",
+      "shares": 4000,
+      "decision_ref": "D21",
+      "derivation_detail": "target_shares = floor(0×895,808,196 / 2730 / 1000)×1000 = 0；現持 4,000 → SELL 4,000"
+    }
+  ]
+}
