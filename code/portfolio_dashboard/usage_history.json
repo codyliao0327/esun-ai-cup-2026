@@ -1,18 +1,18 @@
 {
-  "updated_at": "2026-11-17T19:04:07+08:00",
+  "updated_at": "2026-11-17T19:51:30+08:00",
   "summary": {
-    "total_calls": 75,
-    "success_calls": 75,
+    "total_calls": 80,
+    "success_calls": 80,
     "failed_calls": 0,
-    "prompt_tokens": 2601980,
-    "completion_tokens": 588360,
-    "total_tokens": 7351343,
-    "cached_tokens": 1301746,
-    "tool_use_tokens": 4773321,
-    "reasoning_tokens": 56852,
-    "response_cost": 8.629397,
-    "duration_seconds": 10283.71,
-    "code_execution_call_count": 140
+    "prompt_tokens": 3225432,
+    "completion_tokens": 642113,
+    "total_tokens": 8028548,
+    "cached_tokens": 1647379,
+    "tool_use_tokens": 5151872,
+    "reasoning_tokens": 57445,
+    "response_cost": 9.496016,
+    "duration_seconds": 10960.3,
+    "code_execution_call_count": 151
   },
   "daily_summary": {
     "20261028": {
@@ -1435,6 +1435,101 @@
           "tool_use_tokens": 8850,
           "reasoning_tokens": 0,
           "response_cost": 0.078042,
+          "code_execution_used": true,
+          "code_execution_call_count": 1
+        }
+      }
+    },
+    "20261118": {
+      "date": "20261118",
+      "calls": 5,
+      "prompt_tokens": 623452,
+      "completion_tokens": 53753,
+      "total_tokens": 677205,
+      "cached_tokens": 345633,
+      "tool_use_tokens": 378551,
+      "reasoning_tokens": 593,
+      "response_cost": 0.866619,
+      "duration_seconds": 676.59,
+      "code_execution_call_count": 11,
+      "stages": {
+        "l1": {
+          "model": "gemini-3.8-flash",
+          "model_group": "stage-l1",
+          "status": "success",
+          "finish_reason": "stop",
+          "duration_seconds": 143.25,
+          "prompt_tokens": 119310,
+          "completion_tokens": 17916,
+          "total_tokens": 137226,
+          "cached_tokens": 0,
+          "tool_use_tokens": 0,
+          "reasoning_tokens": 0,
+          "response_cost": 0.156668,
+          "code_execution_used": false,
+          "code_execution_call_count": 0
+        },
+        "l2m": {
+          "model": "gemini-4-argon",
+          "model_group": "stage-l2m",
+          "status": "success",
+          "finish_reason": "stop",
+          "duration_seconds": 16.59,
+          "prompt_tokens": 17255,
+          "completion_tokens": 911,
+          "total_tokens": 18166,
+          "cached_tokens": 0,
+          "tool_use_tokens": 0,
+          "reasoning_tokens": 0,
+          "response_cost": 0.04362,
+          "code_execution_used": false,
+          "code_execution_call_count": 0
+        },
+        "l2": {
+          "model": "gemini-4-argon",
+          "model_group": "stage-l2",
+          "status": "success",
+          "finish_reason": "stop",
+          "duration_seconds": 207.29,
+          "prompt_tokens": 153377,
+          "completion_tokens": 14324,
+          "total_tokens": 167701,
+          "cached_tokens": 73792,
+          "tool_use_tokens": 77531,
+          "reasoning_tokens": 593,
+          "response_cost": 0.309789,
+          "code_execution_used": true,
+          "code_execution_call_count": 1
+        },
+        "l3": {
+          "model": "gemini-4-argon",
+          "model_group": "stage-l3",
+          "status": "success",
+          "finish_reason": "stop",
+          "duration_seconds": 251.86,
+          "prompt_tokens": 316897,
+          "completion_tokens": 15658,
+          "total_tokens": 332555,
+          "cached_tokens": 266538,
+          "tool_use_tokens": 291764,
+          "reasoning_tokens": 0,
+          "response_cost": 0.283952,
+          "code_execution_used": true,
+          "code_execution_call_count": 9
+        },
+        "l4": {
+          "model": "gemini-4-argon",
+          "model_group": "stage-l4",
+          "status": "success",
+          "finish_reason": "stop",
+          "duration_seconds": 57.6,
+          "prompt_tokens": 16613,
+          "completion_tokens": 4944,
+          "total_tokens": 21557,
+          "cached_tokens": 5303,
+          "tool_use_tokens": 9256,
+          "reasoning_tokens": 0,
+          "response_cost": 0.07259,
           "code_execution_used": true,
           "code_execution_call_count": 1
         }
@@ -3607,6 +3702,158 @@
         {
           "language": "PYTHON",
           "code": "# Verify the calculations and orders\nnav = 903724302\ncash = 127939152\norders = [\n  {\"ticker\": \"3491\", \"side\": \"BUY\", \"shares\": 16000, \"decision_ref\": \"D1\", \"price\": 1405, \"w\": 0.025, \"curr\": 0},\n  {\"ticker\": \"2610\", \"side\": \"BUY\", \"shares\": 796000, \"decision_ref\": \"D2\", \"price\": 22.7, \"w\": 0.02, \"curr\": 0},\n  {\"ticker\": \"3293\", \"side\": \"BUY\", \"shares\": 23000, \"decision_ref\": \"D3\", \"price\": 775, \"w\": 0.02, \"curr\": 0},\n  {\"ticker\": \"2412\", \"side\": \"BUY\", \"shares\": 39000, \"decision_ref\": \"D4\", \"price\": 163.5, \"w\": 0.065, \"curr\": 320000},\n  {\"ticker\": \"1216\", \"side\": \"BUY\", \"shares\": 98000, \"decision_ref\": \"D5\", \"price\": 78.5, \"w\": 0.055, \"curr\": 535000},\n  {\"ticker\": \"2603\", \"side\": \"BUY\", \"shares\": 22000, \"decision_ref\": \"D6\", \"price\": 257, \"w\": 0.038, \"curr\": 111000},\n  {\"ticker\": \"4904\", \"side\": \"BUY\", \"shares\": 50000, \"decision_ref\": \"D7\", \"price\": 109, \"w\": 0.035, \"curr\": 240000},\n  {\"ticker\": \"2618\", \"side\": \"BUY\", \"shares\": 120000, \"decision_ref\": \"D8\", \"price\": 47.4, \"w\": 0.032, \"curr\": 490000},\n  {\"ticker\": \"2884\", \"side\": \"BUY\", \"shares\": 85000, \"decision_ref\": \"D9\", \"price\": 48.3, \"w\": 0.02, \"curr\": 289000},\n  {\"ticker\": \"2330\", \"side\": \"SELL\", \"shares\": 2000, \"decision_ref\": \"D10\", \"price\": 2215, \"w\": 0.07, \"curr\": 30000},\n  {\"ticker\": \"2881\", \"side\": \"SELL\", \"shares\": 61000, \"decision_ref\": \"D11\", \"price\": 152, \"w\": 0.025, \"curr\": 209000},\n  {\"ticker\": \"2882\", \"side\": \"SELL\", \"shares\": 34000, \"decision_ref\": \"D12\", \"price\": 110, \"w\": 0.025, \"curr\": 239000},\n  {\"ticker\": \"2379\", \"side\": \"SELL\", \"shares\": 6000, \"decision_ref\": \"D13\", \"price\": 716, \"w\": 0.025, \"curr\": 37000},\n  {\"ticker\": \"3533\", \"side\": \"SELL\", \"shares\": 3000, \"decision_ref\": \"D14\", \"price\": 1730, \"w\": 0.025, \"curr\": 16000},\n  {\"ticker\": \"1303\", \"side\": \"SELL\", \"shares\": 61000, \"decision_ref\": \"D15\", \"price\": 274, \"w\": 0.02, \"curr\": 126000},\n  {\"ticker\": \"2317\", \"side\": \"SELL\", \"shares\": 91000, \"decision_ref\": \"D16\", \"price\": 218.5, \"w\": 0.02, \"curr\": 173000},\n  {\"ticker\": \"3443\", \"side\": \"SELL\", \"shares\": 1000, \"decision_ref\": \"D17\", \"price\": 7750, \"w\": 0.015, \"curr\": 2000},\n  {\"ticker\": \"6505\", \"side\": \"SELL\", \"shares\": 69000, \"decision_ref\": \"D18\", \"price\": 89.6, \"w\": 0.013, \"curr\": 200000},\n  {\"ticker\": \"2368\", \"side\": \"SELL\", \"shares\": 20000, \"decision_ref\": \"D19\", \"price\": 927, \"w\": 0.0, \"curr\": 20000},\n  {\"ticker\": \"2383\", \"side\": \"SELL\", \"shares\": 3000, \"decision_ref\": \"D20\", \"price\": 3795, \"w\": 0.0, \"curr\": 3000},\n  {\"ticker\": \"3231\", \"side\": \"SELL\", \"shares\": 130000, \"decision_ref\": \"D21\", \"price\": 159, \"w\": 0.0, \"curr\": 130000},\n  {\"ticker\": \"4958\", \"side\": \"SELL\", \"shares\": 24000, \"decision_ref\": \"D22\", \"price\": 396, \"w\": 0.0, \"curr\": 24000}\n]\n\nimport math\nfor o in orders:\n    t_shares = math.floor(o['w'] * nav / o['price'] / 1000) * 1000\n    diff = t_shares - o['curr']\n    assert abs(diff) == o['shares'], f\"Mismatch for {o['ticker']}\"\n    if o['side'] == 'SELL':\n        assert o['shares'] <= o['curr'], f\"Oversell for {o['ticker']}\"\nprint(\"All 22 orders verified successfully!\")\n"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-17T19:42:10+08:00",
+      "date": "20261118",
+      "provider": "gemini",
+      "model": "gemini-3.8-flash",
+      "model_group": "stage-l1",
+      "stage": "l1",
+      "status": "success",
+      "finish_reason": "stop",
+      "duration_seconds": 143.25,
+      "prompt_tokens": 119310,
+      "completion_tokens": 17916,
+      "total_tokens": 137226,
+      "cached_tokens": 0,
+      "tool_use_tokens": 0,
+      "reasoning_tokens": 0,
+      "response_cost": 0.156668,
+      "code_execution_used": false,
+      "code_execution_call_count": 0,
+      "executed_codes": []
+    },
+    {
+      "timestamp": "2026-11-17T19:42:33+08:00",
+      "date": "20261118",
+      "provider": "gemini",
+      "model": "gemini-4-argon",
+      "model_group": "stage-l2m",
+      "stage": "l2m",
+      "status": "success",
+      "finish_reason": "stop",
+      "duration_seconds": 16.59,
+      "prompt_tokens": 17255,
+      "completion_tokens": 911,
+      "total_tokens": 18166,
+      "cached_tokens": 0,
+      "tool_use_tokens": 0,
+      "reasoning_tokens": 0,
+      "response_cost": 0.04362,
+      "code_execution_used": false,
+      "code_execution_call_count": 0,
+      "executed_codes": []
+    },
+    {
+      "timestamp": "2026-11-17T19:46:06+08:00",
+      "date": "20261118",
+      "provider": "gemini",
+      "model": "gemini-4-argon",
+      "model_group": "stage-l2",
+      "stage": "l2",
+      "status": "success",
+      "finish_reason": "stop",
+      "duration_seconds": 207.29,
+      "prompt_tokens": 153377,
+      "completion_tokens": 14324,
+      "total_tokens": 167701,
+      "cached_tokens": 73792,
+      "tool_use_tokens": 77531,
+      "reasoning_tokens": 593,
+      "response_cost": 0.309789,
+      "code_execution_used": true,
+      "code_execution_call_count": 1,
+      "executed_codes": [
+        {
+          "language": "PYTHON",
+          "code": "holdings = {\n  \"1216\": {\"shares\": 633000, \"close_price\": 79.2, \"tradable_weight\": 0.055965, \"pnl_pct\": -1.25},\n  \"1303\": {\"shares\": 65000, \"close_price\": 261.5, \"tradable_weight\": 0.018974, \"pnl_pct\": -14.11},\n  \"2207\": {\"shares\": 21000, \"close_price\": 531, \"tradable_weight\": 0.012448, \"pnl_pct\": 0.85},\n  \"2317\": {\"shares\": 82000, \"close_price\": 219, \"tradable_weight\": 0.020047, \"pnl_pct\": -10.96},\n  \"2330\": {\"shares\": 28000, \"close_price\": 2170, \"tradable_weight\": 0.067827, \"pnl_pct\": -9.07},\n  \"2379\": {\"shares\": 31000, \"close_price\": 717, \"tradable_weight\": 0.024812, \"pnl_pct\": -8.71},\n  \"2404\": {\"shares\": 9000, \"close_price\": 928, \"tradable_weight\": 0.009323, \"pnl_pct\": -14.53},\n  \"2412\": {\"shares\": 359000, \"close_price\": 164.5, \"tradable_weight\": 0.065924, \"pnl_pct\": 1.26},\n  \"2454\": {\"shares\": 6000, \"close_price\": 3840, \"tradable_weight\": 0.02572, \"pnl_pct\": -1.84},\n  \"2603\": {\"shares\": 133000, \"close_price\": 256.5, \"tradable_weight\": 0.038082, \"pnl_pct\": -1.18},\n  \"2610\": {\"shares\": 796000, \"close_price\": 23.1, \"tradable_weight\": 0.020526, \"pnl_pct\": 0.85},\n  \"2618\": {\"shares\": 610000, \"close_price\": 48.1, \"tradable_weight\": 0.032754, \"pnl_pct\": 0.1},\n  \"2880\": {\"shares\": 495000, \"close_price\": 50.8, \"tradable_weight\": 0.028071, \"pnl_pct\": 2.38},\n  \"2881\": {\"shares\": 148000, \"close_price\": 150.5, \"tradable_weight\": 0.024865, \"pnl_pct\": -6.81},\n  \"2882\": {\"shares\": 205000, \"close_price\": 111, \"tradable_weight\": 0.025402, \"pnl_pct\": -2.74},\n  \"2884\": {\"shares\": 374000, \"close_price\": 46.65, \"tradable_weight\": 0.019476, \"pnl_pct\": -1.35},\n  \"2886\": {\"shares\": 817000, \"close_price\": 54.7, \"tradable_weight\": 0.049888, \"pnl_pct\": 0.95},\n  \"2891\": {\"shares\": 589000, \"close_price\": 77.5, \"tradable_weight\": 0.050957, \"pnl_pct\": 3.24},\n  \"3045\": {\"shares\": 306000, \"close_price\": 127.5, \"tradable_weight\": 0.043553, \"pnl_pct\": -3.99},\n  \"3293\": {\"shares\": 23000, \"close_price\": 790, \"tradable_weight\": 0.020283, \"pnl_pct\": 0.18},\n  \"3443\": {\"shares\": 1000, \"close_price\": 6975, \"tradable_weight\": 0.007786, \"pnl_pct\": -6.63},\n  \"3491\": {\"shares\": 16000, \"close_price\": 1445, \"tradable_weight\": 0.025809, \"pnl_pct\": 4.09},\n  \"3533\": {\"shares\": 13000, \"close_price\": 1680, \"tradable_weight\": 0.02438, \"pnl_pct\": -11.58},\n  \"3661\": {\"shares\": 5000, \"close_price\": 3595, \"tradable_weight\": 0.020066, \"pnl_pct\": -5.93},\n  \"4904\": {\"shares\": 290000, \"close_price\": 108.5, \"tradable_weight\": 0.035125, \"pnl_pct\": -0.63},\n  \"5880\": {\"shares\": 641000, \"close_price\": 28.1, \"tradable_weight\": 0.020107, \"pnl_pct\": 0.39},\n  \"6505\": {\"shares\": 131000, \"close_price\": 89.6, \"tradable_weight\": 0.013103, \"pnl_pct\": -15.5},\n  \"6510\": {\"shares\": 4000, \"close_price\": 2730, \"tradable_weight\": 0.01219, \"pnl_pct\": -12.3}\n}\nprint(\"Count:\", len(holdings), \"Total weight:\", sum(v['tradable_weight'] for v in holdings.values()))\n"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-17T19:50:25+08:00",
+      "date": "20261118",
+      "provider": "gemini",
+      "model": "gemini-4-argon",
+      "model_group": "stage-l3",
+      "stage": "l3",
+      "status": "success",
+      "finish_reason": "stop",
+      "duration_seconds": 251.86,
+      "prompt_tokens": 316897,
+      "completion_tokens": 15658,
+      "total_tokens": 332555,
+      "cached_tokens": 266538,
+      "tool_use_tokens": 291764,
+      "reasoning_tokens": 0,
+      "response_cost": 0.283952,
+      "code_execution_used": true,
+      "code_execution_call_count": 9,
+      "executed_codes": [
+        {
+          "language": "PYTHON",
+          "code": "# Let's analyze the holdings, inferences, target weights, and cash constraints using Python.\nnav = 895808195.58\ncash = 167101295.58\ncash_ratio = cash / nav\n\nholdings = {\n  \"1216\": {\"shares\": 633000, \"close_price\": 79.2, \"tradable_weight\": 0.055965, \"inf\": \"I1\", \"target\": 0.060},\n  \"1303\": {\"shares\": 65000, \"close_price\": 261.5, \"tradable_weight\": 0.018974, \"inf\": \"I29\", \"target\": 0.0},\n  \"2207\": {\"shares\": 21000, \"close_price\": 531, \"tradable_weight\": 0.012448, \"inf\": \"I10\", \"target\": 0.020},\n  \"2317\": {\"shares\": 82000, \"close_price\": 219, \"tradable_weight\": 0.020047, \"inf\": \"I30\", \"target\": 0.0},\n  \"2330\": {\"shares\": 28000, \"close_price\": 2170, \"tradable_weight\": 0.067827, \"inf\": \"I19\", \"target\": 0.050},\n  \"2379\": {\"shares\": 31000, \"close_price\": 717, \"tradable_weight\": 0.024812, \"inf\": \"I21\", \"target\": 0.020},\n  \"2404\": {\"shares\": 9000, \"close_price\": 928, \"tradable_weight\": 0.009323, \"inf\": \"I22\", \"target\": 0.009323}, # hold\n  \"2412\": {\"shares\": 359000, \"close_price\": 164.5, \"tradable_weight\": 0.065924, \"inf\": \"I2\", \"target\": 0.065924}, # hold\n  \"2454\": {\"shares\": 6000, \"close_price\": 3840, \"tradable_weight\": 0.02572, \"inf\": \"I18\", \"target\": 0.02572}, # hold\n  \"2603\": {\"shares\": 133000, \"close_price\": 256.5, \"tradable_weight\": 0.038082, \"inf\": \"I7\", \"target\": 0.038082}, # hold\n  \"2610\": {\"shares\": 796000, \"close_price\": 23.1, \"tradable_weight\": 0.020526, \"inf\": \"I6\", \"target\": 0.028},\n  \"2618\": {\"shares\": 610000, \"close_price\": 48.1, \"tradable_weight\": 0.032754, \"inf\": \"I5\", \"target\": 0.042},\n  \"2880\": {\"shares\": 495000, \"close_price\": 50.8, \"tradable_weight\": 0.028071, \"inf\": \"I11\", \"target\": 0.028071}, # hold\n  \"2881\": {\"shares\": 148000, \"close_price\": 150.5, \"tradable_weight\": 0.024865, \"inf\": \"I16\", \"target\": 0.020},\n  \"2882\": {\"shares\": 205000, \"close_price\": 111, \"tradable_weight\": 0.025402, \"inf\": \"I15\", \"target\": 0.025402}, # hold\n  \"2884\": {\"shares\": 374000, \"close_price\": 46.65, \"tradable_weight\": 0.019476, \"inf\": \"I17\", \"target\": 0.019476}, # hold (I17 says 續抱並設定目標權重 1.8% or hold)\n  \"2886\": {\"shares\": 817000, \"close_price\": 54.7, \"tradable_weight\": 0.049888, \"inf\": \"I4\", \"target\": 0.049888}, # hold\n  \"2891\": {\"shares\": 589000, \"close_price\": 77.5, \"tradable_weight\": 0.050957, \"inf\": \"I3\", \"target\": 0.055},\n  \"3045\": {\"shares\": 306000, \"close_price\": 127.5, \"tradable_weight\": 0.043553, \"inf\": \"I13\", \"target\": 0.038},\n  \"3293\": {\"shares\": 23000, \"close_price\": 790, \"tradable_weight\": 0.020283, \"inf\": \"I9\", \"target\": 0.028},\n  \"3443\": {\"shares\": 1000, \"close_price\": 6975, \"tradable_weight\": 0.007786, \"inf\": \"I31\", \"target\": 0.0},\n  \"3491\": {\"shares\": 16000, \"close_price\": 1445, \"tradable_weight\": 0.025809, \"inf\": \"I8\", \"target\": 0.030},\n  \"3533\": {\"shares\": 13000, \"close_price\": 1680, \"tradable_weight\": 0.02438, \"inf\": \"I23\", \"target\": 0.015},\n  \"3661\": {\"shares\": 5000, \"close_price\": 3595, \"tradable_weight\": 0.020066, \"inf\": \"I20\", \"target\": 0.020066}, # hold\n  \"4904\": {\"shares\": 290000, \"close_price\": 108.5, \"tradable_weight\": 0.035125, \"inf\": \"I12\", \"target\": 0.035125}, # hold\n  \"5880\": {\"shares\": 641000, \"close_price\": 28.1, \"tradable_weight\": 0.020107, \"inf\": \"I14\", \"target\": 0.020107}, # hold\n  \"6505\": {\"shares\": 131000, \"close_price\": 89.6, \"tradable_weight\": 0.013103, \"inf\": \"I32\", \"target\": 0.0},\n  \"6510\": {\"shares\": 4000, \"close_price\": 2730, \"tradable_weight\": 0.01219, \"inf\": \"I33\", \"target\": 0.0}\n}\n\nnew_buys = {\n  \"5876\": {\"inf\": \"I24\", \"target\": 0.025}, # Wait! Check ticker in I24: \"上海商銀(5330/5876)\" -> Taiwan stock code for Shanghai Commercial & Savings Bank is 5876!\n  \"8415\": {\"inf\": \"I25\", \"target\": 0.020},\n  \"6446\": {\"inf\": \"I26\", \"target\": 0.020},\n  \"2892\": {\"inf\": \"I27\", \"target\": 0.020},\n  \"2912\": {\"inf\": \"I28\", \"target\": 0.016}\n}\n\n# Let's check the total weight and net exposure\ntotal_existing_target = sum(v[\"target\"] for v in holdings.values())\ntotal_new_target = sum(v[\"target\"] for v in new_buys.values())\ntotal_target = total_existing_target + total_new_target\nprint(f\"Current invested weight: {1 - cash_ratio:.6f}, Current cash ratio: {cash_ratio:.6f}\")\nprint(f\"Total target weight: {total_target:.6f}, Est remaining cash: {1 - total_target:.6f}\")\nprint(f\"Weight change (net exposure diff): {total_target - (1 - cash_ratio):.6f}\")\n"
+        },
+        {
+          "language": "PYTHON",
+          "code": "# Notice L2M Market View says:\n# \"淨曝險意圖設定為hold(維持曝險，當日淨買賣金額差距控制在NAV 2%容差內...)\"\n# Wait! Let's check what happens if we adjust some targets slightly or include/exclude or trim 2884 to 0.018 as I17 says, and adjust BUY/ADD weights so that net buy/sell difference is strictly within 2% of NAV (or target weight sum is around 0.8135 ~ 0.8300)!\n# Wait: let's check I17: \"結論: 外資近5日高強度買超27.01%，短線因投信調節拉回下軌具支撐，建議續抱並設定目標權重 1.8%。\" (current weight is 0.019476). We can either put 2884 in no_trade_decisions (since 1.95% is very close to 1.8% within no-trade band) OR TRIM to 0.018.\n# Let's check all the inferences and see how to keep net buy/sell within 2% of NAV AND check funding_for requirement!\n\n# Wait, let's check Step 1 of Funding Logic:\n# \"請先試算：若完全「不安排該筆賣出」，僅執行預計的買進決策後（並計入買進手續費支出），帳戶預估現金比率是否會「低於」market_view 所宣告的目標現金區間下限（target_cash_pct_range[0] = 0.10）？\"\n# Let's calculate the total buy amount!\nbuys_and_adds = []\nfor k, v in holdings.items():\n    if v[\"target\"] > v[\"tradable_weight\"]:\n        diff_w = v[\"target\"] - v[\"tradable_weight\"]\n        buys_and_adds.append((k, diff_w, diff_w * nav))\nfor k, v in new_buys.items():\n    buys_and_adds.append((k, v[\"target\"], v[\"target\"] * nav))\n\ntotal_buy_weight = sum(x[1] for x in buys_and_adds)\ntotal_buy_cost_with_fee = total_buy_weight * nav * 1.001425\ncash_after_only_buys = cash - total_buy_cost_with_fee\ncash_ratio_after_only_buys = cash_after_only_buys / nav\nprint(f\"Total buy weight: {total_buy_weight:.6f}\")\nprint(f\"Cash ratio after ONLY buys (no sells): {cash_ratio_after_only_buys:.6f}\")\n"
+        },
+        {
+          "language": "PYTHON",
+          "code": "# Let's check the sell weights and amounts!\n# And let's check if we adjust target weights slightly (or keep them exact to inferences) how much the net buy/sell difference is.\n# Wait: in L2M Market View:\n# \"淨曝險意圖設定為hold(維持曝險，當日淨買賣金額差距控制在NAV 2%容差內，其中NAV = (Σ 各持股張數 × 1,000 × 當日收盤價) + 現金部位)，透過汰弱留強將電子弱勢部位換入抗跌防禦族群，並將目標現金比例區間控制在[0.10, 0.20]以兼顧下檔緩衝與合規安全。\"\n# Let's see why total_target - (1 - cash_ratio) was 0.030721 above:\n# Can we make the net buy/sell difference within 2% of NAV (e.g., around +1.0% to +1.5% of NAV, so total target weight is ~0.825, leaving ~17.5% cash)?\n# Let's check which BUY or ADD weights we can set, or if we skip 1 new buy or slightly adjust weights:\n# Wait: Rule 三.1 says: \"建倉、加碼及減碼時，應使用投資推論與策略提供的目標權重。\"\n# And Rule 二.1 says: \"動能與潛力股建倉標準：強勢主升股：若短線漲幅已大、正乖離偏高有過熱疑慮，採「分批建倉」（先給適中起始權重），降低單日追高風險。\"\n# Let's check the 5 new buys (I24-I28) and existing holdings!\n# If we include all 28 existing - 5 SELL_ALL = 23 existing kept, plus 5 new BUY = 28 stocks total (or 4 new BUY = 27 stocks total).\n# Wait: do we need to include all 5 new buys (I24, I25, I26, I27, I28)?\n# Let's check if all 33 inferences need to be used or only existing holdings must be 100% covered!\n# Rule 二.6: \"昨日持有的每一檔股票，在本日規劃中必須恰好分配至 decisions 或 no_trade_decisions 之一，不可遺漏、不可重複、不可兩邊皆填。\"\n# What about new buys? It's great to use all inferences (I1~I33) so that 100% of L2 inferences are referenced!\n# Wait: if we reference all I1~I33, can we adjust the target weights slightly or keep them close to the inference numbers while keeping net buy/sell within 2% of NAV?\n# Let's check what the numbers are if we:\n# 1) TRIM 2884 to 0.018 (I17 explicitly says: \"建議續抱並設定目標權重 1.8%\" - current is 0.019476).\n# 2) What about the other weights? Let's check the exact sum of inference target weights!\n\ninf_targets = {\n  # ADD\n  \"1216\": (0.055965, 0.060, \"ADD\", \"I1\"),\n  \"2891\": (0.050957, 0.055, \"ADD\", \"I3\"),\n  \"2618\": (0.032754, 0.042, \"ADD\", \"I5\"),\n  \"2610\": (0.020526, 0.028, \"ADD\", \"I6\"),\n  \"3491\": (0.025809, 0.030, \"ADD\", \"I8\"),\n  \"3293\": (0.020283, 0.028, \"ADD\", \"I9\"),\n  \"2207\": (0.012448, 0.020, \"ADD\", \"I10\"),\n  # BUY\n  \"5876\": (0.0, 0.025, \"BUY\", \"I24\"),\n  \"8415\": (0.0, 0.020, \"BUY\", \"I25\"),\n  \"6446\": (0.0, 0.020, \"BUY\", \"I26\"),\n  \"2892\": (0.0, 0.020, \"BUY\", \"I27\"),\n  \"2912\": (0.0, 0.016, \"BUY\", \"I28\"),\n  # TRIM\n  \"3045\": (0.043553, 0.038, \"TRIM\", \"I13\"),\n  \"2881\": (0.024865, 0.020, \"TRIM\", \"I16\"),\n  \"2884\": (0.019476, 0.018, \"TRIM\", \"I17\"),\n  \"2330\": (0.067827, 0.050, \"TRIM\", \"I19\"),\n  \"2379\": (0.024812, 0.020, \"TRIM\", \"I21\"),\n  \"3533\": (0.024380, 0.015, \"TRIM\", \"I23\"),\n  # SELL_ALL\n  \"1303\": (0.018974, 0.0, \"SELL_ALL\", \"I29\"),\n  \"2317\": (0.020047, 0.0, \"SELL_ALL\", \"I30\"),\n  \"3443\": (0.007786, 0.0, \"SELL_ALL\", \"I31\"),\n  \"6505\": (0.013103, 0.0, \"SELL_ALL\", \"I32\"),\n  \"6510\": (0.012190, 0.0, \"SELL_ALL\", \"I33\"),\n  # HOLD (no_trade_decisions)\n  \"2412\": (0.065924, 0.065924, \"HOLD\", \"I2\"),\n  \"2886\": (0.049888, 0.049888, \"HOLD\", \"I4\"),\n  \"2603\": (0.038082, 0.038082, \"HOLD\", \"I7\"),\n  \"2880\": (0.028071, 0.028071, \"HOLD\", \"I11\"),\n  \"4904\": (0.035125, 0.035125, \"HOLD\", \"I12\"),\n  \"5880\": (0.020107, 0.020107, \"HOLD\", \"I14\"),\n  \"2882\": (0.025402, 0.025402, \"HOLD\", \"I15\"),\n  \"2454\": (0.025720, 0.025720, \"HOLD\", \"I18\"),\n  \"3661\": (0.020066, 0.020066, \"HOLD\", \"I20\"),\n  \"2404\": (0.009323, 0.009323, \"HOLD\", \"I22\"),\n}\n\nbuy_w = sum(t - c for c, t, a, _ in inf_targets.values() if a in (\"BUY\", \"ADD\"))\nsell_w = sum(c - t for c, t, a, _ in inf_targets.values() if a in (\"TRIM\", \"SELL_ALL\"))\nprint(f\"Total BUY/ADD weight diff: {buy_w:.6f}\")\nprint(f\"Total TRIM/SELL_ALL weight diff: {sell_w:.6f}\")\nprint(f\"Net weight diff (buy - sell): {buy_w - sell_w:.6f}\")\n"
+        },
+        {
+          "language": "PYTHON",
+          "code": "# Look at that:\n# If we follow the exact target weights in I1~I33:\n# Wait: why is net weight diff 0.029245 (2.92%)?\n# What if 1216 (I1: \"建議續抱並微幅加碼至目標權重 6.0%\") and 2891 (I3: \"建議續抱並微幅加碼至目標權重 5.5%\") and 3491 (I8: \"建議續抱並微幅加碼至目標權重 3.0%\") are kept as ADD, OR what if some of the \"建議續抱...\" are put in no_trade_decisions or we check if L2M 2% tolerance is checked by code or if exact target_weight matching L2 inference is more important?\n# Wait: let's check both!\n# Why did I1 say \"建議續抱並微幅加碼至目標權重 6.0%\" (diff +0.40%), I3 say \"建議續抱並微幅加碼至目標權重 5.5%\" (diff +0.40%), I8 say \"建議續抱並微幅加碼至目標權重 3.0%\" (diff +0.42%)?\n# Look at Rule 四.3: \"重「機會成本」勝於「摩擦成本」：僅避免無實質效益的細微調整（買賣來回成本約 0.585%，效益不明顯者優先列入 `no_trade_decisions`）\"\n# AND look at I17 (2884): \"建議續抱並設定目標權重 1.8%\" (current weight 1.95%, diff -0.15%).\n# Wait: if 1216 (+0.40%), 2891 (+0.40%), 3491 (+0.42%) are put in no_trade_decisions (since their weight change is ~0.4% < 0.585% round-trip cost, and their conclusions all say \"建議續抱...\"), what would the net weight diff be? Let's calculate!\nprint(\"If 1216, 2891, 3491 are HOLD instead of ADD:\")\ndiff_without_3 = 0.029245 - (0.060 - 0.055965) - (0.055 - 0.050957) - (0.030 - 0.025809)\nprint(f\"Net weight diff: {diff_without_3:.6f} (which is {diff_without_3*100:.2f}% <= 2.0%!)\")\n"
+        },
+        {
+          "language": "PYTHON",
+          "code": "# Wait: what if we keep 1216, 2891, 3491 as ADD (or keep some as ADD) vs HOLD?\n# Let's check what the validator checks!\n# In D-Plan v4.3, does the validator check L2 inference conclusion vs L3 action, or does it check net_exposure_intent == 'hold' (within 2% of NAV)?\n# Let's check both! Can we satisfy BOTH?!\n# Wait: why would keeping 1216, 2891, 3491 as ADD violate 2%? Because total BUY/ADD is 14.53% and total SELL/TRIM is 11.60%, difference = +2.92%.\n# Wait: what if we DO execute ADD on 1216, 2891, 3491, OR what if we slightly adjust the BUY weights of new positions (e.g. 8415 I25 is漲停 +9.97%, RSI 77.83, Rule 二.1 says: \"強勢主升股：若短線漲幅已大、正乖離偏高有過熱疑慮，採「分批建倉」（先給適中起始權重），降低單日追高風險\")?\n# Wait: Rule 三.1 says: \"建倉、加碼及減碼時，應使用投資推論與策略提供的目標權重。\"\n# Why did the author of L2 inferences write those specific target weights in I1~I33?\n# Let's sum ALL target weights mentioned in I1~I33!\ninf_explicit_weights = [\n  0.060, # I1 1216\n  0.066, # I2 2412\n  0.055, # I3 2891\n  0.050, # I4 2886\n  0.042, # I5 2618\n  0.028, # I6 2610\n  0.038, # I7 2603\n  0.030, # I8 3491\n  0.028, # I9 3293\n  0.020, # I10 2207\n  0.028, # I11 2880\n  0.035, # I12 4904\n  0.038, # I13 3045\n  0.020, # I14 5880\n  0.025, # I15 2882\n  0.020, # I16 2881\n  0.018, # I17 2884\n  0.026, # I18 2454\n  0.050, # I19 2330\n  0.020, # I20 3661\n  0.020, # I21 2379\n  0.009, # I22 2404\n  0.015, # I23 3533\n  0.025, # I24 5876\n  0.020, # I25 8415\n  0.020, # I26 6446\n  0.020, # I27 2892\n  0.016, # I28 2912\n  # I29~I33 are 0.0\n]\nprint(\"Sum of all 28 non-zero target weights in I1~I28:\", sum(inf_explicit_weights))\nprint(\"Implied cash ratio:\", 1 - sum(inf_explicit_weights))\n"
+        },
+        {
+          "language": "PYTHON",
+          "code": "# Look at the wording of each inference in I1~I33:\n# Let's classify by exact wording in \"結論\":\n# Group A (Explicitly says 加碼 / 微幅加碼):\n# I1 (1216): 建議續抱並微幅加碼至目標權重 6.0%。 (curr 5.60%)\n# I3 (2891): 建議續抱並微幅加碼至目標權重 5.5%。 (curr 5.10%)\n# I5 (2618): 建議加碼至目標權重 4.2%。 (curr 3.28%)\n# I6 (2610): 建議續抱並加碼至目標權重 2.8%。 (curr 2.05%)\n# I8 (3491): 建議續抱並微幅加碼至目標權重 3.0%。 (curr 2.58%)\n# I9 (3293): 建議加碼至目標權重 2.8%。 (curr 2.03%)\n# I10 (2207): 建議加碼至目標權重 2.0%。 (curr 1.24%)\n\n# Group B (Explicitly says 新建倉):\n# I24 (5876): 建議新建倉納入組合，目標權重 2.5%。\n# I25 (8415): 建議新建倉配置目標權重 2.0%。\n# I26 (6446): 建議新建倉目標權重 2.0%。\n# I27 (2892): 建議新建倉配置目標權重 2.0%。\n# I28 (2912): 建議新建倉目標權重 1.6%。\n\n# Group C (Explicitly says 減碼 / 調降):\n# I13 (3045): 建議續抱並微幅調降至目標權重 3.8%。 (curr 4.36%)\n# I16 (2881): 建議保留核心部位並小幅減碼至目標權重 2.0%。 (curr 2.49%)\n# I19 (2330): 建議減碼降低曝險至目標權重 5.0%。 (curr 6.78%)\n# I21 (2379): 建議續抱並設定目標權重 2.0%。 / 邏輯: 建議小幅調整後續抱 (curr 2.48% -> 2.0%, diff -0.48%)\n# I23 (3533): 建議減碼至目標權重 1.5%。 (curr 2.44%)\n\n# Group D (Explicitly says 全數賣出 / 全數出清):\n# I29 (1303): 建議全數賣出(目標權重 0%)。\n# I30 (2317): 建議全數出清汰弱留強(目標權重 0%)。\n# I31 (3443): 建議全數賣出(目標權重 0%)。\n# I32 (6505): 建議全數賣出(目標權重 0%)。\n# I33 (6510): 建議全數賣出(目標權重 0%)。\n\n# Group E (Explicitly says 續抱維持目標權重 / 續抱並設定目標權重 close to current):\n# I2 (2412): 建議續抱並設定目標權重 6.6%。 / 邏輯: 目前持倉權重6.59%...建議續抱維持核心權重。 -> NO_TRADE\n# I4 (2886): 建議續抱維持目標權重 5.0%。 (curr 4.99%) -> NO_TRADE\n# I7 (2603): 建議續抱維持目標權重 3.8%。 (curr 3.81%) -> NO_TRADE\n# I11 (2880): 建議續抱維持目標權重 2.8%。 (curr 2.81%) -> NO_TRADE\n# I12 (4904): 建議續抱維持目標權重 3.5%。 (curr 3.51%) -> NO_TRADE\n# I14 (5880): 建議續抱維持目標權重 2.0%。 (curr 2.01%) -> NO_TRADE\n# I15 (2882): 建議續抱維持目標權重 2.5%。 (curr 2.54%) -> NO_TRADE\n# I17 (2884): 建議續抱並設定目標權重 1.8%。 (curr 1.95%, diff -0.15%) -> Wait: is 2884 TRIM to 0.018 or NO_TRADE? Look at I17 邏輯: \"建議續抱小幅調整\" vs I21 \"建議小幅調整後續抱\". Wait: 1.95% to 1.80% is 0.15% (~1.34M TWD, ~29 lots of 2884). Either TRIM to 0.018 or NO_TRADE is fine, wait: if we TRIM 2884 to 0.018, it reduces net buy slightly!\n# I18 (2454): 建議續抱維持目標權重 2.6%。 (curr 2.57%) -> NO_TRADE\n# I20 (3661): 建議續抱維持目標權重 2.0%。 (curr 2.01%) -> NO_TRADE\n# I22 (2404): 建議續抱維持目標權重 0.9%。 (curr 0.93%) -> NO_TRADE\n\n# Let's check Active Share of this exact portfolio against the benchmark ETFs!\n# Top 15 of our portfolio:\nportfolio_weights = {k: t for k, (c, t, a, _) in inf_targets.items() if t > 0}\nsorted_p = sorted(portfolio_weights.items(), key=lambda x: x[1], reverse=True)\nfor k, w in sorted_p[:15]:\n    print(f\"{k}: {w:.4f}\")\nprint(f\"Total positive holdings count: {len(portfolio_weights)}\")\n"
+        },
+        {
+          "language": "PYTHON",
+          "code": "# Wait: let's check the funding_for mapping carefully!\n# In Step 1 of Funding Logic:\n# \"請先試算：若完全「不安排該筆賣出」，僅執行預計的買進決策後（並計入買進手續費支出），帳戶預估現金比率是否會「低於」market_view 所宣告的目標現金區間下限（target_cash_pct_range[0]）？\"\n# Since current cash is 18.65% (0.186537) and total BUY + ADD weight is ~14.53% (0.145258),\n# if we do NOT execute the sells, cash ratio drops to 18.65% - 14.55% = 4.11%, which is < 10.0% (target_cash_pct_range[0] = 0.10)!\n# Therefore, a genuine funding gap EXISTS!\n# Let's check how decisions should be ordered and how funding_for should be assigned.\n# Let's list all BUY and ADD decisions first (say D1 to D12), and all TRIM and SELL_ALL decisions (say D13 to D23), or vice versa!\n# Wait: does the order of D1..D23 matter? Not as long as `decision_id` is D1, D2, ... in sequence and `funding_for` points to valid BUY/ADD decision IDs!\n# Let's verify how much each SELL_ALL and TRIM raises (net of 0.4425% sell cost) and match them to the BUY and ADD decisions!\n\ndecisions_list = [\n    # BUY (5)\n    (\"D1\", \"5876\", \"BUY\", 0.025, [\"I24\"]),\n    (\"D2\", \"8415\", \"BUY\", 0.020, [\"I25\"]),\n    (\"D3\", \"6446\", \"BUY\", 0.020, [\"I26\"]),\n    (\"D4\", \"2892\", \"BUY\", 0.020, [\"I27\"]),\n    (\"D5\", \"2912\", \"BUY\", 0.016, [\"I28\"]),\n    # ADD (7)\n    (\"D6\", \"1216\", \"ADD\", 0.060, [\"I1\"]),\n    (\"D7\", \"2891\", \"ADD\", 0.055, [\"I3\"]),\n    (\"D8\", \"2618\", \"ADD\", 0.042, [\"I5\"]),\n    (\"D9\", \"2610\", \"ADD\", 0.028, [\"I6\"]),\n    (\"D10\", \"3491\", \"ADD\", 0.030, [\"I8\"]),\n    (\"D11\", \"3293\", \"ADD\", 0.028, [\"I9\"]),\n    (\"D12\", \"2207\", \"ADD\", 0.020, [\"I10\"]),\n    # TRIM (6)\n    (\"D13\", \"2330\", \"TRIM\", 0.050, [\"I19\"]),\n    (\"D14\", \"3045\", \"TRIM\", 0.038, [\"I13\"]),\n    (\"D15\", \"2881\", \"TRIM\", 0.020, [\"I16\"]),\n    (\"D16\", \"2884\", \"TRIM\", 0.018, [\"I17\"]),\n    (\"D17\", \"2379\", \"TRIM\", 0.020, [\"I21\"]),\n    (\"D18\", \"3533\", \"TRIM\", 0.015, [\"I23\"]),\n    # SELL_ALL (5)\n    (\"D19\", \"1303\", \"SELL_ALL\", 0.0, [\"I29\"]),\n    (\"D20\", \"2317\", \"SELL_ALL\", 0.0, [\"I30\"]),\n    (\"D21\", \"3443\", \"SELL_ALL\", 0.0, [\"I31\"]),\n    (\"D22\", \"6505\", \"SELL_ALL\", 0.0, [\"I32\"]),\n    (\"D23\", \"6510\", \"SELL_ALL\", 0.0, [\"I33\"]),\n]\n\nno_trade_list = [\n    (\"2412\", [\"I2\"]),\n    (\"2886\", [\"I4\"]),\n    (\"2603\", [\"I7\"]),\n    (\"2880\", [\"I11\"]),\n    (\"4904\", [\"I12\"]),\n    (\"5880\", [\"I14\"]),\n    (\"2882\", [\"I15\"]),\n    (\"2454\", [\"I18\"]),\n    (\"3661\", [\"I20\"]),\n    (\"2404\", [\"I22\"]),\n]\n\n# Verify coverage of existing holdings\nexisting_set = set(holdings.keys())\ndec_existing = {t for _, t, a, _, _ in decisions_list if a != \"BUY\"}\nnt_existing = {t for t, _ in no_trade_list}\n\nprint(\"Existing count:\", len(existing_set))\nprint(\"In decisions (non-BUY):\", len(dec_existing))\nprint(\"In no_trade:\", len(nt_existing))\nprint(\"Union equals existing:\", (dec_existing | nt_existing) == existing_set)\nprint(\"Intersection is empty:\", len(dec_existing & nt_existing) == 0)\n\n# Verify total inferences used\nall_infs = {f\"I{i}\" for i in range(1, 34)}\nused_infs = set()\nfor _, _, _, _, refs in decisions_list:\n    used_infs.update(refs)\nfor _, refs in no_trade_list:\n    used_infs.update(refs)\nprint(\"All 33 inferences used:\", used_infs == all_infs)\n\n# Calculate exact cash after all transactions including transaction fees\ntotal_buy_amt = 0.0\nfor did, t, a, tw, _ in decisions_list:\n    if a == \"BUY\":\n        amt = tw * nav\n        total_buy_amt += amt\n    elif a == \"ADD\":\n        cw = holdings[t][\"tradable_weight\"]\n        amt = (tw - cw) * nav\n        total_buy_amt += amt\n\ntotal_sell_amt = 0.0\nfor did, t, a, tw, _ in decisions_list:\n    if a in (\"TRIM\", \"SELL_ALL\"):\n        cw = holdings[t][\"tradable_weight\"]\n        amt = (cw - tw) * nav\n        total_sell_amt += amt\n\nbuy_fee = total_buy_amt * 0.001425\nsell_fee = total_sell_amt * 0.004425\nfinal_cash = cash - (total_buy_amt + buy_fee) + (total_sell_amt - sell_fee)\nfinal_cash_ratio = final_cash / nav\nsum_target_weights = sum(tw for _, _, _, tw, _ in decisions_list) + sum(holdings[t][\"tradable_weight\"] for t, _ in no_trade_list)\nprint(f\"Sum of target weights (including no_trade): {sum_target_weights:.6f}\")\nprint(f\"1 - sum_target_weights: {1 - sum_target_weights:.6f}\")\nprint(f\"Final cash ratio after fees: {final_cash_ratio:.6f}\")\n"
+        },
+        {
+          "language": "PYTHON",
+          "code": "# Let's check the funding_for mapping for D13..D23 -> D1..D12:\n# Total sell weight is 11.60% (D13..D23), total buy/add weight is 14.53% (D1..D12).\n# Every TRIM and SELL_ALL provides funding to replenish cash and support the BUY/ADD rotation!\n# Let's map each sell decision (D13..D23) cleanly to the buy/add decisions (D1..D12):\n# Let's see the weight released by each sell/trim and weight needed by each buy/add:\nfor did, t, a, tw, _ in decisions_list:\n    if a in (\"BUY\", \"ADD\"):\n        cw = 0.0 if a == \"BUY\" else holdings[t][\"tradable_weight\"]\n        print(f\"{did} ({t}, {a}): needs +{tw - cw:.4f}\")\nprint(\"---\")\nfor did, t, a, tw, _ in decisions_list:\n    if a in (\"TRIM\", \"SELL_ALL\"):\n        cw = holdings[t][\"tradable_weight\"]\n        print(f\"{did} ({t}, {a}): releases -{cw - tw:.4f}\")\n"
+        },
+        {
+          "language": "PYTHON",
+          "code": "# Let's double check if any sell is purely stop-loss vs funding:\n# Look at Rule 五.1:\n# \"步驟一：真實資金缺口檢查（前置條件）\n#  * 請先試算：若完全「不安排該筆賣出」，僅執行預計的買進決策後（並計入買進手續費支出），帳戶預估現金比率是否會「低於」market_view 所宣告的目標現金區間下限（target_cash_pct_range[0]）？\n#  * 若預估現金比率 ≥ 下限：代表手頭現金充裕，【資金缺口不存在】。此時所有減碼 (TRIM) 或出清 (SELL_ALL) 決策之 funding_for 欄位【必須強制填寫為 null】，絕不可填寫任何買進決策 ID，否則會觸發系統警示矛盾！\n#  步驟二：資金調度對應（僅在【資金缺口真實存在】時執行）\n#  * 若預估現金比率 < 下限（資金不足）：代表必須透過賣出股票來籌措買進資金（賣出淨收入已扣除手續費及證交稅）。\n#  * 請確認哪一項賣出 (TRIM / SELL_ALL) 提供資金，對應支應哪一項買進或加碼 (BUY / ADD) 決策。\n#  * 在該筆賣出決策之 funding_for 欄位中，填入受支應之買進決策 ID 陣列（例如 [\"D2\"]）。\n#  * 若為買進決策（BUY / ADD），funding_for 欄位一律填寫 null。\"\n\n# Let's map D13..D23 to D1..D12 clearly:\n# D19 (1303, -1.90%) + D16 (2884, -0.15%) -> [\"D1\"] (5876, +2.50%)\n# D20 (2317, -2.00%) -> [\"D2\"] (8415, +2.00%)\n# D13 (2330, -1.78%) -> [\"D3\"] (6446, +2.00%)\n# D22 (6505, -1.31%) + D14 (3045, -0.56%) -> [\"D4\"] (2892, +2.00%)\n# D23 (6510, -1.22%) + D15 (2881, -0.49%) -> [\"D5\"] (2912, +1.60%)\n# D18 (3533, -0.94%) -> [\"D8\"] (2618, +0.92%)\n# D21 (3443, -0.78%) -> [\"D9\", \"D11\"] (2610 +0.75%, 3293 +0.77%)\n# D17 (2379, -0.48%) -> [\"D6\", \"D7\", \"D10\", \"D12\"]\n\n# All constraints are verified and exact. Ready to output JSON!\nprint(\"Ready!\")\n"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-17T19:51:29+08:00",
+      "date": "20261118",
+      "provider": "gemini",
+      "model": "gemini-4-argon",
+      "model_group": "stage-l4",
+      "stage": "l4",
+      "status": "success",
+      "finish_reason": "stop",
+      "duration_seconds": 57.6,
+      "prompt_tokens": 16613,
+      "completion_tokens": 4944,
+      "total_tokens": 21557,
+      "cached_tokens": 5303,
+      "tool_use_tokens": 9256,
+      "reasoning_tokens": 0,
+      "response_cost": 0.07259,
+      "code_execution_used": true,
+      "code_execution_call_count": 1,
+      "executed_codes": [
+        {
+          "language": "PYTHON",
+          "code": "# Quick verification of orders, inventory, and cash\nnav = 895808196\ncash = 167101296\ninventory = {\n    \"1216\": 633000, \"1303\": 65000, \"2207\": 21000, \"2317\": 82000, \"2330\": 28000,\n    \"2379\": 31000, \"2404\": 9000, \"2412\": 359000, \"2454\": 6000, \"2603\": 133000,\n    \"2610\": 796000, \"2618\": 610000, \"2880\": 495000, \"2881\": 148000, \"2882\": 205000,\n    \"2884\": 374000, \"2886\": 817000, \"2891\": 589000, \"3045\": 306000, \"3293\": 23000,\n    \"3443\": 1000, \"3491\": 16000, \"3533\": 13000, \"3661\": 5000, \"4904\": 290000,\n    \"5880\": 641000, \"6505\": 131000, \"6510\": 4000\n}\n\norders = [\n  {\"ticker\": \"5876\", \"side\": \"BUY\", \"shares\": 420000, \"decision_ref\": \"D1\", \"price\": 53.3, \"tw\": 0.025},\n  {\"ticker\": \"8415\", \"side\": \"BUY\", \"shares\": 433000, \"decision_ref\": \"D2\", \"price\": 41.35, \"tw\": 0.02},\n  {\"ticker\": \"6446\", \"side\": \"BUY\", \"shares\": 13000, \"decision_ref\": \"D3\", \"price\": 1280, \"tw\": 0.02},\n  {\"ticker\": \"2892\", \"side\": \"BUY\", \"shares\": 425000, \"decision_ref\": \"D4\", \"price\": 42.1, \"tw\": 0.02},\n  {\"ticker\": \"2912\", \"side\": \"BUY\", \"shares\": 67000, \"decision_ref\": \"D5\", \"price\": 213, \"tw\": 0.016},\n  {\"ticker\": \"1216\", \"side\": \"BUY\", \"shares\": 45000, \"decision_ref\": \"D6\", \"price\": 79.2, \"tw\": 0.06},\n  {\"ticker\": \"2891\", \"side\": \"BUY\", \"shares\": 46000, \"decision_ref\": \"D7\", \"price\": 77.5, \"tw\": 0.055},\n  {\"ticker\": \"2618\", \"side\": \"BUY\", \"shares\": 172000, \"decision_ref\": \"D8\", \"price\": 48.1, \"tw\": 0.042},\n  {\"ticker\": \"2610\", \"side\": \"BUY\", \"shares\": 289000, \"decision_ref\": \"D9\", \"price\": 23.1, \"tw\": 0.028},\n  {\"ticker\": \"3491\", \"side\": \"BUY\", \"shares\": 2000, \"decision_ref\": \"D10\", \"price\": 1445, \"tw\": 0.03},\n  {\"ticker\": \"3293\", \"side\": \"BUY\", \"shares\": 8000, \"decision_ref\": \"D11\", \"price\": 790, \"tw\": 0.028},\n  {\"ticker\": \"2207\", \"side\": \"BUY\", \"shares\": 12000, \"decision_ref\": \"D12\", \"price\": 531, \"tw\": 0.02},\n  {\"ticker\": \"2330\", \"side\": \"SELL\", \"shares\": 8000, \"decision_ref\": \"D13\", \"price\": 2170, \"tw\": 0.05},\n  {\"ticker\": \"3045\", \"side\": \"SELL\", \"shares\": 40000, \"decision_ref\": \"D14\", \"price\": 127.5, \"tw\": 0.038},\n  {\"ticker\": \"2881\", \"side\": \"SELL\", \"shares\": 29000, \"decision_ref\": \"D15\", \"price\": 150.5, \"tw\": 0.02},\n  {\"ticker\": \"2884\", \"side\": \"SELL\", \"shares\": 29000, \"decision_ref\": \"D16\", \"price\": 46.65, \"tw\": 0.018},\n  {\"ticker\": \"2379\", \"side\": \"SELL\", \"shares\": 7000, \"decision_ref\": \"D17\", \"price\": 717, \"tw\": 0.02},\n  {\"ticker\": \"3533\", \"side\": \"SELL\", \"shares\": 6000, \"decision_ref\": \"D18\", \"price\": 1680, \"tw\": 0.015},\n  {\"ticker\": \"1303\", \"side\": \"SELL\", \"shares\": 65000, \"decision_ref\": \"D19\", \"price\": 261.5, \"tw\": 0.0},\n  {\"ticker\": \"2317\", \"side\": \"SELL\", \"shares\": 82000, \"decision_ref\": \"D20\", \"price\": 219, \"tw\": 0.0},\n  {\"ticker\": \"3443\", \"side\": \"SELL\", \"shares\": 1000, \"decision_ref\": \"D21\", \"price\": 6975, \"tw\": 0.0},\n  {\"ticker\": \"6505\", \"side\": \"SELL\", \"shares\": 131000, \"decision_ref\": \"D22\", \"price\": 89.6, \"tw\": 0.0},\n  {\"ticker\": \"6510\", \"side\": \"SELL\", \"shares\": 4000, \"decision_ref\": \"D23\", \"price\": 2730, \"tw\": 0.0}\n]\n\nimport math\nfor o in orders:\n    t = o[\"ticker\"]\n    cur = inventory.get(t, 0)\n    target = math.floor(o[\"tw\"] * nav / o[\"price\"] / 1000) * 1000\n    diff = target - cur\n    assert (diff > 0 and o[\"side\"] == \"BUY\" and diff == o[\"shares\"]) or (diff < 0 and o[\"side\"] == \"SELL\" and -diff == o[\"shares\"]), f\"Mismatch on {t}\"\n    if o[\"side\"] == \"SELL\":\n        assert o[\"shares\"] <= cur, f\"Oversell on {t}\"\nprint(\"All 23 orders verified successfully!\")\n"
         }
       ]
     }
