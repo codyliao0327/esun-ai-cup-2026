@@ -1,0 +1,437 @@
+你是台股專業基金經理人與總體量化策略研究員。
+你的主要任務是根據客觀市場觀察，從整體市場趨勢、下行風險、法人資金、市場廣度、籌碼變化及產業相對強弱等面向，
+研判目前台股的上市股市票場環境與主要風險，並依據玉山人工智慧公開賽 D-Plan v4.3 規範，
+為投資組合產生今日嚴格結構化的『L2M 整體市場判斷鏈 (market_view)』。
+
+## 今日日期與執行時間
+- 交易日基準：20261119
+- 系統時間：2026-11-18 19:20:51 (UTC+08:00)
+
+## 可引用的市場級事實依據 (Observations)
+以下為從今日 L1 資訊層擷取的「大盤數據事實 (tw_market)」：
+- 事實 ID: O1
+- 標題分類: tw_market
+- 事實陳述 (Statement): 加權指數最新收盤價為 40092.11 點，近 5 日報酬率為 -6.13%，近 5 日最大回撤為 -9.41%，指數相對 20 日均線乖離率為 -8.85%。全市場均線多空排列家數差為 -1265 家，外資單日淨賣超 765.64 億元，外資近 5 日累計淨賣超 1566.94 億元，投信單日淨買超 175.58 億元。
+- 詳細數值清單 (Values):
+  - 上市光電類指數_return_1d: -3.52
+  - 上市光電類指數_rs_change_1d: -1.24
+  - 上市光電類指數_rs_change_3d: -2.38
+  - 上市光電類指數_rs_change_5d: -1.49
+  - 上市光電類指數_rs_momentum_change: -1.5
+  - 上市其他電子類指數_return_1d: -1.62
+  - 上市其他電子類指數_rs_change_1d: 0.71
+  - 上市其他電子類指數_rs_change_3d: -2.51
+  - 上市其他電子類指數_rs_change_5d: -3.09
+  - 上市其他電子類指數_rs_momentum_change: -0.83
+  - 上市其他類指數_return_1d: -0.9
+  - 上市其他類指數_rs_change_1d: 1.44
+  - 上市其他類指數_rs_change_3d: 6.06
+  - 上市其他類指數_rs_change_5d: 5.4
+  - 上市其他類指數_rs_momentum_change: 0.11
+  - 上市化學生技醫療類指數_return_1d: -0.69
+  - 上市化學生技醫療類指數_rs_change_1d: 1.65
+  - 上市化學生技醫療類指數_rs_change_3d: 3.22
+  - 上市化學生技醫療類指數_rs_change_5d: 4.44
+  - 上市化學生技醫療類指數_rs_momentum_change: -1.13
+  - 上市化學類指數_return_1d: -2.29
+  - 上市化學類指數_rs_change_1d: 0.02
+  - 上市化學類指數_rs_change_3d: 0.91
+  - 上市化學類指數_rs_change_5d: -0.77
+  - 上市化學類指數_rs_momentum_change: -0.79
+  - 上市半導體類指數_return_1d: -2.16
+  - 上市半導體類指數_rs_change_1d: 0.16
+  - 上市半導體類指數_rs_change_3d: -0.28
+  - 上市半導體類指數_rs_change_5d: 0.53
+  - 上市半導體類指數_rs_momentum_change: 0.19
+  - 上市塑膠化工類指數_return_1d: -2.11
+  - 上市塑膠化工類指數_rs_change_1d: 0.2
+  - 上市塑膠化工類指數_rs_change_3d: 0.62
+  - 上市塑膠化工類指數_rs_change_5d: 0.76
+  - 上市塑膠化工類指數_rs_momentum_change: 1.01
+  - 上市塑膠類指數_return_1d: -2.93
+  - 上市塑膠類指數_rs_change_1d: -0.64
+  - 上市塑膠類指數_rs_change_3d: -1.02
+  - 上市塑膠類指數_rs_change_5d: -1.37
+  - 上市塑膠類指數_rs_momentum_change: 2.1
+  - 上市居家生活類指數_return_1d: 1.26
+  - 上市居家生活類指數_rs_change_1d: 3.66
+  - 上市居家生活類指數_rs_change_3d: 12.68
+  - 上市居家生活類指數_rs_change_5d: 11.55
+  - 上市居家生活類指數_rs_momentum_change: 0.59
+  - 上市建材營造類指數_return_1d: 0.23
+  - 上市建材營造類指數_rs_change_1d: 2.6
+  - 上市建材營造類指數_rs_change_3d: 9.55
+  - 上市建材營造類指數_rs_change_5d: 9.51
+  - 上市建材營造類指數_rs_momentum_change: -0.77
+  - 上市數位雲端類指數_return_1d: -1.68
+  - 上市數位雲端類指數_rs_change_1d: 0.64
+  - 上市數位雲端類指數_rs_change_3d: 13.3
+  - 上市數位雲端類指數_rs_change_5d: 11.02
+  - 上市數位雲端類指數_rs_momentum_change: -1.84
+  - 上市機電類指數_return_1d: -2.71
+  - 上市機電類指數_rs_change_1d: -0.41
+  - 上市機電類指數_rs_change_3d: -1.27
+  - 上市機電類指數_rs_change_5d: -1.41
+  - 上市機電類指數_rs_momentum_change: 0.03
+  - 上市橡膠類指數_return_1d: -1.07
+  - 上市橡膠類指數_rs_change_1d: 1.27
+  - 上市橡膠類指數_rs_change_3d: 5.39
+  - 上市橡膠類指數_rs_change_5d: 4.84
+  - 上市橡膠類指數_rs_momentum_change: -1.12
+  - 上市水泥窯製類指數_return_1d: -4.19
+  - 上市水泥窯製類指數_rs_change_1d: -1.93
+  - 上市水泥窯製類指數_rs_change_3d: -1.06
+  - 上市水泥窯製類指數_rs_change_5d: 3.39
+  - 上市水泥窯製類指數_rs_momentum_change: -6.28
+  - 上市水泥類指數_return_1d: -0.83
+  - 上市水泥類指數_rs_change_1d: 1.51
+  - 上市水泥類指數_rs_change_3d: 3.96
+  - 上市水泥類指數_rs_change_5d: 2.54
+  - 上市水泥類指數_rs_momentum_change: 0.06
+  - 上市汽車類指數_return_1d: -0.13
+  - 上市汽車類指數_rs_change_1d: 2.23
+  - 上市汽車類指數_rs_change_3d: 6.8
+  - 上市汽車類指數_rs_change_5d: 6.73
+  - 上市汽車類指數_rs_momentum_change: -0.27
+  - 上市油電燃氣類指數_return_1d: -0.13
+  - 上市油電燃氣類指數_rs_change_1d: 2.23
+  - 上市油電燃氣類指數_rs_change_3d: 6.68
+  - 上市油電燃氣類指數_rs_change_5d: 5.9
+  - 上市油電燃氣類指數_rs_momentum_change: 0.95
+  - 上市玻璃陶瓷類指數_return_1d: -9.34
+  - 上市玻璃陶瓷類指數_rs_change_1d: -7.19
+  - 上市玻璃陶瓷類指數_rs_change_3d: -8.46
+  - 上市玻璃陶瓷類指數_rs_change_5d: 4.86
+  - 上市玻璃陶瓷類指數_rs_momentum_change: -15.77
+  - 上市生技醫療類指數_return_1d: -0.06
+  - 上市生技醫療類指數_rs_change_1d: 2.31
+  - 上市生技醫療類指數_rs_change_3d: 4.15
+  - 上市生技醫療類指數_rs_change_5d: 6.61
+  - 上市生技醫療類指數_rs_momentum_change: -1.29
+  - 上市紡織纖維類指數_return_1d: -0.2
+  - 上市紡織纖維類指數_rs_change_1d: 2.16
+  - 上市紡織纖維類指數_rs_change_3d: 8.0
+  - 上市紡織纖維類指數_rs_change_5d: 8.6
+  - 上市紡織纖維類指數_rs_momentum_change: -1.43
+  - 上市綠能環保類指數_return_1d: -2.83
+  - 上市綠能環保類指數_rs_change_1d: -0.54
+  - 上市綠能環保類指數_rs_change_3d: -3.02
+  - 上市綠能環保類指數_rs_change_5d: -5.7
+  - 上市綠能環保類指數_rs_momentum_change: 0.21
+  - 上市航運類指數_return_1d: -0.44
+  - 上市航運類指數_rs_change_1d: 1.91
+  - 上市航運類指數_rs_change_3d: 8.33
+  - 上市航運類指數_rs_change_5d: 6.26
+  - 上市航運類指數_rs_momentum_change: 1.25
+  - 上市觀光餐旅類指數_return_1d: -0.85
+  - 上市觀光餐旅類指數_rs_change_1d: 1.49
+  - 上市觀光餐旅類指數_rs_change_3d: 6.54
+  - 上市觀光餐旅類指數_rs_change_5d: 4.44
+  - 上市觀光餐旅類指數_rs_momentum_change: -0.98
+  - 上市貿易百貨類指數_return_1d: -1.23
+  - 上市貿易百貨類指數_rs_change_1d: 1.1
+  - 上市貿易百貨類指數_rs_change_3d: 5.94
+  - 上市貿易百貨類指數_rs_change_5d: 6.8
+  - 上市貿易百貨類指數_rs_momentum_change: -2.58
+  - 上市資訊服務類指數_return_1d: -3.75
+  - 上市資訊服務類指數_rs_change_1d: -1.47
+  - 上市資訊服務類指數_rs_change_3d: 4.59
+  - 上市資訊服務類指數_rs_change_5d: 7.2
+  - 上市資訊服務類指數_rs_momentum_change: -3.44
+  - 上市通信網路類指數_return_1d: -1.03
+  - 上市通信網路類指數_rs_change_1d: 1.31
+  - 上市通信網路類指數_rs_change_3d: 3.66
+  - 上市通信網路類指數_rs_change_5d: 3.26
+  - 上市通信網路類指數_rs_momentum_change: -0.46
+  - 上市造紙類指數_return_1d: -0.83
+  - 上市造紙類指數_rs_change_1d: 1.51
+  - 上市造紙類指數_rs_change_3d: 3.69
+  - 上市造紙類指數_rs_change_5d: 2.39
+  - 上市造紙類指數_rs_momentum_change: -0.58
+  - 上市運動休閒類指數_return_1d: -1.98
+  - 上市運動休閒類指數_rs_change_1d: 0.34
+  - 上市運動休閒類指數_rs_change_3d: 8.15
+  - 上市運動休閒類指數_rs_change_5d: 6.06
+  - 上市運動休閒類指數_rs_momentum_change: -2.61
+  - 上市金融保險類指數_return_1d: -0.35
+  - 上市金融保險類指數_rs_change_1d: 2.01
+  - 上市金融保險類指數_rs_change_3d: 5.7
+  - 上市金融保險類指數_rs_change_5d: 7.29
+  - 上市金融保險類指數_rs_momentum_change: -0.66
+  - 上市鋼鐵類指數_return_1d: -0.49
+  - 上市鋼鐵類指數_rs_change_1d: 1.87
+  - 上市鋼鐵類指數_rs_change_3d: 3.36
+  - 上市鋼鐵類指數_rs_change_5d: 2.45
+  - 上市鋼鐵類指數_rs_momentum_change: 0.03
+  - 上市電器電纜類指數_return_1d: -0.48
+  - 上市電器電纜類指數_rs_change_1d: 1.88
+  - 上市電器電纜類指數_rs_change_3d: 1.67
+  - 上市電器電纜類指數_rs_change_5d: -1.05
+  - 上市電器電纜類指數_rs_momentum_change: 1.38
+  - 上市電子工業類指數_return_1d: -2.71
+  - 上市電子工業類指數_rs_change_1d: -0.41
+  - 上市電子工業類指數_rs_change_3d: -1.29
+  - 上市電子工業類指數_rs_change_5d: -1.41
+  - 上市電子工業類指數_rs_momentum_change: 0.04
+  - 上市電子通路類指數_return_1d: -1.0
+  - 上市電子通路類指數_rs_change_1d: 1.34
+  - 上市電子通路類指數_rs_change_3d: 2.66
+  - 上市電子通路類指數_rs_change_5d: -0.54
+  - 上市電子通路類指數_rs_momentum_change: 2.58
+  - 上市電子零組件類指數_return_1d: -6.9
+  - 上市電子零組件類指數_rs_change_1d: -4.7
+  - 上市電子零組件類指數_rs_change_3d: -8.82
+  - 上市電子零組件類指數_rs_change_5d: -11.85
+  - 上市電子零組件類指數_rs_momentum_change: -1.23
+  - 上市電機機械類指數_return_1d: -3.17
+  - 上市電機機械類指數_rs_change_1d: -0.88
+  - 上市電機機械類指數_rs_change_3d: -0.25
+  - 上市電機機械類指數_rs_change_5d: -1.43
+  - 上市電機機械類指數_rs_momentum_change: -0.6
+  - 上市電腦及週邊設備類指數_return_1d: -3.25
+  - 上市電腦及週邊設備類指數_rs_change_1d: -0.96
+  - 上市電腦及週邊設備類指數_rs_change_3d: -0.75
+  - 上市電腦及週邊設備類指數_rs_change_5d: -4.67
+  - 上市電腦及週邊設備類指數_rs_momentum_change: 1.4
+  - 上市食品類指數_return_1d: 0.48
+  - 上市食品類指數_rs_change_1d: 2.86
+  - 上市食品類指數_rs_change_3d: 8.95
+  - 上市食品類指數_rs_change_5d: 10.14
+  - 上市食品類指數_rs_momentum_change: -0.92
+  - listed_margin_balance_change_5d: -5.21
+  - market_advance_decline_ratio: 0.95
+  - market_alignment_diff: -1,265.00
+  - market_foreign_net_buy_1d: -76,563,675,949.00
+  - market_foreign_net_buy_5d: -156,694,343,381.00
+  - index_vs_ma5_pct: -3.42
+  - index_vs_ma20_pct: -7.92
+  - ma5_change_3d_pct: -3.39
+  - ma20_change_5d_pct: -3.3
+  - market_trust_net_buy_1d: 17,558,413,018.00
+  - market_trust_net_buy_5d: 17,542,717,342.00
+  - otc_vs_taiex_return_5d: -1.78
+  - taiex_close_latest: 40,092.11
+  - taiex_max_drawdown_5d: -9.41
+  - taiex_range_pos_10d: 8.57
+  - taiex_return_5d: -6.13
+  - taiex_vs_ma10_pct: -4.71
+  - taiex_vs_ma20_pct: -8.85
+
+可引用的事實 ID 清單：O1, O10, O11, O12, O13, O14, O15, O16, O17, O18, O19, O2, O20, O21, O22, O23, O24, O25, O26, O27, O28, O29, O3, O30, O31, O32, O33, O34, O35, O36, O37, O38, O39, O4, O40, O41, O42, O43, O44, O45, O46, O47, O48, O49, O5, O50, O51, O52, O53, O54, O55, O56, O57, O58, O59, O6, O60, O61, O62, O63, O64, O65, O66, O67, O68, O69, O7, O8, O9
+(注意：basis_refs 必須至少包含大盤事實 ID「O1」，且引用的 ID 必須存在於可用清單內)
+
+## 目前官方帳戶部位與快照 (DataPack Processed)
+# DataPack（官方每日帳戶/部位/合規快照）
+## 欄位說明（依官方 DataPack 規格書 v4.3）
+單位：金額=元；比率=小數(0.1125 表示 11.25%)；股數=整數股；日期=YYYY-MM-DD；時間=台北時間(+08:00)。
+- trade_date：本檔對應的交易日，即接下來要繳交的那一個交易日。
+- as_of_date：account 與 holdings 實際反映的交易日（有日期時為 trade_date 的前一交易日收盤結算後結果）。null=尚無結算資料：第一個交易日（account 為全現金、0 檔的真值），或前一交易日結算尚未產生（missing 含 prev_settlement，此時 account 整段為 null）。
+- missing：系統缺少的資料源，齊備時為 []。prev_settlement=前一交易日結算尚未產生，account、as_of_date、holdings 皆為 null；prev_close=收盤價尚未匯入，account.cash_ratio_tradable 為 null。
+- prev_day_orders.outcome：none=前一交易日未繳交，沒有委託；unknown=委託結果尚未判定；voided=已繳交但整批作廢、未成交；executed=有成交。
+- prev_day_orders.void_reasons：整批作廢的全部原因（outcome 為 voided 時至少一筆，其餘為 []）。值：insufficient_funds資金不足 / oversell賣出股數超過持股 / no_price委託標的缺當日成交均價且不在標的池內 / compliance_fail合規檢查未通過（持股檔數、標的池限制、現金部位、當日加碼個股權重之一，不細分） / dplan_reference_chain文件引用鏈不完整 / dplan_decision_coverage決策覆蓋不完整 / dplan_round_lot委託非整股。
+- prev_day_orders.excluded_codes：被排除、未成交，但其餘委託照常成交的證券代號（outcome 為 executed 時仍可能非空：該檔缺當日成交均價）。
+- account.cash：可動用現金（不含應收配息）。不等於當日買進上限，交割以淨額計，同日賣出款也計入結算。
+- account.cash_ratio_tradable：cash ÷ nav_tradable。missing 非空時為 null。
+- account.nav_tradable：可交易淨值 = cash + Σ(holdings.shares × holdings.close_price)，是計算現金比與個股權重的分母。
+- account.aum：總資產，另含應收配息與應收配股市值。不是 nav_tradable，不可用於計算比率。
+- account.receivable_cash：已生效的應收配息。計入 aum，賽期內不會到帳，不可用於下單。
+- account.holdings_count：持股檔數，只計 shares>0 的檔；與 holdings 的列數不一定相同。
+- holdings（逐檔一列，shares 與 receivable_shares 之一不為 0 即列出）：code=證券代號；shares=庫存持股，賣出不得超過此數；receivable_shares=應收配股，賽期內不可賣、不計入 holdings_count 與權重；close_price=as_of_date 收盤價，null=該檔查無行情，計算 nav_tradable 時以 0 計入；tradable_weight=個股權重(分母為 nav_tradable)，null=不適用（只有應收配股或無收盤價，不是 0）。
+  holdings 為 [] 只在成功建倉前，代表真的空手；為 null（結算未產生）則不是空手，兩者不同。
+- compliance.violations：違規天數（累計），為取消資格的依據（對應後台右上角「警告次數」）。compliance.notices：異常提示列數（累計），不計入取消資格。
+- compliance.incidents：違規與異常提示紀錄。status=fail 計入 violations；status=warn 計入 notices。message 為判定說明。
+- 賽期進度與帳戶淨值演變（由歷史 DataPack 計算）：
+  - elapsed_trading_days / remaining_trading_days / progress_pct / phase：賽期已過交易日、剩餘交易日、進度 (%) 與階段（剩餘 <=5 日為 sprint 衝刺期）。
+  - cum_return_pct：相對初始 10 億之累計帳面報酬率 (%)；peak_nav / drawdown_from_peak_pct / max_drawdown_pct：賽期最高淨值、距高點回撤 (%) 與歷史最大回撤 MDD (%)。
+  - nav_return_1d_pct / nav_return_3d_pct / nav_return_5d_pct：近 1 / 3 / 5 個交易日淨值變化率 (%)；consecutive_loss_days：連續虧損天數；recent_5d_trajectory：近 5 日淨值走勢。
+- holdings 衍生追蹤欄位（由歷史 DataPack 與 backend_reports 實際成交紀錄計算，百分比欄位單位為 %）：
+  - entry_date / holding_days：最近一次建倉日期與已持有交易日數；avg_cost：實際成交移動加權平均成本；pnl_pct：目前未實現損益 (%)。
+  - peak_price / peak_pnl_pct / dd_from_peak_pct：持有期間最高收盤價、最高浮盈 (%) 與自高點回落幅度 (%)（移動停利依據）。
+
+## 資料
+schema_version: "3.0" | doc_type: "DataPack" | team_id: "TEAM_11402"
+trade_date: "2026-11-19" | as_of_date: "2026-11-18" | generated_at: "2026-11-18T19:17:18.283618+08:00"
+missing: []
+狀態判讀: account 與 holdings 為 2026-11-18 收盤結算後的狀態。
+
+### prev_day_orders
+outcome: "executed" | void_reasons: [] | excluded_codes: []
+
+### account
+cash: 157169606.27 | cash_ratio_tradable: 0.176491 | nav_tradable: 890526706.27 | aum: 890526706.27 | receivable_cash: 0 | holdings_count: 24
+
+### 賽期進度
+start_date: 2026-10-27 | end_date: 2026-11-27 | elapsed_trading_days: 18 | remaining_trading_days: 7 | progress_pct: 75.0% | phase: mid-late (中後期)
+
+### 帳戶淨值演變
+initial_nav: 1,000,000,000 | latest_nav (2026-11-18): 890,526,706.27 | cum_return_pct: -10.95% | peak_nav (2026-10-28): 1,016,667,892.06 | drawdown_from_peak_pct: -12.41% | max_drawdown_pct: -12.41%
+nav_return_1d_pct: -0.59% | nav_return_3d_pct: -5.38% | nav_return_5d_pct: -5.36% | consecutive_loss_days: 3
+recent_5d_trajectory: 11-12: 9.267億 (-1.52%) -> 11-13: 9.412億 (+1.57%) -> 11-16: 9.037億 (-3.98%) -> 11-17: 8.958億 (-0.88%) -> 11-18: 8.905億 (-0.59%)
+
+### holdings
+{
+  "_note": "原生欄位: shares, receivable_shares, close_price, tradable_weight；追蹤欄位(百分比單位 %): entry_date, holding_days, avg_cost, pnl_pct, peak_price, peak_pnl_pct, dd_from_peak_pct",
+  "1216": {"shares": 735000, "receivable_shares": 0, "close_price": 78.8, "tradable_weight": 0.065038, "entry_date": "2026-11-05", "holding_days": 10, "avg_cost": 79.99, "pnl_pct": -1.49, "peak_price": 80.9, "peak_pnl_pct": 1.13, "dd_from_peak_pct": -2.6},
+  "2207": {"shares": 50000, "receivable_shares": 0, "close_price": 538, "tradable_weight": 0.030207, "entry_date": "2026-11-06", "holding_days": 9, "avg_cost": 531.8, "pnl_pct": 1.17, "peak_price": 538, "peak_pnl_pct": 1.17, "dd_from_peak_pct": 0.0},
+  "2330": {"shares": 22000, "receivable_shares": 0, "close_price": 2175, "tradable_weight": 0.053732, "entry_date": "2026-10-27", "holding_days": 17, "avg_cost": 2386.33, "pnl_pct": -8.86, "peak_price": 2425, "peak_pnl_pct": 1.62, "dd_from_peak_pct": -10.31},
+  "2379": {"shares": 31000, "receivable_shares": 0, "close_price": 734, "tradable_weight": 0.025551, "entry_date": "2026-10-27", "holding_days": 17, "avg_cost": 785.38, "pnl_pct": -6.54, "peak_price": 803, "peak_pnl_pct": 2.24, "dd_from_peak_pct": -8.59},
+  "2412": {"shares": 381000, "receivable_shares": 0, "close_price": 164.5, "tradable_weight": 0.070379, "entry_date": "2026-11-05", "holding_days": 10, "avg_cost": 162.59, "pnl_pct": 1.18, "peak_price": 165, "peak_pnl_pct": 1.48, "dd_from_peak_pct": -0.3},
+  "2454": {"shares": 6000, "receivable_shares": 0, "close_price": 3940, "tradable_weight": 0.026546, "entry_date": "2026-11-16", "holding_days": 3, "avg_cost": 3912.0, "pnl_pct": 0.72, "peak_price": 3940, "peak_pnl_pct": 0.72, "dd_from_peak_pct": 0.0},
+  "2603": {"shares": 133000, "receivable_shares": 0, "close_price": 257.5, "tradable_weight": 0.038458, "entry_date": "2026-10-27", "holding_days": 17, "avg_cost": 259.55, "pnl_pct": -0.79, "peak_price": 274.5, "peak_pnl_pct": 5.76, "dd_from_peak_pct": -6.19},
+  "2610": {"shares": 1163000, "receivable_shares": 0, "close_price": 22.9, "tradable_weight": 0.029907, "entry_date": "2026-11-17", "holding_days": 2, "avg_cost": 22.9, "pnl_pct": -0.01, "peak_price": 23.1, "peak_pnl_pct": 0.86, "dd_from_peak_pct": -0.87},
+  "2618": {"shares": 838000, "receivable_shares": 0, "close_price": 46.8, "tradable_weight": 0.04404, "entry_date": "2026-11-16", "holding_days": 3, "avg_cost": 47.71, "pnl_pct": -1.91, "peak_price": 48.1, "peak_pnl_pct": 0.81, "dd_from_peak_pct": -2.7},
+  "2880": {"shares": 529000, "receivable_shares": 0, "close_price": 48.2, "tradable_weight": 0.028632, "entry_date": "2026-11-09", "holding_days": 8, "avg_cost": 49.59, "pnl_pct": -2.8, "peak_price": 51.9, "peak_pnl_pct": 4.66, "dd_from_peak_pct": -7.13},
+  "2881": {"shares": 89000, "receivable_shares": 0, "close_price": 149, "tradable_weight": 0.014891, "entry_date": "2026-10-27", "holding_days": 17, "avg_cost": 161.5, "pnl_pct": -7.74, "peak_price": 162, "peak_pnl_pct": 0.31, "dd_from_peak_pct": -8.02},
+  "2882": {"shares": 205000, "receivable_shares": 0, "close_price": 110, "tradable_weight": 0.025322, "entry_date": "2026-10-27", "holding_days": 17, "avg_cost": 114.13, "pnl_pct": -3.62, "peak_price": 116.5, "peak_pnl_pct": 2.07, "dd_from_peak_pct": -5.58},
+  "2884": {"shares": 374000, "receivable_shares": 0, "close_price": 42.15, "tradable_weight": 0.017702, "entry_date": "2026-11-10", "holding_days": 7, "avg_cost": 47.29, "pnl_pct": -10.87, "peak_price": 48.3, "peak_pnl_pct": 2.13, "dd_from_peak_pct": -12.73},
+  "2886": {"shares": 900000, "receivable_shares": 0, "close_price": 52.6, "tradable_weight": 0.05316, "entry_date": "2026-11-05", "holding_days": 10, "avg_cost": 54.08, "pnl_pct": -2.74, "peak_price": 55.4, "peak_pnl_pct": 2.43, "dd_from_peak_pct": -5.05},
+  "2891": {"shares": 693000, "receivable_shares": 0, "close_price": 73.4, "tradable_weight": 0.057119, "entry_date": "2026-10-27", "holding_days": 17, "avg_cost": 74.99, "pnl_pct": -2.12, "peak_price": 78.7, "peak_pnl_pct": 4.95, "dd_from_peak_pct": -6.73},
+  "2892": {"shares": 425000, "receivable_shares": 0, "close_price": 41, "tradable_weight": 0.019567, "entry_date": "2026-11-18", "holding_days": 1, "avg_cost": 40.94, "pnl_pct": 0.15, "peak_price": 41, "peak_pnl_pct": 0.15, "dd_from_peak_pct": 0.0},
+  "3045": {"shares": 306000, "receivable_shares": 0, "close_price": 127.5, "tradable_weight": 0.043811, "entry_date": "2026-11-05", "holding_days": 10, "avg_cost": 132.8, "pnl_pct": -3.99, "peak_price": 133, "peak_pnl_pct": 0.15, "dd_from_peak_pct": -4.14},
+  "3293": {"shares": 39000, "receivable_shares": 0, "close_price": 799, "tradable_weight": 0.034992, "entry_date": "2026-11-17", "holding_days": 2, "avg_cost": 792.83, "pnl_pct": 0.78, "peak_price": 799, "peak_pnl_pct": 0.78, "dd_from_peak_pct": 0.0},
+  "3491": {"shares": 21000, "receivable_shares": 0, "close_price": 1510, "tradable_weight": 0.035608, "entry_date": "2026-11-17", "holding_days": 2, "avg_cost": 1409.78, "pnl_pct": 7.11, "peak_price": 1510, "peak_pnl_pct": 7.11, "dd_from_peak_pct": 0.0},
+  "3533": {"shares": 6000, "receivable_shares": 0, "close_price": 1695, "tradable_weight": 0.01142, "entry_date": "2026-10-27", "holding_days": 17, "avg_cost": 1900.12, "pnl_pct": -10.8, "peak_price": 1955, "peak_pnl_pct": 2.89, "dd_from_peak_pct": -13.3},
+  "3661": {"shares": 5000, "receivable_shares": 0, "close_price": 3950, "tradable_weight": 0.022178, "entry_date": "2026-11-16", "holding_days": 3, "avg_cost": 3821.48, "pnl_pct": 3.36, "peak_price": 3950, "peak_pnl_pct": 3.36, "dd_from_peak_pct": 0.0},
+  "4904": {"shares": 290000, "receivable_shares": 0, "close_price": 109, "tradable_weight": 0.035496, "entry_date": "2026-11-06", "holding_days": 9, "avg_cost": 109.19, "pnl_pct": -0.17, "peak_price": 112, "peak_pnl_pct": 2.58, "dd_from_peak_pct": -2.68},
+  "5876": {"shares": 336000, "receivable_shares": 0, "close_price": 52.9, "tradable_weight": 0.019959, "entry_date": "2026-11-18", "holding_days": 1, "avg_cost": 53.03, "pnl_pct": -0.24, "peak_price": 52.9, "peak_pnl_pct": -0.24, "dd_from_peak_pct": 0.0},
+  "5880": {"shares": 641000, "receivable_shares": 0, "close_price": 27.5, "tradable_weight": 0.019794, "entry_date": "2026-11-09", "holding_days": 8, "avg_cost": 27.99, "pnl_pct": -1.75, "peak_price": 28.55, "peak_pnl_pct": 2.0, "dd_from_peak_pct": -3.68}
+}
+
+### compliance
+violations: 1 | notices: 0
+incidents (date,check_code,status,message):
+2026-11-12,decision_consistency,fail,當日未於繳交窗口內完成申報
+
+## 技術指標定義與數值含意指引 (供精準解讀與引用)
+- `market_alignment_diff`：全市場均線多空排列家數差 (家) ＝ (5MA≥10MA≥30MA多頭家數) － (5MA<10MA<30MA空頭家數)。正值代表多頭排列佔優，負值代表空頭排列佔優 (例如 -1304 代表全市場空頭比多頭多 1304 家)。
+- `index_vs_ma5_pct` / `index_vs_ma20_pct`：加權報酬指數相對 5MA / 20MA (生命線) 之乖離率 (%)。正值代表指數站在均線之上，負值代表跌破均線走弱。
+- `ma5_change_3d_pct` / `ma20_change_5d_pct`：5MA 近 3 日 / 20MA 近 5 日斜率變化率 (%)。正值代表均線上揚助漲，負值代表均線下彎形成下行壓力。
+- `taiex_vs_ma10_pct` / `taiex_vs_ma20_pct`：加權指數相對 10MA / 20MA 之乖離率 (%)。
+- `taiex_range_pos_10d`：加權指數近 10 日價格區間位置 (0% ~ 100%)。0% 位於區間最低點，100% 位於最高點。
+- `otc_vs_taiex_return_5d`：櫃買指數 (OTC) 近 5 日報酬 － 加權近 5 日報酬 (百分點 pp)。>0 代表內資主力拉抬中小型題材股勝率高；<0 代表中小型股走弱。
+- `market_advance_decline_ratio`：全市場股票漲跌家數比 (倍)。>1 代表上漲家數多於下跌家數，<1 代表下跌家數偏多。
+- `taiex_return_5d`：加權指數近 5 日報酬率 (%)。
+- `taiex_max_drawdown_5d`：加權指數近 5 日最大回撤 (%)，負值表示近期波段高點至低點的最大跌幅。
+- `listed_margin_balance_change_5d`：上市融資餘額近 5 日變化率 (%)，負值代表融資減肥去槓桿，正值代表融資持續增加。
+- `market_foreign_net_buy_5d` / `market_foreign_net_buy_1d`：市場外資近 5 日累計與昨日單日淨買賣超金額 (元)。
+- `market_trust_net_buy_5d` / `market_trust_net_buy_1d`：市場投信近 5 日累計與昨日單日淨買賣超金額 (元)。
+- `taiex_close_latest`：最新加權指數收盤點位。
+- **上市各產業相對強弱 (RS，其中 RS ＝ 產業收盤點數 ÷ 大盤收盤點數)**：
+  - `<產業指數>_return_1d`：該產業指數當日漲跌幅 (%)。
+  - `<產業指數>_rs_change_1d` / `<產業指數>_rs_change_3d` / `<產業指數>_rs_change_5d`：該產業近 1 日 / 近 3 日 / 近 5 日 RS 相對大盤強弱變化率 (%)。正值代表該期間表現強於大盤、負值代表弱於大盤。
+  - `<產業指數>_rs_momentum_change`：該產業近 3 日 RS 變化率較昨日增減 (百分點 pp ＝ 今日近 3 日 RS 變化率 － 昨日近 3 日 RS 變化率)。正值代表相對強弱動能加速轉強、負值代表動能轉弱。
+
+## 大盤分析邏輯與決策準則
+### 一、市場趨勢與下行風險（走向研判核心）
+1. 均線乖離與短中期趨勢結構：
+   - 短中期均線乖離率：
+     * taiex_vs_ma10_pct（加權指數相對 10 日雙週線乖離率 %）：反映極短線強弱與乖離程度。
+     * taiex_vs_ma20_pct（加權指數相對 20 日月線乖離率 %）：反映波段強弱，正值代表指數站穩月線之上，負值代表跌破月線轉弱。
+   - 價格區間位置：
+     * taiex_range_pos_10d（加權指數 10 日價格區間位置 0%~100%）：0% 位於近 10 日最低點，100% 位於最高點；>80% 代表強勢逼近或刷新高點，<20% 代表弱勢瀕臨破底。
+2. 生命線動能與價格表現：
+   - 檢視加權報酬指數相對均線之乖離率 (index_vs_ma5_pct, index_vs_ma20_pct)：正值代表指數站在均線之上，負值代表跌破均線。
+   - 檢視均線斜率變化率 (ma5_change_3d_pct, ma20_change_5d_pct)：正值代表均線上揚助漲，負值代表均線下彎形成下壓阻力。
+   - 搭配近 5 日報酬率 (taiex_return_5d)，評估短線價格動能是否支持均線反映的趨勢。
+3. 櫃買指數 (OTC) vs 加權相對強弱（中小型飆股與內資風向球 - 極重要）：
+   - otc_vs_taiex_return_5d（櫃買近 5 日報酬率 － 加權近 5 日報酬率，百分點 pp）：
+     * 數值 > 0：代表櫃買比大盤強，內資與本土主力積極拉抬中小型題材股，市場熱度高，動能策略勝率極高。
+     * 數值 < 0：代表櫃買走勢疲弱落後大盤，中小型股面臨殺盤修正，操作應提高警覺，慎防中小型股補跌。
+4. 下行風險：透過近 5 日最大回撤 (taiex_max_drawdown_5d)，評估近期市場已發生的下跌壓力。若短期回撤較深，應注意市場可能伴隨高波動。
+5. 綜合判斷：評估均線乖離、區間位置、生命線動能、OTC 相對強弱與歷史回撤，辨識市場走向：趨勢延續 (`risk_on`)、短期回檔 (`neutral`) 或轉弱風險 (`risk_off`)。
+
+### 二、法人資金動向（資金面檢視）
+1. 觀察指標：
+   - market_foreign_net_buy_5d / market_foreign_net_buy_1d：外資近 5 日累計及昨日淨買賣超金額 (元)。
+   - market_trust_net_buy_5d / market_trust_net_buy_1d：投信近 5 日累計及昨日淨買賣超金額 (元)。
+2. 同步買超：外資與投信皆為淨買超（特別是昨日與近 5 日方向一致），視為法人資金方向一致的正向訊號；若價格趨勢與市場廣度也偏強，可提高對市場偏多研判的信心。
+3. 同步賣超：外資與投信皆為淨賣超，視為法人資金方向一致的負向訊號；若同時伴隨價格轉弱，應提高對下行風險的關注。
+4. 多空分歧：外資與投信資金方向相反時 (例如外資賣超但投信逢低買超)，分析其分歧程度，並結合價格趨勢、OTC 內資動能與市場廣度判斷。
+5. 資金與價格背離：當法人資金方向與指數趨勢相反時，評估此現象是否削弱目前市場趨勢的可信度，並將其列為關鍵反向觀察指標。
+
+### 三、市場廣度與融資籌碼（籌碼與結構檢視）
+1. 全市場均線多空排列家數差 (market_alignment_diff)：
+   - (5MA≥10MA≥30MA多頭家數) － (5MA<10MA<30MA空頭家數)。
+   - 正值代表多頭排列佔優，負值代表空頭排列佔優；若指數上漲但家數差大幅為負，反映僅權值股拉抬，市場內部廣度其實偏弱；若家數差由負大幅收斂轉正，代表廣泛個股開始落底回升。
+2. 指數廣度背離：若指數近期趨勢偏強，但當日市場漲跌家數比 (market_advance_decline_ratio) 小於 1，應注意市場結構可能失衡、漲勢不夠全面。
+3. 籌碼風險警戒：若指數低於 20MA、近期價格動能偏弱，且融資餘額仍增加 (listed_margin_balance_change_5d > 0)，應提高對下跌環境中槓桿部位擴張及潛在多殺多賣壓的關注；若融資餘額顯著縮減則為去槓桿融資減肥訊號。
+4. 交叉驗證：綜合指數趨勢、全市場多空排列家數差、當日市場廣度與融資變化，辨識市場是否存在價格、參與程度及槓桿籌碼之間的矛盾訊號。
+
+### 四、產業相對強弱（產業結構觀察）
+透過各產業 RS 指標觀察盤面結構（詳細指標定義見下方指引）：
+1. 自身漲跌與相對強弱：對照產業當日漲跌 (`_return_1d`) 與 RS 變化，區分「實質上漲領漲」、「大盤回檔時的相對抗跌」與「弱勢落後」。
+2. 跨期間強弱與動能轉折：比較近 1、3、5 日 RS 變化，辨識趨勢延續或「短線轉強 / 近期仍弱」等分歧；搭配 `_rs_momentum_change` 觀察原領先產業優勢是否維持、原落後產業是否出現改善訊號。
+3. 集中度、分化與輪動：結合大盤趨勢與市場廣度，評估強勢是否集中於少數產業或呈現明顯分化，並追蹤領先產業與強弱排名變化作為族群交替輪動線索。
+
+### 五、持股與整體市場風險（結合 DataPack 部位現狀）
+結合目前市場研判及 DataPack 所揭露的現有部位與持股明細：
+1. 現有持股是否可能共同受到大盤趨勢轉弱影響。
+2. 市場資金撤出、下行壓力或融資籌碼風險，是否可能同時波及多檔持股。
+3. 檢視現有持股組合是否存在看似分散，但實質承擔高度相似市場系統性風險的情況。
+4. 產業強弱曝險：在產業對應資料足夠時，結合現有持股權重，檢視組合是否集中於近期落後大盤或相對優勢減弱的產業，評估風險與輪動機會。
+
+### 六、現有部位與風險承擔空間（操作姿態評估）
+分析目前帳戶部位是否適合當前市場環境，並結合 DataPack 的「賽期進度」與「帳戶淨值演變」：
+1. 市場偏多時，現有股票曝險是否已有較高水位？
+2. 市場轉弱時，目前現金水位是否已提供足夠的風險緩衝？
+3. 若市場訊號分歧，維持現有曝險是否比積極調整更合理？
+4. 若持股共同風險升高，是否需要降低整體風險承擔？
+5. 賽期進度與帳戶節奏檢視：參考 `remaining_trading_days` / `phase`、`cum_return_pct`、`drawdown_from_peak_pct` (MDD)、`nav_return_3d_pct` 與 `consecutive_loss_days`，判斷近期策略是否踩對節奏；若連續虧損天數擴大或接近賽期衝刺期，應於 `logic` 中說明其對今日 `stance` 與 `target_cash_pct_range` 的影響。
+
+### 七、整體操作方向與部位承諾（D-Plan 規範落實）
+結合市場研判、DataPack 現有股票曝險、現金水位及持股共同風險，明確宣告當日操作方向與姿態：
+1. 【重大合規警戒：市場下跌導致現金比率被動飆升違規】：
+   - 官方合規嚴格規定：每日收盤結算後，現金比率不得高於 25.0%（恰好 25.0% 合規，超過 25.0% 記一次警告，交易整批作廢；累計 3 次警告取消參賽資格）。
+   - 被動違規機制：當股市下跌時，庫存持股市值縮水，導致總淨值 NAV 變小（NAV = 現金 + 持股市值）。然而未動用的現金金額 (cash) 是固定不變的，因此現金比率會在盤後結算時「被動飆升」！
+   - 具體實例：若目前現金比高達 23.8%，只要整體 NAV 下跌超過 4.8%（或持股市值修正約 6.26%），現金比率就會被動突破 25.0% 天花板而觸發違規整批作廢！
+   - 強制防禦規則：
+     * 當 DataPack 顯示現金水位超過 20% (即 cash_ratio_tradable > 0.20，包含競賽首日全現金 1.0) 時，**必須強制將淨曝險意圖宣告為 `increase`（淨買超）**，主動買進股票降低現金比，拉開與 25% 天花板的安全距離！
+     * 在現金水位超過 20% 時，**嚴禁宣告 `hold` 或 `reduce`**！
+2. 本日操作姿態 (stance)：
+   - `aggressive` (積極)：偏多環境、勝率高且有充足風險承受空間時採取。
+   - `neutral` (中性)：市場訊號分歧、方向不明、維持既有配置或進行板塊輪動再平衡時採取。
+   - `defensive` (保守)：市場趨勢轉弱、下行壓力升高或持股面臨共同風險時採取。
+3. 淨曝險意圖 (posture.net_exposure_intent)：
+   - `increase` (淨買超)：市場趨勢偏強，資金與市場廣度提供支持，且主要風險可控。
+     * **特別注意**：當目前帳戶現金水位超過 20%（cash_ratio_tradable > 0.20，含首日全現金 1.0），為避免市場回檔造成現金比率被動飆升突破 25% 天花板，無論市場多空，**必須強制宣告 `increase`** 進行積極建倉或加碼。
+   - `hold` (維持曝險/大致持平)：市場訊號分歧、方向不明，且現金水位安全 (<= 20%)，或現有部位已符合當前風險環境（淨買賣金額差距在 NAV 2% 容差內），NAV = (Σ 各持股張數 × 1,000 × 當日收盤價) + 現金部位。
+   - `reduce` (降低曝險/淨賣超)：市場趨勢轉弱，並有資金、廣度或籌碼的負向訊號支持，且現金水位在安全範圍內（減碼後預估現金比絕不能超過 20%）。
+4. 目標現金比例區間 (posture.target_cash_pct_range)：
+   - 必須為 [下限, 上限] 陣列，數值介於 0.0 ~ 0.25 (即 0% ~ 25%) 之間，且下限 <= 上限。
+   - 【現金上限 22% 安全線】：因每日皆有交易檢視，且台股單日最大跌幅上限為 10%，只要現金比率維持在 22% (0.22) 以下，即便當日持股全部跌停（持股市值縮水 10%），結算時現金比率約為 23.86%，依然完全在 25.0% 合規天花板之內！因此目標現金區間上限建議設定在 0.22 以下（例如 [0.05, 0.20] 或 [0.03, 0.15] 等），不必過度壓低現金，保留操作彈性即可。
+
+### 八、推論邏輯 (logic) 與反向證據 (counter_evidence) 規範
+1. 邏輯過程 (logic)：
+   - 必須明確引用 basis_refs 中的事實 ID (例如 O1)，並對應其具體數據 (如指數收盤點位、均線乖離率、10日區間位置、OTC 相對強弱、近5日報酬率、最大回撤、法人近5日與昨日買賣超、騰落比、融資變化、關鍵產業 RS 等)。
+   - 必須涵蓋「趨勢與風險」->「資金與籌碼」->「產業相對強弱」->「現有部位與風險」->「最終 regime / stance / posture」的完整推論過程；產業部分應說明其支持或削弱目前的大盤判斷，僅挑選最具影響力、變化最明顯的產業說明，不必逐一重述所有產業。
+   - 長度規範：20 ~ 1000 字元。
+2. 反向訊號 (counter_evidence)：
+   - 綜合各項面向，檢驗是否存在背離訊號 (如資金與價格背離、外資投信多空分歧、指數與市場廣度或產業強弱背離等)，評估主要反向證據對市場判斷的影響。
+   - 長度上限 500 字元；若客觀數據全盤檢視後確實無反向訊號，請明確填 null。
+
+## 輸出格式要求 (嚴格遵循 D-Plan v4.3 JSON 結構)
+請產生符合下列結構的 JSON 回應：
+{
+  "market_view": {
+    "basis_refs": ["O1"],
+    "logic": "從引用之事實推導到市場走向、操作姿態與部位意圖的推論說明 (20~1000字)",
+    "regime": "risk_on" | "neutral" | "risk_off",
+    "stance": "aggressive" | "neutral" | "defensive",
+    "posture": {
+      "net_exposure_intent": "increase" | "hold" | "reduce",
+      "target_cash_pct_range": [0.03, 0.10]
+    },
+    "counter_evidence": "與走向研判相反的客觀反向訊號或背離證據 (500字內)；若無則填 null",
+    "confidence": 0.0 ~ 1.0 (選填數字)
+  }
+}
+
+請特別注意：
+1. 【最高合規天花板防禦】：每日收盤結算後現金比率不得超過 25.0%（超過記一次警告，交易整批作廢；累計 3 次取消資格）。股市下跌時持股市值縮水導致總 NAV 變小，固定現金會使現金比率「被動飆升」！因每日皆會交易且台股單日跌幅上限為 10%，現金維持在 22% 以下即可確保即便遭遇極端跌幅，盤後現金比仍安全落在 23.86% 內。因此：
+   - 當 DataPack 顯示現金水位超過 20% (cash_ratio_tradable > 0.20) 時，**必須強制將 net_exposure_intent 宣告為 "increase"（淨買超）**，主動降低現金比率拉開安全距離，**嚴禁宣告 hold 或 reduce**！
+   - target_cash_pct_range 上限設定在 0.22 (22%) 以下即可（例如 [0.05, 0.20] 等），不必過度限制現金保留比例，兼顧合規安全與配置彈性。
+2. target_cash_pct_range 的兩個數值必須在 0.0 到 0.25 之間，且下限 <= 上限。
+3. logic 內必須提及 O1 並對照實際數值。
+4. 若無反向訊號，counter_evidence 請填 null。
+5. net_exposure_intent 若為 hold，需在 logic 內提及淨買賣金額差距在 NAV 2% 容差內，NAV = (Σ 各持股張數 × 1,000 × 當日收盤價) + 現金部位。
+6. 程式碼執行功能 (Code Execution)：系統已為你開啟 Python Code Execution 工具。若需計算均線差距、指數報酬率、融資增減比例或目標現金比率試算或其他計算時，請主動撰寫並執行 Python 程式碼，確保所有數據與結論精確無誤。

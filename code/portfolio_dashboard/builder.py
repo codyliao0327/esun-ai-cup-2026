@@ -7,11 +7,12 @@ Dashboard HTML Builder for 2026 玉山人工智慧挑戰賽
   - 漲跌幅排序、即時搜尋、10-27 起股價趨勢微圖 (Sparkline)
   - 淺色 / 深色主題切換、完全響應式 (RWD) 手機與電腦極致優化
 """
+import ast
 import html as html_lib
 import json
 import re
 import sys
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Dict, Any, List
 
@@ -26,8 +27,81 @@ DASHBOARD_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = DASHBOARD_DIR.parent.parent
 REPORTS_DIR = PROJECT_ROOT / "data" / "D-Paln_Output" / "reports"
 ETF_STRATEGY_FILE = PROJECT_ROOT / "data" / "ETF_Strategy" / "etf_strategy.md"
+FINLAB_MARKET_LOADER_FILE = PROJECT_ROOT / "code" / "L0_sources" / "finlab_market_loader.py"
+MARKET_CACHE_FILE = DASHBOARD_DIR / "market_cache.json"
+COMPETITION_START_DATE = "2026-10-27"
+COMPETITION_END_DATE = "2026-11-27"
 DIST_DIR = DASHBOARD_DIR / "dist"
 DIST_HTML = DIST_DIR / "index.html"
+
+
+def _count_weekdays(start_str: str, end_str: str) -> int:
+    """計算兩個 YYYY-MM-DD 日期之間（含頭尾）的週一至週五工作日數。"""
+    try:
+        d0 = date.fromisoformat(start_str[:10])
+        d1 = date.fromisoformat(end_str[:10])
+    except ValueError:
+        return 0
+    if d1 < d0:
+        return 0
+    cnt = 0
+    cur = d0
+    while cur <= d1:
+        if cur.weekday() < 5:
+            cnt += 1
+        cur += timedelta(days=1)
+    return cnt
+
+
+def compute_competition_progress(as_of_date: str, history: List[Dict[str, Any]]) -> Dict[str, int]:
+    """對齊 datapack_loader._build_progress_lines 計算賽期目前第幾天與總天數。"""
+    elapsed = len(history) if history else _count_weekdays(COMPETITION_START_DATE, as_of_date)
+    remaining = _count_weekdays(as_of_date, COMPETITION_END_DATE)
+    total = elapsed + max(remaining - 1, 0)
+    return {
+        "elapsed": elapsed,
+        "remaining": remaining,
+        "total": max(total, elapsed),
+    }
+
+
+def load_watchlist_stock_ids() -> List[str]:
+    """從 code/L0_sources/finlab_market_loader.py 安全解析 STOCK_IDS 觀察標的清單。"""
+    if not FINLAB_MARKET_LOADER_FILE.is_file():
+        return []
+    try:
+        tree = ast.parse(FINLAB_MARKET_LOADER_FILE.read_text(encoding="utf-8"))
+        for node in tree.body:
+            val_node = None
+            if isinstance(node, ast.Assign):
+                if any(isinstance(t, ast.Name) and t.id == "STOCK_IDS" for t in node.targets):
+                    val_node = node.value
+            elif isinstance(node, ast.AnnAssign):
+                if isinstance(node.target, ast.Name) and node.target.id == "STOCK_IDS":
+                    val_node = node.value
+            if val_node is not None:
+                parsed = ast.literal_eval(val_node)
+                if isinstance(parsed, (list, tuple)):
+                    return [str(x).strip() for x in parsed if str(x).strip()]
+    except Exception as exc:
+        print(f"[builder] 解析 STOCK_IDS 失敗: {exc}")
+    return []
+
+
+def load_market_updated_at() -> str:
+    """讀取 market_cache.json 的行情更新時間（格式化為 YYYY-MM-DD HH:MM）。"""
+    if MARKET_CACHE_FILE.is_file():
+        try:
+            cache_data = json.loads(MARKET_CACHE_FILE.read_text(encoding="utf-8"))
+            raw_ts = str(cache_data.get("updated_at") or "").strip()
+            if len(raw_ts) >= 16:
+                return raw_ts[:16]
+            if raw_ts:
+                return raw_ts
+        except Exception:
+            pass
+        return datetime.fromtimestamp(MARKET_CACHE_FILE.stat().st_mtime).strftime("%Y-%m-%d %H:%M")
+    return datetime.now().strftime("%Y-%m-%d %H:%M")
 
 
 def load_etf_strategy() -> Dict[str, str]:
@@ -151,12 +225,17 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
     stocks_150 = summary_data["stocks_150"]
 
     held_codes = set(p["code"] for p in held_positions)
+    watchlist_ids = load_watchlist_stock_ids()
+    watchlist_set = set(watchlist_ids)
+    market_updated_at = load_market_updated_at()
+    progress = compute_competition_progress(summary_data["as_of_date"], history)
 
     # 整合 150 檔行情與持股狀態
     all_stocks_list = []
     for code, meta in stocks_150.items():
         q = market_quotes.get(code, {})
         is_held = code in held_codes
+        is_watchlist = code in watchlist_set
         held_info = next((p for p in held_positions if p["code"] == code), None)
 
         # 100% 來自玉山證券行情 API
@@ -179,6 +258,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
             "change_pct": round(change_pct, 2),
             "volume_lots": volume_lots,
             "is_held": is_held,
+            "is_watchlist": is_watchlist,
             "shares": held_info["shares"] if held_info else 0,
             "lots": held_info["lots"] if held_info else 0.0,
             "avg_cost": held_info["avg_cost"] if held_info else 0.0,
@@ -193,6 +273,9 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
             "sparkline": sparkline_svg,
             "trend": trend
         })
+
+    # 動態計算觀察標的數量 (不寫死)
+    watchlist_count = sum(1 for s in all_stocks_list if s["is_watchlist"])
 
     # 讀取 LiteLLM Usage 歷史結算資料
     usage_history_path = DASHBOARD_DIR / "usage_history.json"
@@ -272,6 +355,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
 
     /* 深色主題 (Apple macOS 冷冽藍灰 / 單色系柔和光場) */
     .theme-dark {{
+      --bg-solid: #060b14;
       --bg-gradient:
         radial-gradient(ellipse 68% 52% at 14% 10%, rgba(56, 189, 248, 0.14) 0%, transparent 65%),
         radial-gradient(ellipse 62% 54% at 86% 88%, rgba(30, 64, 175, 0.16) 0%, transparent 68%),
@@ -362,6 +446,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       --primary-glow: rgba(14, 165, 233, 0.28);
 
       /* 冰川銀灰 + 冷冽天藍單色系柔和光場：無紫無粉，讓白色玻璃高光邊緣清晰浮現 */
+      --bg-solid: #dce5f0;
       --bg-gradient:
         radial-gradient(ellipse 68% 52% at 14% 10%, rgba(186, 230, 253, 0.72) 0%, transparent 64%),
         radial-gradient(ellipse 62% 54% at 88% 88%, rgba(148, 163, 184, 0.42) 0%, transparent 66%),
@@ -442,25 +527,27 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
     }}
 
     html {{
-      overflow-x: hidden;
+      background-color: var(--bg-solid, #dce5f0);
+      overflow-x: clip;
     }}
 
     body {{
       font-family: var(--font-sans);
-      background: var(--bg-gradient);
+      background-color: var(--bg-solid, #dce5f0);
       color: var(--text-main);
       min-height: 100vh;
       max-width: 100%;
-      overflow-x: hidden;
+      overflow-x: clip;
       padding-bottom: 48px;
       transition: color 0.25s ease;
     }}
 
-    /* 單一靜態固定背景光場（零捲動重繪負擔） */
+    /* 單一靜態固定背景光場（鎖定 GPU 合成層，零捲動重繪負擔、杜絕快速滑動露白） */
     .ambient-glow {{
       position: fixed;
       inset: 0;
-      background: var(--ambient-orb-1);
+      background: var(--ambient-orb-1), var(--bg-gradient);
+      transform: translateZ(0);
       pointer-events: none;
       z-index: 0;
     }}
@@ -581,7 +668,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
 
     .sticky-top-dock.is-scrolled .header-subtitle,
     .sticky-top-dock.is-scrolled .ios27-slider-pill,
-    .sticky-top-dock.is-scrolled .theme-segmented {{
+    .sticky-top-dock.is-scrolled .theme-cycle-btn {{
       display: none;
     }}
 
@@ -736,41 +823,32 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
     }}
 
     /* 三段式主題切換器 (淺色 / 深色 / 跟隨裝置) */
-    .theme-segmented {{
+    .theme-cycle-btn {{
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
       display: inline-flex;
       align-items: center;
-      background: var(--well-bg);
-      border: 1px solid var(--well-border);
-      box-shadow: var(--well-shadow);
-      border-radius: 999px;
-      padding: 3px;
-      gap: 2px;
-    }}
-
-    .theme-opt-btn {{
-      border: 1px solid transparent;
-      background: transparent;
-      color: var(--text-muted);
-      border-radius: 999px;
-      padding: 5px 11px;
-      font-size: 12px;
-      font-weight: 700;
-      font-family: var(--font-sans);
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
-    }}
-
-    .theme-opt-btn:hover:not(.active) {{
+      justify-content: center;
+      font-size: 16px;
+      line-height: 1;
+      padding: 0;
+      border: 1px solid var(--btn-glass-border);
+      background: var(--btn-glass-bg);
       color: var(--text-main);
-      background: var(--pill-bg);
+      box-shadow: var(--btn-glass-shadow);
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s var(--spring-ease), border-color 0.2s ease;
     }}
 
-    .theme-opt-btn.active {{
-      background: var(--btn-active-bg);
-      color: var(--btn-active-text);
-      border-color: var(--btn-active-border);
-      box-shadow: var(--btn-active-shadow);
+    .theme-cycle-btn:hover {{
+      background: var(--btn-glass-hover);
+      border-color: var(--glass-border-specular);
+      transform: translateY(-1px) scale(1.04);
+    }}
+
+    .theme-cycle-btn:active {{
+      transform: scale(0.94);
     }}
 
     .theme-toggle-btn:hover,
@@ -845,11 +923,9 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       box-shadow: var(--tab-active-shadow);
     }}
 
-    /* 液態玻璃卡片通用樣式（輕量化單層玻璃，移除 mask-composite 與 pointermove 重繪負擔） */
+    /* 液態玻璃卡片通用樣式（輕量化單層玻璃，backdrop-filter 僅留給懸浮導航列與目錄以消除長頁面捲動白屏） */
     .glass-card {{
       background: var(--glass-bg);
-      backdrop-filter: var(--glass-backdrop);
-      -webkit-backdrop-filter: var(--glass-backdrop);
       border: 1px solid var(--glass-border);
       border-radius: 26px;
       padding: 22px;
@@ -1136,10 +1212,16 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
     /* 專業表格樣式 (Table) - 富果高密度 + 液態玻璃質感 */
     .table-container {{
       overflow-x: auto;
+      contain: layout style;
       border-radius: 18px;
       border: 1px solid var(--glass-border);
       background: rgba(255, 255, 255, 0.01);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }}
+
+    table.fugle-table tbody tr {{
+      content-visibility: auto;
+      contain-intrinsic-size: auto 52px;
     }}
 
     table.fugle-table {{
@@ -1818,6 +1900,8 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       max-height: calc(100vh - 104px);
       overflow-y: auto;
       padding: 18px 16px;
+      backdrop-filter: var(--glass-backdrop);
+      -webkit-backdrop-filter: var(--glass-backdrop);
     }}
 
     .report-toc-title {{
@@ -1860,10 +1944,22 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       color: var(--text-main);
     }}
 
+    .report-toc-item.active {{
+      background: var(--btn-glass-bg);
+      color: var(--primary-accent);
+      font-weight: 700;
+      box-shadow: inset 2.5px 0 0 var(--primary-accent);
+    }}
+
     .report-toc-item.toc-h3 {{
       padding-left: 22px;
       font-size: 12px;
       color: var(--text-dim);
+    }}
+
+    .markdown-body h2,
+    .markdown-body h3 {{
+      scroll-margin-top: 90px;
     }}
 
     .report-body-card {{
@@ -2223,16 +2319,12 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
           </div>
         </div>
         <div class="header-actions">
-          <div class="date-pill" id="dateBadge">基準日: {summary_data['as_of_date']}</div>
+          <div class="date-pill" id="dateBadge">基準日: {summary_data['as_of_date']} · 賽期 {progress['elapsed']}/{progress['total']} 天</div>
           <div class="ios27-slider-pill" title="液態玻璃通透度調節 (左：極致冰晶 / 右：溫潤凝霜)">
             <span>💧 通透度</span>
             <input type="range" id="glassAlphaSlider" min="35" max="145" value="100" oninput="setGlassTransparency(this.value)">
           </div>
-          <div class="theme-segmented" role="group" aria-label="主題模式切換">
-            <button type="button" class="theme-opt-btn active" id="themeOptLight" onclick="setThemeMode('light')">☀️ 淺色</button>
-            <button type="button" class="theme-opt-btn" id="themeOptDark" onclick="setThemeMode('dark')">🌙 深色</button>
-            <button type="button" class="theme-opt-btn" id="themeOptAuto" onclick="setThemeMode('auto')">🖥️ 跟隨</button>
-          </div>
+          <button type="button" class="theme-cycle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="切換深色模式" aria-label="切換深色或淺色模式">🌙</button>
         </div>
       </header>
 
@@ -2371,9 +2463,12 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
             </div>
             <div style="font-size:12px; color:var(--text-dim); margin-top:4px;">點擊任一持股列即可展開分批買進明細（建倉日期、張數、成交價與各批損益）</div>
           </div>
-          <div class="search-box">
-            <span class="search-icon">🔍</span>
-            <input type="text" class="search-input" id="holdingsSearchInput" placeholder="搜尋代號或名稱..." oninput="filterHoldingsTable()">
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+            <span class="report-meta-pill">行情更新於 {market_updated_at} · 帳戶基準日 {summary_data['as_of_date']}</span>
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" class="search-input" id="holdingsSearchInput" placeholder="搜尋代號或名稱..." oninput="filterHoldingsTable()">
+            </div>
           </div>
         </div>
 
@@ -2469,16 +2564,25 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
     <!-- ================= 頁籤 2: 自選行情觀察群組 ================= -->
     <div id="tab2Content" style="display: none;">
       <div class="glass-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+          <div class="chart-title">
+            <span>📈</span> 行情觀察群組 ({len(all_stocks_list)} 檔)
+          </div>
+          <span class="report-meta-pill">行情更新於 {market_updated_at}</span>
+        </div>
         <div class="table-toolbar">
           <div class="filter-pills">
             <button class="filter-btn active" id="btnGroupA" onclick="setWatchGroup('held')">
               我的持股 ({len(held_positions)} 檔)
             </button>
+            <button class="filter-btn" id="btnGroupWatch" onclick="setWatchGroup('watchlist')">
+              觀察標的 ({watchlist_count} 檔)
+            </button>
             <button class="filter-btn" id="btnGroupB" onclick="setWatchGroup('unheld')">
               其餘標的 ({150 - len(held_positions)} 檔)
             </button>
             <button class="filter-btn" id="btnGroupAll" onclick="setWatchGroup('all')">
-              全部 150 檔
+              全部 {len(all_stocks_list)} 檔
             </button>
           </div>
 
@@ -2854,29 +2958,31 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
     let holdingsSortCol = 'weight_pct';
     let holdingsSortAsc = false;
 
-    // 主題切換 (三段式：淺色 / 深色 / 跟隨裝置，預設淺色)
+    // 主題切換 (循環單鍵：淺色 ⇄ 深色，預設淺色；淺色顯示 🌙、深色顯示 ☀️)
     let currentThemeMode = 'light';
-    const systemDarkMql = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 
     function applyResolvedTheme(mode) {{
       const html = document.documentElement;
-      const useDark = mode === 'dark' || (mode === 'auto' && systemDarkMql && systemDarkMql.matches);
+      const useDark = (mode === 'dark');
       html.classList.toggle('theme-dark', useDark);
       html.classList.toggle('theme-light', !useDark);
       const themeMeta = document.getElementById('themeColorMeta');
       if (themeMeta) themeMeta.setAttribute('content', useDark ? '#060b14' : '#dce5f0');
-      document.getElementById('themeOptLight')?.classList.toggle('active', mode === 'light');
-      document.getElementById('themeOptDark')?.classList.toggle('active', mode === 'dark');
-      document.getElementById('themeOptAuto')?.classList.toggle('active', mode === 'auto');
+      const toggleBtn = document.getElementById('themeToggleBtn');
+      if (toggleBtn) {{
+        toggleBtn.textContent = useDark ? '☀️' : '🌙';
+        toggleBtn.title = useDark ? '切換淺色模式' : '切換深色模式';
+      }}
       if (window.assetChart) {{
         updateChartTheme();
       }}
     }}
 
-    function setThemeMode(mode) {{
-      currentThemeMode = mode;
-      localStorage.setItem('esun_dashboard_theme', mode);
-      applyResolvedTheme(mode);
+    function toggleTheme() {{
+      const nextMode = (currentThemeMode === 'dark') ? 'light' : 'dark';
+      currentThemeMode = nextMode;
+      localStorage.setItem('esun_dashboard_theme', nextMode);
+      applyResolvedTheme(nextMode);
     }}
 
     // 初始化主題與輕量化液態玻璃通透度滑桿
@@ -2890,15 +2996,9 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
 
     (function initTheme() {{
       const saved = localStorage.getItem('esun_dashboard_theme');
-      const initialMode = (saved === 'light' || saved === 'dark' || saved === 'auto') ? saved : 'light';
+      const initialMode = (saved === 'dark') ? 'dark' : 'light';
       currentThemeMode = initialMode;
       applyResolvedTheme(initialMode);
-
-      if (systemDarkMql && typeof systemDarkMql.addEventListener === 'function') {{
-        systemDarkMql.addEventListener('change', () => {{
-          if (currentThemeMode === 'auto') applyResolvedTheme('auto');
-        }});
-      }}
 
       const savedAlpha = localStorage.getItem('esun_dashboard_glass_alpha');
       if (savedAlpha !== null) {{
@@ -3085,6 +3185,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
     function setWatchGroup(group) {{
       currentWatchGroup = group;
       document.getElementById('btnGroupA').classList.toggle('active', group === 'held');
+      document.getElementById('btnGroupWatch')?.classList.toggle('active', group === 'watchlist');
       document.getElementById('btnGroupB').classList.toggle('active', group === 'unheld');
       document.getElementById('btnGroupAll').classList.toggle('active', group === 'all');
       renderWatchTable();
@@ -3123,6 +3224,8 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       // 分組篩選
       if (currentWatchGroup === 'held') {{
         list = list.filter(s => s.is_held);
+      }} else if (currentWatchGroup === 'watchlist') {{
+        list = list.filter(s => s.is_watchlist);
       }} else if (currentWatchGroup === 'unheld') {{
         list = list.filter(s => !s.is_held);
       }}
@@ -3985,11 +4088,13 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
         wrap.appendChild(tbl);
       }});
 
-      // 動態從渲染後標題生成目錄 (完全相容任何報告格式)
+      // 動態從渲染後標題生成目錄 + Scrollspy 高亮連動
       const tocEl = document.getElementById('reportTocList');
       const headings = Array.from(bodyEl.querySelectorAll('h2, h3'));
       document.getElementById('reportTocCount').textContent = headings.length ? `${{headings.length}} 節` : '';
 
+      window._reportTocPairs = [];
+      window._lastActiveReportTocIdx = -1;
       if (!headings.length) {{
         tocEl.innerHTML = '<div style="font-size:12px; color:var(--text-dim);">此報告無子章節</div>';
       }} else {{
@@ -4005,11 +4110,71 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
           btn.onclick = () => {{
             const el = document.getElementById(targetId);
             if (el) el.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
+            setActiveReportTocIndex(i);
           }};
           tocEl.appendChild(btn);
+          window._reportTocPairs.push({{ heading: h, btn }});
         }});
+        updateReportTocScrollspy();
       }}
     }}
+
+    function setActiveReportTocIndex(activeIdx) {{
+      if (window._lastActiveReportTocIdx === activeIdx) return;
+      window._lastActiveReportTocIdx = activeIdx;
+      const pairs = window._reportTocPairs || [];
+      let activeBtn = null;
+      pairs.forEach((p, idx) => {{
+        const isActive = (idx === activeIdx);
+        p.btn.classList.toggle('active', isActive);
+        if (isActive) activeBtn = p.btn;
+      }});
+      if (activeBtn) {{
+        const tocCard = document.querySelector('.report-toc-card');
+        if (tocCard && getComputedStyle(tocCard).position === 'sticky') {{
+          const btnTop = activeBtn.offsetTop;
+          const btnBottom = btnTop + activeBtn.offsetHeight;
+          const viewTop = tocCard.scrollTop;
+          const viewBottom = viewTop + tocCard.clientHeight;
+          if (btnTop < viewTop + 12) {{
+            tocCard.scrollTop = Math.max(0, btnTop - 12);
+          }} else if (btnBottom > viewBottom - 12) {{
+            tocCard.scrollTop = btnBottom - tocCard.clientHeight + 12;
+          }}
+        }}
+      }}
+    }}
+
+    function updateReportTocScrollspy() {{
+      if (currentTab !== 'tab4') return;
+      const pairs = window._reportTocPairs || [];
+      if (!pairs.length) return;
+      const triggerY = 140;
+      let activeIdx = 0;
+      for (let i = 0; i < pairs.length; i++) {{
+        const rect = pairs[i].heading.getBoundingClientRect();
+        if (rect.top <= triggerY) {{
+          activeIdx = i;
+        }} else {{
+          break;
+        }}
+      }}
+      setActiveReportTocIndex(activeIdx);
+    }}
+
+    (function initReportTocScrollspy() {{
+      let spyTicking = false;
+      window.addEventListener('scroll', () => {{
+        if (currentTab !== 'tab4') return;
+        if (!spyTicking) {{
+          spyTicking = true;
+          requestAnimationFrame(() => {{
+            spyTicking = false;
+            updateReportTocScrollspy();
+          }});
+        }}
+      }}, {{ passive: true }});
+    }})();
 
     function stepReport(delta) {{
       selectReportByIndex(currentReportIndex + delta);

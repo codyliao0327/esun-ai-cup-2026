@@ -2381,9 +2381,9 @@
     "date": "2026-11-17",
     "ranking": {
       "rank": 99,
-      "total_teams": 388,
+      "total_teams": 385,
       "group_rank": 17,
-      "group_total": 86
+      "group_total": 84
     },
     "portfolio": {
       "aum": 895808195.58,
@@ -2686,6 +2686,308 @@
         "amount": 6203438.1,
         "fee": 8839.9,
         "tax": 18610.31,
+        "outcome": "filled"
+      }
+    ]
+  },
+  {
+    "day": 17,
+    "date": "2026-11-18",
+    "ranking": {
+      "rank": 101,
+      "total_teams": 385,
+      "group_rank": 18,
+      "group_total": 84
+    },
+    "portfolio": {
+      "aum": 890526706.27,
+      "day_return": -0.5896,
+      "cum_return": -10.9473,
+      "stock_ratio": 82.3509,
+      "cash_ratio": 17.6491,
+      "holdings_count": 24,
+      "top10_weight": 49.6841,
+      "aum_breakdown": {
+        "cash": 157169606.27,
+        "holdings_value": 733357100.0,
+        "receivable_shares_value": 0.0,
+        "receivable_cash": 0.0,
+        "upcoming_receivable_cash": 0.0,
+        "residual": 0.0
+      },
+      "corporate_actions": {
+        "cash": 0.0,
+        "shares": 0,
+        "count": 0
+      },
+      "carry": {
+        "is_carried_forward": false,
+        "reason": "",
+        "reason_text": ""
+      }
+    },
+    "trade_summary": {
+      "buy_count": 12,
+      "buy_shares": 1751000,
+      "buy_amount": 115482732.5,
+      "sell_count": 9,
+      "sell_shares": 364000,
+      "sell_amount": 106185476.8,
+      "fee": 315877.18,
+      "tax": 318556.43,
+      "voided_count": 0
+    },
+    "trades": [
+      {
+        "id": 78688,
+        "side": "buy",
+        "code": "1216",
+        "name": "統一",
+        "shares": 102000,
+        "price": 78.7025,
+        "amount": 8027655.0,
+        "fee": 11439.41,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 78689,
+        "side": "sell",
+        "code": "1303",
+        "name": "南亞",
+        "shares": 65000,
+        "price": 256.0206,
+        "amount": 16641339.0,
+        "fee": 23713.91,
+        "tax": 49924.02,
+        "outcome": "filled"
+      },
+      {
+        "id": 78690,
+        "side": "buy",
+        "code": "2207",
+        "name": "和泰車",
+        "shares": 29000,
+        "price": 535.6227,
+        "amount": 15533058.3,
+        "fee": 22134.61,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 78691,
+        "side": "sell",
+        "code": "2317",
+        "name": "鴻海",
+        "shares": 82000,
+        "price": 219.5742,
+        "amount": 18005084.4,
+        "fee": 25657.25,
+        "tax": 54015.25,
+        "outcome": "filled"
+      },
+      {
+        "id": 78692,
+        "side": "sell",
+        "code": "2330",
+        "name": "台積電",
+        "shares": 6000,
+        "price": 2178.1479,
+        "amount": 13068887.4,
+        "fee": 18623.16,
+        "tax": 39206.66,
+        "outcome": "filled"
+      },
+      {
+        "id": 78693,
+        "side": "sell",
+        "code": "2404",
+        "name": "漢唐",
+        "shares": 9000,
+        "price": 930.0175,
+        "amount": 8370157.5,
+        "fee": 11927.47,
+        "tax": 25110.47,
+        "outcome": "filled"
+      },
+      {
+        "id": 78694,
+        "side": "buy",
+        "code": "2412",
+        "name": "中華電",
+        "shares": 22000,
+        "price": 164.7009,
+        "amount": 3623419.8,
+        "fee": 5163.37,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 78695,
+        "side": "buy",
+        "code": "2610",
+        "name": "華航",
+        "shares": 367000,
+        "price": 22.8968,
+        "amount": 8403125.6,
+        "fee": 11974.45,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 78696,
+        "side": "buy",
+        "code": "2618",
+        "name": "長榮航",
+        "shares": 228000,
+        "price": 46.7989,
+        "amount": 10670149.2,
+        "fee": 15204.96,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 78697,
+        "side": "buy",
+        "code": "2880",
+        "name": "華南金",
+        "shares": 34000,
+        "price": 49.1879,
+        "amount": 1672388.6,
+        "fee": 2383.15,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 78698,
+        "side": "sell",
+        "code": "2881",
+        "name": "富邦金",
+        "shares": 59000,
+        "price": 149.531,
+        "amount": 8822329.0,
+        "fee": 12571.82,
+        "tax": 26466.99,
+        "outcome": "filled"
+      },
+      {
+        "id": 78699,
+        "side": "buy",
+        "code": "2886",
+        "name": "兆豐金",
+        "shares": 83000,
+        "price": 53.1067,
+        "amount": 4407856.1,
+        "fee": 6281.19,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 78700,
+        "side": "buy",
+        "code": "2891",
+        "name": "中信金",
+        "shares": 104000,
+        "price": 74.5435,
+        "amount": 7752524.0,
+        "fee": 11047.35,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 78701,
+        "side": "buy",
+        "code": "2892",
+        "name": "第一金",
+        "shares": 425000,
+        "price": 40.9381,
+        "amount": 17398692.5,
+        "fee": 24793.14,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 78702,
+        "side": "buy",
+        "code": "3293",
+        "name": "鈊象",
+        "shares": 16000,
+        "price": 798.9113,
+        "amount": 12782580.8,
+        "fee": 18215.18,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 78703,
+        "side": "sell",
+        "code": "3443",
+        "name": "創意",
+        "shares": 1000,
+        "price": 6523.9575,
+        "amount": 6523957.5,
+        "fee": 9296.64,
+        "tax": 19571.87,
+        "outcome": "filled"
+      },
+      {
+        "id": 78704,
+        "side": "buy",
+        "code": "3491",
+        "name": "昇達科",
+        "shares": 5000,
+        "price": 1478.8018,
+        "amount": 7394009.0,
+        "fee": 10536.46,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 78705,
+        "side": "sell",
+        "code": "3533",
+        "name": "嘉澤",
+        "shares": 7000,
+        "price": 1679.9523,
+        "amount": 11759666.1,
+        "fee": 16757.52,
+        "tax": 35279.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 78706,
+        "side": "buy",
+        "code": "5876",
+        "name": "上海商銀",
+        "shares": 336000,
+        "price": 53.0276,
+        "amount": 17817273.6,
+        "fee": 25389.61,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 78707,
+        "side": "sell",
+        "code": "6505",
+        "name": "台塑化",
+        "shares": 131000,
+        "price": 89.3341,
+        "amount": 11702767.1,
+        "fee": 16676.44,
+        "tax": 35108.3,
+        "outcome": "filled"
+      },
+      {
+        "id": 78708,
+        "side": "sell",
+        "code": "6510",
+        "name": "精測",
+        "shares": 4000,
+        "price": 2822.8222,
+        "amount": 11291288.8,
+        "fee": 16090.09,
+        "tax": 33873.87,
         "outcome": "filled"
       }
     ]
