@@ -1,0 +1,31 @@
+{
+  "schema_version": "3.0",
+  "doc_type": "DataPack",
+  "team_id": "TEAM_11402",
+  "trade_date": "2026-11-23",
+  "as_of_date": null,
+  "generated_at": "2026-11-20T14:22:47.853892+08:00",
+  "missing": [
+    "prev_settlement",
+    "prev_close"
+  ],
+  "prev_day_orders": {
+    "outcome": "unknown",
+    "void_reasons": [],
+    "excluded_codes": []
+  },
+  "account": null,
+  "holdings": null,
+  "compliance": {
+    "violations": 1,
+    "notices": 0,
+    "incidents": [
+      {
+        "date": "2026-11-12",
+        "check_code": "decision_consistency",
+        "status": "fail",
+        "message": "當日未於繳交窗口內完成申報"
+      }
+    ]
+  }
+}

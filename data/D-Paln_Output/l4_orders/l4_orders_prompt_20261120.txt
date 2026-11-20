@@ -1,0 +1,248 @@
+\
+你是主動式 ETF 基金經理人與交易風控覆核主管。
+依據玉山人工智慧公開賽 D-Plan v4.3 規範，我們已透過 Python 官方演算法由今日 L3 決策 (decisions)
+機械推導出今日初版委託清單 (orders)。
+
+請審核這批委託單的合規性、資金安全性、Active Share 指標與執行效果，
+並回傳最終確認（或經風控核可）的嚴格委託單 JSON。
+
+## 今日日期與執行環境
+- 交易日基準：20261120
+- 系統時間：2026-11-19T20:04:54+08:00
+
+## 今日市場大盤目標現金區間 (L2M Market View)
+- 目標現金區間 target_cash_pct_range：[0.15, 0.20] (15.0% ~ 20.0%)
+
+## 官方帳戶現況快照 (DataPack 快照)
+- 可交易淨值 (nav_tradable)：877,195,103 元
+- 可動用現金 (cash)：149,784,353 元
+- 現有持股檔數：24 檔
+- 現有持股部位明細 (前一交易日結算庫存)：
+- 1216: 735,000 股
+- 2207: 59,000 股
+- 2330: 18,000 股
+- 2379: 31,000 股
+- 2412: 381,000 股
+- 2454: 6,000 股
+- 2603: 133,000 股
+- 2609: 367,000 股
+- 2610: 1,163,000 股
+- 2618: 838,000 股
+- 2882: 205,000 股
+- 2886: 812,000 股
+- 2891: 606,000 股
+- 2892: 425,000 股
+- 2912: 95,000 股
+- 3045: 306,000 股
+- 3227: 96,000 股
+- 3293: 44,000 股
+- 3491: 21,000 股
+- 3661: 5,000 股
+- 4749: 23,000 股
+- 4904: 290,000 股
+- 5876: 471,000 股
+- 5880: 641,000 股
+
+## 今日 L3 投資組合決策清單 (Decisions)
+- [D1] 2880: BUY 目標權重 0.025 | 推論: ['I13']
+- [D2] 2317: BUY 目標權重 0.025 | 推論: ['I14']
+- [D3] 8415: BUY 目標權重 0.02 | 推論: ['I19']
+- [D4] 5871: BUY 目標權重 0.02 | 推論: ['I20']
+- [D5] 2412: ADD 目標權重 0.08 | 推論: ['I1']
+- [D6] 1216: ADD 目標權重 0.072 | 推論: ['I2']
+- [D7] 2207: ADD 目標權重 0.05 | 推論: ['I3']
+- [D8] 3293: ADD 目標權重 0.05 | 推論: ['I4']
+- [D9] 5876: ADD 目標權重 0.04 | 推論: ['I5']
+- [D10] 2882: SELL_ALL 目標權重 0.0 | 推論: ['I25']
+- [D11] 2454: SELL_ALL 目標權重 0.0 | 推論: ['I28']
+- [D12] 3661: SELL_ALL 目標權重 0.0 | 推論: ['I27']
+- [D13] 3491: SELL_ALL 目標權重 0.0 | 推論: ['I26']
+- [D14] 2330: TRIM 目標權重 0.024 | 推論: ['I17']
+- [D15] 2603: TRIM 目標權重 0.024 | 推論: ['I15']
+
+## 今日 Python 官方公式推導之委託單清單 (待覆核 orders)
+官方計算公式：
+  目標股數 = floor( target_weight × 前日淨值 ÷ 前日收盤價 ÷ 1000 ) × 1000
+  委託股數 = 目標股數 − 目前持有股數 (正=BUY, 負=SELL)
+
+共 15 筆委託：
+[
+  {
+    "ticker": "2880",
+    "side": "BUY",
+    "shares": 448000,
+    "decision_ref": "D1",
+    "derivation_detail": "target_shares = floor(0.025×877,195,103 / 48.85 / 1000)×1000 = 448,000；現持 0 → BUY 448,000"
+  },
+  {
+    "ticker": "2317",
+    "side": "BUY",
+    "shares": 99000,
+    "decision_ref": "D2",
+    "derivation_detail": "target_shares = floor(0.025×877,195,103 / 220.5 / 1000)×1000 = 99,000；現持 0 → BUY 99,000"
+  },
+  {
+    "ticker": "8415",
+    "side": "BUY",
+    "shares": 415000,
+    "decision_ref": "D3",
+    "derivation_detail": "target_shares = floor(0.02×877,195,103 / 42.2 / 1000)×1000 = 415,000；現持 0 → BUY 415,000"
+  },
+  {
+    "ticker": "5871",
+    "side": "BUY",
+    "shares": 176000,
+    "decision_ref": "D4",
+    "derivation_detail": "target_shares = floor(0.02×877,195,103 / 99.5 / 1000)×1000 = 176,000；現持 0 → BUY 176,000"
+  },
+  {
+    "ticker": "2412",
+    "side": "BUY",
+    "shares": 41000,
+    "decision_ref": "D5",
+    "derivation_detail": "target_shares = floor(0.08×877,195,103 / 166 / 1000)×1000 = 422,000；現持 381,000 → BUY 41,000"
+  },
+  {
+    "ticker": "1216",
+    "side": "BUY",
+    "shares": 67000,
+    "decision_ref": "D6",
+    "derivation_detail": "target_shares = floor(0.072×877,195,103 / 78.7 / 1000)×1000 = 802,000；現持 735,000 → BUY 67,000"
+  },
+  {
+    "ticker": "2207",
+    "side": "BUY",
+    "shares": 21000,
+    "decision_ref": "D7",
+    "derivation_detail": "target_shares = floor(0.05×877,195,103 / 546 / 1000)×1000 = 80,000；現持 59,000 → BUY 21,000"
+  },
+  {
+    "ticker": "3293",
+    "side": "BUY",
+    "shares": 11000,
+    "decision_ref": "D8",
+    "derivation_detail": "target_shares = floor(0.05×877,195,103 / 792 / 1000)×1000 = 55,000；現持 44,000 → BUY 11,000"
+  },
+  {
+    "ticker": "5876",
+    "side": "BUY",
+    "shares": 186000,
+    "decision_ref": "D9",
+    "derivation_detail": "target_shares = floor(0.04×877,195,103 / 53.4 / 1000)×1000 = 657,000；現持 471,000 → BUY 186,000"
+  },
+  {
+    "ticker": "2882",
+    "side": "SELL",
+    "shares": 205000,
+    "decision_ref": "D10",
+    "derivation_detail": "target_shares = floor(0×877,195,103 / 103.5 / 1000)×1000 = 0；現持 205,000 → SELL 205,000"
+  },
+  {
+    "ticker": "2454",
+    "side": "SELL",
+    "shares": 6000,
+    "decision_ref": "D11",
+    "derivation_detail": "target_shares = floor(0×877,195,103 / 3720 / 1000)×1000 = 0；現持 6,000 → SELL 6,000"
+  },
+  {
+    "ticker": "3661",
+    "side": "SELL",
+    "shares": 5000,
+    "decision_ref": "D12",
+    "derivation_detail": "target_shares = floor(0×877,195,103 / 3600 / 1000)×1000 = 0；現持 5,000 → SELL 5,000"
+  },
+  {
+    "ticker": "3491",
+    "side": "SELL",
+    "shares": 21000,
+    "decision_ref": "D13",
+    "derivation_detail": "target_shares = floor(0×877,195,103 / 1360 / 1000)×1000 = 0；現持 21,000 → SELL 21,000"
+  },
+  {
+    "ticker": "2330",
+    "side": "SELL",
+    "shares": 8000,
+    "decision_ref": "D14",
+    "derivation_detail": "target_shares = floor(0.024×877,195,103 / 2100 / 1000)×1000 = 10,000；現持 18,000 → SELL 8,000"
+  },
+  {
+    "ticker": "2603",
+    "side": "SELL",
+    "shares": 48000,
+    "decision_ref": "D15",
+    "derivation_detail": "target_shares = floor(0.024×877,195,103 / 247 / 1000)×1000 = 85,000；現持 133,000 → SELL 48,000"
+  }
+]
+
+## 執行效果與風控分析指標
+1. 預估執行後股票總市值：729,585,850 元
+2. 預估執行後實際總權重：0.8317 (83.17%)
+3. 預估執行後剩餘現金：147,609,253 元
+4. 預估執行後現金比率：0.1683 (16.83%)
+5. 買進總所需資金：120,928,600 元，賣出總釋出資金：118,753,500 元
+
+## 主動投資比率 (Active Share) 精算結果
+本目標組合與市場指定主動型 ETF 前 15 大持股逐檔比對：
+公式：Active Share = 1/2 × Σ ｜本組合權重 − ETF 權重｜
+- 與主動式 ETF 00400A 比較之 Active Share: 0.6893 (68.93%)
+- 與主動式 ETF 00401A 比較之 Active Share: 0.5946 (59.46%)
+- 與主動式 ETF 00402A 比較之 Active Share: 0.7324 (73.24%)
+- 與主動式 ETF 00403A 比較之 Active Share: 0.7282 (72.82%)
+- 與主動式 ETF 00404A 比較之 Active Share: 0.6467 (64.67%)
+- 與主動式 ETF 00405A 比較之 Active Share: 0.7670 (76.70%)
+- 與主動式 ETF 00406A 比較之 Active Share: 0.6665 (66.65%)
+- 與主動式 ETF 00407A 比較之 Active Share: 0.7081 (70.81%)
+- 與主動式 ETF 00408A 比較之 Active Share: 0.6547 (65.47%)
+- 與主動式 ETF 00409A 比較之 Active Share: 0.7184 (71.84%)
+- 與主動式 ETF 00410A 比較之 Active Share: 0.7268 (72.68%)
+- 與主動式 ETF 00411A 比較之 Active Share: 0.8144 (81.44%)
+- 與主動式 ETF 00412A 比較之 Active Share: 0.6134 (61.34%)
+- 與主動式 ETF 00413A 比較之 Active Share: 0.7410 (74.10%)
+- 與主動式 ETF 00415A 比較之 Active Share: 0.7465 (74.65%)
+- 與主動式 ETF 00416A 比較之 Active Share: 0.7290 (72.90%)
+- 與主動式 ETF 00418A 比較之 Active Share: 0.7430 (74.30%)
+- 與主動式 ETF 00980A 比較之 Active Share: 0.6124 (61.24%)
+- 與主動式 ETF 00981A 比較之 Active Share: 0.7906 (79.06%)
+- 與主動式 ETF 00982A 比較之 Active Share: 0.7321 (73.21%)
+- 與主動式 ETF 00983A 比較之 Active Share: 0.7396 (73.96%)
+- 與主動式 ETF 00984A 比較之 Active Share: 0.5568 (55.68%)
+- 與主動式 ETF 00985A 比較之 Active Share: 0.6595 (65.95%)
+- 與主動式 ETF 00986A 比較之 Active Share: 0.7145 (71.45%)
+- 與主動式 ETF 00987A 比較之 Active Share: 0.7543 (75.43%)
+- 與主動式 ETF 00988A 比較之 Active Share: 0.7903 (79.03%)
+- 與主動式 ETF 00989A 比較之 Active Share: 0.6566 (65.66%)
+- 與主動式 ETF 00990A 比較之 Active Share: 0.6903 (69.03%)
+- 與主動式 ETF 00991A 比較之 Active Share: 0.8290 (82.90%)
+- 與主動式 ETF 00992A 比較之 Active Share: 0.7366 (73.66%)
+- 與主動式 ETF 00993A 比較之 Active Share: 0.7152 (71.52%)
+- 與主動式 ETF 00994A 比較之 Active Share: 0.7735 (77.35%)
+- 與主動式 ETF 00995A 比較之 Active Share: 0.7216 (72.16%)
+- 與主動式 ETF 00996A 比較之 Active Share: 0.7230 (72.30%)
+- 與主動式 ETF 00997A 比較之 Active Share: 0.6615 (66.15%)
+- 與主動式 ETF 00998A 比較之 Active Share: 0.6639 (66.39%)
+- 與主動式 ETF 00999A 比較之 Active Share: 0.5975 (59.75%)
+(合規門檻：與每一檔指定 ETF 的 Active Share 均嚴格不得小於 15% / 0.15)
+
+## 經理人與風控官覆核審查任務
+請針對以下四大要點進行審視，並於 review_notes 說明覆核結論：
+1. **Active Share 審視**：確認委託執行後的投資組合，與市場各主動式 ETF 前 15 大成分股之 Active Share 均 $\ge 15\%$，無指數複製或同業雷同之風險。
+2. **整股取整偏離與現金檢核**：確認因向下整股取整所保留之剩餘現金比率 (16.83%)，完全符合 L2M 所宣示之目標現金區間 [0.15, 0.20] (15.0% ~ 20.0%)，資金水位健康充足。
+3. **委託方向與無超賣檢核**：確認賣出委託 (SELL) 之股數絕無超過庫存持股數 (絕不可超賣)；買進委託 (BUY) 所需資金未超過帳戶淨額上限。
+4. **推導明細 (derivation_detail) 格式確認**：每筆委託單之推導算式皆精準對應官方範例格式。
+5. **程式碼執行工具 (Code Execution)**：系統已為你開啟 Python Code Execution 工具。若需驗證委託股數金額、覆核 Active Share 或計算成交後現金水位或其他計算時，請主動撰寫並執行 Python 程式碼進行驗證。
+
+## 輸出格式要求 (嚴格遵循 D-Plan v4.3 JSON 結構)
+請產生符合下列結構的 JSON 回應：
+{
+  "orders": [
+    {
+      "ticker": "2330",
+      "side": "BUY",
+      "shares": 49000,
+      "decision_ref": "D1",
+      "derivation_detail": "target_shares = floor(0.07×1,000,000,000 / 1425 / 1000)×1000 = 49,000；現持 0 → BUY 49,000"
+    },
+    ...
+  ],
+  "review_notes": "經理人與風控覆核總結 (例如：經檢核 25 檔委託單完全合規，Active Share 達標且剩餘現金在安全區間內)"
+}

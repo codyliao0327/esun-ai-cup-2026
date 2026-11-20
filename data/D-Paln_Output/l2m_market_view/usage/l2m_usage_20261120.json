@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-11-19T19:52:26+08:00",
+  "date": "20261120",
+  "provider": "gemini",
+  "model": "gemini-4-carbon",
+  "model_group": "stage-l2m",
+  "stage": "l2m",
+  "status": "success",
+  "finish_reason": "stop",
+  "duration_seconds": 142.6,
+  "prompt_tokens": 109486,
+  "completion_tokens": 10950,
+  "total_tokens": 120436,
+  "cached_tokens": 80609,
+  "tool_use_tokens": 92808,
+  "reasoning_tokens": 7145,
+  "response_cost": 0.175315,
+  "code_execution_used": true,
+  "code_execution_call_count": 4,
+  "executed_codes": [
+    {
+      "language": "PYTHON",
+      "code": "nav = 877195103.04\ncash_pct = 0.170754\n\nfor new_cash_pct in [0.1708, 0.18, 0.19, 0.195, 0.20]:\n    # Suppose tomorrow stocks drop by 8% or 10%\n    stock_pct = 1 - new_cash_pct\n    for mkt_drop in [-0.05, -0.08, -0.10]:\n        end_nav = new_cash_pct + stock_pct * (1 + mkt_drop)\n        end_cash_pct = new_cash_pct / end_nav\n        print(f\"Start cash {new_cash_pct:.3f}, mkt {mkt_drop:.0%} -> End cash {end_cash_pct:.4f}\")\n"
+    },
+    {
+      "language": "PYTHON",
+      "code": "holdings = {\n  \"1216\": 0.065943, # 統一 - 食品\n  \"2207\": 0.036724, # 和泰車 - 汽車\n  \"2330\": 0.043092, # 台積電 - 半導體\n  \"2379\": 0.025657, # 瑞昱 - 半導體\n  \"2412\": 0.0721,   # 中華電 - 通信網路\n  \"2454\": 0.025445, # 聯發科 - 半導體\n  \"2603\": 0.03745,  # 長榮 - 航運\n  \"2609\": 0.023973, # 陽明 - 航運\n  \"2610\": 0.029831, # 華航 - 航運\n  \"2618\": 0.044327, # 長榮航 - 航運\n  \"2882\": 0.024188, # 國泰金 - 金融\n  \"2886\": 0.049431, # 兆豐金 - 金融\n  \"2891\": 0.0505,   # 中信金 - 金融\n  \"2892\": 0.019453, # 第一金 - 金融\n  \"2912\": 0.022743, # 統一超 - 貿易百貨\n  \"3045\": 0.044477, # 台灣大 - 通信網路\n  \"3227\": 0.019535, # 原相 - 半導體(櫃?) / IC設計\n  \"3293\": 0.039727, # 鈊象 - 文創/數位雲端/資訊服務\n  \"3491\": 0.032558, # 昇達科 - 通信網路\n  \"3661\": 0.02052,  # 世芯-KY - 半導體\n  \"4749\": 0.017174, # 新應材 - 化學/半導體材料\n  \"4904\": 0.035705, # 遠傳 - 通信網路\n  \"5876\": 0.028673, # 上海商銀 - 金融\n  \"5880\": 0.020022  # 合庫金 - 金融\n}\nprint(\"Total stock weight:\", sum(holdings.values()))\nprint(\"Semi/Tech (2330,2379,2454,3227,3661,4749):\", sum(holdings[k] for k in [\"2330\",\"2379\",\"2454\",\"3227\",\"3661\",\"4749\"]))\nprint(\"Telecom (2412,3045,4904,3491):\", sum(holdings[k] for k in [\"2412\",\"3045\",\"4904\",\"3491\"]))\nprint(\"Financials (2882,2886,2891,2892,5876,5880):\", sum(holdings[k] for k in [\"2882\",\"2886\",\"2891\",\"2892\",\"5876\",\"5880\"]))\nprint(\"Shipping (2603,2609,2610,2618):\", sum(holdings[k] for k in [\"2603\",\"2609\",\"2610\",\"2618\"]))\nprint(\"Consumer/Food/Auto (1216,2207,2912):\", sum(holdings[k] for k in [\"1216\",\"2207\",\"2912\"]))\n"
+    },
+    {
+      "language": "PYTHON",
+      "code": "# Verify O1 key figures and unit conversions\nforeign_1d = -24312208731.00 / 1e8 # 億元\nforeign_5d = -180322048229.00 / 1e8 # 億元\ntrust_1d = 1512543078.00 / 1e8 # 億元\ntrust_5d = 5540871683.00 / 1e8 # 億元\nprint(f\"Foreign 1d: {foreign_1d:.2f}億, 5d: {foreign_5d:.2f}億\")\nprint(f\"Trust 1d: {trust_1d:.2f}億, 5d: {trust_5d:.2f}億\")\n\n# Verify cash & NAV\ncash = 149784353.04\nnav = 877195103.04\nprint(f\"Cash: {cash/1e8:.4f}億, NAV: {nav/1e8:.4f}億, Cash ratio: {cash/nav:.6f} ({cash/nav*100:.2f}%)\")\n"
+    },
+    {
+      "language": "PYTHON",
+      "code": "import json\n\nlogic = (\n    \"依據O1數據，加權指數收38,426.89點，近5日重挫-10.83%、最大回撤達-12.02%，\"\n    \"10日區間位置落於0.0%破底極端值；相對10MA與20MA乖離率達-7.37%與-11.18%，\"\n    \"報酬指數距5MA乖離-5.55%，且5MA近3日斜率-5.28%、20MA近5日斜率-3.61%同步下彎，\"\n    \"櫃買相對加權近5日更落後-4.19個百分點，中小型股殺盤劇烈。資金與籌碼面（O1），\"\n    \"外資單日賣超243.12億元、近5日狂賣1,803.22億元，雖投信單日買超15.13億元、近5日買超55.41億元，\"\n    \"仍難敵外資提款；全市場均線多空家數差惡化至-1,492家、漲跌家數比僅0.07，上市融資近5日減肥-6.12%，\"\n    \"確立系統性去槓桿之risk_off環境。產業結構（O1）全數收黑，僅內需防禦型相對抗跌，如建材營造（單日-0.08%、5日RS+14.22%）、\"\n    \"食品（-0.34%、5日RS+12.69%）、通信網路（-1.94%、5日RS+8.34%）及金融保險（-2.14%、5日RS+4.44%）；\"\n    \"玻璃陶瓷（-9.62%）、光電（-8.98%）與電子零組件（-8.34%、5日RS-11.90%）則重挫領跌。\"\n    \"檢視帳戶現況，賽期剩餘6個交易日（中後期），累計報酬-12.28%、MDD-13.72%，近3日淨值-2.94%且連虧4日，\"\n    \"惟近5日淨值-5.34%明顯抗跌於大盤，主因現有24檔部位已配置電信、金融、食品與汽車等防禦股，但半導體與IC設計（2330、2379、2454、3661等）仍受系統性拖累。\"\n    \"考量目前可動用現金比率已達17.08%，具備防禦緩衝，若大幅淨賣超恐推升現金逼近20%警戒線並增加大盤續跌時被動突破25%合規天花板之風險（目前累計1次警告），\"\n    \"故操作姿態採defensive，淨曝險意圖定為hold（淨買賣金額差距在 NAV 2% 容差內，NAV = (Σ 各持股張數 × 1,000 × 當日收盤價) + 現金部位），\"\n    \"目標現金區間設為[0.15, 0.20]，透過汰弱留強將高波動科技股換倉至高RS抗跌防禦族群。\"\n)\n\ncounter_evidence = (\n    \"依O1觀察存在三項局部反向訊號：第一，投信單日逆勢買超15.13億元、近5日累計買超55.41億元，呈現土洋對作，對高息防禦權值股具下檔支撐；\"\n    \"第二，上市融資餘額近5日大幅縮減-6.12%，散戶浮額加速去槓桿，配合加權相對20MA負乖離高達-11.18%及10日區間位置0.0%，短線具乖離過大之技術性反彈契機；\"\n    \"第三，其他電子（單日RS+1.77%、RS動能+4.32pp）與半導體（單日RS+0.12%、RS動能+0.43pp）相對大盤跌勢略見收斂。\"\n    \"惟投信買盤規模遠不及外資近5日1,803.22億元賣壓，且漲跌比0.07顯示盤面極度偏弱，尚不足以扭轉risk_off研判，僅支持以hold進行防禦換倉而非恐慌砍倉。\"\n)\n\nprint(\"Logic length:\", len(logic))\nprint(\"Counter evidence length:\", len(counter_evidence))\n\nresp = {\n    \"market_view\": {\n        \"basis_refs\": [\"O1\"],\n        \"logic\": logic,\n        \"regime\": \"risk_off\",\n        \"stance\": \"defensive\",\n        \"posture\": {\n            \"net_exposure_intent\": \"hold\",\n            \"target_cash_pct_range\": [0.15, 0.20]\n        },\n        \"counter_evidence\": counter_evidence,\n        \"confidence\": 0.88\n    }\n}\nprint(json.dumps(resp, ensure_ascii=False, indent=2))\n"
+    }
+  ]
+}
