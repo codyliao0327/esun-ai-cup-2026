@@ -1,0 +1,159 @@
+{
+  "_format": "[value, date]",
+  "1101": {
+    "trust_net_buy_intensity_5d": [-1.92, "2026-11-20"]
+  },
+  "1216": {
+    "trust_net_buy_intensity_5d": [10.47, "2026-11-20"]
+  },
+  "1402": {
+    "trust_net_buy_intensity_5d": [-4.9, "2026-11-20"]
+  },
+  "1519": {
+    "trust_net_buy_intensity_5d": [4.04, "2026-11-20"]
+  },
+  "1590": {
+    "trust_net_buy_intensity_5d": [-1.85, "2026-11-20"]
+  },
+  "2002": {
+    "trust_net_buy_intensity_5d": [-0.06, "2026-11-20"]
+  },
+  "2207": {
+    "trust_net_buy_intensity_5d": [-0.71, "2026-11-20"]
+  },
+  "2317": {
+    "trust_net_buy_intensity_5d": [0.72, "2026-11-20"]
+  },
+  "2330": {
+    "trust_net_buy_intensity_5d": [0.35, "2026-11-20"]
+  },
+  "2379": {
+    "trust_net_buy_intensity_5d": [-6.33, "2026-11-20"]
+  },
+  "2395": {
+    "trust_net_buy_intensity_5d": [-1.36, "2026-11-20"]
+  },
+  "2412": {
+    "trust_net_buy_intensity_5d": [4.7, "2026-11-20"]
+  },
+  "2454": {
+    "trust_net_buy_intensity_5d": [1.52, "2026-11-20"]
+  },
+  "2603": {
+    "trust_net_buy_intensity_5d": [-0.41, "2026-11-20"]
+  },
+  "2609": {
+    "trust_net_buy_intensity_5d": [-5.85, "2026-11-20"]
+  },
+  "2610": {
+    "trust_net_buy_intensity_5d": [0.6, "2026-11-20"]
+  },
+  "2618": {
+    "trust_net_buy_intensity_5d": [-0.44, "2026-11-20"]
+  },
+  "2801": {
+    "trust_net_buy_intensity_5d": [-10.72, "2026-11-20"]
+  },
+  "2834": {
+    "trust_net_buy_intensity_5d": [-0.11, "2026-11-20"]
+  },
+  "2880": {
+    "trust_net_buy_intensity_5d": [-5.85, "2026-11-20"]
+  },
+  "2881": {
+    "trust_net_buy_intensity_5d": [11.28, "2026-11-20"]
+  },
+  "2882": {
+    "trust_net_buy_intensity_5d": [6.19, "2026-11-20"]
+  },
+  "2886": {
+    "trust_net_buy_intensity_5d": [-5.12, "2026-11-20"]
+  },
+  "2891": {
+    "trust_net_buy_intensity_5d": [3.15, "2026-11-20"]
+  },
+  "2892": {
+    "trust_net_buy_intensity_5d": [-10.39, "2026-11-20"]
+  },
+  "2912": {
+    "trust_net_buy_intensity_5d": [2.96, "2026-11-20"]
+  },
+  "3045": {
+    "trust_net_buy_intensity_5d": [-1.65, "2026-11-20"]
+  },
+  "3227": {
+    "trust_net_buy_intensity_5d": [-3.55, "2026-11-20"]
+  },
+  "3231": {
+    "trust_net_buy_intensity_5d": [1.36, "2026-11-20"]
+  },
+  "3293": {
+    "trust_net_buy_intensity_5d": [2.79, "2026-11-20"]
+  },
+  "3491": {
+    "trust_net_buy_intensity_5d": [2.6, "2026-11-20"]
+  },
+  "3529": {
+    "trust_net_buy_intensity_5d": [0.61, "2026-11-20"]
+  },
+  "3661": {
+    "trust_net_buy_intensity_5d": [4.65, "2026-11-20"]
+  },
+  "3665": {
+    "trust_net_buy_intensity_5d": [17.92, "2026-11-20"]
+  },
+  "4123": {
+    "trust_net_buy_intensity_5d": [-0.14, "2026-11-20"]
+  },
+  "4749": {
+    "trust_net_buy_intensity_5d": [4.54, "2026-11-20"]
+  },
+  "4904": {
+    "trust_net_buy_intensity_5d": [2.59, "2026-11-20"]
+  },
+  "4966": {
+    "trust_net_buy_intensity_5d": [-3, "2026-11-20"]
+  },
+  "5347": {
+    "trust_net_buy_intensity_5d": [-2.36, "2026-11-20"]
+  },
+  "5536": {
+    "trust_net_buy_intensity_5d": [17.15, "2026-11-20"]
+  },
+  "5871": {
+    "trust_net_buy_intensity_5d": [-7.14, "2026-11-20"]
+  },
+  "5876": {
+    "trust_net_buy_intensity_5d": [26.22, "2026-11-20"]
+  },
+  "5880": {
+    "trust_net_buy_intensity_5d": [-2.46, "2026-11-20"]
+  },
+  "5903": {
+    "trust_net_buy_intensity_5d": [0, "2026-11-20"]
+  },
+  "6023": {
+    "trust_net_buy_intensity_5d": [0, "2026-11-20"]
+  },
+  "6505": {
+    "trust_net_buy_intensity_5d": [13.43, "2026-11-20"]
+  },
+  "6548": {
+    "trust_net_buy_intensity_5d": [2.87, "2026-11-20"]
+  },
+  "6919": {
+    "trust_net_buy_intensity_5d": [0, "2026-11-20"]
+  },
+  "7828": {
+    "trust_net_buy_intensity_5d": [20.26, "2026-11-20"]
+  },
+  "8069": {
+    "trust_net_buy_intensity_5d": [2.93, "2026-11-20"]
+  },
+  "8299": {
+    "trust_net_buy_intensity_5d": [0.08, "2026-11-20"]
+  },
+  "8415": {
+    "trust_net_buy_intensity_5d": [0, "2026-11-20"]
+  }
+}

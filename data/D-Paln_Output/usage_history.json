@@ -1,18 +1,18 @@
 {
-  "updated_at": "2026-11-20T23:47:35+08:00",
+  "updated_at": "2026-11-22T23:38:52+08:00",
   "summary": {
-    "total_calls": 90,
-    "success_calls": 90,
-    "failed_calls": 0,
-    "prompt_tokens": 5893864,
-    "completion_tokens": 831602,
-    "total_tokens": 10886469,
-    "cached_tokens": 3566332,
-    "tool_use_tokens": 7329631,
-    "reasoning_tokens": 95266,
-    "response_cost": 12.530853,
-    "duration_seconds": 13167.3,
-    "code_execution_call_count": 188
+    "total_calls": 95,
+    "success_calls": 94,
+    "failed_calls": 1,
+    "prompt_tokens": 6316462,
+    "completion_tokens": 887155,
+    "total_tokens": 11364620,
+    "cached_tokens": 3812263,
+    "tool_use_tokens": 7611943,
+    "reasoning_tokens": 117619,
+    "response_cost": 13.2088,
+    "duration_seconds": 14313.76,
+    "code_execution_call_count": 198
   },
   "daily_summary": {
     "20261028": {
@@ -1720,6 +1720,101 @@
           "tool_use_tokens": 7401,
           "reasoning_tokens": 156,
           "response_cost": 0.055578,
+          "code_execution_used": true,
+          "code_execution_call_count": 1
+        }
+      }
+    },
+    "20261123": {
+      "date": "20261123",
+      "calls": 5,
+      "prompt_tokens": 422598,
+      "completion_tokens": 55553,
+      "total_tokens": 478151,
+      "cached_tokens": 245931,
+      "tool_use_tokens": 282312,
+      "reasoning_tokens": 22353,
+      "response_cost": 0.677947,
+      "duration_seconds": 1146.46,
+      "code_execution_call_count": 10,
+      "stages": {
+        "l1": {
+          "model": "gemini-3.8-flash",
+          "model_group": "stage-l1",
+          "status": "success",
+          "finish_reason": "stop",
+          "duration_seconds": 125.78,
+          "prompt_tokens": 93343,
+          "completion_tokens": 22213,
+          "total_tokens": 115556,
+          "cached_tokens": 0,
+          "tool_use_tokens": 0,
+          "reasoning_tokens": 9581,
+          "response_cost": 0.153306,
+          "code_execution_used": false,
+          "code_execution_call_count": 0
+        },
+        "l2m": {
+          "model": "gemini-4-carbon",
+          "model_group": "stage-l2m",
+          "status": "success",
+          "finish_reason": "stop",
+          "duration_seconds": 124.21,
+          "prompt_tokens": 79635,
+          "completion_tokens": 8441,
+          "total_tokens": 88076,
+          "cached_tokens": 52689,
+          "tool_use_tokens": 63016,
+          "reasoning_tokens": 4507,
+          "response_cost": 0.143571,
+          "code_execution_used": true,
+          "code_execution_call_count": 3
+        },
+        "l2": {
+          "model": "gemini-4-carbon",
+          "model_group": "stage-l2",
+          "status": "failed",
+          "finish_reason": "error",
+          "duration_seconds": 600.14,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "cached_tokens": 0,
+          "tool_use_tokens": 0,
+          "reasoning_tokens": 0,
+          "response_cost": 0.0,
+          "code_execution_used": false,
+          "code_execution_call_count": 0
+        },
+        "l3": {
+          "model": "gemini-4-carbon",
+          "model_group": "stage-l3",
+          "status": "success",
+          "finish_reason": "stop",
+          "duration_seconds": 266.94,
+          "prompt_tokens": 238665,
+          "completion_tokens": 22665,
+          "total_tokens": 261330,
+          "cached_tokens": 190460,
+          "tool_use_tokens": 213172,
+          "reasoning_tokens": 8115,
+          "response_cost": 0.342106,
+          "code_execution_used": true,
+          "code_execution_call_count": 6
+        },
+        "l4": {
+          "model": "gemini-4-carbon",
+          "model_group": "stage-l4",
+          "status": "success",
+          "finish_reason": "stop",
+          "duration_seconds": 29.39,
+          "prompt_tokens": 10955,
+          "completion_tokens": 2234,
+          "total_tokens": 13189,
+          "cached_tokens": 2782,
+          "tool_use_tokens": 6124,
+          "reasoning_tokens": 150,
+          "response_cost": 0.038964,
           "code_execution_used": true,
           "code_execution_call_count": 1
         }
@@ -4410,6 +4505,154 @@
         {
           "language": "PYTHON",
           "code": "import math\n\nnav = 877195103\ncash_init = 149784353\n\nholdings = {\n    \"1216\": 735000, \"2207\": 59000, \"2330\": 18000, \"2379\": 31000, \"2412\": 381000,\n    \"2454\": 6000, \"2603\": 133000, \"2609\": 367000, \"2610\": 1163000, \"2618\": 838000,\n    \"2882\": 205000, \"2886\": 812000, \"2891\": 606000, \"2892\": 425000, \"2912\": 95000,\n    \"3045\": 306000, \"3227\": 96000, \"3293\": 44000, \"3491\": 21000, \"3661\": 5000,\n    \"4749\": 23000, \"4904\": 290000, \"5876\": 471000, \"5880\": 641000\n}\n\ndecisions = [\n    (\"D1\", \"2880\", 0.025, 48.85, \"BUY\", 448000),\n    (\"D2\", \"2317\", 0.025, 220.5, \"BUY\", 99000),\n    (\"D3\", \"8415\", 0.02, 42.2, \"BUY\", 415000),\n    (\"D4\", \"5871\", 0.02, 99.5, \"BUY\", 176000),\n    (\"D5\", \"2412\", 0.08, 166.0, \"BUY\", 41000),\n    (\"D6\", \"1216\", 0.072, 78.7, \"BUY\", 67000),\n    (\"D7\", \"2207\", 0.05, 546.0, \"BUY\", 21000),\n    (\"D8\", \"3293\", 0.05, 792.0, \"BUY\", 11000),\n    (\"D9\", \"5876\", 0.04, 53.4, \"BUY\", 186000),\n    (\"D10\", \"2882\", 0.0, 103.5, \"SELL\", 205000),\n    (\"D11\", \"2454\", 0.0, 3720.0, \"SELL\", 6000),\n    (\"D12\", \"3661\", 0.0, 3600.0, \"SELL\", 5000),\n    (\"D13\", \"3491\", 0.0, 1360.0, \"SELL\", 21000),\n    (\"D14\", \"2330\", 0.024, 2100.0, \"SELL\", 8000),\n    (\"D15\", \"2603\", 0.024, 247.0, \"SELL\", 48000),\n]\n\nbuy_amt = 0\nsell_amt = 0\nfor d_id, ticker, tw, price, expected_side, expected_shares in decisions:\n    target_shares = math.floor(tw * nav / price / 1000) * 1000\n    curr_shares = holdings.get(ticker, 0)\n    diff = target_shares - curr_shares\n    side = \"BUY\" if diff > 0 else \"SELL\"\n    shares = abs(diff)\n    assert side == expected_side, f\"Mismatch side {d_id}\"\n    assert shares == expected_shares, f\"Mismatch shares {d_id}: {shares} vs {expected_shares}\"\n    assert shares % 1000 == 0 and shares > 0\n    if side == \"SELL\":\n        assert shares <= curr_shares, f\"Short sell {ticker}\"\n        sell_amt += shares * price\n    else:\n        buy_amt += shares * price\n\ncash_after = cash_init + sell_amt - buy_amt\ncash_pct = cash_after / nav\nprint(f\"Buy amt: {buy_amt:,.0f}, Sell amt: {sell_amt:,.0f}\")\nprint(f\"Cash after: {cash_after:,.0f}, Cash pct: {cash_pct:.4%}\")\nassert 0.15 <= cash_pct <= 0.20\nprint(\"All checks passed!\")\n"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-22T22:56:49+08:00",
+      "date": "20261123",
+      "provider": "gemini",
+      "model": "gemini-3.8-flash",
+      "model_group": "stage-l1",
+      "stage": "l1",
+      "status": "success",
+      "finish_reason": "stop",
+      "duration_seconds": 125.78,
+      "prompt_tokens": 93343,
+      "completion_tokens": 22213,
+      "total_tokens": 115556,
+      "cached_tokens": 0,
+      "tool_use_tokens": 0,
+      "reasoning_tokens": 9581,
+      "response_cost": 0.153306,
+      "code_execution_used": false,
+      "code_execution_call_count": 0,
+      "executed_codes": []
+    },
+    {
+      "timestamp": "2026-11-22T22:59:00+08:00",
+      "date": "20261123",
+      "provider": "gemini",
+      "model": "gemini-4-carbon",
+      "model_group": "stage-l2m",
+      "stage": "l2m",
+      "status": "success",
+      "finish_reason": "stop",
+      "duration_seconds": 124.21,
+      "prompt_tokens": 79635,
+      "completion_tokens": 8441,
+      "total_tokens": 88076,
+      "cached_tokens": 52689,
+      "tool_use_tokens": 63016,
+      "reasoning_tokens": 4507,
+      "response_cost": 0.143571,
+      "code_execution_used": true,
+      "code_execution_call_count": 3,
+      "executed_codes": [
+        {
+          "language": "PYTHON",
+          "code": "cash = 143579672.93\nnav = 837624222.9300001\ncash_ratio = cash / nav\nprint(f\"Current cash ratio: {cash_ratio:.6f} ({cash_ratio*100:.2f}%)\")\n\n# Suppose we hold or reduce slightly:\n# Notice cash_ratio is 17.1413% (<= 20%).\n# Wait: phase is sprint (remaining_trading_days: 5, progress_pct: 83.3%)!\n# Wait what is the market doing?!\n# taiex_close_latest: 36033.29, taiex_return_5d: -17.5%, taiex_max_drawdown_5d: -12.2%\n# index_vs_ma5_pct: -7.98%, index_vs_ma20_pct: -15.65%, taiex_vs_ma10_pct: -12.37%, taiex_vs_ma20_pct: -15.65%\n# taiex_range_pos_10d: 0.0\n# otc_vs_taiex_return_5d: -5.6\n# market_advance_decline_ratio: 0.02\n# market_alignment_diff: -1809\n# market_foreign_net_buy_1d: -9.51B, 5d: -218.67B\n# market_trust_net_buy_1d: -7.35B, 5d: -8.47B\n# listed_margin_balance_change_5d: -18.89%\n\n# Wait! Look at cash ratio if we reduce vs hold vs increase:\n# Current cash ratio is 17.14%.\n# If we declare `hold`, |net buy/sell| <= 2% NAV -> cash ratio stays around 15.14% ~ 19.14%. Even if market drops 10% limit down, 0.1914 / (0.1914 + 0.8086*0.9) = 20.82% < 25%!\n# What if we declare `reduce`? Prompt says: \"reduce (降低曝險/淨賣超)：市場趨勢轉弱，並有資金、廣度或籌碼的負向訊號支持，且現金水位在安全範圍內（減碼後預估現金比絕不能超過 20%）。\"\n# Wait: current cash ratio is 17.14%! If we declare `reduce` (> 2% NAV net sell, i.e., net sell > 2.0% -> cash ratio becomes > 19.14%!). That leaves ONLY a tiny window [19.14%, 20.0%] (less than 0.86% of NAV!) before hitting 20%! And if market drops on execution day while selling, cash ratio could easily exceed 20% or get super tight for downstream portfolio optimization!\n# Let's check this mathematically!\nfor net_sell_pct in [0.0, 0.02, 0.025, 0.03]:\n    new_cash_pct = cash_ratio + net_sell_pct\n    # If remaining stock drops 6% intraday/close:\n    worst_close_cash = new_cash_pct / (new_cash_pct + (1 - new_cash_pct)*0.90)\n    print(f\"net_sell={net_sell_pct*100:.1f}% -> base cash={new_cash_pct*100:.2f}%, -10% limit down cash={worst_close_cash*100:.2f}%\")\n"
+        },
+        {
+          "language": "PYTHON",
+          "code": "holdings = {\n  \"1216\": (\"統一\", \"食品\", 0.07181, -5.8),\n  \"2207\": (\"和泰車\", \"汽車\", 0.049282, -2.95),\n  \"2317\": (\"鴻海\", \"其他電子\", 0.02482, -0.79),\n  \"2330\": (\"台積電\", \"半導體\", 0.023877, -16.19),\n  \"2379\": (\"瑞昱\", \"半導體\", 0.024722, -14.95),\n  \"2412\": (\"中華電\", \"通信網路\", 0.081868, -0.13),\n  \"2603\": (\"長榮\", \"航運\", 0.023644, -10.23),\n  \"2609\": (\"陽明\", \"航運\", 0.023222, -9.04),\n  \"2610\": (\"華航\", \"航運\", 0.029574, -7.0),\n  \"2618\": (\"長榮航\", \"航運\", 0.04467, -6.42),\n  \"2880\": (\"華南金\", \"金融保險\", 0.025138, -0.54),\n  \"2886\": (\"兆豐金\", \"金融保險\", 0.050215, -4.22),\n  \"2891\": (\"中信金\", \"金融保險\", 0.049196, -9.32),\n  \"2892\": (\"第一金\", \"金融保險\", 0.019078, -8.15),\n  \"2912\": (\"統一超\", \"貿易百貨\", 0.023137, -3.61),\n  \"3045\": (\"台灣大\", \"通信網路\", 0.044934, -7.38),\n  \"3227\": (\"原相\", \"半導體\", 0.019426, -6.5),\n  \"3293\": (\"鈊象\", \"數位雲端/資服(上櫃)\", 0.049509, -4.25),\n  \"4749\": (\"新應材\", \"化學/半導體材料\", 0.016201, -11.08),\n  \"4904\": (\"遠傳\", \"通信網路\", 0.03566, -5.67),\n  \"5871\": (\"中租-KY\", \"其他/租賃\", 0.019751, -1.71),\n  \"5876\": (\"上海商銀\", \"金融保險\", 0.038904, -5.19),\n  \"5880\": (\"合庫金\", \"金融保險\", 0.020203, -5.68),\n  \"8415\": (\"大國鋼\", \"鋼鐵/貿易\", 0.019744, -1.19),\n}\nfrom collections import defaultdict\nsec_w = defaultdict(float)\nfor k, (name, sec, w, pnl) in holdings.items():\n    sec_w[sec] += w\nfor sec, w in sorted(sec_w.items(), key=lambda x: -x[1]):\n    print(f\"{sec}: {w*100:.2f}%\")\nprint(\"Total holdings weight:\", sum(x[2] for x in holdings.values())*100)\n"
+        },
+        {
+          "language": "PYTHON",
+          "code": "import json\n\nlogic = (\n    \"依O1數據，加權指數收36,033.29點，近5日重挫-17.5%、最大回撤-12.2%，處10日區間最低點(0.0%)；\"\n    \"距10MA與20MA乖離達-12.37%與-15.65%，報酬指數距5MA/20MA為-7.98%/-15.65%，且5MA近3日與20MA近5日斜率下彎-7.71%與-4.29%，\"\n    \"加上櫃買相對加權近5日落後-5.6個百分點，中小型股殺盤劇烈，趨勢明確處於下行風險。資金與籌碼面，外資單日及近5日淨賣超95.11億與2,186.69億元，\"\n    \"投信單日及近5日亦同步淨賣超73.47億與84.68億元，法人資金一致撤出；全市場均線多空排列家數差達-1,809家、漲跌家數比僅0.02倍，\"\n    \"惟上市融資近5日大減-18.89%，顯示恐慌去槓桿。產業全數收跌，玻璃陶瓷(-9.69%,5日RS-23.25%)、電子零組件(-9.51%,5日RS-14.35%)與塑膠(-9.09%)領跌；\"\n    \"僅資訊服務(-3.16%,1日RS+3.27%,動能+4.66pp)、貿易百貨(-3.47%,5日RS+12.78%)、食品(-4.13%,5日RS+16.05%)及半導體(-5.82%,1/3/5日RS皆正)相對抗跌。\"\n    \"檢視DataPack，賽期剩5個交易日進入sprint衝刺期，帳戶連虧5日、累計報酬-16.24%、MDD達-17.61%，24檔持股雖分散於金融、電信、航運等，\"\n    \"仍受系統性賣壓波及，且金融與航運RS動能轉負(-1.56pp/-1.72pp)、上櫃持股受OTC弱勢拖累。考量目前可動用現金比已達17.14%具備防禦緩衝，\"\n    \"且累計已有1次違規，若宣告reduce恐使現金比逼近或因續跌被動突破20%~25%合規紅線；故研判走向為risk_off、採取defensive姿態，\"\n    \"並宣告hold（控制淨買賣金額差距在NAV 2%容差內，NAV = (Σ 各持股張數 × 1,000 × 當日收盤價) + 現金部位），\"\n    \"目標現金區間設為[0.14, 0.20]，於嚴守合規安全下汰弱換強至RS動能轉強族群以因應衝刺期。\"\n)\n\ncounter_evidence = (\n    \"依O1，上市融資餘額近5日驟減-18.89%，顯示斷頭與去槓桿籌碼快速清洗，且加權指數距20MA負乖離高達-15.65%，短線具極端超跌反彈條件；\"\n    \"同時權值核心半導體類指數近1、3、5日RS變化皆維持正值(+0.43%/+0.93%/+0.77%，動能+0.28pp)，資訊服務与數位雲端RS動能亦加速轉強(+4.66pp/+0.95pp)，\"\n    \"電子零組件RS動能亦見收斂(+1.17pp)。惟全產業單日報酬仍盡數為負、漲跌比僅0.02且外資投信同步賣超，尚不足以扭轉risk_off研判。\"\n)\n\n# Fix typo \"与\" -> \"與\"\ncounter_evidence = counter_evidence.replace(\"与\", \"與\")\n\nprint(\"logic len:\", len(logic))\nprint(\"counter_evidence len:\", len(counter_evidence))\n\nresp = {\n  \"market_view\": {\n    \"basis_refs\": [\"O1\"],\n    \"logic\": logic,\n    \"regime\": \"risk_off\",\n    \"stance\": \"defensive\",\n    \"posture\": {\n      \"net_exposure_intent\": \"hold\",\n      \"target_cash_pct_range\": [0.14, 0.20]\n    },\n    \"counter_evidence\": counter_evidence,\n    \"confidence\": 0.88\n  }\n}\nprint(json.dumps(resp, ensure_ascii=False, indent=2))\n"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-22T23:29:11+08:00",
+      "date": "20261123",
+      "provider": "gemini",
+      "model": "gemini-4-carbon",
+      "model_group": "stage-l2",
+      "stage": "l2",
+      "status": "failed",
+      "finish_reason": "error",
+      "duration_seconds": 600.14,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "cached_tokens": 0,
+      "tool_use_tokens": 0,
+      "reasoning_tokens": 0,
+      "response_cost": 0.0,
+      "code_execution_used": false,
+      "code_execution_call_count": 0,
+      "executed_codes": []
+    },
+    {
+      "timestamp": "2026-11-22T23:37:50+08:00",
+      "date": "20261123",
+      "provider": "gemini",
+      "model": "gemini-4-carbon",
+      "model_group": "stage-l3",
+      "stage": "l3",
+      "status": "success",
+      "finish_reason": "stop",
+      "duration_seconds": 266.94,
+      "prompt_tokens": 238665,
+      "completion_tokens": 22665,
+      "total_tokens": 261330,
+      "cached_tokens": 190460,
+      "tool_use_tokens": 213172,
+      "reasoning_tokens": 8115,
+      "response_cost": 0.342106,
+      "code_execution_used": true,
+      "code_execution_call_count": 6,
+      "executed_codes": [
+        {
+          "language": "PYTHON",
+          "code": "cash = 143579672.93\nnav = 837624222.9300001\ncash_ratio = cash / nav\n\nholdings = {\n  \"1216\": {\"shares\": 802000, \"close_price\": 75, \"tradable_weight\": 0.07181},\n  \"2207\": {\"shares\": 80000, \"close_price\": 516, \"tradable_weight\": 0.049282},\n  \"2317\": {\"shares\": 99000, \"close_price\": 210, \"tradable_weight\": 0.02482},\n  \"2330\": {\"shares\": 10000, \"close_price\": 2000, \"tradable_weight\": 0.023877},\n  \"2379\": {\"shares\": 31000, \"close_price\": 668, \"tradable_weight\": 0.024722},\n  \"2412\": {\"shares\": 422000, \"close_price\": 162.5, \"tradable_weight\": 0.081868},\n  \"2603\": {\"shares\": 85000, \"close_price\": 233, \"tradable_weight\": 0.023644},\n  \"2609\": {\"shares\": 367000, \"close_price\": 53, \"tradable_weight\": 0.023222},\n  \"2610\": {\"shares\": 1163000, \"close_price\": 21.3, \"tradable_weight\": 0.029574},\n  \"2618\": {\"shares\": 838000, \"close_price\": 44.65, \"tradable_weight\": 0.04467},\n  \"2880\": {\"shares\": 448000, \"close_price\": 47, \"tradable_weight\": 0.025138},\n  \"2886\": {\"shares\": 812000, \"close_price\": 51.8, \"tradable_weight\": 0.050215},\n  \"2891\": {\"shares\": 606000, \"close_price\": 68, \"tradable_weight\": 0.049196},\n  \"2892\": {\"shares\": 425000, \"close_price\": 37.6, \"tradable_weight\": 0.019078},\n  \"2912\": {\"shares\": 95000, \"close_price\": 204, \"tradable_weight\": 0.023137},\n  \"3045\": {\"shares\": 306000, \"close_price\": 123, \"tradable_weight\": 0.044934},\n  \"3227\": {\"shares\": 96000, \"close_price\": 169.5, \"tradable_weight\": 0.019426},\n  \"3293\": {\"shares\": 55000, \"close_price\": 754, \"tradable_weight\": 0.049509},\n  \"4749\": {\"shares\": 23000, \"close_price\": 590, \"tradable_weight\": 0.016201},\n  \"4904\": {\"shares\": 290000, \"close_price\": 103, \"tradable_weight\": 0.03566},\n  \"5871\": {\"shares\": 176000, \"close_price\": 94, \"tradable_weight\": 0.019751},\n  \"5876\": {\"shares\": 657000, \"close_price\": 49.6, \"tradable_weight\": 0.038904},\n  \"5880\": {\"shares\": 641000, \"close_price\": 26.4, \"tradable_weight\": 0.020203},\n  \"8415\": {\"shares\": 415000, \"close_price\": 39.85, \"tradable_weight\": 0.019744}\n}\n\n# Inferences mapping\ninferences = {\n  \"I1\": (\"2412\", \"HOLD\", 0.082),\n  \"I2\": (\"1216\", \"HOLD\", 0.072),\n  \"I3\": (\"3293\", \"ADD\", 0.055),\n  \"I4\": (\"2207\", \"ADD\", 0.055),\n  \"I5\": (\"7828\", \"BUY\", 0.035), # close_price = 1295\n  \"I6\": (\"8415\", \"ADD\", 0.035),\n  \"I7\": (\"2886\", \"HOLD\", 0.050),\n  \"I8\": (\"3045\", \"HOLD\", 0.045),\n  \"I9\": (\"2618\", \"HOLD\", 0.045),\n  \"I10\": (\"5876\", \"HOLD\", 0.039),\n  \"I11\": (\"4904\", \"HOLD\", 0.036),\n  \"I12\": (\"2610\", \"HOLD\", 0.030),\n  \"I13\": (\"2880\", \"HOLD\", 0.025),\n  \"I14\": (\"2317\", \"HOLD\", 0.025),\n  \"I15\": (\"2379\", \"HOLD\", 0.025),\n  \"I16\": (\"2330\", \"HOLD\", 0.024),\n  \"I17\": (\"2603\", \"HOLD\", 0.024),\n  \"I18\": (\"2912\", \"HOLD\", 0.023),\n  \"I19\": (\"5880\", \"HOLD\", 0.020),\n  \"I20\": (\"5871\", \"HOLD\", 0.020),\n  \"I21\": (\"3227\", \"HOLD\", 0.020),\n  \"I22\": (\"2892\", \"HOLD\", 0.019),\n  \"I23\": (\"2891\", \"TRIM\", 0.016),\n  \"I24\": (\"2609\", \"TRIM\", 0.010),\n  \"I25\": (\"4749\", \"SELL_ALL\", 0.000),\n}\n\nprint(\"NAV:\", nav)\nprint(\"Cash:\", cash, \"Cash ratio:\", cash_ratio)\nprint(\"2% NAV tolerance:\", 0.02 * nav)\n\n# Sum of target weights from inferences\ntotal_inf_tw = sum(tw for _, _, tw in inferences.values())\nprint(\"Sum of target weights in I1-I25:\", round(total_inf_tw, 6), \"1 - sum:\", round(1 - total_inf_tw, 6))\n\n# Check actual weight of HOLD stocks + target weight of traded stocks\nprices = {k: v[\"close_price\"] for k, v in holdings.items()}\nprices[\"7828\"] = 1295.0\n\nbuy_amt = 0.0\nsell_amt = 0.0\nfor inf_id, (ticker, act, tw) in inferences.items():\n    cur_sh = holdings.get(ticker, {}).get(\"shares\", 0)\n    cur_w = holdings.get(ticker, {}).get(\"tradable_weight\", 0.0)\n    p = prices[ticker]\n    if act in (\"BUY\", \"ADD\", \"TRIM\", \"SELL_ALL\"):\n        # Round-lot calculation (say floor or nearest 1000 shares)\n        target_val = tw * nav\n        target_lots = int(target_val // (p * 1000))\n        if act == \"SELL_ALL\":\n            target_lots = 0\n        diff_shares = target_lots * 1000 - cur_sh\n        amt = abs(diff_shares) * p\n        if diff_shares > 0:\n            buy_amt += amt\n        else:\n            sell_amt += amt\n        print(f\"{inf_id} {ticker} {act}: cur_w={cur_w:.5f} -> tw={tw:.4f}, cur_sh={cur_sh} -> tgt_sh={target_lots*1000}, diff={diff_shares}, amt={amt:,.0f}\")\n\nprint(f\"\\nTotal Buy Amt: {buy_amt:,.2f}\")\nprint(f\"Total Sell Amt: {sell_amt:,.2f}\")\nprint(f\"Net Buy - Sell: {buy_amt - sell_amt:,.2f} (pct of NAV: {(buy_amt - sell_amt)/nav:.5%})\")\n"
+        },
+        {
+          "language": "PYTHON",
+          "code": "# Check funding_for condition carefully!\n# Step 1 of funding_for:\n# 請先試算：若完全「不安排該筆賣出」，僅執行預計的買進決策後（並計入買進手續費支出），\n# 帳戶預估現金比率是否會「低於」market_view 所宣告的目標現金區間下限（target_cash_pct_range[0]）？\n# target_cash_pct_range = [0.14, 0.2]\n\n# Wait! Let's check BOTH ways:\n# 1) Total buys without ANY sells:\nbuy_total_floor = 50410000.0\n# What if continuous target weight diff is used?\ncont_buy = (0.055 - holdings[\"3293\"][\"tradable_weight\"] +\n            0.055 - holdings[\"2207\"][\"tradable_weight\"] +\n            0.035 - 0.0 +\n            0.035 - holdings[\"8415\"][\"tradable_weight\"]) * nav\nprint(\"Continuous buy amount:\", cont_buy)\n\nfor label, b_amt in [(\"Floor round lots\", buy_total_floor), (\"Continuous weights\", cont_buy)]:\n    buy_cost = b_amt * 1.001425\n    rem_cash_no_sells = cash - buy_cost\n    # New NAV if no sells (only buy fee deducted)\n    nav_after_buys = nav - b_amt * 0.001425\n    print(f\"[{label}] Cash after buys ONLY (no sells): {rem_cash_no_sells:,.2f}\")\n    print(f\"   Ratio vs initial NAV: {rem_cash_no_sells / nav:.6f}\")\n    print(f\"   Ratio vs post-fee NAV: {rem_cash_no_sells / nav_after_buys:.6f}\")\n\n#Aha!! Look at that:\n# Initial cash ratio = 0.171413 (17.14%)\n# Total buys = ~6.14% of NAV (~51.4M)\n# Without sells, cash ratio drops to 0.171413 - 0.06146 * 1.001425 = ~0.10986 (10.99%) < 0.14!!\n# Wait! What if we check each sell individually (\"不安排該筆賣出\", or without sells)?\n# Let's check what happens if we include some sells vs exclude each sell!\n\nsells = {\n    \"2891\": (0.016, 27812000.0, (holdings[\"2891\"][\"tradable_weight\"] - 0.016)*nav),\n    \"2609\": (0.010, 11077000.0, (holdings[\"2609\"][\"tradable_weight\"] - 0.010)*nav),\n    \"4749\": (0.000, 13570000.0, holdings[\"4749\"][\"tradable_weight\"]*nav),\n}\n\nprint(\"\\n--- Detailed Sell Funding Analysis ---\")\ntotal_sell_net_floor = sum(v[1]*(1-0.004425) for v in sells.values())\ncash_after_all = cash - buy_total_floor*1.001425 + total_sell_net_floor\nnav_after_all = nav - buy_total_floor*0.001425 - sum(v[1]*0.004425 for v in sells.values())\nprint(f\"Cash after ALL buys & sells: {cash_after_all:,.2f}, ratio={cash_after_all/nav_after_all:.6f}\")\n\nfor k, (_, s_floor, s_cont) in sells.items():\n    # If we omit ONLY sell k (keep the other two sells):\n    c_without_k = cash_after_all - s_floor*(1-0.004425)\n    n_without_k = nav_after_all + s_floor*0.004425\n    print(f\"Without sell {k} ONLY: cash_ratio = {c_without_k/n_without_k:.6f} (vs 0.14 lower bound)\")\n"
+        },
+        {
+          "language": "PYTHON",
+          "code": "# Test all possible interpretations of buy expenditure vs cash ratio\nprint(\"Initial cash:\", cash)\nprint(\"0.14 * NAV:\", 0.14 * nav)\nprint(\"Max buy allowed before hitting 0.14 * NAV:\", cash - 0.14 * nav)\nprint(\"Planned buy (round-lot floor):\", 50410000 * 1.001425)\nprint(\"Planned buy (continuous):\", cont_buy * 1.001425)\n"
+        },
+        {
+          "language": "PYTHON",
+          "code": "# Let's simulate how L4 / order execution converts target_weight into orders under floor, round, and continuous!\ndecision_draft = [\n    (\"D1\", \"7828\", \"BUY\", 0.035, [\"I5\"]),\n    (\"D2\", \"8415\", \"ADD\", 0.035, [\"I6\"]),\n    (\"D3\", \"2207\", \"ADD\", 0.055, [\"I4\"]),\n    (\"D4\", \"3293\", \"ADD\", 0.055, [\"I3\"]),\n    (\"D5\", \"2891\", \"TRIM\", 0.016, [\"I23\"]),\n    (\"D6\", \"2609\", \"TRIM\", 0.010, [\"I24\"]),\n    (\"D7\", \"4749\", \"SELL_ALL\", 0.000, [\"I25\"]),\n]\n\nno_trade_list = [\n    (\"2412\", [\"I1\"]),\n    (\"1216\", [\"I2\"]),\n    (\"2886\", [\"I7\"]),\n    (\"3045\", [\"I8\"]),\n    (\"2618\", [\"I9\"]),\n    (\"5876\", [\"I10\"]),\n    (\"4904\", [\"I11\"]),\n    (\"2610\", [\"I12\"]),\n    (\"2880\", [\"I13\"]),\n    (\"2317\", [\"I14\"]),\n    (\"2379\", [\"I15\"]),\n    (\"2330\", [\"I16\"]),\n    (\"2603\", [\"I17\"]),\n    (\"2912\", [\"I18\"]),\n    (\"5880\", [\"I19\"]),\n    (\"5871\", [\"I20\"]),\n    (\"3227\", [\"I21\"]),\n    (\"2892\", [\"I22\"]),\n]\n\n# Verify coverage of yesterday's 24 holdings\nyesterday_set = set(holdings.keys())\ndec_tickers = [t for _, t, _, _, _ in decision_draft]\nnt_tickers = [t for t, _ in no_trade_list]\n\ndec_existing = set(dec_tickers) & yesterday_set\nnt_set = set(nt_tickers)\n\nprint(\"Yesterday holdings count:\", len(yesterday_set))\nprint(\"Existing in decisions:\", len(dec_existing), sorted(dec_existing))\nprint(\"In no_trade_decisions:\", len(nt_set), sorted(nt_set))\nprint(\"Union == yesterday_set:\", (dec_existing | nt_set) == yesterday_set)\nprint(\"Intersection empty:\", len(dec_existing & nt_set) == 0)\n\n# Final holdings count (excluding SELL_ALL target_weight == 0)\nfinal_holdings_tickers = [t for _, t, act, tw, _ in decision_draft if tw > 0] + nt_tickers\nprint(\"Final holdings count:\", len(final_holdings_tickers), \"(must be in [20, 30])\")\n\n# Sum of weights:\n# Method A: target_weight of decisions + actual tradable_weight of no_trade_decisions\nsum_w_actual_nt = sum(tw for _, _, _, tw, _ in decision_draft) + sum(holdings[t][\"tradable_weight\"] for t in nt_tickers)\nprint(f\"Sum of weights (decisions tw + no_trade actual w): {sum_w_actual_nt:.6f}, est cash: {1 - sum_w_actual_nt:.6f}\")\n\n# Method B: target_weight of decisions + L2 target_weight of no_trade_decisions\ninf_tw_map = {v[0]: v[2] for v in inferences.values()}\nsum_w_inf = sum(tw for _, _, _, tw, _ in decision_draft) + sum(inf_tw_map[t] for t in nt_tickers)\nprint(f\"Sum of weights (all L2 tw): {sum_w_inf:.6f}, est cash: {1 - sum_w_inf:.6f}\")\n\n# Method C: Round-lot simulation (floor, round, ceil)\nfor mode in [\"floor\", \"round\"]:\n    b_val = 0.0\n    s_val = 0.0\n    final_stock_val = sum(holdings[t][\"shares\"] * holdings[t][\"close_price\"] for t in nt_tickers)\n    for _, t, act, tw, _ in decision_draft:\n        cur_sh = holdings.get(t, {}).get(\"shares\", 0)\n        p = prices[t]\n        if act == \"SELL_ALL\":\n            tgt_sh = 0\n        else:\n            raw_lots = (tw * nav) / (p * 1000)\n            tgt_lots = int(raw_lots) if mode == \"floor\" else int(round(raw_lots))\n            tgt_sh = tgt_lots * 1000\n        diff = tgt_sh - cur_sh\n        if diff > 0:\n            b_val += diff * p\n        elif diff < 0:\n            s_val += (-diff) * p\n        final_stock_val += tgt_sh * p\n    fees = b_val * 0.001425 + s_val * 0.004425\n    end_cash = cash - b_val * 1.001425 + s_val * (1 - 0.004425)\n    end_nav = end_cash + final_stock_val\n    net_diff = abs(b_val - s_val)\n    print(f\"\\n[{mode.upper()}] Buy={b_val:,.0f}, Sell={s_val:,.0f}, |Buy-Sell|={net_diff:,.0f} ({net_diff/nav:.4%} of NAV <= 2%)\")\n    print(f\"   Fees={fees:,.0f}, End Cash={end_cash:,.0f}, End Cash Ratio={end_cash/end_nav:.6f} (in [0.14, 0.20])\")\n    # Stress test: what if all stocks drop 10% limit down today?\n    stress_nav = end_cash + final_stock_val * 0.90\n    print(f\"   10% Limit-down Stress Cash Ratio: {end_cash/stress_nav:.6f} (must be <= 0.25)\")\n"
+        },
+        {
+          "language": "PYTHON",
+          "code": "# Portfolio weights after decisions (using target_weight for decisions and tradable_weight for no_trade_decisions)\nport_weights = {}\nfor _, t, act, tw, _ in decision_draft:\n    if tw > 0:\n        port_weights[t] = tw\nfor t, _ in no_trade_list:\n    port_weights[t] = holdings[t][\"tradable_weight\"]\n\ntop15_port = sorted(port_weights.items(), key=lambda x: x[1], reverse=True)[:15]\nprint(\"Our Top 15 Holdings:\")\nfor rank, (t, w) in enumerate(top15_port, 1):\n    print(f\"  {rank:2d}. {t}: {w:.4%}\")\n\n# Peer Active ETF average top holdings from table (consolidating same ticker codes like 2330, 2454, 3017, 2383):\n# Even if we construct a synthetic peer ETF with the highest possible overlap with our portfolio:\npeer_etf = {\n    \"2330\": 0.115, # ~10.62% - 13.27%\n    \"2454\": 0.060,\n    \"6139\": 0.0595,\n    \"3105\": 0.0576,\n    \"3491\": 0.0519,\n    \"3017\": 0.049,\n    \"2383\": 0.0485,\n    \"1303\": 0.0489,\n    \"6531\": 0.0488,\n    \"2542\": 0.0466,\n}\nall_tickers = set(dict(top15_port).keys()) | set(peer_etf.keys())\ntop15_dict = dict(top15_port)\nactive_share_top15 = 0.5 * sum(abs(top15_dict.get(t, 0.0) - peer_etf.get(t, 0.0)) for t in all_tickers)\nall_tickers_full = set(port_weights.keys()) | set(peer_etf.keys())\nactive_share_full = 0.5 * sum(abs(port_weights.get(t, 0.0) - peer_etf.get(t, 0.0)) for t in all_tickers_full)\nprint(f\"\\nActive Share (Top 15 vs Peer Top 15): {active_share_top15:.4%} (must be >= 15%)\")\nprint(f\"Active Share (Full Portfolio vs Peer): {active_share_full:.4%} (must be >= 15%)\")\n"
+        },
+        {
+          "language": "PYTHON",
+          "code": "import json\n\noutput = {\n  \"decisions\": [\n    {\n      \"decision_id\": \"D1\",\n      \"ticker\": \"7828\",\n      \"action\": \"BUY\",\n      \"target_weight\": 0.035,\n      \"inference_refs\": [\"I5\"],\n      \"risk_check\": \"新建倉強勢股 3.5% <= 10% 個股上限；調整後總持股 24 檔 ∈ [20, 30]；計入費用後預估現金比約 17.36% ∈ [0.14, 0.20] 且 <= 22% 安全線；淨買賣差額約佔 NAV 0.24% <= 2% 符合 hold 姿態。\",\n      \"funding_for\": None\n    },\n    {\n      \"decision_id\": \"D2\",\n      \"ticker\": \"8415\",\n      \"action\": \"ADD\",\n      \"target_weight\": 0.035,\n      \"inference_refs\": [\"I6\"],\n      \"risk_check\": \"加碼多頭強勢股至 3.5% <= 10% 上限；調整後總持股 24 檔 ∈ [20, 30]；預估現金比約 17.36% ∈ [0.14, 0.20] 且遠低於 25% 違規紅線；整體淨買賣差額 <= NAV 2%。\",\n      \"funding_for\": None\n    },\n    {\n      \"decision_id\": \"D3\",\n      \"ticker\": \"2207\",\n      \"action\": \"ADD\",\n      \"target_weight\": 0.055,\n      \"inference_refs\": [\"I4\"],\n      \"risk_check\": \"加碼外資鎖碼抗跌股至 5.5% <= 10% 上限；調整後總持股 24 檔 ∈ [20, 30]；預估現金比約 17.36% 控制於 [0.14, 0.20] 區間及 22% 安全線內。\",\n      \"funding_for\": None\n    },\n    {\n      \"decision_id\": \"D4\",\n      \"ticker\": \"3293\",\n      \"action\": \"ADD\",\n      \"target_weight\": 0.055,\n      \"inference_refs\": [\"I3\"],\n      \"risk_check\": \"加碼高 ROE 法人雙買標的至 5.5% <= 10% 上限；調整後總持股 24 檔 ∈ [20, 30]；預估現金比約 17.36% ∈ [0.14, 0.20] 且 <= 22% 安全線。\",\n      \"funding_for\": None\n    },\n    {\n      \"decision_id\": \"D5\",\n      \"ticker\": \"2891\",\n      \"action\": \"TRIM\",\n      \"target_weight\": 0.016,\n      \"inference_refs\": [\"I23\"],\n      \"risk_check\": \"減碼營收衰退弱勢金融股至 1.6% <= 10% 上限，釋出資金支應 D1~D4 買進缺口（僅買進現金比將降至 11.11% < 14% 下限）；總持股 24 檔 ∈ [20, 30]，預估現金比約 17.36% <= 22%。\",\n      \"funding_for\": [\"D1\", \"D2\", \"D3\", \"D4\"]\n    },\n    {\n      \"decision_id\": \"D6\",\n      \"ticker\": \"2609\",\n      \"action\": \"TRIM\",\n      \"target_weight\": 0.01,\n      \"inference_refs\": [\"I24\"],\n      \"risk_check\": \"減碼破底航運股至 1.0% <= 10% 上限，降低重複曝險並支應 D1、D2 資金缺口；總持股維持 24 檔 ∈ [20, 30]，預估現金比約 17.36% ∈ [0.14, 0.20] 且 <= 22%。\",\n      \"funding_for\": [\"D1\", \"D2\"]\n    },\n    {\n      \"decision_id\": \"D7\",\n      \"ticker\": \"4749\",\n      \"action\": \"SELL_ALL\",\n      \"target_weight\": 0.0,\n      \"inference_refs\": [\"I25\"],\n      \"risk_check\": \"停損全數出清破底弱勢股（目標權重 0.0%），釋出資金支應 D1 新建倉；出清 1 檔、新建倉 1 檔後總持股維持 24 檔 ∈ [20, 30]，預估現金比約 17.36% <= 22% 安全線。\",\n      \"funding_for\": [\"D1\"]\n    }\n  ],\n  \"no_trade_decisions\": [\n    {\n      \"ticker\": \"2412\",\n      \"reason_refs\": [\"I1\"],\n      \"reason\": \"現有權重 8.19% 貼近目標 8.2%，具極強抗跌韌性與投信買盤支撐，作為第一大防禦核心續抱以節省摩擦成本。\"\n    },\n    {\n      \"ticker\": \"1216\",\n      \"reason_refs\": [\"I2\"],\n      \"reason\": \"現有權重 7.18% 貼近目標 7.2%，受惠食品類股相對強勢與投信近 5 日積極買超，維持內需防禦核心部位續抱。\"\n    },\n    {\n      \"ticker\": \"2886\",\n      \"reason_refs\": [\"I7\"],\n      \"reason\": \"現有權重 5.02% 貼近目標 5.0%，獲投信單日大買與外資近 5 日支撐，抗跌性居金控前段班，維持續抱。\"\n    },\n    {\n      \"ticker\": \"3045\",\n      \"reason_refs\": [\"I8\"],\n      \"reason\": \"現有權重 4.49% 貼近目標 4.5%，外資近 5 日與投信單日同步買超，具低波動電信防禦優勢，維持續抱。\"\n    },\n    {\n      \"ticker\": \"2618\",\n      \"reason_refs\": [\"I9\"],\n      \"reason\": \"現有權重 4.47% 貼近目標 4.5%，營收雙成長、近 20 日正報酬且獲外資連續買超，作為傳產核心續抱。\"\n    },\n    {\n      \"ticker\": \"5876\",\n      \"reason_refs\": [\"I10\"],\n      \"reason\": \"現有權重 3.89% 貼近目標 3.9%，獲投信近 5 日強力買超提供下檔支撐，於 hold 姿態下續抱避免無謂周轉。\"\n    },\n    {\n      \"ticker\": \"4904\",\n      \"reason_refs\": [\"I11\"],\n      \"reason\": \"現有權重 3.57% 貼近目標 3.6%，月營收雙成長且近 5 日顯著跑贏大盤，具電信防禦穩定度，維持續抱。\"\n    },\n    {\n      \"ticker\": \"2610\",\n      \"reason_refs\": [\"I12\"],\n      \"reason\": \"現有權重 2.96% 貼近目標 3.0%，營收雙成長且外資近 5 日大買、量縮守穩月線附近，維持續抱。\"\n    },\n    {\n      \"ticker\": \"2880\",\n      \"reason_refs\": [\"I13\"],\n      \"reason\": \"現有權重 2.51% 貼近目標 2.5%，營收雙成長且單日法人轉買，前一日剛建倉故續抱以控制交易成本。\"\n    },\n    {\n      \"ticker\": \"2317\",\n      \"reason_refs\": [\"I14\"],\n      \"reason\": \"現有權重 2.48% 貼近目標 2.5%，營收年增 45.73% 且 KD 低檔黃金交叉、MACD 動能改善，續抱靜待跌深反彈。\"\n    },\n    {\n      \"ticker\": \"2379\",\n      \"reason_refs\": [\"I15\"],\n      \"reason\": \"現有權重 2.47% 貼近目標 2.5%，具高 ROE 與營收高成長，且外資逆勢積極買超、半導體 RS 動能轉正，維持續抱。\"\n    },\n    {\n      \"ticker\": \"2330\",\n      \"reason_refs\": [\"I16\"],\n      \"reason\": \"現有權重 2.39% 貼近目標 2.4%，營收年增 59.7% 且 KD 於極度超賣區黃金交叉，保留作為大盤反彈指標續抱。\"\n    },\n    {\n      \"ticker\": \"2603\",\n      \"reason_refs\": [\"I17\"],\n      \"reason\": \"現有權重 2.36% 貼近目標 2.4%，營收年增 96.13% 雙成長且外資單日逢低大買，體質優於同業故續抱。\"\n    },\n    {\n      \"ticker\": \"2912\",\n      \"reason_refs\": [\"I18\"],\n      \"reason\": \"現有權重 2.31% 貼近目標 2.3%，所屬貿易百貨類股 RS 動能強勁、營收雙成長且投信買超，維持續抱。\"\n    },\n    {\n      \"ticker\": \"5880\",\n      \"reason_refs\": [\"I19\"],\n      \"reason\": \"現有權重 2.02% 貼近目標 2.0%，獲外資單日與近 5 日逆勢買超且波動度低，續抱節省換股成本。\"\n    },\n    {\n      \"ticker\": \"5871\",\n      \"reason_refs\": [\"I20\"],\n      \"reason\": \"現有權重 1.98% 貼近目標 2.0%，營收雙成長、KD 低檔黃金交叉且外資單日轉買，前一日剛建倉故續抱。\"\n    },\n    {\n      \"ticker\": \"3227\",\n      \"reason_refs\": [\"I21\"],\n      \"reason\": \"現有權重 1.94% 貼近目標 2.0%，獲外資近 5 日強力買超鎖碼且 10MA 斜率維持正值，具衝刺期反彈潛力故續抱。\"\n    },\n    {\n      \"ticker\": \"2892\",\n      \"reason_refs\": [\"I22\"],\n      \"reason\": \"現有權重 1.91% 貼近目標 1.9%，營收雙正成長且外資近 5 日逆勢買超，指標進入超賣區具反彈契機，維持續抱。\"\n    }\n  ]\n}\n\n# Validate all constraints!\nvalid_infs = {f\"I{i}\" for i in range(1, 31)}\ndec_ids = {d[\"decision_id\"] for d in output[\"decisions\"]}\nbuy_add_ids = {d[\"decision_id\"] for d in output[\"decisions\"] if d[\"action\"] in (\"BUY\", \"ADD\")}\n\nfor d in output[\"decisions\"]:\n    assert len(d[\"ticker\"]) == 4 and d[\"ticker\"].isdigit()\n    assert d[\"action\"] in (\"BUY\", \"ADD\", \"TRIM\", \"SELL_ALL\")\n    assert 0.0 <= d[\"target_weight\"] <= (0.25 if d[\"ticker\"] == \"2330\" else 0.10)\n    if d[\"action\"] == \"SELL_ALL\":\n        assert d[\"target_weight\"] == 0.0\n    if d[\"action\"] == \"BUY\":\n        assert d[\"ticker\"] not in holdings\n    else:\n        assert d[\"ticker\"] in holdings\n    if d[\"action\"] == \"ADD\":\n        assert d[\"target_weight\"] > holdings[d[\"ticker\"]][\"tradable_weight\"]\n    if d[\"action\"] == \"TRIM\":\n        assert 0.0 < d[\"target_weight\"] < holdings[d[\"ticker\"]][\"tradable_weight\"]\n    assert len(d[\"inference_refs\"]) >= 1 and set(d[\"inference_refs\"]).issubset(valid_infs)\n    assert len(d[\"risk_check\"]) <= 300\n    if d[\"action\"] in (\"BUY\", \"ADD\"):\n        assert d[\"funding_for\"] is None\n    elif d[\"funding_for\"] is not None:\n        assert set(d[\"funding_for\"]).issubset(buy_add_ids)\n\nfor nt in output[\"no_trade_decisions\"]:\n    assert nt[\"ticker\"] in holdings\n    assert len(nt[\"reason_refs\"]) >= 1 and set(nt[\"reason_refs\"]).issubset(valid_infs)\n    assert len(nt[\"reason\"]) <= 300\n\nall_covered_existing = [d[\"ticker\"] for d in output[\"decisions\"] if d[\"ticker\"] in holdings] + [nt[\"ticker\"] for nt in output[\"no_trade_decisions\"]]\nassert len(all_covered_existing) == len(holdings) == len(set(all_covered_existing))\nassert set(all_covered_existing) == set(holdings.keys())\n\nfinal_cnt = sum(1 for d in output[\"decisions\"] if d[\"target_weight\"] > 0) + len(output[\"no_trade_decisions\"])\nassert 20 <= final_cnt <= 30\n\nprint(\"ALL ASSERTIONS PASSED PERFECTLY! Final holdings count:\", final_cnt)\nprint(\"JSON string length:\", len(json.dumps(output, ensure_ascii=False)))\n"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-22T23:38:26+08:00",
+      "date": "20261123",
+      "provider": "gemini",
+      "model": "gemini-4-carbon",
+      "model_group": "stage-l4",
+      "stage": "l4",
+      "status": "success",
+      "finish_reason": "stop",
+      "duration_seconds": 29.39,
+      "prompt_tokens": 10955,
+      "completion_tokens": 2234,
+      "total_tokens": 13189,
+      "cached_tokens": 2782,
+      "tool_use_tokens": 6124,
+      "reasoning_tokens": 150,
+      "response_cost": 0.038964,
+      "code_execution_used": true,
+      "code_execution_call_count": 1,
+      "executed_codes": [
+        {
+          "language": "PYTHON",
+          "code": "import math\n\nnav = 837624223\ncash = 143579673\n\nholdings = {\n    \"1216\": 802000, \"2207\": 80000, \"2317\": 99000, \"2330\": 10000,\n    \"2379\": 31000, \"2412\": 422000, \"2603\": 85000, \"2609\": 367000,\n    \"2610\": 1163000, \"2618\": 838000, \"2880\": 448000, \"2886\": 812000,\n    \"2891\": 606000, \"2892\": 425000, \"2912\": 95000, \"3045\": 306000,\n    \"3227\": 96000, \"3293\": 55000, \"4749\": 23000, \"4904\": 290000,\n    \"5871\": 176000, \"5876\": 657000, \"5880\": 641000, \"8415\": 415000\n}\n\ndecisions = [\n    (\"D1\", \"7828\", \"BUY\", 0.035, 1295),\n    (\"D2\", \"8415\", \"ADD\", 0.035, 39.85),\n    (\"D3\", \"2207\", \"ADD\", 0.055, 516),\n    (\"D4\", \"3293\", \"ADD\", 0.055, 754),\n    (\"D5\", \"2891\", \"TRIM\", 0.016, 68),\n    (\"D6\", \"2609\", \"TRIM\", 0.01, 53),\n    (\"D7\", \"4749\", \"SELL_ALL\", 0.0, 590),\n]\n\nbuy_amt = 0\nsell_amt = 0\nfor d_id, ticker, action, tw, price in decisions:\n    cur = holdings.get(ticker, 0)\n    target = math.floor(tw * nav / price / 1000) * 1000\n    diff = target - cur\n    side = \"BUY\" if diff > 0 else \"SELL\"\n    shares = abs(diff)\n    amt = shares * price\n    if side == \"BUY\":\n        buy_amt += amt\n    else:\n        sell_amt += amt\n        assert shares <= cur, f\"Oversell {ticker}\"\n    print(f\"{d_id} {ticker}: cur={cur}, target={target}, side={side}, shares={shares}, amt={amt:,.0f}\")\n\nest_cash = cash - buy_amt + sell_amt\nest_cash_pct = est_cash / nav\nprint(f\"Buy total: {buy_amt:,.0f}, Sell total: {sell_amt:,.0f}\")\nprint(f\"Est cash: {est_cash:,.0f}, Est cash pct: {est_cash_pct:.4f}\")\n"
         }
       ]
     }

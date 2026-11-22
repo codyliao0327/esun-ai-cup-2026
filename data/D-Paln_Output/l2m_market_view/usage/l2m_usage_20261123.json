@@ -1,0 +1,34 @@
+{
+  "timestamp": "2026-11-22T22:59:00+08:00",
+  "date": "20261123",
+  "provider": "gemini",
+  "model": "gemini-4-carbon",
+  "model_group": "stage-l2m",
+  "stage": "l2m",
+  "status": "success",
+  "finish_reason": "stop",
+  "duration_seconds": 124.21,
+  "prompt_tokens": 79635,
+  "completion_tokens": 8441,
+  "total_tokens": 88076,
+  "cached_tokens": 52689,
+  "tool_use_tokens": 63016,
+  "reasoning_tokens": 4507,
+  "response_cost": 0.143571,
+  "code_execution_used": true,
+  "code_execution_call_count": 3,
+  "executed_codes": [
+    {
+      "language": "PYTHON",
+      "code": "cash = 143579672.93\nnav = 837624222.9300001\ncash_ratio = cash / nav\nprint(f\"Current cash ratio: {cash_ratio:.6f} ({cash_ratio*100:.2f}%)\")\n\n# Suppose we hold or reduce slightly:\n# Notice cash_ratio is 17.1413% (<= 20%).\n# Wait: phase is sprint (remaining_trading_days: 5, progress_pct: 83.3%)!\n# Wait what is the market doing?!\n# taiex_close_latest: 36033.29, taiex_return_5d: -17.5%, taiex_max_drawdown_5d: -12.2%\n# index_vs_ma5_pct: -7.98%, index_vs_ma20_pct: -15.65%, taiex_vs_ma10_pct: -12.37%, taiex_vs_ma20_pct: -15.65%\n# taiex_range_pos_10d: 0.0\n# otc_vs_taiex_return_5d: -5.6\n# market_advance_decline_ratio: 0.02\n# market_alignment_diff: -1809\n# market_foreign_net_buy_1d: -9.51B, 5d: -218.67B\n# market_trust_net_buy_1d: -7.35B, 5d: -8.47B\n# listed_margin_balance_change_5d: -18.89%\n\n# Wait! Look at cash ratio if we reduce vs hold vs increase:\n# Current cash ratio is 17.14%.\n# If we declare `hold`, |net buy/sell| <= 2% NAV -> cash ratio stays around 15.14% ~ 19.14%. Even if market drops 10% limit down, 0.1914 / (0.1914 + 0.8086*0.9) = 20.82% < 25%!\n# What if we declare `reduce`? Prompt says: \"reduce (降低曝險/淨賣超)：市場趨勢轉弱，並有資金、廣度或籌碼的負向訊號支持，且現金水位在安全範圍內（減碼後預估現金比絕不能超過 20%）。\"\n# Wait: current cash ratio is 17.14%! If we declare `reduce` (> 2% NAV net sell, i.e., net sell > 2.0% -> cash ratio becomes > 19.14%!). That leaves ONLY a tiny window [19.14%, 20.0%] (less than 0.86% of NAV!) before hitting 20%! And if market drops on execution day while selling, cash ratio could easily exceed 20% or get super tight for downstream portfolio optimization!\n# Let's check this mathematically!\nfor net_sell_pct in [0.0, 0.02, 0.025, 0.03]:\n    new_cash_pct = cash_ratio + net_sell_pct\n    # If remaining stock drops 6% intraday/close:\n    worst_close_cash = new_cash_pct / (new_cash_pct + (1 - new_cash_pct)*0.90)\n    print(f\"net_sell={net_sell_pct*100:.1f}% -> base cash={new_cash_pct*100:.2f}%, -10% limit down cash={worst_close_cash*100:.2f}%\")\n"
+    },
+    {
+      "language": "PYTHON",
+      "code": "holdings = {\n  \"1216\": (\"統一\", \"食品\", 0.07181, -5.8),\n  \"2207\": (\"和泰車\", \"汽車\", 0.049282, -2.95),\n  \"2317\": (\"鴻海\", \"其他電子\", 0.02482, -0.79),\n  \"2330\": (\"台積電\", \"半導體\", 0.023877, -16.19),\n  \"2379\": (\"瑞昱\", \"半導體\", 0.024722, -14.95),\n  \"2412\": (\"中華電\", \"通信網路\", 0.081868, -0.13),\n  \"2603\": (\"長榮\", \"航運\", 0.023644, -10.23),\n  \"2609\": (\"陽明\", \"航運\", 0.023222, -9.04),\n  \"2610\": (\"華航\", \"航運\", 0.029574, -7.0),\n  \"2618\": (\"長榮航\", \"航運\", 0.04467, -6.42),\n  \"2880\": (\"華南金\", \"金融保險\", 0.025138, -0.54),\n  \"2886\": (\"兆豐金\", \"金融保險\", 0.050215, -4.22),\n  \"2891\": (\"中信金\", \"金融保險\", 0.049196, -9.32),\n  \"2892\": (\"第一金\", \"金融保險\", 0.019078, -8.15),\n  \"2912\": (\"統一超\", \"貿易百貨\", 0.023137, -3.61),\n  \"3045\": (\"台灣大\", \"通信網路\", 0.044934, -7.38),\n  \"3227\": (\"原相\", \"半導體\", 0.019426, -6.5),\n  \"3293\": (\"鈊象\", \"數位雲端/資服(上櫃)\", 0.049509, -4.25),\n  \"4749\": (\"新應材\", \"化學/半導體材料\", 0.016201, -11.08),\n  \"4904\": (\"遠傳\", \"通信網路\", 0.03566, -5.67),\n  \"5871\": (\"中租-KY\", \"其他/租賃\", 0.019751, -1.71),\n  \"5876\": (\"上海商銀\", \"金融保險\", 0.038904, -5.19),\n  \"5880\": (\"合庫金\", \"金融保險\", 0.020203, -5.68),\n  \"8415\": (\"大國鋼\", \"鋼鐵/貿易\", 0.019744, -1.19),\n}\nfrom collections import defaultdict\nsec_w = defaultdict(float)\nfor k, (name, sec, w, pnl) in holdings.items():\n    sec_w[sec] += w\nfor sec, w in sorted(sec_w.items(), key=lambda x: -x[1]):\n    print(f\"{sec}: {w*100:.2f}%\")\nprint(\"Total holdings weight:\", sum(x[2] for x in holdings.values())*100)\n"
+    },
+    {
+      "language": "PYTHON",
+      "code": "import json\n\nlogic = (\n    \"依O1數據，加權指數收36,033.29點，近5日重挫-17.5%、最大回撤-12.2%，處10日區間最低點(0.0%)；\"\n    \"距10MA與20MA乖離達-12.37%與-15.65%，報酬指數距5MA/20MA為-7.98%/-15.65%，且5MA近3日與20MA近5日斜率下彎-7.71%與-4.29%，\"\n    \"加上櫃買相對加權近5日落後-5.6個百分點，中小型股殺盤劇烈，趨勢明確處於下行風險。資金與籌碼面，外資單日及近5日淨賣超95.11億與2,186.69億元，\"\n    \"投信單日及近5日亦同步淨賣超73.47億與84.68億元，法人資金一致撤出；全市場均線多空排列家數差達-1,809家、漲跌家數比僅0.02倍，\"\n    \"惟上市融資近5日大減-18.89%，顯示恐慌去槓桿。產業全數收跌，玻璃陶瓷(-9.69%,5日RS-23.25%)、電子零組件(-9.51%,5日RS-14.35%)與塑膠(-9.09%)領跌；\"\n    \"僅資訊服務(-3.16%,1日RS+3.27%,動能+4.66pp)、貿易百貨(-3.47%,5日RS+12.78%)、食品(-4.13%,5日RS+16.05%)及半導體(-5.82%,1/3/5日RS皆正)相對抗跌。\"\n    \"檢視DataPack，賽期剩5個交易日進入sprint衝刺期，帳戶連虧5日、累計報酬-16.24%、MDD達-17.61%，24檔持股雖分散於金融、電信、航運等，\"\n    \"仍受系統性賣壓波及，且金融與航運RS動能轉負(-1.56pp/-1.72pp)、上櫃持股受OTC弱勢拖累。考量目前可動用現金比已達17.14%具備防禦緩衝，\"\n    \"且累計已有1次違規，若宣告reduce恐使現金比逼近或因續跌被動突破20%~25%合規紅線；故研判走向為risk_off、採取defensive姿態，\"\n    \"並宣告hold（控制淨買賣金額差距在NAV 2%容差內，NAV = (Σ 各持股張數 × 1,000 × 當日收盤價) + 現金部位），\"\n    \"目標現金區間設為[0.14, 0.20]，於嚴守合規安全下汰弱換強至RS動能轉強族群以因應衝刺期。\"\n)\n\ncounter_evidence = (\n    \"依O1，上市融資餘額近5日驟減-18.89%，顯示斷頭與去槓桿籌碼快速清洗，且加權指數距20MA負乖離高達-15.65%，短線具極端超跌反彈條件；\"\n    \"同時權值核心半導體類指數近1、3、5日RS變化皆維持正值(+0.43%/+0.93%/+0.77%，動能+0.28pp)，資訊服務与數位雲端RS動能亦加速轉強(+4.66pp/+0.95pp)，\"\n    \"電子零組件RS動能亦見收斂(+1.17pp)。惟全產業單日報酬仍盡數為負、漲跌比僅0.02且外資投信同步賣超，尚不足以扭轉risk_off研判。\"\n)\n\n# Fix typo \"与\" -> \"與\"\ncounter_evidence = counter_evidence.replace(\"与\", \"與\")\n\nprint(\"logic len:\", len(logic))\nprint(\"counter_evidence len:\", len(counter_evidence))\n\nresp = {\n  \"market_view\": {\n    \"basis_refs\": [\"O1\"],\n    \"logic\": logic,\n    \"regime\": \"risk_off\",\n    \"stance\": \"defensive\",\n    \"posture\": {\n      \"net_exposure_intent\": \"hold\",\n      \"target_cash_pct_range\": [0.14, 0.20]\n    },\n    \"counter_evidence\": counter_evidence,\n    \"confidence\": 0.88\n  }\n}\nprint(json.dumps(resp, ensure_ascii=False, indent=2))\n"
+    }
+  ]
+}
