@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-11-23T19:40:25+08:00",
+  "date": "20261124",
+  "provider": "gemini",
+  "model": "gemini-4-carbon",
+  "model_group": "stage-l2",
+  "stage": "l2",
+  "status": "failed",
+  "finish_reason": "error",
+  "duration_seconds": 600.33,
+  "prompt_tokens": 0,
+  "completion_tokens": 0,
+  "total_tokens": 0,
+  "cached_tokens": 0,
+  "tool_use_tokens": 0,
+  "reasoning_tokens": 0,
+  "response_cost": 0.0,
+  "code_execution_used": false,
+  "code_execution_call_count": 0,
+  "executed_codes": []
+}

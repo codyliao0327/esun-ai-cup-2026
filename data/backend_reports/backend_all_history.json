@@ -3215,7 +3215,7 @@
     "date": "2026-11-20",
     "ranking": {
       "rank": 66,
-      "total_teams": 372,
+      "total_teams": 367,
       "group_rank": 14,
       "group_total": 82
     },
@@ -3435,6 +3435,140 @@
         "price": 40.3294,
         "amount": 16736701.0,
         "fee": 23849.8,
+        "tax": 0.0,
+        "outcome": "filled"
+      }
+    ]
+  },
+  {
+    "day": 20,
+    "date": "2026-11-23",
+    "ranking": {
+      "rank": 76,
+      "total_teams": 367,
+      "group_rank": 14,
+      "group_total": 82
+    },
+    "portfolio": {
+      "aum": 832057489.96,
+      "day_return": -0.6646,
+      "cum_return": -16.7943,
+      "stock_ratio": 82.8081,
+      "cash_ratio": 17.1919,
+      "holdings_count": 24,
+      "top10_weight": 51.436,
+      "aum_breakdown": {
+        "cash": 143046089.96,
+        "holdings_value": 689011400.0,
+        "receivable_shares_value": 0.0,
+        "receivable_cash": 0.0,
+        "upcoming_receivable_cash": 0.0,
+        "residual": 0.0
+      },
+      "corporate_actions": {
+        "cash": 0.0,
+        "shares": 0,
+        "count": 0
+      },
+      "carry": {
+        "is_carried_forward": false,
+        "reason": "",
+        "reason_text": ""
+      }
+    },
+    "trade_summary": {
+      "buy_count": 4,
+      "buy_shares": 357000,
+      "buy_amount": 50398417.3,
+      "sell_count": 3,
+      "sell_shares": 641000,
+      "sell_amount": 50158603.9,
+      "fee": 143293.76,
+      "tax": 150475.81,
+      "voided_count": 0
+    },
+    "trades": [
+      {
+        "id": 85162,
+        "side": "buy",
+        "code": "2207",
+        "name": "和泰車",
+        "shares": 9000,
+        "price": 507.8773,
+        "amount": 4570895.7,
+        "fee": 6513.53,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 85163,
+        "side": "sell",
+        "code": "2609",
+        "name": "陽明",
+        "shares": 209000,
+        "price": 54.0625,
+        "amount": 11299062.5,
+        "fee": 16101.16,
+        "tax": 33897.19,
+        "outcome": "filled"
+      },
+      {
+        "id": 85164,
+        "side": "sell",
+        "code": "2891",
+        "name": "中信金",
+        "shares": 409000,
+        "price": 63.7561,
+        "amount": 26076244.9,
+        "fee": 37158.65,
+        "tax": 78228.73,
+        "outcome": "filled"
+      },
+      {
+        "id": 85165,
+        "side": "buy",
+        "code": "3293",
+        "name": "鈊象",
+        "shares": 6000,
+        "price": 752.0227,
+        "amount": 4512136.2,
+        "fee": 6429.79,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 85166,
+        "side": "sell",
+        "code": "4749",
+        "name": "新應材",
+        "shares": 23000,
+        "price": 555.7955,
+        "amount": 12783296.5,
+        "fee": 18216.2,
+        "tax": 38349.89,
+        "outcome": "filled"
+      },
+      {
+        "id": 85167,
+        "side": "buy",
+        "code": "7828",
+        "name": "創新服務",
+        "shares": 22000,
+        "price": 1291.4557,
+        "amount": 28412025.4,
+        "fee": 40487.14,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 85168,
+        "side": "buy",
+        "code": "8415",
+        "name": "大國鋼",
+        "shares": 320000,
+        "price": 40.323,
+        "amount": 12903360.0,
+        "fee": 18387.29,
         "tax": 0.0,
         "outcome": "filled"
       }

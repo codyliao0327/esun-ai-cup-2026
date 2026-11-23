@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-11-23T19:59:24+08:00",
+  "date": "20261124",
+  "provider": "gemini",
+  "model": "gemini-4-carbon",
+  "model_group": "stage-l4",
+  "stage": "l4",
+  "status": "success",
+  "finish_reason": "stop",
+  "duration_seconds": 91.12,
+  "prompt_tokens": 12757,
+  "completion_tokens": 3389,
+  "total_tokens": 16146,
+  "cached_tokens": 3543,
+  "tool_use_tokens": 7165,
+  "reasoning_tokens": 53,
+  "response_cost": 0.052672,
+  "code_execution_used": true,
+  "code_execution_call_count": 1,
+  "executed_codes": [
+    {
+      "language": "PYTHON",
+      "code": "import math\n\nnav = 832057490\ncash = 143046090\nholdings = {\n    \"1216\": 802000, \"2207\": 89000, \"2317\": 99000, \"2330\": 10000, \"2379\": 31000,\n    \"2412\": 422000, \"2603\": 85000, \"2609\": 158000, \"2610\": 1163000, \"2618\": 838000,\n    \"2880\": 448000, \"2886\": 812000, \"2891\": 197000, \"2892\": 425000, \"2912\": 95000,\n    \"3045\": 306000, \"3227\": 96000, \"3293\": 61000, \"4904\": 290000, \"5871\": 176000,\n    \"5876\": 657000, \"5880\": 641000, \"7828\": 22000, \"8415\": 735000\n}\n\norders = [\n    (\"1216\", \"SELL\", 196000, \"D1\", 0.055, 75.5),\n    (\"2207\", \"SELL\", 53000, \"D2\", 0.022, 500.0),\n    (\"2891\", \"SELL\", 197000, \"D3\", 0.0, 63.8),\n    (\"2880\", \"SELL\", 448000, \"D4\", 0.0, 44.9),\n    (\"5880\", \"SELL\", 641000, \"D5\", 0.0, 25.9),\n    (\"2912\", \"SELL\", 95000, \"D6\", 0.0, 199.5),\n    (\"2609\", \"SELL\", 158000, \"D7\", 0.0, 54.5),\n    (\"2451\", \"BUY\", 114000, \"D8\", 0.032, 232.0),\n    (\"6139\", \"BUY\", 45000, \"D9\", 0.03, 551.0),\n    (\"3665\", \"BUY\", 16000, \"D10\", 0.028, 1430.0),\n    (\"2345\", \"BUY\", 16000, \"D11\", 0.026, 1350.0),\n    (\"8299\", \"BUY\", 13000, \"D12\", 0.023, 1450.0),\n]\n\nbuy_amt = 0\nsell_amt = 0\nfor ticker, side, sh, dref, w, px in orders:\n    target_sh = math.floor(w * nav / px / 1000) * 1000\n    cur_sh = holdings.get(ticker, 0)\n    diff = target_sh - cur_sh\n    calc_side = \"BUY\" if diff > 0 else \"SELL\"\n    assert calc_side == side and abs(diff) == sh, f\"Mismatch {ticker}: {diff} vs {sh}\"\n    assert sh % 1000 == 0 and sh > 0\n    if side == \"SELL\":\n        assert sh <= cur_sh, f\"Oversell {ticker}\"\n        sell_amt += sh * px\n    else:\n        buy_amt += sh * px\n\nest_cash = cash + sell_amt - buy_amt\nest_cash_pct = est_cash / nav\nprint(f\"Buy: {buy_amt:,.0f}, Sell: {sell_amt:,.0f}, Cash: {est_cash:,.0f} ({est_cash_pct:.4%})\")\n\nactive_shares = [\n    0.6769, 0.6171, 0.7270, 0.6938, 0.6446, 0.6992, 0.6360, 0.6555, 0.6453, 0.7266,\n    0.7381, 0.8080, 0.6106, 0.7546, 0.7447, 0.7225, 0.7282, 0.7164, 0.6280, 0.7546,\n    0.7017, 0.7413, 0.5305, 0.5988, 0.7102, 0.7250, 0.7827, 0.6617, 0.6875, 0.8071,\n    0.6760, 0.6839, 0.7670, 0.6885, 0.7186, 0.6635, 0.6851, 0.5865\n]\nprint(f\"Min Active Share: {min(active_shares):.4f}, Max Active Share: {max(active_shares):.4f}, Count: {len(active_shares)}\")\n"
+    }
+  ]
+}

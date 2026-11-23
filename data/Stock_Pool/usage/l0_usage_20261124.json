@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-11-23T19:22:55+08:00",
+  "date": "20261124",
+  "provider": "gemini",
+  "model": "gemini-4-carbon",
+  "model_group": "stage-l0",
+  "stage": "l0",
+  "status": "success",
+  "finish_reason": "stop",
+  "duration_seconds": 161.9,
+  "prompt_tokens": 52017,
+  "completion_tokens": 16445,
+  "total_tokens": 68462,
+  "cached_tokens": 0,
+  "tool_use_tokens": 0,
+  "reasoning_tokens": 12156,
+  "response_cost": 0.268484,
+  "code_execution_used": false,
+  "code_execution_call_count": 0,
+  "executed_codes": []
+}
