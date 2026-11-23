@@ -82,7 +82,7 @@ PROMPT_TEMPLATE = """\
 1. 只寫事實，禁止推論、預測、建議 (「SOX 跌 1.8%」可以；「所以半導體會弱」不行)。
 2. 『市場大盤資料』(若有提供) 為 JSON 格式 (格式說明為 `[數值, 日期/交易日]`)，請產生「恰好一筆」大盤 observation：
    - topic 固定使用 tw_market。
-   - statement：一到兩句話，客觀摘要加權指數收盤、均線、報酬、最大回撤、法人買賣超、多空排列家數差與生命線等關鍵數字事實 (引用指標名稱與數值)。
+   - statement：一到兩句話，客觀摘要加權指數收盤、均線、報酬、最大回撤、法人買賣超、多空排列家數差、生命線等關鍵數字事實，以及美股與台指期夜盤補充行情(若有提供，須註明為盤中未收盤數據；引用指標名稱與數值)。
    - values：只需填 statement 中提到的數字 (至少 1 筆)；系統會自動以資料原值補齊所有大盤指標。
    - source_ref：填 S1。
 3. 『個股指標資料』為以個股代碼為 Key 的 JSON 格式 (格式說明為 `[數值, 日期/季度]`)，包含各檔股票的基本面、技術面 (KD/MACD/布林通道等)、籌碼面指標以及 CMoney 個股情緒數據 (`cmoney_sentiment_*`)。資料中出現的每一個個股代碼，
@@ -119,6 +119,12 @@ PROMPT_TEMPLATE = """\
   - `<產業指數>_return_1d`：該產業指數當日漲跌幅 (%)。
   - `<產業指數>_rs_change_1d` / `<產業指數>_rs_change_3d` / `<產業指數>_rs_change_5d`：該產業近 1 日 / 近 3 日 / 近 5 日 RS 相對大盤強弱變化率 (%)。正值代表該期間表現強於大盤、負值代表弱於大盤。
   - `<產業指數>_rs_momentum_change`：該產業近 3 日 RS 變化率較昨日增減 (百分點 pp ＝ 今日近 3 日 RS 變化率 － 昨日近 3 日 RS 變化率)。正值代表相對強弱動能加速轉強、負值代表動能轉弱。
+
+- **美股與台指期夜盤補充行情 (盤中紀錄，尚未收盤，觀察時間標註於各指標日期欄)**：
+  - `sox_intraday_latest` / `sox_intraday_change_pct` / `sox_intraday_high`：費城半導體指數盤中最新點位 (點) / 畫面漲跌幅 (%) / 盤中最高點 (點)。
+  - `nasdaq_intraday_latest` / `nasdaq_intraday_change_pct` / `nasdaq_intraday_high`：那斯達克綜合指數盤中最新點位 (點) / 畫面漲跌幅 (%) / 盤中最高點 (點)。
+  - `nq_futures_intraday_latest` / `nq_futures_intraday_change_pct` / `nq_futures_intraday_high`：小那斯達克期貨盤中最新點位 (點) / 畫面漲跌幅 (%) / 盤中最高點 (點)。
+  - `tx_night_intraday_latest` / `tx_night_intraday_change_pct` / `tx_night_at_limit_up`：台指期夜盤最新點位 (點) / 畫面漲跌幅 (%) / 是否位於漲停價 (1＝最新價位於漲停價，0＝否)。
 
 ### 2. 個股技術面指標
 - **KD (5, 3, 3)**：

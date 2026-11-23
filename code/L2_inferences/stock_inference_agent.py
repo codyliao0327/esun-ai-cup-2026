@@ -94,6 +94,12 @@ CUSTOM_STOCK_ANALYSIS_LOGIC = """\
    - 反面證據與不確定性：評估反面證據、訊號分歧及資料缺漏對該股票判斷的影響，並如實呈現在 counter_evidence 中。
    - 持有部位移動停利與獲利了結：若為既有持股，須檢視 DataPack「持倉成本與移動停利追蹤」之 `entry_date`、`holding_days`、`avg_cost`、`pnl_pct`、`peak_pnl_pct` 與 `dd_from_peak_pct`。若某檔股票曾經大賺（例如 `peak_pnl_pct >= +10%`）但近期從高點明顯回落（例如 `dd_from_peak_pct <= -4%`）且動能轉弱，應主動規劃減碼或獲利了結以鎖住利潤；若持有天數已長但表現持續落後大盤且無改善跡象，亦應評估汰弱留強。
 
+6. 盤後重大事件與 NVIDIA 相關產業鏈評估
+   - **NVIDIA 相關產業鏈個股清單（共 35 檔）**：
+     `2059, 2301, 2308, 2313, 2317, 2330, 2357, 2368, 2376, 2377, 2382, 2383, 2449, 3017, 3037, 3131, 3189, 3231, 3324, 3374, 3533, 3653, 3665, 3680, 3711, 4958, 6187, 6239, 6274, 6415, 6515, 6584, 6669, 8046, 8210`
+   - 若收盤後出現可能改變市場預期的重要消息，請結合事件與公司的關聯，評估相關產業鏈的建倉和加碼機會。
+   - 收盤技術指標為描述事件前的狀態，不應僅因近期下跌、均線偏弱或法人先前賣超，就排除新建倉或加碼的可能，也不必等待所有技術指標轉強。
+
 ### 【第二階段：選股與組合決策推論】
 完成個股分析後，請綜合比較各檔股票，決定哪些股票納入目標投資組合，以及各自的配置比重規劃：
 
@@ -239,6 +245,12 @@ PROMPT_TEMPLATE = """\
 - `market_foreign_net_buy_5d` / `market_foreign_net_buy_1d`：外資近 5 日累計與昨日單日淨買賣超金額 (元)。
 - `market_trust_net_buy_5d` / `market_trust_net_buy_1d`：投信近 5 日累計與昨日單日淨買賣超金額 (元)。
 - `market_advance_decline_ratio`：全市場股票漲跌家數比 (倍)。
+
+- **美股與台指期夜盤補充行情 (盤中紀錄，尚未收盤，觀察時間標註於各指標日期欄)**：
+  - `sox_intraday_latest` / `sox_intraday_change_pct` / `sox_intraday_high`：費城半導體指數盤中最新點位 (點) / 畫面漲跌幅 (%) / 盤中最高點 (點)。
+  - `nasdaq_intraday_latest` / `nasdaq_intraday_change_pct` / `nasdaq_intraday_high`：那斯達克綜合指數盤中最新點位 (點) / 畫面漲跌幅 (%) / 盤中最高點 (點)。
+  - `nq_futures_intraday_latest` / `nq_futures_intraday_change_pct` / `nq_futures_intraday_high`：小那斯達克期貨盤中最新點位 (點) / 畫面漲跌幅 (%) / 盤中最高點 (點)。
+  - `tx_night_intraday_latest` / `tx_night_intraday_change_pct` / `tx_night_at_limit_up`：台指期夜盤最新點位 (點) / 畫面漲跌幅 (%) / 是否位於漲停價 (1＝最新價位於漲停價，0＝否)。
 
 ### 4. CMoney 個股情緒指標
 - `cmoney_sentiment_情緒分數`：CMoney 討論區情緒分數 (0~100)。0~25 代表極度謹慎、25~50 代表謹慎、50 代表中立、50~75 代表樂觀、75~100 代表極度樂觀；當樣本數為 0 時亦為 50 (中立)。

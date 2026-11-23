@@ -1,0 +1,18 @@
+{
+  "_format": "[value, date]",
+  "_note": "2026-11-23 台北時間 23:45~23:51 盤中補充行情紀錄（尚未收盤）",
+  "tw_market": {
+    "sox_intraday_latest": [9714.68, "2026-11-23 23:46 (盤中未收盤)"],
+    "sox_intraday_change_pct": [15.53, "2026-11-23 23:46 (盤中未收盤)"],
+    "sox_intraday_high": [9728.12, "2026-11-23 23:46 (盤中未收盤)"],
+    "nasdaq_intraday_latest": [24271.47, "2026-11-23 23:50 (盤中未收盤)"],
+    "nasdaq_intraday_change_pct": [7.31, "2026-11-23 23:50 (盤中未收盤)"],
+    "nasdaq_intraday_high": [24353.65, "2026-11-23 23:50 (盤中未收盤)"],
+    "nq_futures_intraday_latest": [26880, "2026-11-23 23:51 (盤中未收盤)"],
+    "nq_futures_intraday_change_pct": [6.98, "2026-11-23 23:51 (盤中未收盤)"],
+    "nq_futures_intraday_high": [27137, "2026-11-23 23:51 (盤中未收盤)"],
+    "tx_night_intraday_latest": [40324, "2026-11-23 23:45 (盤中未收盤)"],
+    "tx_night_intraday_change_pct": [10.0, "2026-11-23 23:45 (盤中未收盤)"],
+    "tx_night_at_limit_up": [1, "2026-11-23 23:45 (最新價位於漲停價)"]
+  }
+}
