@@ -346,8 +346,10 @@ _install_litellm_gemini_hooks()
 # =============================================================================
 SESSION_USAGE_RECORDS: List[Dict[str, Any]] = []
 LAST_USAGE_RECORD: Dict[str, Any] = {}
+LAST_SUCCESS_USAGE_RECORD: Dict[str, Any] = {}
 _CALLBACK_LOCK = threading.Lock()
 _CALLBACK_EVENT = threading.Event()
+_SUCCESS_CALLBACK_EVENT = threading.Event()
 
 
 def _parse_provider_and_model(raw_model: str, litellm_params: Dict[str, Any]) -> tuple[str, str]:
@@ -458,7 +460,7 @@ def litellm_success_callback(
     end_time: Any,
 ) -> None:
     """LiteLLM 全域成功回呼函式 (解析 19 項標準 Usage 指標與 Gemini Code Execution 明細)。"""
-    global LAST_USAGE_RECORD
+    global LAST_USAGE_RECORD, LAST_SUCCESS_USAGE_RECORD
 
     try:
         now_tw = datetime.now(TW_TZ)
@@ -576,8 +578,10 @@ def litellm_success_callback(
 
         with _CALLBACK_LOCK:
             LAST_USAGE_RECORD = record
+            LAST_SUCCESS_USAGE_RECORD = record
             SESSION_USAGE_RECORDS.append(record)
             _CALLBACK_EVENT.set()
+            _SUCCESS_CALLBACK_EVENT.set()
     except Exception as e:
         print(f"[警告] litellm_success_callback 解析失敗: {e}")
 
@@ -951,7 +955,7 @@ def get_litellm_router(force_reload: bool = False) -> tuple[Router, Dict[str, An
         model_list=model_list,
         fallbacks=router_settings.get("fallbacks", []),
         num_retries=router_settings.get("num_retries", 2),
-        timeout=router_settings.get("timeout", 600),
+        timeout=router_settings.get("timeout", 1200),
         cooldown_time=router_settings.get("cooldown_time", 30),
     )
     return _SHARED_ROUTER, _ROUTER_CONFIG_DATA
@@ -1126,12 +1130,27 @@ class GeminiClient:
         if enable_code_execution:
             call_kwargs["tools"] = [{"code_execution": {}}]
 
+        global LAST_SUCCESS_USAGE_RECORD
+        with _CALLBACK_LOCK:
+            LAST_SUCCESS_USAGE_RECORD = {}
         _CALLBACK_EVENT.clear()
+        _SUCCESS_CALLBACK_EVENT.clear()
+        start_dt = datetime.now(timezone.utc)
         response = self.router.completion(**call_kwargs)
-        _CALLBACK_EVENT.wait(timeout=2.0)
+        end_dt = datetime.now(timezone.utc)
+
+        if not _SUCCESS_CALLBACK_EVENT.wait(timeout=3.0) or not LAST_SUCCESS_USAGE_RECORD:
+            try:
+                litellm_success_callback(call_kwargs, response, start_dt, end_dt)
+            except Exception:
+                pass
 
         with _CALLBACK_LOCK:
-            self.last_usage = dict(LAST_USAGE_RECORD) if LAST_USAGE_RECORD else {}
+            self.last_usage = (
+                dict(LAST_SUCCESS_USAGE_RECORD)
+                if LAST_SUCCESS_USAGE_RECORD
+                else (dict(LAST_USAGE_RECORD) if LAST_USAGE_RECORD else {})
+            )
 
         content = ""
         if getattr(response, "choices", None):
@@ -1179,7 +1198,11 @@ class GeminiClient:
         is_thinking = False
         is_answering = False
 
+        global LAST_SUCCESS_USAGE_RECORD
+        with _CALLBACK_LOCK:
+            LAST_SUCCESS_USAGE_RECORD = {}
         _CALLBACK_EVENT.clear()
+        _SUCCESS_CALLBACK_EVENT.clear()
         _STREAM_STATE.print_code_execution = True
         start_dt = datetime.now(timezone.utc)
         stream_response = None
@@ -1222,18 +1245,23 @@ class GeminiClient:
             except Exception:
                 pass
 
-        # 若背景 callback 未能設定 Usage，或記錄到的 total_tokens 為 0，以 rebuilt 重建結果主動更新
+        # 僅等待成功回呼，避免重試／Fallback 期間的前次 failure callback 覆蓋最終成功紀錄
+        got_success = _SUCCESS_CALLBACK_EVENT.wait(timeout=2.0)
         with _CALLBACK_LOCK:
-            curr_tokens = LAST_USAGE_RECORD.get("total_tokens", 0) if LAST_USAGE_RECORD else 0
+            curr_tokens = LAST_SUCCESS_USAGE_RECORD.get("total_tokens", 0) if LAST_SUCCESS_USAGE_RECORD else 0
 
-        if (not _CALLBACK_EVENT.wait(timeout=1.0) or curr_tokens == 0) and rebuilt is not None:
+        if (not got_success or curr_tokens == 0) and rebuilt is not None:
             try:
                 litellm_success_callback(call_kwargs, rebuilt, start_dt, end_dt)
             except Exception:
                 pass
 
         with _CALLBACK_LOCK:
-            self.last_usage = dict(LAST_USAGE_RECORD) if LAST_USAGE_RECORD else {}
+            self.last_usage = (
+                dict(LAST_SUCCESS_USAGE_RECORD)
+                if LAST_SUCCESS_USAGE_RECORD
+                else (dict(LAST_USAGE_RECORD) if LAST_USAGE_RECORD else {})
+            )
 
         return "".join(full_text)
 
@@ -1321,12 +1349,27 @@ class GeminiClient:
         else:
             call_kwargs["response_format"] = response_model
 
+        global LAST_SUCCESS_USAGE_RECORD
+        with _CALLBACK_LOCK:
+            LAST_SUCCESS_USAGE_RECORD = {}
         _CALLBACK_EVENT.clear()
+        _SUCCESS_CALLBACK_EVENT.clear()
+        start_dt = datetime.now(timezone.utc)
         response = self.router.completion(**call_kwargs)
-        _CALLBACK_EVENT.wait(timeout=2.0)
+        end_dt = datetime.now(timezone.utc)
+
+        if not _SUCCESS_CALLBACK_EVENT.wait(timeout=3.0) or not LAST_SUCCESS_USAGE_RECORD:
+            try:
+                litellm_success_callback(call_kwargs, response, start_dt, end_dt)
+            except Exception:
+                pass
 
         with _CALLBACK_LOCK:
-            self.last_usage = dict(LAST_USAGE_RECORD) if LAST_USAGE_RECORD else {}
+            self.last_usage = (
+                dict(LAST_SUCCESS_USAGE_RECORD)
+                if LAST_SUCCESS_USAGE_RECORD
+                else (dict(LAST_USAGE_RECORD) if LAST_USAGE_RECORD else {})
+            )
 
         raw_text = ""
         if getattr(response, "choices", None):
