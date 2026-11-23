@@ -16,8 +16,8 @@ import pandas as pd
 # 計算資料起始日期 (確保有足夠 60 交易日計算季線與 60 日百分位)
 START_DATE: str = "2026-07-01"
 
-# 目標 52 檔個股 (依 20261122_52檔股票池.xlsx)
-STOCK_IDS: list[str] = [
+# 預設 52 檔備援清單 (當 data/Stock_Pool/ 尚無 stock_list_*.json 時使用)
+DEFAULT_STOCK_IDS: list[str] = [
     "1101", "1216", "1402", "1519", "1590", "2002", "2207", "2317", "2330", "2379",
     "2395", "2412", "2454", "2603", "2609", "2610", "2618", "2801", "2834", "2880",
     "2881", "2882", "2886", "2891", "2892", "2912", "3045", "3227", "3231", "3293",
@@ -25,6 +25,18 @@ STOCK_IDS: list[str] = [
     "5871", "5876", "5880", "5903", "6023", "6505", "6548", "6919", "7828", "8069",
     "8299", "8415",
 ]
+
+try:
+    from L0_sources.stock_pool_screener import load_stock_pool_ids as _load_stock_pool_ids
+except ImportError:
+    from stock_pool_screener import load_stock_pool_ids as _load_stock_pool_ids
+
+STOCK_IDS: list[str] = _load_stock_pool_ids(fallback=DEFAULT_STOCK_IDS)
+
+
+def set_stock_ids(stock_ids: list[str]) -> None:
+    """原地更新模組內之 STOCK_IDS 清單，確保與當日動態股票池同步。"""
+    STOCK_IDS[:] = [str(s).strip() for s in stock_ids if str(s).strip()]
 
 
 @dataclass(frozen=True)

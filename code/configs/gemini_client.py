@@ -745,9 +745,12 @@ def settle_usage_history(extra_records: Optional[List[Dict[str, Any]]] = None) -
         except Exception:
             existing_records = []
 
-    # 掃描 data/D-Paln_Output/<stage>/usage/*_usage_*.json
+    # 掃描 data/D-Paln_Output/<stage>/usage/*_usage_*.json 與 data/Stock_Pool/usage/*_usage_*.json
     dplan_out_dir = PROJECT_ROOT / "data" / "D-Paln_Output"
+    stock_pool_usage_dir = PROJECT_ROOT / "data" / "Stock_Pool" / "usage"
     stage_files = sorted(dplan_out_dir.glob("*/usage/*_usage_*.json")) if dplan_out_dir.is_dir() else []
+    if stock_pool_usage_dir.is_dir():
+        stage_files.extend(sorted(stock_pool_usage_dir.glob("*_usage_*.json")))
 
     # 以 (date, stage, timestamp) 進行合併，並對同 (date, stage) 的最新檔案做更新
     merged_by_date_stage: Dict[tuple[str, str], Dict[str, Any]] = {}
@@ -778,7 +781,7 @@ def settle_usage_history(extra_records: Optional[List[Dict[str, Any]]] = None) -
             norm = _normalize_usage_record_schema(rec)
             merged_by_date_stage[(norm["date"], norm["stage"])] = norm
 
-    stage_order = {"l1": 1, "l2m": 2, "l2": 3, "l3": 4, "l4": 5}
+    stage_order = {"l0": 0, "l1": 1, "l2m": 2, "l2": 3, "l3": 4, "l4": 5}
     sorted_records = sorted(
         merged_by_date_stage.values(),
         key=lambda r: (r.get("date", ""), stage_order.get(r.get("stage", ""), 99), r.get("timestamp", "")),

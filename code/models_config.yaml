@@ -12,6 +12,12 @@ model_list:
   # 主力任務階段模型 (Primary Stage Deployments)
   # ---------------------------------------------------------------------------
 
+  # L0: 股票池補充篩選 Agent (高階深度推理 + Code Execution，從規則一未入選股中補撈遺珠)
+  - model_name: stage-l0
+    litellm_params:
+      model: gemini/gemini-4-carbon
+      api_key: os.environ/GEMINI_API_KEY
+
   # L1: 客觀事實萃取 (輕量快速模型，純文字結構化擷取、不啟用 Code Execution)
   - model_name: stage-l1
     litellm_params:
@@ -63,6 +69,8 @@ router_settings:
   timeout: 600
   cooldown_time: 30
   fallbacks:
+    - stage-l0:
+        - stage-pro-fallback
     - stage-l1:
         - stage-l1-fallback
     - stage-l2m:

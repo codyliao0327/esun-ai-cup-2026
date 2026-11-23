@@ -37,6 +37,7 @@ ROOT = CODE_DIR.parent
 DATA_ROOT = ROOT / "data"
 DPLAN_DIR = DATA_ROOT / "D-Paln_Output" / "final_dplan"
 DATAPACK_RAW_DIR = DATA_ROOT / "Datapack" / "Raw"
+STOCK_POOL_DIR = DATA_ROOT / "Stock_Pool"
 L2_DIR = DATA_ROOT / "D-Paln_Output" / "l2_inferences"
 L3_DIR = DATA_ROOT / "D-Paln_Output" / "l3_decisions"
 REPORT_DIR = DATA_ROOT / "D-Paln_Output" / "reports"
@@ -211,6 +212,20 @@ def find_l3_decisions_file(target_date: Optional[str] = None) -> Optional[Path]:
             if c_date in p.name:
                 return p
     return files[0]
+
+
+def find_stock_pool_screening_file(target_date: Optional[str] = None) -> Optional[Path]:
+    """尋找指定日期的 L0 動態股票池篩選報告 JSON (data/Stock_Pool/screening_result_<YYYYMMDD>.json)。"""
+    if not STOCK_POOL_DIR.exists():
+        return None
+    c_date = _clean_date(target_date) if target_date else ""
+    if c_date:
+        exact = STOCK_POOL_DIR / f"screening_result_{c_date}.json"
+        if exact.is_file():
+            return exact
+        return None
+    files = sorted(STOCK_POOL_DIR.glob("screening_result_*.json"), reverse=True)
+    return files[0] if files else None
 
 
 def load_json(path: Path) -> Dict[str, Any]:
@@ -698,6 +713,20 @@ def build_daily_report(
         if not is_holdings_count_valid:
             md_lines.append(f"- 預估持股檔數 `{est_final_holdings_count}` 檔不符合官方規定 (20~30 檔)。")
     md_lines.append("")
+
+    # 七、L0 動態股票池篩選回顧 (若當日有 screening_result_<YYYYMMDD>.json 則嵌入人讀版區塊)
+    pool_file = find_stock_pool_screening_file(target_date=c_date)
+    if pool_file:
+        try:
+            from L0_sources.stock_pool_screener import render_stock_pool_markdown
+
+            pool_data = load_json(pool_file)
+            md_lines.append("---")
+            md_lines.append("")
+            md_lines.append(render_stock_pool_markdown(pool_data, section_title="## 七、 L0 動態股票池篩選回顧"))
+        except Exception as exc:
+            md_lines.append(f"*(載入 L0 股票池篩選回顧失敗：{exc})*")
+            md_lines.append("")
 
     report_content = "\n".join(md_lines) + "\n"
 

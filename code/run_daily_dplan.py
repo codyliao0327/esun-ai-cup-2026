@@ -3,10 +3,11 @@
 執行順序：
   Step 0: L0 外部多源資料收集與預處理 (任一失敗即直接中斷報錯，嚴防漏抓)
     - 0a: Backend History Loader (backend_history_loader.py) -> 更新 backend_all_history.json
-    - 0b: DataPack Loader (datapack_loader.py)
-    - 0c: CMoney 討論區情緒爬蟲 (cmoney_sentiment_crawler.py)
-    - 0d: FinLab 市場與個股量化寬表 (finlab_market_loader.py)
-    - 0e: 同業主動式 ETF 前15大持股快照 (finlab_active_etf_loader.py)
+    - 0b: DataPack Loader (datapack_loader.py) -> 下載最新 DataPack (提供目前持股清單)
+    - 0c: Stock Pool Screener (stock_pool_screener.py) -> 150 檔規則一初篩 + LLM 補充篩選 + 強制保留目前持股 -> 產出 data/Stock_Pool/stock_list_<YYYYMMDD>.json
+    - 0d: CMoney 討論區情緒爬蟲 (cmoney_sentiment_crawler.py) -> 依動態股票池抓取情緒
+    - 0e: FinLab 市場與個股量化寬表 (finlab_market_loader.py) -> 依動態股票池計算全量指標
+    - 0f: 同業主動式 ETF 前15大持股快照 (finlab_active_etf_loader.py)
   Step 1: L1 事實提取 (fact_extractor.py)
   Step 2: L2M 市場整體判斷 (market_view_agent.py)
   Step 3: L2 個股推論 (stock_inference_agent.py)
@@ -85,26 +86,30 @@ def run_pipeline(
     # Step 0: L0 外部多源資料收集 (嚴格報錯中斷，不得漏抓)
     # -------------------------------------------------------------------------
     if not skip_l0:
-        print("\n>>> [Step 0/10] 執行 L0 資料收集階段 (Backend History / DataPack / CMoney / FinLab Market / Active ETF)...")
+        print("\n>>> [Step 0/10] 執行 L0 資料收集階段 (Backend History / DataPack / Stock Pool / CMoney / FinLab Market / Active ETF)...")
 
         # 0a: Backend History Loader (須先於 datapack_loader 執行，確保成交成本與歷史紀錄最新)
         print(" [0a] 同步玉山後台官方歷史數據 (backend_all_history.json)...")
         _run_substage("L0_sources/backend_history_loader.py", ["--date", t_date])
 
-        # 0b: DataPack Loader
+        # 0b: DataPack Loader (須先於 stock_pool_screener 執行，確保當日最新持股可供強制保留)
         print(" [0b] 下載並轉換官方 DataPack 最新資料...")
         _run_substage("L0_sources/datapack_loader.py", ["--date", t_date])
 
-        # 0c: CMoney Sentiment Crawler
-        print(" [0c] 抓取 CMoney 討論區個股情緒資料...")
+        # 0c: Stock Pool Screener (產出當日動態股票池，供後續 CMoney 與 FinLab 讀取)
+        print(" [0c] 執行 L0 動態股票池篩選 (規則一 + LLM 補充篩選 + 目前持股強制保留)...")
+        _run_substage("L0_sources/stock_pool_screener.py", ["--date", t_date])
+
+        # 0d: CMoney Sentiment Crawler
+        print(" [0d] 抓取 CMoney 討論區個股情緒資料...")
         _run_substage("L0_sources/cmoney_sentiment_crawler.py", ["--date", t_date])
 
-        # 0d: FinLab Market Loader
-        print(" [0d] 計算 FinLab 市場寬表與個股多面向指標...")
+        # 0e: FinLab Market Loader
+        print(" [0e] 計算 FinLab 市場寬表與個股多面向指標...")
         _run_substage("L0_sources/finlab_market_loader.py", ["--date", t_date])
 
-        # 0e: FinLab Active ETF Loader
-        print(" [0e] 下載同業主動式 ETF 前15大成分股持股快照...")
+        # 0f: FinLab Active ETF Loader
+        print(" [0f] 下載同業主動式 ETF 前15大成分股持股快照...")
         _run_substage("L0_sources/finlab_active_etf_loader.py", ["--date", t_date])
     else:
         print("\n>>> [Step 0/10] 跳過 L0 資料收集 (使用既有快照)")

@@ -66,7 +66,19 @@ def compute_competition_progress(as_of_date: str, history: List[Dict[str, Any]])
 
 
 def load_watchlist_stock_ids() -> List[str]:
-    """從 code/L0_sources/finlab_market_loader.py 安全解析 STOCK_IDS 觀察標的清單。"""
+    """優先從 data/Stock_Pool/stock_list_*.json 讀取最新動態股票池，查無則退回解析 finlab_market_loader.py。"""
+    stock_pool_dir = PROJECT_ROOT / "data" / "Stock_Pool"
+    if stock_pool_dir.is_dir():
+        pool_files = sorted(stock_pool_dir.glob("stock_list_*.json"), reverse=True)
+        for pf in pool_files:
+            try:
+                payload = json.loads(pf.read_text(encoding="utf-8"))
+                ids = [str(x).strip() for x in (payload.get("stock_ids") or []) if str(x).strip()]
+                if ids:
+                    return ids
+            except Exception as exc:
+                print(f"[builder] 讀取 {pf.name} 失敗: {exc}")
+
     if not FINLAB_MARKET_LOADER_FILE.is_file():
         return []
     try:
@@ -74,15 +86,18 @@ def load_watchlist_stock_ids() -> List[str]:
         for node in tree.body:
             val_node = None
             if isinstance(node, ast.Assign):
-                if any(isinstance(t, ast.Name) and t.id == "STOCK_IDS" for t in node.targets):
+                if any(isinstance(t, ast.Name) and t.id in ("STOCK_IDS", "DEFAULT_STOCK_IDS") for t in node.targets):
                     val_node = node.value
             elif isinstance(node, ast.AnnAssign):
-                if isinstance(node.target, ast.Name) and node.target.id == "STOCK_IDS":
+                if isinstance(node.target, ast.Name) and node.target.id in ("STOCK_IDS", "DEFAULT_STOCK_IDS"):
                     val_node = node.value
             if val_node is not None:
-                parsed = ast.literal_eval(val_node)
-                if isinstance(parsed, (list, tuple)):
-                    return [str(x).strip() for x in parsed if str(x).strip()]
+                try:
+                    parsed = ast.literal_eval(val_node)
+                    if isinstance(parsed, (list, tuple)):
+                        return [str(x).strip() for x in parsed if str(x).strip()]
+                except Exception:
+                    continue
     except Exception as exc:
         print(f"[builder] 解析 STOCK_IDS 失敗: {exc}")
     return []
@@ -2641,7 +2656,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
         <div class="glass-card usage-chart-card">
           <div class="usage-chart-title">
             <span>🍩 各任務階段費用佔比</span>
-            <span class="usage-chart-subtitle">L1 ~ L4 算力分佈</span>
+            <span class="usage-chart-subtitle">L0 ~ L4 算力分佈</span>
           </div>
           <div style="height: 290px; position: relative;">
             <canvas id="usageStageDonutChart"></canvas>
@@ -2666,6 +2681,12 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
           <span class="usage-chart-subtitle">models_config.yaml</span>
         </div>
         <div class="routing-pills-grid">
+          <div class="routing-pill">
+            <span>L0 股票池篩選</span>
+            <span class="model-badge carbon">gemini-4-carbon</span>
+            <span class="code-exec-badge">🐍 Code Exec</span>
+            <span style="color:var(--text-dim); font-size:11px;">備援: gemini-4-argon</span>
+          </div>
           <div class="routing-pill">
             <span>L1 事實擷取</span>
             <span class="model-badge flash">gemini-3.8-flash</span>
@@ -2702,8 +2723,8 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       <div class="glass-card">
         <div class="table-toolbar">
           <div>
-            <h3 style="font-size:16px; font-weight:700; margin:0;">📅 每日歷史用量與 5 階段執行明細</h3>
-            <div style="font-size:12px; color:var(--text-dim); margin-top:4px;">點擊任一交易日即可展開該日 L1 ～ L4 各階段模型、Token 結構、Code Execution 次數與耗時明細</div>
+            <h3 style="font-size:16px; font-weight:700; margin:0;">📅 每日歷史用量與 6 階段執行明細</h3>
+            <div style="font-size:12px; color:var(--text-dim); margin-top:4px;">點擊任一交易日即可展開該日 L0 ～ L4 各階段模型、Token 結構、Code Execution 次數與耗時明細</div>
           </div>
         </div>
         <div class="table-container">
@@ -2800,9 +2821,9 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
         <div style="font-size:12.5px; color:var(--text-dim);">嚴格遵循單向因果引用鏈與官方 D-Plan Schema v4.3 規範，確保每一筆委託皆具備完整可追溯推論依據</div>
         <div class="pipeline-flow">
           <div class="pipeline-step">
-            <span class="pipeline-step-tag">L0 · Data Sources</span>
-            <span class="pipeline-step-title">多源數據收集</span>
-            <span class="pipeline-step-desc">整合量化行情、基本面、技術籌碼、社群情緒與官方帳戶快照。</span>
+            <span class="pipeline-step-tag">L0 · Pool & Sources</span>
+            <span class="pipeline-step-title">動態選股與多源數據</span>
+            <span class="pipeline-step-desc">結合量化初篩與 LLM 補充篩選動態建構觀察池，並整合行情、基本面、籌碼與情緒數據。</span>
           </div>
           <div class="pipeline-step">
             <span class="pipeline-step-tag">L1 · Observations</span>
@@ -2839,7 +2860,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
         </div>
         <div class="glass-card highlight-card">
           <div class="highlight-card-title"><span>🐍</span> 原生 Python 沙盒零數值幻覺</div>
-          <div class="highlight-card-desc">於 L2M、L2、L3、L4 核心階段全面啟用 Gemini 原生 Code Execution 沙盒，將權重精算、整股張數換算與風險指標交由程式執行，徹底避免 LLM 算術誤差。</div>
+          <div class="highlight-card-desc">於 L0、L2M、L2、L3、L4 核心階段全面啟用 Gemini 原生 Code Execution 沙盒，將選股指標計算、權重精算與整股換算交由程式執行，徹底避免 LLM 算術誤差。</div>
         </div>
         <div class="glass-card highlight-card">
           <div class="highlight-card-title"><span>🧭</span> LiteLLM Multi-Model 動態路由</div>
@@ -3854,9 +3875,9 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       }});
 
       // 2. 各任務階段費用佔比圓環圖
-      const stageOrder = ['l1', 'l2m', 'l2', 'l3', 'l4'];
-      const stageNames = {{ l1: 'L1 事實擷取', l2m: 'L2M 市場走向', l2: 'L2 個股推論', l3: 'L3 投組決策', l4: 'L4 委託計算' }};
-      const stageTotals = {{ l1: 0, l2m: 0, l2: 0, l3: 0, l4: 0 }};
+      const stageOrder = ['l0', 'l1', 'l2m', 'l2', 'l3', 'l4'];
+      const stageNames = {{ l0: 'L0 股票池篩選', l1: 'L1 事實擷取', l2m: 'L2M 市場走向', l2: 'L2 個股推論', l3: 'L3 投組決策', l4: 'L4 委託計算' }};
+      const stageTotals = {{ l0: 0, l1: 0, l2m: 0, l2: 0, l3: 0, l4: 0 }};
       dates.forEach(d => {{
         const stg = dailyMap[d].stages || {{}};
         stageOrder.forEach(k => {{
@@ -3874,7 +3895,7 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
           labels: stageOrder.map(k => stageNames[k]),
           datasets: [{{
             data: stageOrder.map(k => Number(stageTotals[k].toFixed(4))),
-            backgroundColor: ['#10b981', '#06b6d4', '#3b82f6', '#8b5cf6', '#f59e0b'],
+            backgroundColor: ['#0ea5e9', '#10b981', '#06b6d4', '#3b82f6', '#8b5cf6', '#f59e0b'],
             borderWidth: 0,
             hoverOffset: 8
           }}]
@@ -3940,8 +3961,9 @@ def build_dashboard_html(summary_data: Dict[str, Any], market_quotes: Dict[str, 
       const dailyMap = usage.daily_summary || {{}};
       const datesDesc = Object.keys(dailyMap).sort((a, b) => b.localeCompare(a));
 
-      const stageOrder = ['l1', 'l2m', 'l2', 'l3', 'l4'];
+      const stageOrder = ['l0', 'l1', 'l2m', 'l2', 'l3', 'l4'];
       const stageLabels = {{
+        l0: 'L0 股票池篩選',
         l1: 'L1 事實擷取',
         l2m: 'L2M 市場走向',
         l2: 'L2 個股推論',

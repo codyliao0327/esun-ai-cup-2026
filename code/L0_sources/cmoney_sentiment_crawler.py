@@ -90,8 +90,8 @@ def main(target_date: Optional[str] = None):
     # 先取得一次 Guest Token，後續 52 檔直接共用同一個 Token
     ensure_guest_token()
 
-    # 3. 批次抓取多檔股票 (依 20261122_52檔股票池.xlsx)
-    stock_list = [
+    # 3. 動態讀取當日股票池 (data/Stock_Pool/stock_list_<YYYYMMDD>.json)，查無則退回預設 52 檔備援清單
+    default_stock_list = [
         "1101", "1216", "1402", "1519", "1590", "2002", "2207", "2317", "2330", "2379",
         "2395", "2412", "2454", "2603", "2609", "2610", "2618", "2801", "2834", "2880",
         "2881", "2882", "2886", "2891", "2892", "2912", "3045", "3227", "3231", "3293",
@@ -99,6 +99,14 @@ def main(target_date: Optional[str] = None):
         "5871", "5876", "5880", "5903", "6023", "6505", "6548", "6919", "7828", "8069",
         "8299", "8415",
     ]
+    current_dir = Path(__file__).resolve().parent
+    code_dir = current_dir.parent
+    for p in (str(current_dir), str(code_dir)):
+        if p not in sys.path:
+            sys.path.insert(0, p)
+    from stock_pool_screener import load_stock_pool_ids
+
+    stock_list = load_stock_pool_ids(target_date=target_date, fallback=default_stock_list)
 
     rows = []
     failed_stocks = []

@@ -21,6 +21,7 @@ DEFAULT_GEMINI_MODEL = "gemini/gemini-4-argon"
 DEFAULT_STAGE_ALIAS = "stage-l2"
 
 STAGE_MODEL_ALIASES: Dict[str, str] = {
+    "l0": "stage-l0",
     "l1": "stage-l1",
     "l2m": "stage-l2m",
     "l2": "stage-l2",

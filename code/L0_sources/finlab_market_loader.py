@@ -63,8 +63,8 @@ DATA_ROOT = Path(__file__).resolve().parents[2] / "data"
 FILE_FORMAT = "json"
 PARQUET_COMPRESSION = "zstd"
 
-# 目標 52 檔個股 (用於個股指標篩選，依 20261122_52檔股票池.xlsx)
-STOCK_IDS: list[str] = [
+# 預設 52 檔備援清單 (當 data/Stock_Pool/ 尚無 stock_list_*.json 時使用)
+DEFAULT_STOCK_IDS: list[str] = [
     "1101", "1216", "1402", "1519", "1590", "2002", "2207", "2317", "2330", "2379",
     "2395", "2412", "2454", "2603", "2609", "2610", "2618", "2801", "2834", "2880",
     "2881", "2882", "2886", "2891", "2892", "2912", "3045", "3227", "3231", "3293",
@@ -72,6 +72,12 @@ STOCK_IDS: list[str] = [
     "5871", "5876", "5880", "5903", "6023", "6505", "6548", "6919", "7828", "8069",
     "8299", "8415",
 ]
+
+from stock_pool_screener import load_stock_pool_ids  # noqa: E402
+import stock_indicators as _stock_indicators_mod  # noqa: E402
+
+# 動態股票池清單（執行 download_all 時會依 target_date 重新載入並同步至 stock_indicators）
+STOCK_IDS: list[str] = load_stock_pool_ids(fallback=DEFAULT_STOCK_IDS)
 
 # D-Plan L0 資料來源層 sources 輸出位置
 SOURCES_DIR = DATA_ROOT / "D-Paln_Output" / "l0_sources"
@@ -230,6 +236,16 @@ def download_all(
 ) -> dict[str, str]:
     """計算所有 (或符合關鍵字的) 指標，回傳 {指標名稱: 狀態}。"""
     import finlab
+
+    # 依 target_date 動態載入當日股票池，並同步至 stock_indicators.STOCK_IDS
+    t_str = (
+        clean_date_str(target_date)
+        if isinstance(target_date, str)
+        else (f"{target_date:%Y%m%d}" if isinstance(target_date, date) else None)
+    )
+    active_ids = load_stock_pool_ids(target_date=t_str, fallback=DEFAULT_STOCK_IDS)
+    STOCK_IDS[:] = active_ids
+    _stock_indicators_mod.set_stock_ids(active_ids)
 
     finlab.login()  # 憑證已快取時不會再開瀏覽器
 
