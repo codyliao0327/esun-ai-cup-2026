@@ -1,726 +1,532 @@
-# 2026 玉山人工智慧挑戰賽 (AI CUP 2026)
-## Multi-Agent 自主量化投資決策系統 (D-Plan v4.3) & 即時持股看板
+<div align="center">
 
-- **參賽隊伍**：`TEAM_11402`
-- **競賽主題**：2026 Agent 基金經理人公開挑戰賽
-- **核心架構**：階層式因果推論 Multi-Agent 產線 (L0 ➔ L1 ➔ L2M ➔ L2 ➔ L3 ➔ L4 ➔ D-Plan 總組裝 ➔ 官方預檢核與自動繳交 ➔ 每日決策回顧報告) + 即時資產與持股監控看板 (Portfolio Dashboard)
-- **規範標準**：嚴格遵循官方 **D-Plan Schema v4.3** 與 **D-Plan 撰寫指南 v4.3**
-- **模型核心**：LiteLLM Router + Google Gemini 雙軌分流路由架構 (`stage-l1` 採用 `gemini-3.8-flash`，`stage-l0` / `stage-l2m` / `stage-l2` / `stage-l3` / `stage-l4` 核心決策與篩選採用 `gemini-4-carbon`，並配置自動 Fallback 降級備援機制與 Gemini 原生 Code Execution 程式碼執行器)
+# 🤖 2026 玉山人工智慧挑戰賽 · Multi-Agent 自主量化投資決策系統
+### Autonomous Multi-Agent Quantitative Portfolio System (D-Plan v4.3) & Real-Time Portfolio Dashboard
+
+**繁體中文** | [English](README_EN.md)
+
+[![Python 3.11](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![LiteLLM Router](https://img.shields.io/badge/LiteLLM-Router%20%26%20Fallback-10B981)](https://github.com/BerriAI/litellm)
+[![Google Gemini](https://img.shields.io/badge/Google%20Gemini-4%20Carbon%20%2F%203.8%20Flash-4285F4?logo=googlegemini&logoColor=white)](https://ai.google.dev/)
+[![Pydantic v2](https://img.shields.io/badge/Pydantic-v2%20Strict%20DAG-E92063?logo=pydantic&logoColor=white)](https://docs.pydantic.dev/)
+[![FinLab](https://img.shields.io/badge/Quant-FinLab%2045%20Indicators-F59E0B)](https://www.finlab.tw/)
+[![Cloudflare Pages](https://img.shields.io/badge/Dashboard-Cloudflare%20Pages-F38020?logo=cloudflarepages&logoColor=white)](https://esun-ai-cup-2026-team11402-portfolio.pages.dev)
+
+**參賽隊伍**：`TEAM_11402` ｜ **競賽主題**：2026 Agent 基金經理人公開挑戰賽（社會組）｜ **規範標準**：D-Plan Schema v4.3 ｜ **初期資金**：新台幣 10 億元（`1,000,000,000`）
+
+🌐 **[線上即時持股與 AI 成本監控看板 (Live Dashboard Demo)](https://esun-ai-cup-2026-team11402-portfolio.pages.dev)**
+
+</div>
 
 ---
 
-## 系統雙核心概覽
+> **給技術面試官與架構師的閱讀指南**：本文件以系統白皮書架構撰寫，即使**完全不翻閱程式碼**，也能在 3～5 分鐘內透過架構圖、工程痛點對照、L0 ➔ L4 真實 JSON 資料流走查、45 項量化指標與風控數學推導，完整掌握本專案如何將 LLM 從「對話原型」工程化為「零數值幻覺、合規零容錯、端到端無人值守的金融級 Multi-Agent 生產系統」。
+
+---
+
+## 目錄導覽
+
+1. [競賽實戰成果與系統預覽](#1-競賽實戰成果與系統預覽)
+2. [專案背景與核心工程挑戰](#2-專案背景與核心工程挑戰)
+3. [系統雙核心全景架構](#3-系統雙核心全景架構)
+4. [AI 應用工程 8 大技術亮點](#4-ai-應用工程-8-大技術亮點)
+5. [各階層 Agent 運作邏輯與端到端資料流走查](#5-各階層-agent-運作邏輯與端到端資料流走查)
+6. [量化特徵工程總覽（45 項核心指標 + 篩選與輿情指標）](#6-量化特徵工程總覽45-項核心指標--篩選與輿情指標)
+7. [風控合規機制與數學公式推導](#7-風控合規機制與數學公式推導)
+8. [Portfolio Dashboard 即時投資決策與持股看板](#8-portfolio-dashboard-即時投資決策與持股看板)
+9. [快速開始 (Quick Start)](#9-快速開始-quick-start)
+10. [附錄（完整目錄樹、I/O 矩陣、單模組 CLI 手冊）](#10-附錄完整目錄樹io-矩陣單模組-cli-手冊)
+
+---
+
+## 1. 競賽實戰成果與系統預覽
+
+<!-- POST_COMPETITION_RESULTS_START: 賽期 (2026-10-27 ~ 2026-11-27) 結束後可直接替換下表與截圖佔位符 -->
+> [!NOTE]
+> **賽後結算成果更新區**（競賽期間 `2026-10-27` 至 `2026-11-27`；以下為賽後最終結算指標與系統畫面預留位，待官方結算後填入最終數值與截圖）。
+
+| 評估維度 | 最終實戰表現（待賽後結算填入） | 說明 |
+| :--- | :--- | :--- |
+| **最終累計報酬率 (`cum_return_pct`)** | `[待填入，例如 +XX.XX%]` | 初始可交易淨值新台幣 10 億元 |
+| **競賽總排名 / 社會組排名** | `[待填入，例如 #XX / XXX 隊（社會組 #XX）]` | 依據玉山挑戰賽官方後台結算 |
+| **最大回撤 (`MDD`)** | `[待填入，例如 -X.XX%]` | 賽期峰值至谷底淨值最大跌幅 |
+| **合規違規次數 / 自動繳交成功率** | `0 次違規 / 100% 通過官方預檢核` | Step 7 線上預檢核零容忍阻斷機制把關 |
+| **累計自動決策交易日數** | `[待填入，例如 22 個交易日]` | 完整留存每日 Prompt、D-Plan JSON 與回顧報告 |
+| **平均單日全產線 AI 推論成本** | `[待填入，例如 $0.XX USD / 日]` | 透過 LiteLLM 19 項原生 Usage Callback 精算 |
+
+### 線上看板與系統截圖預覽
+
+- **Live Demo**：[https://esun-ai-cup-2026-team11402-portfolio.pages.dev](https://esun-ai-cup-2026-team11402-portfolio.pages.dev)
+- **三代表性系統畫面**（可於 `docs/screenshots/` 放入對應截圖後取消註解）：
+  - **帳戶總覽與 FIFO 庫存抽屜**：NAV/Cash、累計總報酬率、競賽排名走勢與逐筆持有天數/成本追蹤 `<!-- ![Account Overview](docs/screenshots/dashboard_overview.png) -->`
+  - **行情群組與 Sparklines**：動態持股與其餘標的即時報價、漲跌幅排序與微型趨勢圖 `<!-- ![Market Quotes](docs/screenshots/dashboard_quotes.png) -->`
+  - **AI 模型成本監控 (FinOps)**：19 項 LiteLLM Usage 指標、階段花費佔比、Fallback 路由圖與沙盒 Code Execution 執行稽核 `<!-- ![AI Cost Monitor](docs/screenshots/dashboard_ai_usage.png) -->`
+<!-- POST_COMPETITION_RESULTS_END -->
+
+---
+
+## 2. 專案背景與核心工程挑戰
+
+玉山人工智慧公開挑戰賽要求參賽團隊打造自主投資決策 Agent，每日針對台股 **150 檔法定上市櫃標的（上市 100 檔 + 上櫃 50 檔）** 產出符合 **D-Plan Schema v4.3** 規範的結構化投資計畫書（涵蓋資訊來源、客觀事實、市場研判、個股推論、投組決策與委託執行），並在嚴格合規限制下管理 **新台幣 10 億元** 的模擬主動式 ETF 基金。
+
+在將 LLM 導入真實高頻量化決策產線時，我們必須同時解決三大工程難題：
+
+| 工程維度 | 實務痛點 | 本系統架構解法 |
+| :--- | :--- | :--- |
+| **1. 金融法規與合規零容錯** | 每日必須嚴守 **20～30 檔持股**、一般個股 $\le 10\%$（台積電 $\le 25\%$）、千股整股、Active Share $\ge 15\%$；且盤後現金比若超過 $25.0\%$ 即整批作廢並記警告（累計 3 次失格）。 | 將法規邊界直接內嵌於 **Pydantic 硬驗證 + Python 機械算單 + 22% 主動現金安全線**，並在送出前經官方 `/validate/` 端點執行零容忍閘門檢查。 |
+| **2. LLM 的量化與結構化缺陷** | 純 LLM 進行多檔權重加總、手續費扣減與股數取整極易產生「算術幻覺」；長輸出易引發 JSON 格式截斷或 FSM 狀態爆炸；多階段推論易產生孤兒引用斷鏈。 | 採用 **LiteLLM Multi-Model 路由** + **Gemini 原生 Code Execution 沙盒** + **雙層 Pydantic Schema（`Draft` vs `Final`）** + **三層 JSON 容錯鏈** + **DAG 全圖驗證**。 |
+| **3. 多源異質資料自動化串接** | 每日須整合玉山競賽後台歷史明細、DataPack、FinLab 量化寬表、CMoney 社群討論情緒與同業 ETF 成分股；過去依賴手動複製 Token 與下載檔案極易中斷。 | 實作 **OAuth2 SSO 自動登入**、**CMoney SSR 訪客 JWT 自動萃取與 401 重試**、**資料就緒守護機制**，串聯成一鍵執行的 Step 0～10 無人值守產線。 |
+
+---
+
+## 3. 系統雙核心全景架構
+
+本系統由 **【核心 1】Multi-Agent 自主量化決策產線** 與 **【核心 2】Portfolio Dashboard 即時投資看板** 雙核心構成，透過單向資料與 Usage 結算鏈完美協作：
 
 ```mermaid
 flowchart LR
-    subgraph Core1["【核心 1】Multi-Agent 自主量化決策產線 (D-Plan v4.3)"]
-        L0["L0 動態股票池 & 多源資料收集\n(DataPack / 150檔篩選 stage-l0 / FinLab / CMoney)"] --> L1["L1 客觀事實擷取\n(Compact Array JSON / stage-l1)"]
-        L1 --> L2M["L2M 市場走向研判\n(Regime & Stance + Code Execution / stage-l2m)"]
-        L2M --> L2["L2 個股推論核心\n(動態股票池標的 + Code Execution / stage-l2)"]
-        L2 --> L3["L3 投組決策核心\n(20~30 檔持股控管 / stage-l3)"]
-        L3 --> L4["L4 委託執行層\n(千股整股 + Active Share 檢驗 / stage-l4)"]
-        L4 --> OUT["官方 JSON 繳交檔\n(D-Plan_<team_id>_<date>.json)"]
-        OUT --> REP["每日決策回顧報告\n(Markdown 審視報告)"]
+    subgraph Core1["核心 1：Multi-Agent 自主量化決策產線 (Step 0 ~ 10)"]
+        direction LR
+        S0["Step 0: L0 多源資料收集\nBackend SSO / DataPack /\n150 檔動態股票池 (stage-l0) /\nCMoney JWT / FinLab 45 指標"] --> S1["Step 1: L1 客觀事實擷取\nCompact Array JSON\nstage-l1 (gemini-3.8-flash)\n原始數值程式覆寫防幻覺"]
+        S1 --> S2["Step 2: L2M 市場走向研判\nRegime / Stance / Posture\nstage-l2m (gemini-4-carbon)\n+ Code Execution"]
+        S2 --> S3["Step 3: L2 個股推論核心\n兩階段分析 + 反面證據\nstage-l2 (gemini-4-carbon)\n+ Code Execution"]
+        S3 --> S4["Step 4: L3 投資組合決策\n20~30 檔 + 權重上限 + 資金調度\nstage-l3 (gemini-4-carbon)\n+ Code Execution"]
+        S4 --> S5["Step 5: L4 委託執行層\nPython 千股機械算單\n+ Active Share Gemini 覆核"]
+        S5 --> S6["Step 6: D-Plan 總組裝\nPydantic DAG 全圖驗證"]
+        S6 --> S7["Step 7: 官方線上預檢核\n任一 bad 或 warn 即阻斷"]
+        S7 --> S8["Step 8: 官方正式自動繳交\n驗證 HTTP 2xx 與官方收據"]
+        S8 --> S9["Step 9: 真人決策回顧報告\n7 章節 Markdown 稽核報告"]
     end
 
-    subgraph Core2["【核心 2】Portfolio Dashboard 投資決策與持股看板"]
-        BACK["玉山後台數據\n(backend_all_history.json)"] --> TRACK["成本與損益計算引擎\n(tracker.py)"]
-        ESUN_API["玉山行情 SDK\n(150 檔日線與行情)"] --> TRACK
-        TRACK --> BUILD["單頁 SPA 渲染引擎\n(Fugle 專業佈局 + iOS 毛玻璃)"]
-        BUILD --> DIST["dist/index.html\n(Cloudflare Pages 即時雲端部署)"]
+    subgraph Core2["核心 2：Portfolio Dashboard 即時投資看板 (Step 10 / 獨立執行)"]
+        direction TB
+        HIST["玉山後台 OAuth2 SSO\nbackend_all_history.json"] --> TRK["成本與損益計算引擎\ntracker.py (FIFO / 持有天數)"]
+        SDK["玉山行情 SDK\n2330 開市日曆 + 150 檔日線"] --> TRK
+        USAGE["LiteLLM Usage 結算\n19 項標準指標 usage_history.json"] --> BLD["單頁 SPA 渲染引擎\nbuilder.py (6 大分頁)"]
+        TRK --> BLD
+        S9 --> BLD
+        BLD --> DIST["dist/index.html\nCloudflare Pages CI/CD 部署"]
     end
+
+    S9 -.->|"Step 10 自動連動\n(--skip-backend-fetch)"| Core2
 ```
 
-### 1. 🤖 Multi-Agent 自主量化投資決策系統
-- **LiteLLM 統一管理與 Multi-Model 路由**：全面改用 `litellm.Router` 集中管理大模型調用與自動 Fallback 備援。依任務特性精準分流：L1 客觀事實提取配置輕快且低成本的 `gemini-3.8-flash`；L0 股票池補充篩選與 L2M、L2、L3、L4 等高階推理與數值運算階段配置 `gemini-4-carbon`。
-- **Gemini 原生 Code Execution 強化**：在 L0 股票池篩選、L2M 市場研判、L2 個股推論、L3 投組決策與 L4 委託計算階段全面啟用 Gemini 內建 Python 執行沙盒，徹底解決 LLM 在複雜權重配置、千股取整與風控比率時的數值幻覺。
-- **因果引用鏈完備**：嚴格落實 L0 ➔ L1 ➔ L2M ➔ L2 ➔ L3 ➔ L4 單向無循環引用，使用 Pydantic `extra='forbid'` 全量驗證，防範孤兒節點與格式錯誤。
-- **L0 動態股票池篩選引擎**：每日自 150 檔法定上市櫃母體出發，結合「規則一（近 5 日／近 10 日相對大盤報酬皆 > 0）」量化初篩、`stage-l0`（`gemini-4-carbon`）依集保籌碼／融資／同業本益比寬鬆補撈遺珠，並強制聯集當日 DataPack 帳上目前持股，動態產出每日觀察股票池供全產線下游無縫讀取。
-- **19 項原生 Usage 監控與本地結算**：全量對齊 LiteLLM 原生標準命名（Tokens、Cost、Duration、Reasoning、Code Execution 呼叫明細等），自動合併結算至本地 `usage_history.json`。
+### L0 ➔ L4 嚴格因果引用鏈 (Causal Citation DAG)
 
-### 2. 📊 Portfolio Dashboard 投資決策與持股看板
-- **設計風格**：富果 Fugle 專業看盤佈局 + Apple macOS 冷冽藍灰 / 冰川銀液態玻璃（Liquid Glassmorphism），具備**置頂單行懸浮導航膠囊**（下滑自動精簡為單行，零版面位移）與輕量化 GPU 合成優化。
-- **六大功能分頁**：
-  - **頁籤 1【📊 帳戶總覽】**：可交易淨值 (NAV)、現金水位、累計與當日報酬率、**競賽排名 (總/社會組)**、**NAV/Cash、累計總報酬率、競賽排名與單日報酬率趨勢圖表**、庫存損益明細（含**個股持有天數**、**FIFO 分批買進明細展開抽屜**與即時多欄位排序）。
-  - **頁籤 2【📈 行情群組】**：動態劃分「我的持股 (20~30 檔)」與「其餘標的」，具備漲跌幅排序、即時搜尋過濾、微型走勢圖 (Sparklines)。
-  - **頁籤 3【🧾 歷史成交明細】**：彙整官方後台 JSON 累計買賣金額、手續費、證交稅與淨已實現損益，並支援依交易日、買賣方向與個股即時篩選成交紀錄。
-  - **頁籤 4【📄 決策報告】**：內建安全 Markdown 渲染器（Marked + DOMPurify），支援歷史報告日期切換、自動生成章節目錄與一鍵複製原文。
-  - **頁籤 5【🤖 AI 模型成本監控】**：視覺化呈現 19 項 LiteLLM Usage 指標、每日花費/Token 雙軸圖、L1~L4 階段費用佔比、**全階段動態路由與備援架構 (`models_config.yaml`)** 及每日下鑽執行明細。
-  - **頁籤 6【💡 專案亮點】**：ETF 投資策略、L0 ➔ L4 決策架構概覽、6 大技術亮點卡片與 GitHub Repository 導覽連結。
-- **自動化發布**：每日一鍵更新腳本（支援 `--reports-only` 快速重建），綁定 Cloudflare Pages 免費全自動 Git CI/CD 部署，手機、平板、電腦端隨時檢視最新損益與行情。
-
----
-
-## 📌 近期系統重大更新 (Recent Updates)
-
-1. **全面接入 LiteLLM Router 與 Multi-Model 動態路由架構**：
-   - 建立集中式路由設定檔 `code/models_config.yaml`，透過 `litellm.Router` 統一大模型調用與例外降級。
-   - 依任務階層分流規則：
-     - `stage-l1`：預設主力 `gemini/gemini-3.8-flash`（Fallback 備援：`gemini/gemini-3.6-flash`）。
-     - `stage-l0`、`stage-l2m`、`stage-l2`、`stage-l3`、`stage-l4`：預設主力高階推理模型 `gemini/gemini-4-carbon`（Fallback 備援：`gemini/gemini-4-argon`）。
-   - 具備自動重試 (`num_retries=2`) 與遇 Rate Limit、超時或異常時無縫降級切換至備援模型之高可用架構。
-2. **升級 19 項標準 LiteLLM Usage 指標與歷史自動結算**：
-   - 淘汰舊版自訂命名，全面對齊 LiteLLM 原生標準欄位：`timestamp`, `date`, `provider`, `model`, `model_group`, `stage`, `status`, `finish_reason`, `duration_seconds`, `prompt_tokens`, `completion_tokens`, `total_tokens`, `cached_tokens`, `tool_use_tokens`, `reasoning_tokens`, `response_cost`, `code_execution_used`, `code_execution_call_count`, `executed_codes`。
-   - 各模組執行完畢自動產出獨立用量檔，產線尾端自動結算匯總至 `data/D-Paln_Output/usage/usage_history.json` 與 `code/portfolio_dashboard/usage_history.json`。
-3. **現代化環境變數管理與憑證安全提升 (.env)**：
-   - 正式廢除舊版 `credentials.json`，改用產業標準的 `code/.env` 檔案載入 `GEMINI_API_KEY` 與 `TEAM_ID`，並提供 `code/.env.example` 範本以避免私密金鑰誤入版本控制。
-4. **多層 JSON 解析防禦與最新 json-repair 整合**：
-   - 在串流模式原生傳遞 Pydantic `response_format` 結構模型，由模型解碼底層直接保證 JSON 語法精確。
-   - 整合最新版 `json-repair>=0.64.9`，實作 `model_validate_json` $\rightarrow$ `json.loads` $\rightarrow$ `json_repair.loads` 三層容錯防禦鏈，徹底消除超長輸出下的微小格式瑕疵。
-5. **產線抽樣除錯指令支援 (`--input-date`, `--max-stocks`)**：
-   - 在 `run_daily_dplan.py` 與 `fact_extractor.py` 中支援自訂讀取特定日期輸入與限制測試個股數量（例如抽樣 2~3 檔），大幅節省測試時的 Token 成本與等待時間。
-6. **Gemini 3+ / 4 取樣參數規範與 DeprecationWarning 防護**：
-   - 遵循 Google 與 LiteLLM 最新規範，針對具備深度思考機制之模型（Gemini 3+ 與 Gemini 4），自動省略傳統 `temperature` / `top_p` 參數，改由提示詞導引取樣，避免終端出現警告訊息。
-7. **基本面指標動態回補演算法 (自適應各公司公告時間)**：
-   - 針對上市櫃公司季報與月營收公告日期不一的實務挑戰，全面改寫 `stock_indicators.py` 中的三項基本面指標（`roe_latest`、`revenue_yoy_latest`、`revenue_mom_latest`）：
-     - **動態回溯最新非空值 (Not-NaN)**：每檔股票獨立檢驗歷史序列，有 Q3 則取 Q3，尚未公布則自動往前遞補取 Q2；有當月營收（如 11 月）則取當月，尚未公布則向前遞補取前一月（如 10 月）。
-     - **Compact Array JSON 字典輸出**：回傳 `{"_format": "[value, date]", "個股代碼": {"指標名稱": [數值, 日期/季度]}}`，完整保留每檔股票真實數據對應的發布時間戳。
-     - **L1 自動對齊**：由 `fact_extractor.py` 自動提取各自的日期/季度標籤並注入 Prompt，徹底消除過去鎖定單一歷史日期或因空值導致特徵缺失的瓶頸。
-8. **候選股票池更新為精選 52 檔**：
-   - 依據 `docs/股票池/20261122_52檔股票池.xlsx`，將全產線候選標的池校準為 52 檔龍頭標的（涵蓋 2330 台積電、2454 聯發科、2317 鴻海、3661 世芯-KY、2603 長榮等），全量同步至 L0 資料爬取、L1 客觀事實、L2 個股推論與 L3 投組決策。
-9. **L2 自訂分析邏輯專區升級 (CUSTOM_STOCK_ANALYSIS_LOGIC)**：
-   - 在 `stock_inference_agent.py` 確立兩階段推論標準規範：
-     - **第一階段（個股深入分析）**：多維度考量企業品質 (ROE/營收)、技術動能結構 (均線/KD/MACD/布林通道)、法人籌碼強度 (外資/投信) 與市場社群討論熱度，並強制產出客觀的反面證據思考 (`counter_evidence`)。
-     - **第二階段（選股與組合決策）**：落實主動式 ETF「兼顧企業品質、營運改善與潛在成長動能」之投資理念，進行多維度取捨與權重規劃。
-10. **26 檔量化寬表全面 Compact Array JSON 快取**：
-    - 大盤 9 檔 + 個股 17 檔指標全面優化為精簡 Compact Array JSON，大幅降低檔案體積與 L1 Prompt Token 消耗。
-11. **DataPack 帳戶路徑演變與持倉移動停利追蹤 (`datapack_loader.py`)**：
-    - 結合歷史 `DataPack/Raw/*.json` 與 `backend_reports/backend_all_history.json`（保留 4 位小數真實成交價；無 JSON 時退回 `*.htm`），新增賽期進度、帳戶淨值演變（累計報酬、MDD、1D/3D/5D 變化率、連虧天數、近 5 日走勢），並將 `holdings` 合併為每檔單行 Compact JSON（含 `entry_date`、`holding_days`、`avg_cost`、`pnl_pct`、`peak_price`、`peak_pnl_pct`、`dd_from_peak_pct`），同步強化 L2M / L2 / L3 Prompt。
-12. **CMoney 個股情緒合併進個股 Compact Array JSON 與確切日期追蹤**：
-    - `cmoney_sentiment_crawler.py` 恢復 `統計開始時間` / `統計結束時間`；`fact_extractor.py` 新增情緒三占比計算（含樣本數為 0 防護）並併入個股指標 JSON，同時於 L1 / L2 Prompt 補充數值含意指引。
-13. **Portfolio Dashboard 5 分頁擴充與冷冽液態玻璃視覺重構 (`builder.py`, `tracker.py`)**：
-    - 新增 **FIFO 分批買進明細**、**個股持有天數**與**累計總報酬率 (%) 趨勢圖**，並新增 Tab 3（AI 成本監控）、Tab 4（每日決策報告瀏覽器）與 Tab 5（專案架構與技術亮點 + GitHub 連結）。
-    - 統一全站液態膠囊按鈕與 Model 水滴微膠囊標籤、重構為冷冽藍灰／冰川銀背景、實作下滑單行懸浮導航（零版面位移遲滯偵測），並移除高耗能濾鏡與重繪瓶頸大幅提升流暢度。
-14. **後台數據管線全面升級為 Python OAuth2 SSO 全自動直抓 (`backend_history_loader.py`)**：
-    - 淘汰過去手動另存 `.htm` 與 Tampermonkey 手動匯出，改由 `L0_sources/backend_history_loader.py` 透過官方 OAuth2 SSO 自動登入並抓取後台 API，輸出全賽期完整的 `data/backend_reports/backend_all_history.json`（保留 `*.htm` 為備援）。
-    - 採「增量更新 + 重抓最新 1 日」模式（支援 `--full` 全量重抓）與原子寫入，並直接整合進 `run_daily_dplan.py`（Step 0a，先於 `datapack_loader.py` 執行）與 `portfolio_dashboard/run_update.py`，提供 4 位小數精確成交價、手續費／證交稅、官方單日／累計報酬率與競賽排名給下游 `datapack_loader.py` 與 `tracker.py`。
-15. **CMoney 個股情緒 API 免登入全自動訪客憑證萃取 (`cmoney_sentiment_crawler.py`)**：
-    - 淘汰過去需每日手動從瀏覽器複製 `Authorization` Bearer Token 與 Session 的繁瑣流程，徹底消除超過 24 小時即驗證失效導致自動化產線中斷的痛點。
-    - **核心運作原理**：利用 CMoney 採用 **SSR（伺服器端渲染）** 架構的特性，每次以無狀態請求訪問討論區 HTML 時，後端皆會在原始碼內嵌一組全新的 24 小時訪客 JWT（`is_guest: true`、`app_id: 21`）。
-    - **全自動驗證與容錯**：程式啟動時透過 `ensure_guest_token()` 自動抓取討論區 HTML 並萃取出 `eyJ...` 訪客 Token，搭配 `is_token_valid()` 解碼 JWT 檢查 `exp` 效期（預留 60 秒緩衝）與動態生成的 `DEVICE_ID`，且在遭遇 `401` 時自動強制重抓憑證並重試，實現零人工介入的全自動批次抓取。
-16. **DataPack API 全自動下載與 D-Plan / 看板端到端連動 (`datapack_loader.py`, `run_daily_dplan.py`, `run_update.py`)**：
-    - **淘汰手動下載 DataPack**：`datapack_loader.py` 複用 `EsunChallengeClient` 的 OAuth2 SSO 登入，自動呼叫後台 `/api/data-pack/` 下載並原子更新 `data/Datapack/Raw/` 最新檔案（若指定過去日期會自動退回本地歷史檔，亦提供 `--no-fetch` 離線模式）。
-    - **後端與看板單向自動連動**：`run_daily_dplan.py` 自動化產線最後會自動呼叫 `portfolio_dashboard/run_update.py --skip-backend-fetch` 同步更新看板（不重複登入後台 API，加上 `--push-dashboard` 可自動 `git commit & push` 部署至 Cloudflare Pages）；而日常單獨執行 `run_update.py` 則會同步最新後台歷史、最新 DataPack 與看板，不會觸發 D-Plan 產線。
-17. **官方後台線上預檢核、正式自動繳交與 L4 市值精算修正 (`validate_dplan_api.py`, `submit_dplan_api.py`, `order_calculator.py`)**：
-    - **Step 7 官方預檢核 (`validate_dplan_api.py`)**：於 D-Plan 組裝完成後自動上傳 `/api/submissions/dplan/validate/` 進行線上預檢核，並以易讀中文格式彙整各分組（如 `交易規則`、`警告`）之 `bad` / `warn` 項目；預設採嚴格模式，任何未通過（`bad > 0` 或 `warn > 0`）即立刻中止流程，阻擋後續繳交。
-    - **Step 8 官方正式自動繳交 (`submit_dplan_api.py`)**：僅於 Step 7 預檢核完全通過後才呼叫 `/api/submissions/dplan/` 正式送出，並嚴格驗證 `2xx` 回應、`counts.bad == 0` 與官方收據欄位（`id` / `status=received` / `stored.gcs_path`），同步顯示繳交編號與今日剩餘次數（支援 `--dry-run` 安全測試）。
-    - **L4 預估持股市值與現金修正 (`order_calculator.py`)**：修正 `calculate_orders_python()` 過去僅計算有異動決策 (`decisions`) 而遺漏續抱部位的問題，改以全量既有持股為基準更新目標股數，並以 DataPack `close_price` 補齊 L1 缺漏收盤價，確保預估股票市值、剩餘現金比率與 Active Share 完全精確。
-18. **L0 動態股票池篩選 Agent 與全產線無縫串接 (`stock_pool_screener.py`, `run_daily_dplan.py`, `generate_daily_report.py`)**：
-    - **量化初篩 ＋ `gemini-4-carbon` 補撈遺珠 ＋ 目前持股強制保留**：於 `code/L0_sources/stock_pool_screener.py` 實作 150 檔上市櫃動態股票池篩選器。透過 FinLab API 回推 35 日曆日計算 Compact Array JSON 指標（規則一近 5/10 日相對市場報酬、集保千張／<50 張／人數週變化、融資餘額與近 10 日百分位、同產業本益比百分位），先鎖定規則一強勢股，再交由 `stage-l0`（`gemini-4-carbon` + Code Execution）從未入選股中深度推理補撈遺珠，最後與當日 DataPack 帳上目前持股強制取聯集。
-    - **獨立存檔於 `data/Stock_Pool/`**：依職責分層存放獨立給下游讀取的 `stock_list_<YYYYMMDD>.json`、完整理由報告 `screening_result_<YYYYMMDD>.json`，以及子資料夾 `metrics/`、`prompts/`（無論是否 dry-run 皆留存）與 `usage/`（自動併入 `usage_history.json` 結算）。
-    - **下游與每日報告全面連動**：接入 `run_daily_dplan.py` Step 0c（緊接 `datapack_loader.py` 之後），讓 `stock_indicators.py`、`finlab_market_loader.py`、`cmoney_sentiment_crawler.py` 與 `portfolio_dashboard/builder.py` 自動讀取當日動態股票池，並於 `generate_daily_report.py` 文末自動嵌入適合人眼檢閱的「七、L0 動態股票池篩選回顧」章節（含篩選漏斗、Agent 遺珠指標表與理由、持股強制保留提醒及依產業分組之規則一名單）。
-
----
-
-## 目錄導覽 (Table of Contents)
-
-1. [系統整體架構與因果推論鏈](#一系統整體架構與因果推論鏈)
-2. [專案目錄與檔案結構](#二專案目錄與檔案結構)
-3. [資料流與目錄輸入輸出對照 (I/O)](#三資料流與目錄輸入輸出對照-io)
-4. [各階層 Agent 深度邏輯與運算規範](#四各階層-agent-深度邏輯與運算規範)
-   - [L0 資料來源與爬取層 (L0_sources)](#l0-資料來源與爬取層-l0_sources)
-   - [L1 資訊擷取層 (L1_observations)](#l1-資訊擷取層-l1_observations)
-   - [L2M 市場判斷鏈 (L2M_market_view)](#l2m-市場判斷鏈-l2m_market_view)
-   - [L2 個股推論層 (L2_inferences)](#l2-個股推論層-l2_inferences)
-   - [L3 投資組合決策層 (L3_decisions)](#l3-投資組合決策層-l3_decisions)
-   - [L4 委託執行層 (L4_orders)](#l4-委託執行層-l4_orders)
-   - [D-Plan 總組裝與全量合規校驗 (build_dplan.py)](#d-plan-總組裝與全量合規校驗-build_dplanpy)
-   - [每日決策與帳戶回顧報告 (generate_daily_report.py)](#每日決策與帳戶回顧報告-generate_daily_reportpy)
-5. [端到端每日產線入口 (run_daily_dplan.py)](#五端到端每日產線入口-run_daily_dplanpy)
-6. [Gemini 內建 Code Execution (程式碼執行) 機制](#六gemini-內建-code-execution-程式碼執行-機制)
-7. [Prompt 自動存檔與日後回溯機制](#七prompt-自動存檔與日後回溯機制)
-8. [LiteLLM 原生 19 項標準 Usage 監控與本地結算機制](#八litellm-原生-19-項標準-usage-監控與本地結算機制)
-9. [交易日期終端機互動輸入設計](#九交易日期終端機互動輸入設計)
-10. [環境建置與憑證設定](#十環境建置與憑證設定)
-11. [完整命令列操作手冊 (CLI Cheatsheet)](#十一完整命令列操作手冊-cli-cheatsheet)
-12. [投資決策與持股看板 (Portfolio Dashboard)](#十二投資決策與持股看板-portfolio-dashboard)
-13. [競賽法規檢核與重要實測注意事項](#十三競賽法規檢核與重要實測注意事項)
-
----
-
-## 一、系統整體架構與因果推論鏈
-
-本系統依據官方 D-Plan 因果引用鏈標準設計，各 Agent 階層具備嚴格的資訊邊界與上下游依賴關係：
+依據官方 **D-Plan Schema v4.3** 規範，系統強制執行「單向無循環有向無環圖（DAG）」引用驗證。任何孤兒引用、跨層跳躍、未定義欄位（`extra="forbid"`）或互斥衝突都會在組裝階段立即攔截：
 
 ```mermaid
 flowchart TD
-    subgraph Data_Inputs["外部真實資料輸入 (Step 0: L0 嚴格防漏收集)"]
-        DP["官方每日 DataPack\n(Processed / Raw)"]
-        FL["FinLab 26 檔量化寬表\n(個股 17 + 大盤 9 Compact Array JSON)"]
-        CM["CMoney 52 檔個股討論區\n(社群情緒與多空量化評分)"]
-        ETF_H["主動式 ETF 前 15 大成分股\n(同業持股快照)"]
-        ETF_S["主動式 ETF 投資理念說明\n(核心理念與因子架構)"]
-    end
-
-    subgraph L0["【L0 資料來源層】sources"]
-        S1["S1: FinLab API"]
-        S2["S2: CMoney API"]
-    end
-
-    subgraph L1["【Step 1: L1 資訊擷取層】observations"]
-        O_MKT["O1: tw_market (大盤客觀事實)"]
-        O_STK["O2..On: stock_<代碼> (52 檔個股數值事實)"]
-    end
-
-    subgraph L2M["【Step 2: L2M 市場研判核心】market_view (Code Execution)"]
-        MV["走向 regime (risk_on / neutral / risk_off)\n態度 stance (aggressive / neutral / defensive)\n姿態 posture (目標現金區間, 淨曝險意圖)"]
-    end
-
-    subgraph L2["【Step 3: L2 個股推論核心】inferences (Code Execution)"]
-        INF["I1..In: 52 檔個股深度推論\n(多維度論點、反面證據 counter_evidence、建議權重)\n由 Gemini Python 執行器驗算數值"]
-    end
-
-    subgraph L3["【Step 4: L3 決策核心】decisions (Code Execution)"]
-        DEC["decisions (BUY / ADD / TRIM / SELL_ALL)\nno_trade_decisions (續抱/維持不動)\n持股覆蓋 20~30 檔、權重精算與現金平衡"]
-    end
-
-    subgraph L4["【Step 5: L4 委託執行層】orders (Code Execution)"]
-        ORD_PY["1. Python 官方演算法算單 (千股整股，嚴禁手調)"]
-        ORD_LLM["2. Gemini Code Execution 智能審核\n(Active Share >= 15%, 現金水位, 風控覆核)"]
-    end
-
-    subgraph Assembler["【Step 6: D-Plan 總組裝與驗證器】build_dplan.py"]
-        VAL["Pydantic DPlanDocument 全量合規檢驗\n(extra='forbid', 引用鏈完整性校驗)"]
-        OUT["官方 JSON 繳交檔：\ndata/D-Paln_Output/final_dplan/D-Plan_<team_id>_<trade_date>.json"]
-    end
-
-    subgraph Validate["【Step 7: 官方線上預檢核】validate_dplan_api.py"]
-        PRECHK["POST /api/submissions/dplan/validate/\n(任一 bad / warn 即立即中止阻擋)"]
-    end
-
-    subgraph Submit["【Step 8: 官方正式自動繳交】submit_dplan_api.py"]
-        POSTSUB["POST /api/submissions/dplan/\n(驗證 HTTP 2xx 與官方收據 id / received)"]
-    end
-
-    subgraph ReviewReport["【Step 9: 真人決策回顧報告】generate_daily_report.py"]
-        REP["產出 Markdown 決策檢驗報告：\ndata/D-Paln_Output/reports/Daily_Decision_Report_<YYYYMMDD>.md\n(帳戶資訊/L2M承諾/原本部位/買賣理由/現金與區間對照)"]
-    end
-
-    DP --> S1
-    FL --> S1
-    CM --> S2
-    S1 & S2 --> L1
-    O_MKT -->|basis_refs| L2M
-    O_STK & L2M & ETF_S -->|premise_refs| L2
-    L2 & MV & DP & ETF_H -->|inference_refs| L3
-    L3 & DP & O_STK -->|decision_ref| L4
-    L0 & L1 & L2M & L2 & L3 & L4 --> Assembler
-    Assembler --> OUT
-    OUT --> Validate
-    Validate -->|全數通過| Submit
-    OUT & DP --> ReviewReport
-```
-
-### 因果引用鏈規範原則 (Causal Citation Chain)
-1. **嚴禁孤兒引用與斷鏈**：`L2M.basis_refs` 必須來自 `L1.obs_id`；`L2.premise_refs` 必須來自 `L1.obs_id`；`L3.inference_refs` 必須來自 `L2.inf_id`；`L4.decision_ref` 必須來自 `L3.decision_id`。
-2. **單向無循環**：各層僅能引用直接上層或經定義的合法來源，禁止跨層跳躍或反向引用。
-3. **無未定義額外欄位**：全數使用 Pydantic 模型驗證，設定 `extra='forbid'`，確保不會輸出任何競賽官方 Schema 未定義之自訂欄位。
-4. **全端無漏抓檢核**：資料收集各環節具備失敗拋錯阻斷機制，確保進入 L1 之前的基礎特徵完全齊備。
-
----
-
-## 二、專案目錄與檔案結構
-
-```text
-2026玉山人工智慧賽/
-├── .gitignore                                # 全專案忽略規則 (排除 .env、金鑰、Google Drive 捷徑等)
-├── README.md                                 # 專案完整說明文件 (本檔案)
-│
-├── code/                                     # 【核心程式碼與自動化產線】
-│   ├── models_config.yaml                    # LiteLLM Multi-Model 路由群組與 Fallback 設定檔
-│   ├── .env.example                          # 環境變數安全範本 (GEMINI_API_KEY, TEAM_ID, ESUN_EMAIL, ESUN_PASSWORD)
-│   ├── configs/                              # 專案環境與共用工具
-│   │   ├── settings.py                       # 環境變數 (.env) 載入、路徑常數與金鑰管理
-│   │   ├── gemini_client.py                  # LiteLLM Router 封裝 (支援串流、結構化輸出、Code Execution 與 19 項標準 Usage 統計)
-│   │   ├── date_utils.py                     # 終端機互動式日期提示、標準化 (YYYYMMDD) 與格式轉換工具
-│   │   └── json_utils.py                     # 精簡 Compact JSON 序列化工具
-│   ├── schemas/                              # 【Schema 定義與檢驗層】
-│   │   ├── dplan_models.py                   # 依 D-Plan Schema v4.3 建立的嚴格 Pydantic 資料模型
-│   │   └── verify_dplan.ipynb                # D-Plan JSON 格式校驗、斷鏈檢測與測試 Notebook
-│   ├── L0_sources/                           # 【L0 資料來源與爬取層】(嚴格防漏，任一失敗即報錯中斷)
-│   │   ├── backend_history_loader.py         # 透過 OAuth2 SSO 自動抓取競賽後台歷史數據 (輸出 backend_all_history.json)
-│   │   ├── datapack_loader.py                # 讀取官方每日 DataPack JSON (取現金、庫存、NAV、合規狀態)
-│   │   ├── stock_pool_screener.py            # 150 檔動態股票池篩選 (規則一 + stage-l0 Agent 補撈 + 目前持股強制保留)
-│   │   ├── finlab_market_loader.py           # 透過 FinLab API 計算動態股票池與大盤指標並輸出為 Compact Array JSON
-│   │   ├── finlab_active_etf_loader.py       # 下載主動式 ETF 前 15 大成分股快照與權重
-│   │   ├── cmoney_sentiment_crawler.py       # 爬取 CMoney 討論區動態股票池個股情緒與多空量化分數
-│   │   ├── market_indicators.py              # 大盤多維度量化指標計算 (均線、報酬、回撤、融資、多空家數差)
-│   │   ├── stock_indicators.py               # 動態股票池個股多維度量化指標計算 (ROE、營收動能、量價比、法人買賣超)
-│   │   └── esun_trial_loader.ipynb           # 玉山證券行情 Web API 盤前試撮資料快照測試
-│   ├── L1_observations/                      # 【L1 資訊擷取層】
-│   │   └── fact_extractor.py                 # 提取客觀事實陳述，解析 Compact Array JSON，呼叫 Gemini 並記錄 Prompt 與 Usage
-│   ├── L2M_market_view/                      # 【L2M 市場研判核心】
-│   │   └── market_view_agent.py              # 研判市場走勢 (regime)、操作態度 (stance) 與目標水位 (posture)，支援 Code Execution 並存檔 Prompt
-│   ├── L2_inferences/                        # 【L2 個股推論核心】
-│   │   └── stock_inference_agent.py          # 結合 52 檔標的與 ETF 理念產出深入推論與反思 (預設啟用 Code Execution)
-│   ├── L3_decisions/                         # 【L3 投資組合決策層】
-│   │   └── portfolio_decision_agent.py       # 執行持股全覆蓋分配 (decisions + no_trade)，控管 20~30 檔 (預設啟用 Code Execution)
-│   ├── L4_orders/                            # 【L4 委託執行層】
-│   │   └── order_calculator.py               # 官方千股整股演算法試算 + Active Share 檢驗 + Gemini 智能覆核 (預設啟用 Code Execution)
-│   ├── portfolio_dashboard/                  # 【即時投資決策與持股看板】
-│   │   ├── tracker.py                        # 成本與損益計算引擎 (優先解析 backend_all_history.json 與 Datapack/Raw/*.json)
-│   │   ├── market_api.py                     # 玉山行情 API 模組 (取得 150 檔標的最新報價與歷史走勢)
-│   │   ├── builder.py                        # 前端單頁應用 HTML 產生器 (富果 Fugle 佈局 + iOS 毛玻璃)
-│   │   ├── run_update.py                     # 每日一鍵執行調度腳本 (支援 --push 自動發布至 Cloudflare Pages)
-│   │   ├── dist/index.html                   # 最終產出之單頁完整應用 (SPA)
-│   │   └── README.md                         # 看板使用與 Cloudflare Pages 部署說明
-│   ├── etf_strategy/                         # 主動式 ETF 投資理念與選股因子研究
-│   ├── convert_slack_qa/                     # 官方競賽 Slack 諮詢問答轉換與整理工具
-│   ├── archive/                              # 舊版腳本與歷史封存檔案
-│   ├── build_dplan.py                        # 【D-Plan 總組裝與驗證器】全層合規校驗，輸出至 final_dplan
-│   ├── validate_dplan_api.py                 # 【官方線上預檢核】上傳 /validate/ 嚴格檢查 bad/warn，未通過即阻擋
-│   ├── submit_dplan_api.py                   # 【官方正式繳交】上傳 /dplan/ 正式送出並驗證收據與剩餘次數
-│   ├── generate_daily_report.py              # 【每日決策與帳戶回顧報告】Python 自動生成高品質 Markdown 審視報告
-│   ├── run_daily_dplan.py                    # 【每日自動化端到端主產線】排程/一鍵循序執行 Step 0 ~ Step 10
-│   ├── requirements.txt                      # 專案相依 Python 套件清單
-│   ├── credentials.json                      # [本地] 舊版憑證 (已由 .gitignore 忽略保護)
-│   └── .env                                  # [本地] 環境變數與 API 金鑰 (已由 .gitignore 忽略保護)
-│
-├── data/                                     # 【資料輸入與各階段生成產物】
-│   ├── Datapack/                             # 官方每日 DataPack 原始檔 (Raw/) 與解析結果 (Processed/)
-│   ├── Stock_Pool/                           # L0 動態股票池清單 (stock_list_*.json)、篩選報告 (screening_result_*.json) 與 metrics/、prompts/、usage/
-│   ├── backend_reports/                      # 玉山競賽後台歷史數據 JSON (backend_all_history.json) 與備援 HTML 快照
-│   ├── 大盤/, 基本面/, 技術面/, 籌碼面/       # FinLab 26 檔指標 Compact Array JSON 快取
-│   ├── CMoney_Sentiment/                     # CMoney 討論區情緒爬取結果
-│   ├── Active_ETF_Holdings/                  # 主動式 ETF 前 15 大持股標竿快照
-│   ├── ETF_Strategy/                         # 主動式 ETF 投資理念 Markdown 文件
-│   └── D-Paln_Output/                        # 各 Agent 產出 JSON、Prompt、Usage 與最終 D-Plan
-│
-└── docs/                                     # 【競賽參考文件、架構圖與研究資料】
-    ├── 官方參考文件/                          # 官方競賽辦法、D-Plan Schema v4.3、DataPack 規格書與範例
-    ├── 股票池/                                # 候選股票池篩選紀錄與歷次清單 (40/58/59/62/52 檔)
-    ├── 架構圖/                                # Multi-Agent 系統架構圖 (.drawio / .png)
-    ├── API說明/                               # 相關 API 參考文件
-    ├── slackdump/                            # 官方 Slack 問答備份壓縮檔
-    ├── 20261112 個股指標_修改_新增.docx       # 個股指標規劃與調整紀錄文件
-    └── 課程完成證明截圖-Team_11402.png         # 隊伍課程完成證明截圖
+    L0["L0 Sources (S1..Sn)\nFinLab API / CMoney API / 官方來源"] -->|"source_ref"| L1["L1 Observations (O1..On)\nO1: tw_market (大盤事實)\nO2..On: stock_XXXX (個股事實)"]
+    L1 -->|"basis_refs (大盤 O1)"| L2M["L2M Market View\nregime / stance / target_cash_pct_range\nnet_exposure_intent"]
+    L1 -->|"premise_refs (個股 + 大盤)"| L2["L2 Inferences (I1..In, 上限 60 筆)\nlogic + conclusion + counter_evidence"]
+    L2M -->|"總體姿態與現金區間約束"| L2
+    L2 -->|"inference_refs"| L3D["L3 Decisions (D1..Dn)\nBUY / ADD / TRIM / SELL_ALL\n+ funding_for 資金調度指涉"]
+    L2 -->|"reason_refs"| L3N["L3 No-Trade Decisions\n既有持股續抱 (與 Decisions 互斥)"]
+    L2M -->|"現金區間與淨曝險一致性"| L3D
+    L3D -->|"decision_ref (僅異動單)"| L4["L4 Orders (orders)\nBUY / SELL 千股整股委託\n+ derivation_detail + review_notes"]
+    L3D -.->|"100% 覆蓋昨日庫存"| COV["互斥且完備覆蓋\n昨日持股 = Decisions ∪ NoTrade"]
+    L3N -.->|"100% 覆蓋昨日庫存"| COV
 ```
 
 ---
 
-## 三、資料流與目錄輸入輸出對照 (I/O)
+## 4. AI 應用工程 8 大技術亮點
 
-所有生成資料與中間產物統一維護於專案根目錄的 `data/` 目錄中：
+| # | 工程痛點 | 系統設計解法 | 核心程式碼實作與效益 |
+| :-: | :--- | :--- | :--- |
+| **1** | **大模型高成本與單點失效風險** | **LiteLLM Multi-Model 動態路由與自動 Fallback** | 透過 `code/models_config.yaml` 依任務複雜度分流：`stage-l1` 採輕快低價的 `gemini-3.8-flash`（Fallback: `gemini-3.6-flash`）；`stage-l0/l2m/l2/l3/l4` 採高階推理 `gemini-4-carbon`（Fallback: `gemini-4-argon`），配置 `num_retries=2` 與 `cooldown_time=30` 實現零中斷降級。 |
+| **2** | **LLM 量化算術與權重配置幻覺** | **Gemini 原生 Code Execution 沙盒 + 底層原始碼攔截 Hook** | 在 L0、L2M、L2、L3、L4 全數注入 `tools=[{"code_execution": {}}]`，模型主動撰寫 Python 驗算權重加總、手續費與現金水位；並在 `gemini_client.py` 攔截 LiteLLM `VertexGeminiConfig` 與 `ModelResponseIterator`，於串流/非串流模式下皆完整擷取 `executable_code` 存入稽核紀錄。 |
+| **3** | **Structured Outputs FSM 狀態爆炸與長輸出截斷** | **雙層 Pydantic 模型 + 三層 JSON 容錯解析鏈** | 為每個階段分離 `Draft`（輕量無 `Dict[str, float]` 與繁重正則，避免解碼器 FSM 狀態爆炸）與 `Final`（`extra="forbid"` 嚴格驗證與 DAG 引用檢查）；並整合 `model_validate_json` ➔ `json.loads` ➔ `json_repair>=0.64.9` 三層容錯。 |
+| **4** | **L1 事實擷取漏指標或抄錯浮點數** | **Deterministic Grounding（原始數值程式覆寫機制）** | `fact_extractor.py` 僅要求 LLM 在 `values` 填入 `statement` 提及的關鍵數值以省輸出 Token；後處理 `finalize_stock_observations()` 再以程式端保留的精確原始數據與 `source_ref` **100% 覆寫補齊**所有指標，徹底杜絕數值失真。 |
+| **5** | **150 檔多期資料 Token 膨脹與財報時差缺值** | **Compact Array JSON + 動態非空值遞補演算法** | 自訂 `to_compact_json()` 將 `[value, "YYYY-MM-DD"]` 壓為單行大幅降低 Token；`stock_indicators.py` 對 `roe_latest`、`revenue_yoy_latest`、`revenue_mom_latest` 逐股回溯最新非空季報/月營收並保留各自時間戳，解決財報公告時差。 |
+| **6** | **固定股票池僵化與遺漏轉機股** | **三階段 150 檔動態股票池篩選引擎** | `stock_pool_screener.py` 每日從 150 檔母體出發：**Rule 1**（5D/10D 相對市場報酬雙正直接鎖定）＋ **`stage-l0` LLM**（依集保千張大戶、融資水位與同業本益比百分位補撈遺珠）＋ **DataPack 目前持股強制聯集**。 |
+| **7** | **人工登入複製 Token 易過期中斷** | **全自動認證擷取 + 雙重官方 API 閘門** | `backend_history_loader.py` 與 `datapack_loader.py` 透過 OAuth2 SSO 直連後台並驗證資料就緒（`missing=[]`）；`cmoney_sentiment_crawler.py` 解析 SSR HTML 自動萃取 24 小時訪客 JWT（含 `exp` 檢查與 `401` 重抓重試）；Step 7/8 串接官方 `/validate/`（`bad`/`warn` 零容忍阻斷）與 `/dplan/` 收據確認。 |
+| **8** | **多階段除錯困難與成本不透明** | **無條件 Prompt 存檔 + 19 項原生 Usage FinOps 監控** | 無論是否 `--dry-run`，所有 LLM 階段於呼叫前強制將完整 Prompt 寫入磁碟；LiteLLM 全域 `success/failure_callback` 自動收集 19 項標準 Token、Cached Token、Reasoning Token、Cost 與 Code Execution 次數，自動匯總至儀表板。 |
 
-| 階層 / 程式模組 | 主要輸入資料來源路徑 (Input) | 主要產出檔案路徑 (Output) | Prompt 留存與 Usage 統計 |
-| :--- | :--- | :--- | :--- |
-| **L0 Sources**<br>`backend_history_loader.py` | 玉山競賽後台 OAuth2 SSO + API (`dashboard` / `portfolio` / `trades`) | 官方後台歷史 JSON：<br>`data/backend_reports/backend_all_history.json` | *(增量更新 + 重抓最新 1 日；`--full` 全量重建)* |
-| **L0 Sources**<br>`datapack_loader.py` | 玉山競賽後台 `/api/data-pack/` (自動下載最新)、<br>本地 `data/Datapack/Raw/DataPack_*_YYYY-MM-DD.json`、<br>後台成交紀錄：`data/backend_reports/backend_all_history.json` | 原始 JSON：`data/Datapack/Raw/DataPack_*.json`<br>轉換後 Markdown：`data/Datapack/Processed/DataPack_Processed_YYYYMMDD.md` | *(支援 `--no-fetch` 離線模式)* |
-| **L0 Sources**<br>`stock_pool_screener.py`<br>*(stage-l0, 預設啟用 Code Execution)* | FinLab API (150 檔價量／集保／融資／PE／產業)、<br>當日 `data/Datapack/Raw/DataPack_*.json` (目前持股) | 獨立下游清單：`data/Stock_Pool/stock_list_YYYYMMDD.json`<br>完整篩選報告：`data/Stock_Pool/screening_result_YYYYMMDD.json`<br>150 檔指標快照：`data/Stock_Pool/metrics/stock_pool_metrics_YYYYMMDD.json` | **Prompt**:<br>`data/Stock_Pool/prompts/l0_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`data/Stock_Pool/usage/l0_usage_YYYYMMDD.json` |
-| **L0 Sources**<br>`finlab_market_loader.py`<br>`cmoney_sentiment_crawler.py`<br>`finlab_active_etf_loader.py` | `data/Stock_Pool/stock_list_YYYYMMDD.json` (動態股票池)、FinLab API、CMoney API、主動 ETF 公開資訊 | Compact Array JSON 快取：<br>`data/大盤/*.json`, `data/技術面/*.json`,<br>`data/基本面/*.json`, `data/籌碼面/*.json`,<br>`data/CMoney_Sentiment/`, `data/Active_ETF_Holdings/`,<br>`data/D-Paln_Output/l0_sources/` | *(純資料下載與向量計算，失敗立即阻斷)* |
-| **Step 1: L1 Observations**<br>`fact_extractor.py` | `data/大盤/*.json`, `data/技術面/*.json`, `data/基本面/*.json`, `data/籌碼面/*.json`, `data/CMoney_Sentiment/` | `data/D-Paln_Output/l1_observations/`<br>👉 `l1_observations_YYYYMMDD.json` | **Prompt**:<br>`l1_observations_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l1_usage_YYYYMMDD.json` |
-| **Step 2: L2M Market View**<br>`market_view_agent.py`<br>*(預設啟用 Code Execution)* | `data/D-Paln_Output/l1_observations/` (大盤觀察),<br>`data/Datapack/Processed/` (帳戶快照) | `data/D-Paln_Output/l2m_market_view/`<br>👉 `l2m_market_view_YYYYMMDD.json` | **Prompt**:<br>`l2m_market_view_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l2m_usage_YYYYMMDD.json` |
-| **Step 3: L2 Inferences**<br>`stock_inference_agent.py` | `data/D-Paln_Output/l1_observations/` (52 檔個股與大盤),<br>`data/D-Paln_Output/l2m_market_view/`,<br>`data/ETF_Strategy/etf_strategy.md`,<br>`data/Datapack/Processed/` | `data/D-Paln_Output/l2_inferences/`<br>👉 `l2_inferences_YYYYMMDD.json` | **Prompt**:<br>`l2_inferences_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l2_usage_YYYYMMDD.json`<br>*(預設啟用 Code Execution)* |
-| **Step 4: L3 Decisions**<br>`portfolio_decision_agent.py` | `data/D-Paln_Output/l2_inferences/`,<br>`data/D-Paln_Output/l2m_market_view/`,<br>`data/Datapack/Processed/` (昨日持股明細),<br>`data/Active_ETF_Holdings/` (前 15 大標竿) | `data/D-Paln_Output/l3_decisions/`<br>👉 `l3_decisions_YYYYMMDD.json` | **Prompt**:<br>`l3_decisions_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l3_usage_YYYYMMDD.json`<br>*(預設啟用 Code Execution)* |
-| **Step 5: L4 Orders**<br>`order_calculator.py` | `data/D-Paln_Output/l3_decisions/`,<br>`data/Datapack/Processed/` (NAV 與現有持股),<br>`data/D-Paln_Output/l1_observations/` (收盤價),<br>`data/Active_ETF_Holdings/` | `data/D-Paln_Output/l4_orders/`<br>👉 `l4_orders_YYYYMMDD.json`<br>👉 `l4_orders_python_YYYYMMDD.json` | **Prompt**:<br>`l4_orders_prompt_YYYYMMDD.txt`<br>**Usage**:<br>`usage/l4_usage_YYYYMMDD.json`<br>*(預設啟用 Code Execution)* |
-| **Step 6: D-Plan Assembler**<br>`build_dplan.py` | 讀入上述所有子目錄中的最新 JSON | `data/D-Paln_Output/final_dplan/`<br>👉 **`D-Plan_<team_id>_<trade_date>.json`** | *(總裝配器，校驗引用鏈並注入 metadata)* |
-| **Step 7: Official Pre-Validation**<br>`validate_dplan_api.py` | 最終 `D-Plan_<team_id>_<trade_date>.json` | 終端機精簡中文檢核摘要 | *(呼叫官方 `/api/submissions/dplan/validate/`；有 `bad`/`warn` 即中斷阻擋)* |
-| **Step 8: Official Submission**<br>`submit_dplan_api.py` | 最終 `D-Plan_<team_id>_<trade_date>.json` | 官方後台收據（`id`、`status=received`、`attempts_remaining`） | *(僅於 Step 7 通過後送出 `/api/submissions/dplan/`；支援 `--dry-run`)* |
-| **Step 9: Review Report**<br>`generate_daily_report.py` | 最終 `D-Plan_*.json`、原始 `DataPack_*.json`、L0 股票池 `screening_result_*.json` | `data/D-Paln_Output/reports/`<br>👉 **`Daily_Decision_Report_<YYYYMMDD>.md`** | *(由 Python 產出真人檢視、風控對照與 L0 股票池篩選回顧報告)* |
-| **Step 10 / 獨立執行: Portfolio Dashboard**<br>`run_update.py` | `data/backend_reports/backend_all_history.json` (後台歷史 JSON),<br>`data/Datapack/Raw/`, 玉山行情 SDK | `code/portfolio_dashboard/dist/`<br>👉 **`index.html`** (單頁看板應用) | *(由 `run_daily_dplan.py` Step 10 自動連動，或單獨執行；支援 `--skip-backend-fetch` 與 `--push`)* |
+### 補充技術細節：LiteLLM 19 項標準 Usage 監控欄位
 
----
+系統在 `code/configs/gemini_client.py` 註冊全域 Callback，每次呼叫自動記錄並結算至 `code/portfolio_dashboard/usage_history.json` 與 `data/D-Paln_Output/usage_history.json`：
 
-## 四、各階層 Agent 深度邏輯與運算規範
-
-### L0 資料來源與爬取層 (`L0_sources`)
-- **嚴格防漏機制**：資料收集是後續推論基礎，各模組皆設有嚴格驗證。**任何一項下載或爬取失敗，立即拋出 `RuntimeError` 並中斷整個產線**，絕不容許缺漏資料進入模型。
-- **`backend_history_loader.py`**：透過官方 OAuth2 SSO 自動登入玉山競賽後台，以「增量 + 最新日覆核」模式抓取每日排名、投組績效與完整分頁成交明細（4 位小數成交價、手續費與證交稅），寫入 `data/backend_reports/backend_all_history.json`。
-- **`datapack_loader.py`**：透過 OAuth2 SSO 自動從後台 `/api/data-pack/` 下載最新 DataPack JSON（支援 `--no-fetch` 離線模式與歷史日退回），並結合 `backend_all_history.json` 計算持倉成本與移動停利追蹤，輸出 `DataPack_Processed_YYYYMMDD.md`。
-- **`stock_pool_screener.py`**：L0 動態股票池篩選器（`stage-l0` -> `gemini-4-carbon`，預設啟用 Code Execution）。從 150 檔上市櫃母體計算近 5/10 日相對市場報酬（規則一）、集保籌碼週變化、融資餘額與近 10 日百分位、同產業本益比百分位（Compact Array JSON）；規則一入選股直接鎖定，再由 LLM Agent 從未入選且未持有之標的中寬鬆補撈遺珠，最後強制聯集當日 DataPack 目前持股，輸出獨立 `data/Stock_Pool/stock_list_YYYYMMDD.json` 供下游模組共用。
-- **`cmoney_sentiment_crawler.py`**：自動讀取當日動態股票池（`stock_list_YYYYMMDD.json`），透過解析 CMoney SSR 網頁原始碼自動萃取 24 小時訪客 JWT Token（免登入、無需手動複製憑證，並內建 JWT `exp` 效期檢查與 401 自動重取重試機制），爬取討論區個股多空評分與社群熱度；**必須全數標的抓取成功**，若有失敗檔數立即報錯中斷。
-- **`finlab_market_loader.py`**：自動讀取當日動態股票池並同步至 `stock_indicators.py`，透過 FinLab API 計算市場與個股量化指標，輸出為 Compact Array JSON 格式儲存；若有任何指標計算失敗即終止進程。
-- **`stock_indicators.py` 基本面動態遞補演算法**：
-  - 三大指標（`roe_latest`、`revenue_yoy_latest`、`revenue_mom_latest`）採個別股票動態回溯最新非空值（Not-NaN）：
-    - ROE：最新公布 Q3 則取 Q3，未公布則向前遞補取 Q2。
-    - 營收年增/月增率：最新公布當月營收則取當月，未公布則向前遞補取前一月。
-  - 直接回傳 Compact Array JSON 格式，標註真實公告時間點，避免因公司公布時差產生空值或鎖定固定歷史日期的缺陷。
-- **`finlab_active_etf_loader.py`**：下載同業主動式 ETF 前 15 大成分股快照與權重，供 Active Share 監控使用。
-
-### L1 資訊擷取層 (`L1_observations/fact_extractor.py`)
-- **職責**：將 raw data 提煉為客觀事實陳述，**嚴禁推論與預測**。
-- **精簡 Compact Array JSON 整合**：直接讀取 `data/大盤/`, `data/基本面/`, `data/技術面/`, `data/籌碼面/` 下的 JSON 檔案，以 `[數值, 日期/季度]` 格式注入 Prompt，顯著減少 Token 佔用並提升解析速度。
-- **大盤事實 (`tw_market`)**：恰好生成 1 筆大盤關鍵數據（指數點位、20MA/60MA、報酬率、最大回撤、法人買賣超、多空排列家數差）。
-- **個股事實 (`stock_<ticker>`)**：針對 52 檔候選池逐檔生成 1 筆客觀事實，提取關鍵數值後由系統以資料原值完整補齊 `values` 字典。
-
-### L2M 市場判斷鏈 (`L2M_market_view/market_view_agent.py`)
-- **走向 (`regime`)**：`risk_on` / `neutral` / `risk_off`。
-- **態度 (`stance`)**：`aggressive` / `neutral` / `defensive`。
-- **姿態 (`posture`)**：
-  - `target_cash_pct_range`：目標現金比例區間承諾（如 `[0.05, 0.15]`）。
-  - `net_exposure_intent`：淨曝險意圖（`increase` 淨買超 / `hold` 維持 / `reduce` 淨賣超）。首日全現金建倉必須為 `increase`。
-- **引用鏈**：`basis_refs` 必須引用 L1 的大盤事實 ID (`O1`)。
-
-### L2 個股推論層 (`L2_inferences/stock_inference_agent.py`)
-- **兩階段分析架構 (`CUSTOM_STOCK_ANALYSIS_LOGIC`)**：
-  - **第一階段（個股深入分析）**：
-    1. 企業營運與成長（最新 ROE 獲利品質、月營收年增率與月增率成長動能）。
-    2. 價格趨勢與相對強弱（5日/20日報酬、20日相對大盤超額報酬 excess_return_20d、均線斜率與乖離、KD/MACD轉折動態、布林通道波動帶寬）。
-    3. 交易活躍度與法人籌碼（量價配合關係、外資與投信近5日買賣超強度）。
-    4. 情緒與討論風向（CMoney 討論度與多空評分、市場預期落差分析）。
-    5. 個股綜合評估與反向證據（必須於 `counter_evidence` 詳列反面證據思考與不確定性）。
-  - **第二階段（選股與組合決策）**：秉持主動式 ETF 理念進行客觀取捨，整合全維度支持與不利依據。
-- **Gemini Code Execution 強化**：預設啟用 Gemini 內建 Python 執行器，由模型自主撰寫程式碼驗算數值與權重區間，確保數值推論的一致性與邏輯嚴謹性。
-- **引用鏈**：`premise_refs` 必須引用 L1 的個股與大盤事實。
-
-### L3 投資組合決策層 (`L3_decisions/portfolio_decision_agent.py`)
-- **動作分類**：`BUY`（新建倉）、`ADD`（加碼）、`TRIM`（減碼）、`SELL_ALL`（全出清），不調整者分配至 `no_trade_decisions`（續抱）。
-- **四大硬限制**：
-  1. **昨日持股全覆蓋**：昨日持股必須 100% 恰好落在 decisions 或 no_trade_decisions 之一。
-  2. **持股檔數限制**：非 0 權重持股檔數必須嚴格落於 **20 至 30 檔**。
-  3. **個股權重上限**：一般股 $\le 10\%$；台積電 (2330) $\le 25\%$。
-  4. **現金平衡**：預估現金必須落於 L2M 宣告之區間內。
-- **Gemini Code Execution 強化**：預設啟用 Python 程式碼執行器，在生成決策前由模型自行編寫程式計算所有目標持股權重總和、剩餘現金比與檔數邊界，徹底防止配置超出 100% 或違反檔數規定。
-
-### L4 委託執行層 (`L4_orders/order_calculator.py`)
-- **Python 機械算單 (千股整股，嚴禁手調)**：
-  $$\text{目標股數} = \left\lfloor \frac{\text{目標權重} \times \text{前日淨值}}{\text{前日收盤價} \times 1000} \right\rfloor \times 1000$$
-  $$\text{委託股數} = \text{目標股數} - \text{目前持有股數}$$
-- **Active Share 精算**：與主動式 ETF 標竿比對，確保主動性指標 $\ge 15\%$。
-- **Gemini Code Execution 智能覆核**：針對 Active Share、取整偏離、剩餘現金與超賣風險進行雙重審視，透過執行驗算確保風控合規。
-
-### D-Plan 總組裝與全量合規校驗 (`build_dplan.py`)
-- **組裝元資料**：自動注入 `schema_version: "4.3"`, `team_id`, `trade_date`, 以及 `agent_metadata` (含 git commit hash 與執行時間戳)。
-- **Pydantic 嚴格檢驗**：執行完整反向因果鏈與格式校驗 (`extra='forbid'`)，產出官方最終提交檔：
-  `data/D-Paln_Output/final_dplan/D-Plan_<team_id>_<trade_date>.json`。
-
-### 每日決策與帳戶回顧報告 (`generate_daily_report.py`)
-- **目的**：提供真人經理人於自動化產線執行完畢後，快速進行全面覆核與風控確認。
-- **核心章節**：
-  1. **官方帳戶現況快照**：可交易淨值 (NAV)、現有現金、現金比、持股檔數、累計違規狀態。
-  2. **L2M 大盤分析與承諾**：Regime、Stance、淨曝險意圖、**目標現金承諾區間**、推論邏輯與反向風險提示。
-  3. **原有持股部位明細 (權重由高至低排序)**：排名、股票代號、股數、張數、昨日市價、現值、權重。
-  4. **今日部位增減明細與決策理由**：列出每筆 BUY / SELL 之委託張數、預估金額、目標權重，以及**為什麼增減部位的具體決策理由**；列出續抱 (HOLD) 清單。
-  5. **財務試算與 L2M 承諾對照檢驗**：
-     - 買進總額 vs 賣出總額 ➔ **淨現金收支 (淨花費 / 淨套現)**。
-     - **執行後預估剩餘現金**與**預估現金比例**。
-     - **L2M 承諾對照**：預估現金比是否落入目標區間 (🟢 PASS / 🔴 FAIL)。
-     - **淨曝險意圖檢驗**：承諾 increase / hold / reduce 與實際淨資金流向是否一致。
-     - **持股檔數檢驗**：預估持股檔數是否符合 20 ~ 30 檔限制。
-  6. **投資經理人覆核結論**：統整全量合規判定。
-  7. **L0 動態股票池篩選回顧**（若當日存在 `data/Stock_Pool/screening_result_<YYYYMMDD>.json` 時自動嵌入）：以人讀版呈現篩選漏斗與大盤基準、Agent 盤勢結構總評、Agent 補撈遺珠精簡指標總覽表與逐檔理由、目前持股強制保留清單，以及依產業族群分組之規則一強勢名單（標示 `★` 目前持股）。
+- **時間與路由識別 (9 項)**：`timestamp`, `date`, `provider`, `model`, `model_group`, `stage`, `status`, `finish_reason`, `duration_seconds`
+- **Token 與成本精算 (7 項)**：`prompt_tokens`, `completion_tokens`, `total_tokens`, `cached_tokens`, `tool_use_tokens`, `reasoning_tokens`, `response_cost`
+- **Code Execution 稽核 (3 項)**：`code_execution_used`, `code_execution_call_count`, `executed_codes`
 
 ---
 
-## 五、端到端每日產線入口 (`run_daily_dplan.py`)
+## 5. 各階層 Agent 運作邏輯與端到端資料流走查
 
-`run_daily_dplan.py` 是每日自動化產線的核心調度器，完整串接 Step 0 到 Step 10：
+### 5.1 各階層核心職責與邏輯設計
 
-```text
-Step 0: L0 多源資料收集 (backend_history -> datapack -> stock_pool -> cmoney -> finlab_market -> finlab_active_etf，任一失敗即報錯中斷)
-Step 1: L1 事實提取 (fact_extractor.py)
-Step 2: L2M 市場整體判斷 (market_view_agent.py, 啟用 Code Execution)
-Step 3: L2 個股推論 (stock_inference_agent.py, 啟用 Code Execution)
-Step 4: L3 投資組合配置決策 (portfolio_decision_agent.py, 啟用 Code Execution)
-Step 5: L4 委託單計算與智能覆核 (order_calculator.py, 啟用 Code Execution)
-Step 6: D-Plan 總組裝與全量合規校驗 (build_dplan.py) -> 產出 D-Plan_<team_id>_<trade_date>.json
-Step 7: 官方後台線上預檢核 (validate_dplan_api.py) -> 任一 bad / warn 即立即中止，阻擋後續繳交
-Step 8: 官方後台正式繳交 (submit_dplan_api.py) -> 僅於預檢核通過後送出並驗證收據成功
-Step 9: 每日投資決策與投資組合回顧報告生成 (generate_daily_report.py) -> 產出 Markdown 報告供真人回顧
-Step 10: 結算 LiteLLM Usage 並同步更新 Portfolio Dashboard (portfolio_dashboard/run_update.py --skip-backend-fetch)
+| 階段 | 對應腳本與路由 | 核心運作邏輯與硬性約束 |
+| :--- | :--- | :--- |
+| **Step 0**<br>L0 資料收集與動態股票池 | `L0_sources/*.py`<br>*(0c 路由 `stage-l0`)* | **嚴格防漏中斷**：任一模組抓取失敗即拋出 `RuntimeError` 中止產線。<br>依序同步後台歷史 (`0a`) ➔ 下載並驗證 DataPack 就緒、結合後台 4 位小數成交價計算持倉移動停利追蹤 (`0b`) ➔ 執行 150 檔動態股票池篩選 (`0c`) ➔ 依動態池抓取 CMoney 討論情緒 (`0d`)、計算 FinLab 45 項指標 (`0e`) 與同業主動式 ETF 前 15 大持股 (`0f`)。 |
+| **Step 1**<br>L1 客觀事實擷取 | `fact_extractor.py`<br>*(`stage-l1`: `gemini-3.8-flash`)* | **純客觀陳述，嚴禁推論或預測**。<br>讀入 `data/大盤/`、`技術面/`、`基本面/`、`籌碼面/`、`CMoney_Sentiment/` 中嚴格吻合目標日期 `_YYYYMMDD` 的檔案（有 `.json` 優先讀 `.json`），跨資料夾依 4 碼代號整合為 Compact Array JSON 注入 Prompt。產出 1 筆 `tw_market` (`O1`) 與每檔標的恰好 1 筆 `stock_<代碼>` (`O2..On`)，並由程式端以原始數值覆寫 `values` 與 `source_ref`。 |
+| **Step 2**<br>L2M 市場研判鏈 | `market_view_agent.py`<br>*(`stage-l2m` + Code Execution)* | 引用 `O1` 評估八大總體構面：均線乖離與生命線動能、櫃買 OTC vs 加權強弱、法人買賣超分歧、全市場多空排列家數差與融資槓桿、產業 RS 輪動、現有部位風險、賽期進度與主動現金防禦。<br>輸出 `regime` (`risk_on`/`neutral`/`risk_off`)、`stance` (`aggressive`/`neutral`/`defensive`)、`posture`（`target_cash_pct_range` 與 `net_exposure_intent`）及必檢 `counter_evidence`。 |
+| **Step 3**<br>L2 個股推論核心 | `stock_inference_agent.py`<br>*(`stage-l2` + Code Execution)* | 採**兩階段分析架構**：<br>**階段一（個股深入分析）**：交叉比對企業品質 (ROE/營收)、技術結構 (均線/KD/MACD/布林/ADX)、量價籌碼、CMoney 情緒落差，以及既有持股移動停利狀態（若 `peak_pnl_pct >= +10%` 且 `dd_from_peak_pct <= -4%` 主動規劃鎖利）。<br>**階段二（選股與組合決策）**：考量來回約 $0.585\%$ 摩擦成本與賽期剩餘天數，規劃 20～30 檔目標權重並撰寫反面證據（上限 60 筆推論）。 |
+| **Step 4**<br>L3 投資組合決策 | `portfolio_decision_agent.py`<br>*(`stage-l3` + Code Execution)* | 產出 `decisions`（`BUY` / `ADD` / `TRIM` / `SELL_ALL`）與 `no_trade_decisions`（續抱）。<br>強制執行：**昨日持股 100% 互斥覆蓋**、**總持股嚴格落於 20～30 檔**、**個股權重上限**（一般 $\le 10\%$、2330 $\le 25\%$）、**L2M `hold` 2% NAV 淨買賣容差**、**真實資金缺口檢查（`funding_for`）**與 **Active Share $\ge 15\%$**。 |
+| **Step 5**<br>L4 委託單與覆核 | `order_calculator.py`<br>*(`stage-l4` + Code Execution)* | **階段一（Python 機械算單）**：依官方千股整股向下取整公式計算 `target_shares` 與委託股數，自動產出 `derivation_detail` 並精算執行後現金比與 Active Share。<br>**階段二（Gemini 覆核）**：由 LLM + Code Execution 覆核 Active Share $\ge 15\%$、無超賣、現金落於 L2M 區間與格式規範，產出最終 `orders` 與 `review_notes`。 |
+| **Step 6~9**<br>組裝、預檢核、繳交與報告 | `build_dplan.py`<br>`validate_dplan_api.py`<br>`submit_dplan_api.py`<br>`generate_daily_report.py` | **Step 6**：注入 `agent_metadata`（含 Git commit hash）並通過 Pydantic `DPlanDocument` (`extra="forbid"`) 全圖驗證。<br>**Step 7**：上傳官方 `/api/submissions/dplan/validate/`，預設採零容忍模式（任何 `bad > 0` 或 `warn > 0` 立即中止）。<br>**Step 8**：預檢核通過後正式 POST `/api/submissions/dplan/` 並驗證官方收據欄位。<br>**Step 9**：產出含 7 大章節的 Markdown 審視報告（含 L0 動態股票池篩選回顧）。 |
+
+---
+
+### 5.2 端到端資料流走查：一筆決策如何誕生？（以 `2330` 為例）
+
+以下展示單一個股從 **L0 原始指標 ➔ L1 事實 ➔ L2M 總體約束 ➔ L2 推論 ➔ L3 決策 ➔ L4 委託單** 的真實資料契約演變（已精簡部分輔助欄位）：
+
+```jsonc
+// 1. [L0 輸出] Compact Array JSON (節省 Token 且保留各異質資料源真實時間戳)
+{
+  "_format": "[value, date]",
+  "2330": {
+    "roe_latest": [32.45, "2026-Q3"],
+    "revenue_yoy_latest": [29.8, "2026-10"],
+    "close_latest": [1085, "2026-11-23"],
+    "excess_return_5d": [2.35, "2026-11-23"],
+    "foreign_net_buy_intensity_5d": [8.42, "2026-11-23"],
+    "cmoney_sentiment_情緒分數": [68.4, "2026-11-23"]
+  }
+}
+
+// 2. [L1 輸出] 客觀事實 (O2) — LLM 撰寫純客觀陳述，程式端以原始數值 100% 覆寫補齊 values
+{
+  "obs_id": "O2",
+  "source_ref": ["S1", "S2"],
+  "topic": "stock_2330",
+  "statement": "台積電 (2330) 收盤價 1085 元，近 5 日相對大盤超額報酬 +2.35pp，外資近 5 日買超強度 +8.42%，最新季 ROE 為 32.45%，CMoney 情緒分數 68.4。",
+  "values": { "roe_latest": 32.45, "revenue_yoy_latest": 29.8, "close_latest": 1085.0, "...": "..." }
+}
+
+// 3. [L2M 輸出] 市場研判 — 引用 O1 (tw_market) 決定總體姿態與現金區間
+{
+  "basis_refs": ["O1"],
+  "regime": "risk_on",
+  "stance": "aggressive",
+  "posture": { "net_exposure_intent": "increase", "target_cash_pct_range": [0.08, 0.16] }
+}
+
+// 4. [L2 輸出] 個股推論 (I1) — 必須引用 O2 並強制揭露 counter_evidence
+{
+  "inf_id": "I1",
+  "premise_refs": ["O1", "O2"],
+  "logic": "依據 O2，2330 最新季 ROE 達 32.45% 且月營收年增 29.8%，近 5 日超額報酬 +2.35pp 伴隨外資買超強度 +8.42%，配合 O1 大盤 risk_on 格局，建議作為核心權值配置 8.0%。",
+  "conclusion": "建議加碼/建倉 2330 作為核心權值基石，目標權重 8.0%。",
+  "counter_evidence": "短線已累積正超額報酬且情緒分數 68.4 偏樂觀，須留意追高震盪風險。",
+  "confidence": 0.82
+}
+
+// 5. [L3 輸出] 投組決策 (D1) — 指向 I1，並由 Code Execution 驗算 20~30 檔與總權重 100%
+{
+  "decision_id": "D1",
+  "ticker": "2330",
+  "action": "BUY",
+  "target_weight": 0.08,
+  "inference_refs": ["I1"],
+  "risk_check": "目標權重 8.0% <= 2330 法規上限 25%；組合共 24 檔 ∈ [20, 30]，預估現金 12.4% 落於 [8%, 16%]。",
+  "funding_for": null
+}
+
+// 6. [L4 輸出] 千股整股委託單 — Python 機械算單 + Gemini Code Execution 覆核 Active Share
+{
+  "ticker": "2330",
+  "side": "BUY",
+  "shares": 73000,
+  "decision_ref": "D1",
+  "derivation_detail": "target_shares = floor(0.08 × 1,000,000,000 / 1085 / 1000) × 1000 = 73,000；現持 0 → BUY 73,000"
+}
 ```
 
-### 命令列常用開關
-- `--date <YYYYMMDD>`：指定交易日期（不提供時會於終端機詢問一次）。
-- `--trade-date <YYYY-MM-DD>`：手動指定官方繳交檔宣告的 trade_date。
-- `--team-id <TEAM_ID>`：指定參賽隊伍編號（預設 `TEAM_11402`）。
-- `--skip-l0`：跳過 L0 資料收集階段（使用本地既有快取）。
-- `--skip-l1`：跳過 L1 事實提取。
-- `--skip-l2m` / `--skip-l2` / `--skip-l3` / `--skip-l4`：跳過指定 Agent 階段。
-- `--skip-validate`：跳過 Step 7 官方後台線上預檢核。
-- `--skip-submit`：跳過 Step 8 官方後台正式繳交（僅產出、檢核與更新看板，不實際送出繳交）。
-- `--skip-report`：跳過 Step 9 Markdown 決策回顧報告產出。
-- `--skip-dashboard`：跳過 Step 10 同步更新 Portfolio Dashboard 網頁。
-- `--push-dashboard`：Step 10 更新完看板後自動執行 `git commit & push`（部署至 Cloudflare Pages）。
+---
+
+## 6. 量化特徵工程總覽（45 項核心指標 + 篩選與輿情指標）
+
+本系統透過 `finlab_market_loader.py` 每日計算 **45 項核心量化指標**（大盤 **16 項** + 個股 **29 項**，涵蓋基本面、技術面、籌碼面與多層級複合指標），並結合 **L0 股票池篩選 12 項指標**、**CMoney 社群情緒 10 項指標** 及 **DataPack 帳戶/移動停利追蹤欄位**，全數以 Compact Array JSON 格式傳遞。
+
+### 6.1 L0 動態股票池篩選指標（12 項，`stock_pool_screener.py`）
+
+從 150 檔上市櫃母體回推 35 個日曆日（確保覆蓋 11 個共同交易日與 2 期集保週資料）計算：
+
+| 構面 | 指標 Key | 定義與篩選角色 |
+| :--- | :--- | :--- |
+| **價格動能（規則一）** | `ret_5d_pct` / `ret_10d_pct` | 個股近 5 日 / 近 10 日收盤報酬率（%）。 |
+| **相對市場報酬（規則一）** | `rel_ret_5d_pp` / `rel_ret_10d_pp` | 個股相對所屬市場指數（上市比 TAIEX、上櫃比櫃買指數，均不含息）近 5/10 日超額報酬（pp）。**兩者皆 $> 0$ 時 `rule1_selected = true` 直接鎖定納入**。 |
+| **集保持股籌碼（週資料）** | `chip_over_1000_chg_pp` / `chip_under_50_chg_pp` / `chip_holders_chg_pct` | 千張大戶占比近 1 期變化 (pp)、50 張以下散戶占比變化 (pp)、全部持有人數變化率 (%)；供 `stage-l0` 偵測「大戶吸籌、散戶退場」。 |
+| **融資槓桿（日資料）** | `margin_balance_lots` / `margin_chg_5d_pct` / `margin_pct_10d` | 最新融資餘額（張）、近 5 日變化率 (%)、近 10 日升冪百分位 (0～100)；搭配張數判讀籌碼去槓桿程度。 |
+| **同產業估值（日資料）** | `pe_ratio` / `pe_industry_pct` | 最新正值本益比，以及在 150 檔同產業群組內的升冪百分位（0～100，越低代表同業相對越便宜）。 |
+
+### 6.2 大盤與全市場指標（16 項，`market_indicators.py`）
+
+| # | 指標 Key | 類別 | 定義與單位 | 市場判讀邏輯 |
+| :-: | :--- | :--- | :--- | :--- |
+| 1 | `taiex_close_latest` | 指數點位 | 加權報酬/價格指數最新收盤點位（點） | 基準指數水位 |
+| 2 | `taiex_return_5d` | 短期動能 | 加權指數近 5 日報酬率（%） | 短期漲跌動能強度 |
+| 3 | `taiex_vs_ma10_pct` | 均線乖離 | 相對 10 日雙週線乖離率（%） | 極短線強弱與過熱/超跌程度 |
+| 4 | `taiex_vs_ma20_pct` | 均線乖離 | 相對 20 日月線乖離率（%） | $>0$ 站穩月線之上、$<0$ 跌破月線 |
+| 5 | `taiex_range_pos_10d` | 區間位置 | 10 日價格區間相對位置（0%～100%） | $>80\%$ 逼近高點、$<20\%$ 瀕臨破底 |
+| 6 | `taiex_max_drawdown_5d` | 下行風險 | 近 5 日滾動最大回撤（%，負值） | 評估近期實際波動與下行壓力 |
+| 7 | `otc_vs_taiex_return_5d` | 內資風向 | 櫃買指數 5D 報酬 － 加權 5D 報酬（pp） | $>0$ 中小型題材股強於權值股；$<0$ 內資退潮 |
+| 8 | `market_foreign_net_buy_5d` | 法人資金 | 外資（不含外資自營商）近 5 日上市淨買賣超（元） | 中短線外資資金趨勢方向 |
+| 9 | `market_foreign_net_buy_1d` | 法人資金 | 外資最新單日上市淨買賣超（元） | 最新交易日外資態度 |
+| 10 | `market_trust_net_buy_5d` | 法人資金 | 投信近 5 日上市淨買賣超（元） | 內資法人近一週買盤延續性 |
+| 11 | `market_trust_net_buy_1d` | 法人資金 | 投信最新單日上市淨買賣超（元） | 最新交易日投信動向 |
+| 12 | `market_advance_decline_ratio` | 市場廣度 | 全市場上漲家數 ÷ 下跌家數（倍） | $>1$ 漲多於跌；與指數背離時提示漲勢集中風險 |
+| 13 | `listed_margin_balance_change_5d` | 槓桿籌碼 | 上市融資交易金額近 5 日變化率（%） | 指數跌破 20MA 且融資續增時警戒多殺多 |
+| 14 | `market_alignment` | 均線結構 | `market_alignment_diff`：$(5\text{MA}\ge10\text{MA}\ge30\text{MA}$ 多頭家數$)$ － $(5\text{MA}<10\text{MA}<30\text{MA}$ 空頭家數$)$（家） | 衡量全市場真實多空排列家數結構（不受 150 檔限制） |
+| 15 | `market_lifeline` | 生命線動能 | 拆分為 4 項：`index_vs_ma5_pct`、`index_vs_ma20_pct`、`ma5_change_3d_pct`、`ma20_change_5d_pct`（%） | 同時追蹤加權報酬指數乖離與 5MA/20MA 生命線斜率轉折 |
+| 16 | `industry_relative_strength` | 產業輪動 | 針對各上市類股指數產出 5 項：`*_return_1d`、`*_rs_change_1d`、`*_rs_change_3d`、`*_rs_change_5d`、`*_rs_momentum_change`（$\text{RS} = \text{產業指數} \div \text{大盤}$） | 區分實質領漲、相對抗跌與動能加速轉強族群 |
+
+### 6.3 個股多維度指標（29 項，`stock_indicators.py`）
+
+| 構面 | # | 指標 Key | 展開欄位 / 定義與運算邏輯 |
+| :--- | :-: | :--- | :--- |
+| **基本面 (3)** | 1–3 | `roe_latest`, `revenue_yoy_latest`, `revenue_mom_latest` | 最新季稅後 ROE (%)、月營收年增率 (%)、月營收月增率 (%)。採**逐股動態非空值遞補演算法**，完整保留每檔公司真實公告期別。 |
+| **價量報酬 (9)** | 4–12 | `close_latest`, `return_1d`, `return_5d`, `return_20d`, `excess_return_5d`, `volume_ratio_1d`, `volume_ratio_3d`, `volume_ma5_to_ma20`, `amount_ma5` | 最新收盤價、當日/5日/20日還原報酬率 (%)、近 5 日相對加權報酬指數超額報酬 (pp)、當日量比 (vs 前 10 日均量)、3 日量比、5/20 日均量比與 5 日均成交額（流動性）。 |
+| **波動與均線位置 (9)** | 13–21 | `volatility_10d`, `ma10_change_3d`, `price_vs_ma5`, `price_vs_ma20`, `price_range_pos_10d`, `price_dist_to_high_10d`, `price_dist_to_low_10d`, `price_vs_min_close_10d`, `rsi_7` | 10 日報酬標準差 (%)、10MA 近 3 日斜率 (%)、5MA/20MA 乖離率 (%)、10 日價格區間位置 (%)、距 10 日高低點與前 10 日最低收盤支撐幅度 (%)、7 日還原價 RSI。 |
+| **技術複合動態 (4)** | 22–25 | `kd_latest`, `macd_latest`, `bollinger_latest`, `adx_latest` | • **KD (5,3,3)**：`k_5`, `d_5`, `k_change_3d`, `kd_above_d_days`, `kd_below_d_days`, `kd_cross_days_ago_20d`<br>• **MACD (6,13,5)**：`macd_dif`, `macd_hist`, `macd_hist_change_3d`, `macd_hist_increasing_days`, `macd_hist_decreasing_days`, `macd_cross_days_ago_20d`<br>• **布林通道 (10日, 1.9σ)**：`bollinger_position_pct`, `bollinger_bandwidth_pct`, `bollinger_bandwidth_change_3d_pp`, `bollinger_contraction_days`, `bollinger_expansion_days`, `bollinger_bandwidth_percentile_60d`<br>• **ADX (7日)**：`plus_di`, `minus_di`, `di_diff`, `adx`, `adx_change_3d` |
+| **法人籌碼 (4)** | 26–29 | `foreign_net_buy_intensity_5d`, `foreign_net_buy_1d`, `trust_net_buy_intensity_5d`, `trust_net_buy_1d` | 外資與投信近 5 日買賣超股數 ÷ 5 日總成交股數 (%)，以及最新單日買賣超佔當日成交量比重 (%)。 |
+
+### 6.4 輿情情緒與帳戶追蹤補充特徵
+
+- **CMoney 社群情緒（10 項，`cmoney_sentiment_crawler.py` + `fact_extractor.py`）**：`cmoney_sentiment_情緒分數` (0～100)、`樣本數`（含資料日期停滯偵測低討論度）、五級情緒討論則數（`極度樂觀` / `樂觀` / `中立` / `謹慎` / `極度謹慎`），以及程式自動計算並防除零的三分類占比（`樂觀占比` / `中立占比` / `謹慎占比`）。
+- **DataPack 賽期與移動停利追蹤欄位（`datapack_loader.py`）**：結合 `backend_all_history.json`（保留 4 位小數真實成交價）提供賽期進度（`remaining_trading_days`, `phase`）、帳戶淨值演變（`cum_return_pct`, `drawdown_from_peak_pct`, `nav_return_3d_pct`, `consecutive_loss_days`）與個股移動停利追蹤（`entry_date`, `holding_days`, `avg_cost`, `pnl_pct`, `peak_price`, `peak_pnl_pct`, `dd_from_peak_pct`）。
 
 ---
 
-## 六、Gemini 內建 Code Execution (程式碼執行) 機制
+## 7. 風控合規機制與數學公式推導
 
-在量化投資與資產配置中，LLM 對多位數四則運算、累積權重加總、取整偏差計算極易出現隨機數值幻覺。本系統在 `code/configs/gemini_client.py` 中完整實作 Google Gemini 原生 **Code Execution** 工具：
+為確保 AI 產出的每日投資計畫書在極端市場下仍 100% 符合官方競賽規範，系統將以下六大數學規則注入 L2M / L2 / L3 / L4 的 Prompt 與 Python 檢核器中：
 
-1. **核心原理**：向 LiteLLM Router 注入 `tools=[{"code_execution": {}}]` 工具宣告。當模型在 L2M 核算目標現金區間與市場風險指標、在 L2 進行因子權重加權、在 L3 進行 20~30 檔持股權重百分比配比、或在 L4 覆核千股整股與剩餘現金時，模型會**自主生成 Python 程式碼並在 Google 沙盒環境中執行**，直接以執行回傳的精確數值作為結構化 JSON 的填值依據。
-2. **串流與非串流原始程式碼捕捉**：底層包裝 `ModelResponseIterator` 與 `completion_response._hidden_params`，完整捕捉沙盒執行的程式碼片段與次數，並存入 Usage 記錄的 `executed_codes`。
-3. **預設啟用**：`stock_pool_screener.py`、`market_view_agent.py`、`stock_inference_agent.py`、`portfolio_decision_agent.py`、`order_calculator.py` 均預設開啟 Code Execution。
-4. **靈活開關**：若需關閉或進行離線測試，各腳本皆支援傳入 `--no-code-exec` 旗標以傳統純推論模式運行。
+### 7.1 被動現金比率飆升防護與 22% 安全天花板
 
----
+官方規定每日收盤結算後**現金比率不得超過 $25.0\%$**（超過即該批交易作廢並記警告）。然而當股市下跌 $d$ 時，固定現金 $C$ 不變、持股市值 $S$ 縮水，盤後現金比率 $\text{Cash Ratio}'$ 會**被動飆升**：
 
-## 七、Prompt 自動存檔與日後回溯機制
+$$\text{Cash Ratio}' = \frac{C}{C + S \cdot (1 - d)} \le 0.25$$
 
-為了解決手動測試與每日自動化執行時的除錯與審計需求，系統對所有 LLM 環節實施了**無條件 Prompt 自動存檔機制**：
+考量每日皆會重新檢視調整，且台股單日最大跌幅上限為 $d = 10\%$（$0.10$），若當日規劃現金目標比率為 $22\%$（$C / \text{NAV} = 0.22$、$S / \text{NAV} = 0.78$），即使當日持股**全數跌停**，盤後結算現金比率為：
 
-1. **存檔時機**：無論是透過 `--dry-run` 執行、正常單獨執行、或經由 `run_daily_dplan.py` 調度，在呼叫大模型之前，系統皆會**第一時間將組裝完成的完整 Prompt 輸出至磁碟**。
-2. **存檔路徑一覽**：
-   - `data/Stock_Pool/prompts/l0_prompt_YYYYMMDD.txt`
-   - `data/D-Paln_Output/l1_observations/l1_observations_prompt_YYYYMMDD.txt`
-   - `data/D-Paln_Output/l2m_market_view/l2m_market_view_prompt_YYYYMMDD.txt`
-   - `data/D-Paln_Output/l2_inferences/l2_inferences_prompt_YYYYMMDD.txt`
-   - `data/D-Paln_Output/l3_decisions/l3_decisions_prompt_YYYYMMDD.txt`
-   - `data/D-Paln_Output/l4_orders/l4_orders_prompt_YYYYMMDD.txt`
-3. **優勢**：若模型產生非預期推論或格式錯誤，研發人員可隨時開啟當日對應的 prompt 文字檔，精準比對輸入內容、資料長度與指令細節，大幅提升排查效率。
+$$\text{Cash Ratio}'_{\text{worst}} = \frac{0.22}{0.22 + 0.78 \times (1 - 0.10)} = \frac{0.22}{0.922} \approx 23.86\% < 25.0\%$$
 
----
+因此系統內建兩道強制防線：
+1. **目標現金上限防線**：將 `target_cash_pct_range` 上限建議控制在 $22\%$（`0.22`）以下，在不犧牲過多現金彈性的前提下徹底免疫單日跌停被動違規。
+2. **強制淨買超觸發**：當 DataPack 顯示現金水位超過 $20\%$（`cash_ratio_tradable > 0.20`）時，L2M 必須強制宣告 `net_exposure_intent = "increase"`，L3 必須執行淨買超，主動拉開與 $25\%$ 天花板的安全距離。
 
-## 八、LiteLLM 原生 19 項標準 Usage 監控與本地結算機制
+### 7.2 L4 千股整股機械算單（嚴禁人為手調）
 
-為了精確掌握多模型調用成本、Token 消耗量與代碼執行細節，本系統全面對齊 LiteLLM 原生標準欄位：
+台股盤中/委託須以千股（一張）為最小單位，系統於 Python 階段嚴格執行向下取整計算：
 
-1. **各階段單獨用量記錄**：位於各階段輸出資料夾下的 **`usage/`** 子目錄中：
-   - `data/Stock_Pool/usage/l0_usage_YYYYMMDD.json`
-   - `data/D-Paln_Output/l1_observations/usage/l1_usage_YYYYMMDD.json`
-   - `data/D-Paln_Output/l2m_market_view/usage/l2m_usage_YYYYMMDD.json`
-   - `data/D-Paln_Output/l2_inferences/usage/l2_usage_YYYYMMDD.json`
-   - `data/D-Paln_Output/l3_decisions/usage/l3_usage_YYYYMMDD.json`
-   - `data/D-Paln_Output/l4_orders/usage/l4_usage_YYYYMMDD.json`
-2. **19 項標準欄位結構**：
-   - **時間與路由識別**：`timestamp`, `date`, `provider`, `model`, `model_group`, `stage`, `status`, `finish_reason`, `duration_seconds`
-   - **LiteLLM 原生 Token 與成本**：`prompt_tokens`, `completion_tokens`, `total_tokens`, `cached_tokens`, `tool_use_tokens`, `reasoning_tokens`, `response_cost`
-   - **Code Execution 追蹤**：`code_execution_used`, `code_execution_call_count`, `executed_codes`
-3. **本地歷史結算中心**：
-   產線在每日結束時會自動呼叫 `settle_usage_history()`，將當日所有階段的調用記錄匯總合併至：
-   - `data/D-Paln_Output/usage/usage_history.json`
-   - `code/portfolio_dashboard/usage_history.json`
+$$\text{Target Shares}_i = \left\lfloor \frac{w_i \times \text{NAV}_{\text{tradable}}}{P_i \times 1000} \right\rfloor \times 1000, \qquad \Delta\text{Shares}_i = \text{Target Shares}_i - \text{Current Shares}_i$$
 
----
+其中 $w_i$ 為 L3 決議目標權重（一般股 $w_i \le 0.10$，台積電 `2330` $w_{\text{2330}} \le 0.25$），$P_i$ 為前日收盤價（L1 缺漏時自動以 DataPack 補齊）。$\Delta\text{Shares}_i > 0$ 為 `BUY`、$< 0$ 為 `SELL`、$= 0$ 不送出委託；並於 `drafts_to_orders()` 驗證賣出股數不可超過庫存持股。
 
-## 九、交易日期終端機互動輸入設計
+### 7.3 主動投資比率 (Active Share) 門檻檢驗
 
-考量到競賽實務上「執行程式的日期不一定是實際交易日」（例如週日盤前預先試算週一的 D-Plan），所有入口均支援兩種日期指定模式：
+為避免淪為複製大盤或市售主動式 ETF 的「隱形指數基金」，系統於 L3 規劃與 L4 覆核階段皆比對市場指定主動型 ETF 前 15 大持股權重，強制要求與每一檔標竿 ETF 均須滿足：
 
-1. **互動式終端輸入 (預設)**：直接執行命令時（不帶 `--date`），終端機會跳出提示，按 Enter 直接帶入今日，或手動鍵入目標日期。
-2. **命令列明確指定 (自動化排程)**：排程腳本直接傳入 `--date 20261113` 即可靜默執行。
+$$\text{Active Share} = \frac{1}{2} \sum_{i} \left| w_{\text{port}, i} - w_{\text{ETF}, i} \right| \ge 0.15 \quad (15\%)$$
+
+### 7.4 交易摩擦成本與換股門檻
+
+系統以 DataPack 前日收盤價估算成交金額，並從現金部位精算扣除實際手續費與證交稅：
+
+- **買進總支出**：$\text{Amount}_{\text{buy}} \times (1 + 0.001425)$（買進手續費 $0.1425\%$）
+- **賣出淨收入**：$\text{Amount}_{\text{sell}} \times (1 - 0.001425 - 0.003)$（賣出手續費 $0.1425\%$ + 證交稅 $0.3\%$，合計 $0.4425\%$）
+- **雙邊來回摩擦成本**：約 $0.585\%$；因此 L2 / L3 明確要求若換股預期改善無法覆蓋交易摩擦且無明顯結構性惡化，應優先納入 `no_trade_decisions` 避免無效週轉。
+
+### 7.5 L2M `hold` 淨曝險 2% NAV 容差檢核
+
+當 L2M 宣告 `net_exposure_intent = "hold"`（維持曝險大致持平）時，L3 透過 Gemini Code Execution 驗證當日總買賣金額差必須落於可交易淨值的 $2\%$ 容差內：
+
+$$\left| \sum \text{Amount}_{\text{buy}} - \sum \text{Amount}_{\text{sell}} \right| \le 0.02 \times \text{NAV}_{\text{tradable}}$$
+
+### 7.6 L3 昨日持股全覆蓋互斥定理 & `funding_for` 資金缺口條件
+
+- **全覆蓋互斥原則**（非首日適用）：令 $\mathcal{H}_{\text{prev}}$ 為昨日持股集合、$\mathcal{D}$ 為異動決策集合、$\mathcal{N}$ 為續抱集合，Pydantic `DPlanDocument.validate_reference_chains()` 嚴格強制：
+  $$\mathcal{H}_{\text{prev}} \subseteq (\mathcal{D} \cup \mathcal{N}) \quad \land \quad (\mathcal{D} \cap \mathcal{N} = \emptyset)$$
+  且最終非零目標持股檔數嚴格落於 $[20, 30]$ 區間。
+- **`funding_for` 資金調度真實缺口檢查**：僅當「不執行賣出、僅執行買進並計入買進手續費後，預估現金比率 $< \text{target\_cash\_pct\_range}[0]$（真實資金缺口存在）」時，對應之 `TRIM` / `SELL_ALL` 決策才允許填寫 `funding_for` 指向受支應的買進決策 ID；否則一律強制為 `null`。
 
 ---
 
-## 十、環境建置與憑證設定
+## 8. Portfolio Dashboard 即時投資決策與持股看板
 
-### 1. Conda 環境建立與套件安裝
-建議使用 Python 3.11 環境：
+除了產線自動化外，本專案另打造了無須後端伺服器、單頁可離線開啟且綁定 Cloudflare Pages Git CI/CD 自動部署的互動式視覺化看板（詳細部署見 [code/portfolio_dashboard/README.md](code/portfolio_dashboard/README.md)）：
+
+- **前端工程與視覺體驗**：採用 **富果 (Fugle) 專業看盤資訊密度佈局** 結合 **Apple Liquid Glassmorphism（冷冽藍灰／冰川銀）** 設計，支援**淺色（預設）／深色／跟隨系統**三段主題切換（含 Android Chrome 動態 `theme-color`）、下滑自動收合為單行懸浮導航膠囊（零版面位移），並移除高耗能重繪瓶頸以維持手機端滑動流暢。
+- **六大功能分頁一覽**：
+  1. **📊 帳戶總覽**：可交易 NAV、現金水位、累計與單日報酬率、**競賽總／社會組排名**、四組趨勢圖（NAV/Cash、累計報酬率、排名走勢、單日報酬率）與庫存損益表（含**持有天數**、**FIFO 分批買進明細展開抽屜**與多欄排序）。
+  2. **📈 行情群組**：動態區分「我的持股」與「其餘標的」，支援漲跌幅排序、即時搜尋與微型走勢圖 (Sparklines)。
+  3. **🧾 歷史成交明細**：彙整後台 4 位小數精確成交明細、累計手續費／證交稅摩擦成本與淨已實現損益，支援多維度篩選。
+  4. **📄 決策報告**：內建安全 Markdown 渲染器（Marked + DOMPurify），支援歷史報告日期切換、自動章節目錄與一鍵複製。
+  5. **🤖 AI 模型成本監控**：視覺化呈現 19 項 LiteLLM Usage 指標、每日花費／Token 雙軸圖、各階段費用佔比、動態路由／Fallback 架構與每日下鑽執行明細。
+  6. **💡 專案亮點**：呈現 ETF 投資策略、L0 ➔ L4 系統架構與專案技術亮點導覽。
+- **行情日曆自校準與同步機制**：`market_api.py` 先以 `2330` 同步官方開市日曆，偵測快取缺失或非交易日即自動重建歷史日 K；日常使用玉山 `intraday.quote` 高速更新，並於 `run_daily_dplan.py` Step 10 透過 `--skip-backend-fetch` 與 `--push-dashboard` 無縫連動。
+
+---
+
+## 9. 快速開始 (Quick Start)
+
+### 9.1 環境建置與憑證設定
+
 ```bash
+# 1. 建立 Python 3.11 環境並安裝套件
 conda create -n esunaicup2026_py311 python=3.11 -y
 conda activate esunaicup2026_py311
 pip install -r code/requirements.txt
-```
 
-### 2. 環境變數設定 (`code/.env`)
-複製 `code/.env.example` 建立 `code/.env`（由 `.gitignore` 排除，嚴禁提交真實金鑰）：
-```bash
+# 2. 設定環境變數 (code/.env 已列入 .gitignore，嚴禁上傳金鑰)
 cp code/.env.example code/.env
-```
-`code/.env` 內容格式：
-```ini
-GEMINI_API_KEY="AIzaSy..."
-TEAM_ID="TEAM_11402"
-ESUN_EMAIL="your_email@example.com"
-ESUN_PASSWORD="your_password"
-```
+# 請於 code/.env 填入：GEMINI_API_KEY, TEAM_ID, ESUN_EMAIL, ESUN_PASSWORD
 
-### 3. LiteLLM 路由設定 (`code/models_config.yaml`)
-系統在 `code/` 目錄下維護 `models_config.yaml`，可自由指定各任務階段的模型別名與降級備援清單：
-```yaml
-model_list:
-  - model_name: stage-l0
-    litellm_params:
-      model: gemini/gemini-4-carbon
-  - model_name: stage-l1
-    litellm_params:
-      model: gemini/gemini-3.8-flash
-  - model_name: stage-l2m
-    litellm_params:
-      model: gemini/gemini-4-carbon
-  - model_name: stage-l2
-    litellm_params:
-      model: gemini/gemini-4-carbon
-  - model_name: stage-l3
-    litellm_params:
-      model: gemini/gemini-4-carbon
-  - model_name: stage-l4
-    litellm_params:
-      model: gemini/gemini-4-carbon
-  - model_name: stage-l1-fallback
-    litellm_params:
-      model: gemini/gemini-3.6-flash
-  - model_name: stage-pro-fallback
-    litellm_params:
-      model: gemini/gemini-4-argon
-router_settings:
-  fallbacks:
-    - stage-l0: ["stage-pro-fallback"]
-    - stage-l1: ["stage-l1-fallback"]
-    - stage-l2m: ["stage-pro-fallback"]
-    - stage-l2: ["stage-pro-fallback"]
-    - stage-l3: ["stage-pro-fallback"]
-    - stage-l4: ["stage-pro-fallback"]
-```
-
-### 4. FinLab 登入認證
-在終端機執行認證指令：
-```bash
+# 3. 登入 FinLab API
 python -m finlab login
 ```
 
----
+### 9.2 最常用執行指令
 
-## 十一、完整命令列操作手冊 (CLI Cheatsheet)
-
-> 以下指令皆假設已切換至 `code/` 目錄執行（`cd code`）。
-
-### 1. 端到端一鍵完整生成
 ```bash
-# 啟動每日全自動產線 (循序執行 Step 0 至 Step 10：抓取資料、決策、線上預檢核、正式繳交、報告與更新看板)
-python run_daily_dplan.py
+cd code
 
-# 全自動產線 + 更新完看板後自動 git commit & push (含 Cloudflare Pages 自動部署)
+# 1. 一鍵啟動每日全自動端到端產線 (Step 0 ~ Step 10：抓資料 -> L0~L4 -> 組裝 -> 預檢核 -> 繳交 -> 報告 -> 更新看板)
 python run_daily_dplan.py --push-dashboard
 
-# 明確指定交易日期（若僅測試產出但不實際送出正式繳交，可加上 --skip-submit）
-python run_daily_dplan.py --date 20261113 --skip-submit
+# 2. 產線測試模式 (執行完整推理、組裝與預檢核，但不實際送出正式繳交)
+python run_daily_dplan.py --date 20261124 --skip-submit
 
-# 抽樣測試模式 (讀取 20261112 輸入、測試輸出至 20261113，並僅抽樣前 3 檔標的)
-python run_daily_dplan.py --date 20261113 --input-date 20261112 --max-stocks 3 --skip-l0
-
-# 指定特定交易日並跳過已完成之階段 (例如重跑 L3 至報告)
-python run_daily_dplan.py --date 20261113 --skip-l0 --skip-l1 --skip-l2m --skip-l2
-```
-
-### 2. 各模組單獨執行除錯
-
-#### 【L0 資料下載與預處理】
-```bash
-# --- 玉山競賽後台歷史數據自動抓取 (OAuth2 SSO) ---
-python L0_sources/backend_history_loader.py                    # 增量更新 + 重抓最新 1 日至 backend_all_history.json
-python L0_sources/backend_history_loader.py --full             # 從 Day 1 全量重抓並覆蓋
-
-# --- DataPack 自動下載、解析與轉 Markdown ---
-python L0_sources/datapack_loader.py                           # 自動從 /api/data-pack/ 下載最新 DataPack 並轉換
-python L0_sources/datapack_loader.py --date 20261028           # 指定日期 (若非 API 最新日則自動退回本地歷史 Raw 檔)
-python L0_sources/datapack_loader.py --no-fetch --date 20261028 # 跳過 API 下載，僅使用本地 Raw 檔
-
-# --- L0 動態股票池篩選 (150 檔規則一 + stage-l0 Agent 補撈 + 目前持股強制保留) ---
-python L0_sources/stock_pool_screener.py                       # 執行今日完整篩選 (預設串流 + Code Execution)
-python L0_sources/stock_pool_screener.py --date 20261123       # 指定基準日期
-python L0_sources/stock_pool_screener.py --date 20261123 --dry-run            # 僅計算 FinLab 指標並存 Prompt，不呼叫 LLM
-python L0_sources/stock_pool_screener.py --date 20261123 --use-cached-metrics # 重讀既有指標快照重跑 LLM (省 FinLab 流量)
-python L0_sources/stock_pool_screener.py --skip-llm            # 僅輸出規則一與目前持股，不呼叫 LLM
-
-# --- FinLab 市場資料與 Compact Array JSON 下載 ---
-python L0_sources/finlab_market_loader.py                      # 下載 26 檔指標並快取為 Compact JSON
-python L0_sources/finlab_market_loader.py --date 20261027      # 指定特定日期
-python L0_sources/finlab_market_loader.py --overwrite          # 強制重新下載覆寫既有快取
-
-# --- CMoney 輿情討論與情緒爬取 (52 檔) ---
-python L0_sources/cmoney_sentiment_crawler.py                  # 爬取 52 檔熱門股討論熱度與量化情緒
-python L0_sources/cmoney_sentiment_crawler.py --date 20261027  # 指定爬取基準日
-
-# --- 主動式 ETF 前 15 大成分股快照 ---
-python L0_sources/finlab_active_etf_loader.py                  # 下載主動式 ETF 標竿持股
-python L0_sources/finlab_active_etf_loader.py --date 20261027  # 指定日期快照
-```
-
-#### 【L1 ~ L4 Agent、D-Plan 組裝與報告產出】
-```bash
-# --- L1 客觀事實擷取 ---
-python L1_observations/fact_extractor.py                       # 互動式輸入日期 + 串流生成
-python L1_observations/fact_extractor.py --date 20261113      # 指定特定輸出日期
-python L1_observations/fact_extractor.py --date 20261113 --input-date 20261112 --max-stocks 3 # 抽樣測試模式
-python L1_observations/fact_extractor.py --dry-run            # 僅組裝 Prompt 輸出 txt，不呼叫 API
-
-# --- L2M 市場整體研判 ---
-python L2M_market_view/market_view_agent.py                   # 研判走向、態度與現金水位承諾 (預設啟用 Code Execution)
-python L2M_market_view/market_view_agent.py --no-code-exec     # 關閉 Code Execution
-python L2M_market_view/market_view_agent.py --date 20261027
-python L2M_market_view/market_view_agent.py --dry-run
-
-# --- L2 個股推論 (52 檔) ---
-python L2_inferences/stock_inference_agent.py                 # 個股多維度分析 + Code Execution 驗算
-python L2_inferences/stock_inference_agent.py --date 20261027
-python L2_inferences/stock_inference_agent.py --no-code-exec  # 關閉 Code Execution
-python L2_inferences/stock_inference_agent.py --dry-run
-
-# --- L3 投資組合決策 ---
-python L3_decisions/portfolio_decision_agent.py               # 昨日持股全覆蓋 + 控管 20~30 檔
-python L3_decisions/portfolio_decision_agent.py --date 20261027
-python L3_decisions/portfolio_decision_agent.py --no-code-exec
-
-# --- L4 委託單計算與審查 ---
-python L4_orders/order_calculator.py                          # 完整執行 (Python 千股算單 + Gemini Code Execution 覆核)
-python L4_orders/order_calculator.py --date 20261027
-python L4_orders/order_calculator.py --no-gemini              # 僅執行 Python 官方公式算單
-python L4_orders/order_calculator.py --no-code-exec           # 關閉 Code Execution
-python L4_orders/order_calculator.py --dry-run
-
-# --- D-Plan 總組裝與驗證器 ---
-python build_dplan.py                                         # 自動組裝最新日期產出至 final_dplan
-python build_dplan.py --date 20261027                         # 指定組裝日期
-python build_dplan.py --trade-date 2026-10-27                 # 手動指定宣告之 trade_date
-
-# --- 官方後台線上預檢核與正式繳交 ---
-python validate_dplan_api.py                                  # 預檢核最新 D-Plan (有 bad/warn 即結束碼 1)
-python validate_dplan_api.py --file "path/to/D-Plan.json"     # 預檢核指定檔案 (加 --allow-warn 可僅阻擋 bad)
-python submit_dplan_api.py --dry-run                          # 測試 SSO 登入與讀檔，不實際送出繳交 POST
-python submit_dplan_api.py --file "path/to/D-Plan.json"       # 正式送出 D-Plan 並驗證官方收據
-
-# --- 每日決策與帳戶回顧 Markdown 報告 ---
-python generate_daily_report.py                               # 根據最新 D-Plan 產出回顧報告
-python generate_daily_report.py --date 20261028              # 指定日期
-python generate_daily_report.py --dplan-path "path/to.json"   # 指定特定 D-Plan JSON 產生報告
+# 3. 僅單獨更新 Portfolio Dashboard 並部署至 Cloudflare Pages (不重跑 D-Plan)
+cd portfolio_dashboard && python run_update.py --push
 ```
 
 ---
 
-## 十二、投資決策與持股看板 (Portfolio Dashboard)
+## 10. 附錄（完整目錄樹、I/O 矩陣、單模組 CLI 手冊）
 
-除了每日自動化產線產出官方 D-Plan JSON 與 Markdown 報告外，本專案提供富果 Fugle 專業看盤佈局與 Apple macOS 冷冽藍灰 / 冰川銀液態玻璃美學的即時互動視覺化看板（詳細部署說明請見 [code/portfolio_dashboard/README.md](code/portfolio_dashboard/README.md)）：
+<details>
+<summary><b>📁 展開查看：完整專案目錄結構</b></summary>
 
-### 1. 核心特色（6 大分頁）
-- **頁籤 1【📊 帳戶總覽】**：
-  - 即時呈現可交易淨值 (NAV)、現金餘額、累計與當日報酬率、**競賽總排名／社會組排名**。
-  - **NAV / Cash、累計總報酬率 (%)、每日競賽排名走勢與單日報酬率 (%) 四組趨勢圖表**。
-  - 持股損益明細表（支援**持有天數**、**FIFO 分批買進明細展開抽屜**與即時多欄位升降序排序）。
-- **頁籤 2【📈 行情群組】**：
-  - 動態群組切換：「我的持股」與「其餘標的」。
-  - 即時搜尋股票代碼與名稱，支援漲跌幅即時排序。
-  - 嵌入微型股價走勢圖 (Sparklines)，一眼掌握標的近期價格趨勢。
-- **頁籤 3【🧾 歷史成交明細】**：
-  - 統計累計買進／賣出金額、手續費與證交稅摩擦成本、扣費稅後淨已實現損益，並支援依交易日、買賣方向與關鍵字篩選每日成交明細。
-- **頁籤 4【📄 決策報告】**：
-  - 內建安全 Markdown 渲染器（Marked + DOMPurify），支援歷史報告日期切換、自動章節目錄與一鍵複製原文。
-- **頁籤 5【🤖 AI 模型成本監控】**：
-  - 視覺化呈現 19 項 LiteLLM Usage 指標、每日花費與 Token 消耗趨勢、L1~L4 階段費用佔比、全階段模型路由與備援降級架構及每日下鑽執行明細。
-- **頁籤 6【💡 專案亮點】**：
-  - 呈現 ETF 投資策略、L0 ➔ L4 決策架構概覽、6 大技術亮點與 GitHub Repository 導覽連結。
-- **三段式主題（淺色預設）、懸浮導航與 RWD 適配**：
-  - 支援淺色（預設，冰川銀灰）／深色（冷冽藍灰）／跟隨裝置三段切換（含 Android Chrome 動態網址列 `theme-color`），下滑自動精簡為單行懸浮導航膠囊，並針對手機、平板與電腦端提供輕量化流暢瀏覽體驗。
+```text
+2026玉山人工智慧賽/
+├── .gitignore                                # 排除 .env、本地金鑰與暫存檔
+├── README.md                                 # 專案白皮書說明文件 (繁體中文)
+├── README_EN.md                              # Project Whitepaper Documentation (English)
+│
+├── code/                                     # 【核心程式碼與自動化產線】
+│   ├── models_config.yaml                    # LiteLLM Multi-Model 路由群組與 Fallback 設定
+│   ├── .env.example                          # 環境變數範本 (GEMINI_API_KEY, TEAM_ID, ESUN_EMAIL, ESUN_PASSWORD)
+│   ├── requirements.txt                      # Python 相依套件清單
+│   ├── configs/                              # 共用基礎設施
+│   │   ├── settings.py                       # 環境變數、路徑常數與預設路由別名
+│   │   ├── gemini_client.py                  # LiteLLM Router 封裝 (串流/結構化/Code Execution/19 項 Usage/json-repair)
+│   │   ├── date_utils.py                     # 交易日期互動提示與格式標準化 (YYYYMMDD)
+│   │   └── json_utils.py                     # Compact Array JSON ([value, date]) 壓縮序列化工具
+│   ├── schemas/                              # Schema 定義與校驗層
+│   │   ├── dplan_models.py                   # D-Plan v4.3 雙層 Pydantic 模型 (Draft + Final DAG 驗證)
+│   │   └── verify_dplan.ipynb                # D-Plan JSON 驗證測試 Notebook
+│   ├── L0_sources/                           # 【L0 多源資料與動態股票池】
+│   │   ├── backend_history_loader.py         # OAuth2 SSO 增量抓取後台排名、淨值與 4 位小數成交明細
+│   │   ├── datapack_loader.py                # OAuth2 SSO 下載 DataPack、就緒檢查與持倉移動停利計算
+│   │   ├── stock_pool_screener.py            # 150 檔動態股票池篩選 (規則一 + stage-l0 補撈 + 目前持股聯集)
+│   │   ├── cmoney_sentiment_crawler.py       # CMoney SSR 訪客 JWT 自動萃取與討論情緒爬蟲
+│   │   ├── finlab_market_loader.py           # FinLab 45 項指標排程運算與 Compact Array JSON 存檔
+│   │   ├── market_indicators.py              # 大盤與全市場 16 項指標定義庫
+│   │   ├── stock_indicators.py               # 個股 29 項指標定義庫 (含基本面動態遞補演算法)
+│   │   └── finlab_active_etf_loader.py       # 同業主動式 ETF 前 15 大成分股標竿下載
+│   ├── L1_observations/                      # 【L1 客觀事實擷取】
+│   │   └── fact_extractor.py                 # Compact Array JSON 解析、LLM 摘要與原始數值覆寫防幻覺
+│   ├── L2M_market_view/                      # 【L2M 市場整體判斷】
+│   │   └── market_view_agent.py              # 研判 regime / stance / posture (含 Code Execution)
+│   ├── L2_inferences/                        # 【L2 個股推論】
+│   │   └── stock_inference_agent.py          # 兩階段多維度個股分析與反面證據推論 (含 Code Execution)
+│   ├── L3_decisions/                         # 【L3 投資組合決策】
+│   │   └── portfolio_decision_agent.py       # 持股 20~30 檔分配、權重控管、資金調度與覆蓋驗證
+│   ├── L4_orders/                            # 【L4 委託執行層】
+│   │   └── order_calculator.py               # Python 千股機械算單 + Active Share 計算 + Gemini 智能覆核
+│   ├── portfolio_dashboard/                  # 【即時投資決策與持股看板】
+│   │   ├── tracker.py                        # FIFO 成本、損益與歷史曲線引擎
+│   │   ├── market_api.py                     # 玉山行情 SDK (2330 開市日曆對齊與 150 檔報價)
+│   │   ├── builder.py                        # Fugle 佈局 + Liquid Glassmorphism 6 分頁 SPA 生成器
+│   │   ├── run_update.py                     # 一鍵更新與 Git CI/CD 部署腳本
+│   │   ├── usage_history.json                # 結算後之 19 項 LiteLLM Usage 歷史紀錄
+│   │   ├── dist/index.html                   # 單頁完整看板應用 (Cloudflare Pages 發布目標)
+│   │   └── README.md                         # 看板詳細操作與 Cloudflare Pages 部署教學
+│   ├── build_dplan.py                        # D-Plan v4.3 總組裝與全圖引用鏈驗證器
+│   ├── validate_dplan_api.py                 # 官方線上預檢核閘門 (/api/submissions/dplan/validate/)
+│   ├── submit_dplan_api.py                   # 官方正式自動繳交與收據驗證 (/api/submissions/dplan/)
+│   ├── generate_daily_report.py              # 真人決策與帳戶回顧 7 章節 Markdown 報告生成器
+│   └── run_daily_dplan.py                    # Step 0 ~ Step 10 端到端自動化主產線入口
+│
+├── data/                                     # 【資料輸入與各階段生成產物】
+│   ├── Datapack/                             # 官方每日 DataPack Raw JSON 與 Processed Markdown
+│   ├── Stock_Pool/                           # stock_list_*.json、screening_result_*.json、metrics/、prompts/、usage/
+│   ├── backend_reports/                      # backend_all_history.json 與備援 HTML 快照
+│   ├── 大盤/, 基本面/, 技術面/, 籌碼面/       # FinLab 45 項指標 Compact Array JSON 快取
+│   ├── CMoney_Sentiment/                     # CMoney 個股情緒討論資料
+│   ├── Active_ETF_Holdings/                  # 主動式 ETF 前 15 大成分股標竿快照
+│   ├── ETF_Strategy/                         # 主動式 ETF 投資理念文件 (etf_strategy.md)
+│   └── D-Paln_Output/                        # 各層產出 JSON、Prompt 紀錄、Usage 統計、final_dplan/ 與 reports/
+│
+└── docs/                                     # 競賽官方規範、架構圖與 API 說明文件
+```
 
-### 2. 每日收盤自動更新流程
-1. **確認環境憑證**：於 `code/.env` 設定 `ESUN_EMAIL` 與 `ESUN_PASSWORD`（`run_update.py` 與 `run_daily_dplan.py` 執行時會自動登入後台 API 同步 `data/backend_reports/backend_all_history.json` 與最新 `data/Datapack/Raw/`）。
-2. **一鍵執行更新**：
-   ```bash
-   cd code/portfolio_dashboard
-   python run_update.py
-   ```
-   *(若已設定 Git，可加上 `--push` 自動提交並觸發 Cloudflare Pages 雲端部署)*：
-   ```bash
-   python run_update.py --push
-   ```
-3. **查看看板**：直接於瀏覽器開啟 [https://esun-ai-cup-2026-team11402-portfolio.pages.dev](https://esun-ai-cup-2026-team11402-portfolio.pages.dev)。
+</details>
 
----
+<details>
+<summary><b>🔄 展開查看：Step 0 ~ Step 10 全產線資料輸入輸出 (I/O) 與審計路徑矩陣</b></summary>
 
-## 十三、競賽法規檢核與重要實測注意事項
+| 階層 / 模組 | 主要輸入來源 (Input) | 主要產出檔案 (Output) | Prompt 留存與 Usage 紀錄 |
+| :--- | :--- | :--- | :--- |
+| **Step 0a** `backend_history_loader.py` | 玉山競賽後台 OAuth2 SSO API | `data/backend_reports/backend_all_history.json` | 增量更新 + 重抓最新 1 日（`--full` 全量重建） |
+| **Step 0b** `datapack_loader.py` | 後台 `/api/data-pack/`、`backend_all_history.json` | `data/Datapack/Raw/DataPack_*.json`<br>`data/Datapack/Processed/DataPack_Processed_YYYYMMDD.md` | 支援 `--no-fetch` 離線退回本地檔 |
+| **Step 0c** `stock_pool_screener.py` | FinLab API (150 檔價量/集保/融資/PE)、DataPack 持股 | `data/Stock_Pool/stock_list_YYYYMMDD.json`<br>`data/Stock_Pool/screening_result_YYYYMMDD.json`<br>`data/Stock_Pool/metrics/stock_pool_metrics_YYYYMMDD.json` | **Prompt**: `data/Stock_Pool/prompts/l0_prompt_YYYYMMDD.txt`<br>**Usage**: `data/Stock_Pool/usage/l0_usage_YYYYMMDD.json` |
+| **Step 0d~0f** `cmoney_sentiment_crawler.py`<br>`finlab_market_loader.py`<br>`finlab_active_etf_loader.py` | `data/Stock_Pool/stock_list_YYYYMMDD.json`、CMoney SSR、FinLab API | `data/CMoney_Sentiment/`、`data/Active_ETF_Holdings/`、`data/{大盤,基本面,技術面,籌碼面}/*.json`、`data/D-Paln_Output/l0_sources/` | 失敗立即拋出錯誤阻斷產線 |
+| **Step 1 (L1)** `fact_extractor.py` | `data/{大盤,基本面,技術面,籌碼面,CMoney_Sentiment}/` | `data/D-Paln_Output/l1_observations/l1_observations_YYYYMMDD.json` | **Prompt**: `l1_observations_prompt_YYYYMMDD.txt`<br>**Usage**: `usage/l1_usage_YYYYMMDD.json` |
+| **Step 2 (L2M)** `market_view_agent.py` | `l1_observations` (大盤 O1)、`DataPack_Processed` | `data/D-Paln_Output/l2m_market_view/l2m_market_view_YYYYMMDD.json` | **Prompt**: `l2m_market_view_prompt_YYYYMMDD.txt`<br>**Usage**: `usage/l2m_usage_YYYYMMDD.json` |
+| **Step 3 (L2)** `stock_inference_agent.py` | `l1_observations`、`l2m_market_view`、`etf_strategy.md`、`DataPack_Processed` | `data/D-Paln_Output/l2_inferences/l2_inferences_YYYYMMDD.json` | **Prompt**: `l2_inferences_prompt_YYYYMMDD.txt`<br>**Usage**: `usage/l2_usage_YYYYMMDD.json` |
+| **Step 4 (L3)** `portfolio_decision_agent.py` | `l2_inferences`、`l2m_market_view`、`DataPack_Processed`、`Active_ETF_Holdings` | `data/D-Paln_Output/l3_decisions/l3_decisions_YYYYMMDD.json` | **Prompt**: `l3_decisions_prompt_YYYYMMDD.txt`<br>**Usage**: `usage/l3_usage_YYYYMMDD.json` |
+| **Step 5 (L4)** `order_calculator.py` | `l3_decisions`、`DataPack Raw/Processed`、`l1_observations`、`Active_ETF_Holdings` | `data/D-Paln_Output/l4_orders/l4_orders_YYYYMMDD.json`<br>`data/D-Paln_Output/l4_orders/l4_orders_python_YYYYMMDD.json` | **Prompt**: `l4_orders_prompt_YYYYMMDD.txt`<br>**Usage**: `usage/l4_usage_YYYYMMDD.json` |
+| **Step 6** `build_dplan.py` | L0 ~ L4 產出 JSON + Git commit hash | `data/D-Paln_Output/final_dplan/D-Plan_<team_id>_<trade_date>.json` | Pydantic `DPlanDocument` 全圖引用驗證 |
+| **Step 7 & 8** `validate_dplan_api.py` / `submit_dplan_api.py` | 最終 `D-Plan_<team_id>_<trade_date>.json` | 終端機中文預檢核報告 / 官方收據 JSON | `bad > 0` 或 `warn > 0` 嚴格中止 |
+| **Step 9** `generate_daily_report.py` | `D-Plan_*.json`、`DataPack_*.json`、`screening_result_*.json` | `data/D-Paln_Output/reports/Daily_Decision_Report_YYYYMMDD.md` | 7 大章節真人稽核報告 |
+| **Step 10** `portfolio_dashboard/run_update.py` | `backend_all_history.json`、`Datapack/Raw/`、玉山行情 SDK、Usage 紀錄 | `code/portfolio_dashboard/dist/index.html` | 結算 `usage_history.json`；可選 `--push` |
 
-1. **資料收集零漏抓原則**：
-   - 每日資料收集（後台歷史數據、DataPack、CMoney 52 檔、FinLab 26 檔指標、Active ETF）為後續推論命脈，任一模組抓取異常或資料缺漏會直接中止產線，請確保網路與憑證正常。
-2. **千股整股與禁止零股**：
-   - L4 委託計算一律取 `floor(... / 1000) * 1000`，委託單股數必須為 1,000 的正整數倍，不可含有零股。
-3. **持股檔數限制 (20 ~ 30 檔)**：
-   - 最終目標持股檔數必須嚴格介於 20 至 30 檔之間。競賽首日全現金建倉時，L3 必須一次性產生 20～30 筆 BUY 決策，且 `no_trade_decisions` 必須為空陣列 `[]`。
-4. **Active Share 規定 ($\ge 15\%$)**：
-   - L4 自動比對同業主動式 ETF 前 15 大成分股權重，確保主動性指標符合規定，避免淪為指數複製基金。
-5. **Code Execution 驗證**：
-   - 建議維持預設開啟 Code Execution，確保持股權重加總、現金收支與 Active Share 皆經 Python 精確驗算。
-6. **Prompt 永久留存與稽核**：
-   - 所有階段產生的 Prompt 皆會保留於磁碟，若線上執行有疑慮可隨時調閱回溯。
-7. **金鑰安全保護**：
-   - 嚴禁將包含 API Key 的 `.env`、`credentials.json` 或 `docs/Google AI API Key.md` 提交至 Git。
+</details>
+
+<details>
+<summary><b>⌨️ 展開查看：進階單模組 CLI 操作與除錯手冊</b></summary>
+
+> 以下指令皆假設已切換至 `code/` 目錄執行（`cd code`）。不帶 `--date` 時所有模組皆支援終端機互動日期輸入。
+
+```bash
+# --- 端到端產線局部重跑與抽樣除錯 ---
+python run_daily_dplan.py --date 20261124 --input-date 20261123 --max-stocks 3 --skip-l0 --skip-submit
+python run_daily_dplan.py --date 20261124 --skip-l0 --skip-l1 --skip-l2m --skip-l2   # 僅重跑 L3 至看板
+
+# --- L0 各資料源單獨執行 ---
+python L0_sources/backend_history_loader.py --full
+python L0_sources/datapack_loader.py --date 20261124 --no-fetch
+python L0_sources/stock_pool_screener.py --date 20261124 --dry-run
+python L0_sources/stock_pool_screener.py --date 20261124 --use-cached-metrics
+python L0_sources/stock_pool_screener.py --date 20261124 --skip-llm
+python L0_sources/cmoney_sentiment_crawler.py --date 20261124
+python L0_sources/finlab_market_loader.py --date 20261124 --overwrite
+python L0_sources/finlab_active_etf_loader.py --date 20261124
+
+# --- L1 ~ L4 單獨執行與 --dry-run / --no-code-exec ---
+python L1_observations/fact_extractor.py --date 20261124 --dry-run
+python L2M_market_view/market_view_agent.py --date 20261124 --no-code-exec
+python L2_inferences/stock_inference_agent.py --date 20261124 --dry-run
+python L3_decisions/portfolio_decision_agent.py --date 20261124 --no-stream
+python L4_orders/order_calculator.py --date 20261124 --no-gemini
+
+# --- 組裝、官方預檢核、繳交與報告 ---
+python build_dplan.py --date 20261124 --trade-date 2026-11-24
+python validate_dplan_api.py --date 20261124                 # 加上 --allow-warn 可僅阻擋 bad
+python submit_dplan_api.py --date 20261124 --dry-run
+python generate_daily_report.py --date 20261124
+
+# --- Portfolio Dashboard 局部操作 ---
+cd portfolio_dashboard
+python run_update.py --reports-only                          # 僅依快取行情重繪報告與網頁
+python run_update.py --rebuild-candles                       # 自 10/27 重建 150 檔官方日 K 線
+```
+
+</details>
