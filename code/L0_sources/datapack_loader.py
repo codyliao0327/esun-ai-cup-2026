@@ -53,8 +53,40 @@ INITIAL_NAV = 1_000_000_000.0
 LOT_SIZE = 1000
 
 
-def sync_latest_datapack_raw(raw_dir: Path = RAW_DIR) -> Path:
-    """透過 OAuth2 SSO 從玉山後台 /api/data-pack/ 自動下載最新 DataPack Raw JSON。"""
+def get_datapack_incomplete_reasons(dp: dict) -> List[str]:
+    """檢查 DataPack 是否尚未完成後台結算／收盤資料更新。
+
+    回傳空串列代表資料完整可用（包含首日全現金、holdings=[]、missing=[] 的合法狀態）；
+    回傳非空串列則列出所有未就緒的原因。
+    """
+    reasons: List[str] = []
+    missing = dp.get("missing") or []
+    if missing:
+        reasons.append(f"missing={missing}")
+    if dp.get("account") is None:
+        reasons.append("account=null")
+    if dp.get("holdings") is None:
+        reasons.append("holdings=null")
+    po = dp.get("prev_day_orders")
+    if isinstance(po, dict) and po.get("outcome") == "unknown":
+        reasons.append("prev_day_orders.outcome=unknown")
+    return reasons
+
+
+def is_datapack_ready(dp: dict) -> bool:
+    """回傳 DataPack 是否已完成後台更新並具備有效帳戶與持股資訊。"""
+    return len(get_datapack_incomplete_reasons(dp)) == 0
+
+
+def sync_latest_datapack_raw(
+    raw_dir: Path = RAW_DIR,
+    allow_incomplete: bool = False,
+) -> Optional[Path]:
+    """透過 OAuth2 SSO 從玉山後台 /api/data-pack/ 自動下載最新 DataPack Raw JSON。
+
+    若後台尚未更新完成（例如 missing 非空、account/holdings 為 null、
+    prev_day_orders.outcome 為 unknown），預設不寫入檔案並回傳 None。
+    """
     from L0_sources.backend_history_loader import EsunChallengeClient, _load_env_file
 
     _load_env_file(CODE_DIR / ".env")
@@ -72,6 +104,14 @@ def sync_latest_datapack_raw(raw_dir: Path = RAW_DIR) -> Path:
     dp_trade_date = str(dp.get("trade_date") or "").strip()
     if not dp_trade_date:
         raise RuntimeError(f"後台 /api/data-pack/ 回傳缺少 trade_date：{list(dp.keys())}")
+
+    incomplete_reasons = get_datapack_incomplete_reasons(dp)
+    if incomplete_reasons and not allow_incomplete:
+        print(
+            f"[datapack_loader] 後台 DataPack ({dp_trade_date}) 尚未更新完成"
+            f"（{', '.join(incomplete_reasons)}），略過不存檔。"
+        )
+        return None
 
     raw_dir.mkdir(parents=True, exist_ok=True)
     # 若目錄下已有同交易日檔案 (例如 DataPack_275_2026-11-16.json)，直接覆寫該檔以保持檔名一致
@@ -326,6 +366,8 @@ def load_datapack_history(
             continue
         t_date = dp.get("trade_date") or ""
         if up_to_iso and t_date > up_to_iso:
+            continue
+        if not is_datapack_ready(dp):
             continue
         items.append(dp)
     items.sort(key=lambda d: d.get("trade_date") or "")
@@ -639,16 +681,28 @@ def process_datapack(
         if fetch_api:
             fetched_path = sync_latest_datapack_raw(RAW_DIR)
             if not target_date:
+                if fetched_path is None:
+                    raise RuntimeError(
+                        "後台最新 DataPack 尚未更新完成（未儲存至 Raw），"
+                        "請待結算產生後再執行，或使用 --date 指定歷史交易日。"
+                    )
                 actual_path = fetched_path
             else:
                 iso_target = format_iso_trade_date(target_date)
-                fetched_data = load_datapack(fetched_path)
-                if fetched_data.get("trade_date") == iso_target:
-                    actual_path = fetched_path
+                if fetched_path is not None:
+                    fetched_data = load_datapack(fetched_path)
+                    if fetched_data.get("trade_date") == iso_target:
+                        actual_path = fetched_path
+                    else:
+                        print(
+                            f"[datapack_loader] API 最新 DataPack 為 {fetched_data.get('trade_date')}，"
+                            f"改讀取本地歷史檔 ({iso_target})..."
+                        )
+                        actual_path = find_datapack_raw(target_date)
                 else:
                     print(
-                        f"[datapack_loader] API 最新 DataPack 為 {fetched_data.get('trade_date')}，"
-                        f"改讀取本地歷史檔 ({iso_target})..."
+                        f"[datapack_loader] API 最新 DataPack 尚未更新完成（已略過儲存），"
+                        f"改嘗試讀取本地歷史檔 ({iso_target})..."
                     )
                     actual_path = find_datapack_raw(target_date)
         else:
