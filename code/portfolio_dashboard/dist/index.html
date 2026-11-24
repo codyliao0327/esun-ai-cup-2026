@@ -2467,7 +2467,7 @@
             <span class="badge-pnl badge-held" style="font-size:11.5px;">TEAM_11402</span>
           </div>
           <div class="about-hero-desc">
-            本系統為 <strong>2026 玉山人工智慧公開挑戰賽（AI CUP 2026）</strong> 所建置的「<strong>Multi-Agent 自主量化投資決策產線（D-Plan v4.3）</strong>」與「<strong>即時投資組合監控看板</strong>」雙核心平台。透過分層因果推論與原生 Python 沙盒運算，讓 AI 每日自動完成盤後數據整合、市場研判、個股推論與投組委託生成，並即時同步於本看板供研究覆核。
+            本系統為 <strong>2026 玉山人工智慧公開挑戰賽（AI CUP 2026）</strong> 所建置的「<strong>Multi-Agent 自主量化投資決策產線（D-Plan v4.3）</strong>」與「<strong>即時投資組合監控看板</strong>」雙核心平台。透過分層因果推論、原生 Python 沙盒運算與官方線上預檢核閘門，讓 AI 每日無人值守完成盤後多源數據萃取、市場研判、個股推論、委託算單與自動繳交，並即時同步至本看板進行 FinOps 成本與部位覆核。
           </div>
         </div>
         <a class="github-cta-btn" href="https://github.com/codyliao0327/esun-ai-cup-2026" target="_blank" rel="noopener noreferrer">
@@ -2498,12 +2498,12 @@
           <div class="pipeline-step">
             <span class="pipeline-step-tag">L0 · Pool & Sources</span>
             <span class="pipeline-step-title">動態選股與多源數據</span>
-            <span class="pipeline-step-desc">結合量化初篩與 LLM 補充篩選動態建構觀察池，並整合行情、基本面、籌碼與情緒數據。</span>
+            <span class="pipeline-step-desc">透過 OAuth2 SSO 與 SSR 憑證自動萃取整合多源數據，並結合量化初篩與 LLM 補撈建構動態觀察池。</span>
           </div>
           <div class="pipeline-step">
             <span class="pipeline-step-tag">L1 · Observations</span>
-            <span class="pipeline-step-title">客觀事實擷取</span>
-            <span class="pipeline-step-desc">壓縮為高密度 Compact Array JSON，保留時間戳並大幅降低 Token 消耗。</span>
+            <span class="pipeline-step-title">客觀事實與數值校準</span>
+            <span class="pipeline-step-desc">壓縮為高密度 Compact Array JSON 降低 Token 消耗，並以原始數值程式覆寫防範數值失真。</span>
           </div>
           <div class="pipeline-step">
             <span class="pipeline-step-tag">L2M · Market View</span>
@@ -2513,7 +2513,7 @@
           <div class="pipeline-step">
             <span class="pipeline-step-tag">L2 · Inferences</span>
             <span class="pipeline-step-title">個股深度推論</span>
-            <span class="pipeline-step-desc">針對精選候選池進行基本面、動能與風險因子因果推論。</span>
+            <span class="pipeline-step-desc">針對精選候選池進行基本面、動能與風險因子因果推論，並強制揭露反面證據。</span>
           </div>
           <div class="pipeline-step">
             <span class="pipeline-step-tag">L3 · Decisions</span>
@@ -2522,36 +2522,48 @@
           </div>
           <div class="pipeline-step">
             <span class="pipeline-step-tag">L4 · Orders & UI</span>
-            <span class="pipeline-step-title">委託精算與看板</span>
-            <span class="pipeline-step-desc">千股整股與合規校驗後產出 D-Plan，同步更新本儀表板。</span>
+            <span class="pipeline-step-title">委託算單與預檢繳交</span>
+            <span class="pipeline-step-desc">千股整股算單與 Active Share 覆核後通過官方預檢閘門繳交，產出稽核報告並同步更新本看板。</span>
           </div>
         </div>
       </div>
 
       <div class="highlights-grid">
         <div class="glass-card highlight-card">
-          <div class="highlight-card-title"><span>🧠</span> 因果引用鏈與嚴格 Schema 校驗</div>
-          <div class="highlight-card-desc">落實 L0 ➔ L1 ➔ L2M ➔ L2 ➔ L3 ➔ L4 單向無循環引用，並透過 Pydantic <code>extra='forbid'</code> 全量結構驗證，杜絕孤兒節點與格式偏差。</div>
+          <div class="highlight-card-title"><span>🧠</span> 因果引用鏈與雙層 Pydantic Schema</div>
+          <div class="highlight-card-desc">落實 L0 ➔ L4 單向無循環 DAG 引用驗證，並分離輕量 <code>Draft</code>（避免結構化輸出 FSM 狀態爆炸）與嚴格 <code>Final</code>（<code>extra='forbid'</code>）模型，杜絕孤兒節點與格式偏差。</div>
         </div>
         <div class="glass-card highlight-card">
-          <div class="highlight-card-title"><span>🐍</span> 原生 Python 沙盒零數值幻覺</div>
-          <div class="highlight-card-desc">於 L0、L2M、L2、L3、L4 核心階段全面啟用 Gemini 原生 Code Execution 沙盒，將選股指標計算、權重精算與整股換算交由程式執行，徹底避免 LLM 算術誤差。</div>
+          <div class="highlight-card-title"><span>🐍</span> 原生 Python 沙盒與底層原始碼稽核</div>
+          <div class="highlight-card-desc">於 L0、L2M、L2、L3、L4 核心階段全面啟用 Gemini 原生 Code Execution 沙盒消除算術幻覺，並透過底層 Hook 攔截串流與非串流 <code>executable_code</code> 留存稽核。</div>
         </div>
         <div class="glass-card highlight-card">
-          <div class="highlight-card-title"><span>🧭</span> LiteLLM Multi-Model 動態路由</div>
-          <div class="highlight-card-desc">透過 <code>litellm.Router</code> 依任務複雜度分流模型（輕量級模型處理海量事實擷取、旗艦推理模型負責投組決策），並配置異常自動降級備援（Fallback）。</div>
+          <div class="highlight-card-title"><span>🧭</span> LiteLLM Multi-Model 動態路由與備援</div>
+          <div class="highlight-card-desc">透過 <code>litellm.Router</code> 依任務複雜度分流 <code>gemini-3.8-flash</code>（海量事實擷取）與 <code>gemini-4-carbon</code>（深度推理決策），並配置自動重試與異常降級備援（Fallback）。</div>
         </div>
         <div class="glass-card highlight-card">
-          <div class="highlight-card-title"><span>🛡️</span> 三層 JSON 容錯防禦鏈</div>
-          <div class="highlight-card-desc">結合串流模式結構化輸出（Structured Output）、Pydantic 校驗與 <code>json-repair</code> 自動修復容錯鏈，確保超長推論輸出依然維持高穩定度。</div>
+          <div class="highlight-card-title"><span>🛡️</span> 三層 JSON 容錯與 L1 原始數值覆寫</div>
+          <div class="highlight-card-desc">結合串流模式結構化輸出與 <code>json-repair</code> 三層容錯解析鏈，並於 L1 後處理以程式端原始數據 100% 覆寫 <code>values</code> 與 <code>source_ref</code>，徹底杜絕浮點數幻覺與缺漏。</div>
         </div>
         <div class="glass-card highlight-card">
-          <div class="highlight-card-title"><span>⚡</span> 動態回補與 Compact JSON 工程</div>
-          <div class="highlight-card-desc">基本面與社群情緒指標採各股獨立動態遞補最新有效值，並以 Compact Array JSON 壓縮儲存，在有限上下文視窗中塞入最大資訊密度。</div>
+          <div class="highlight-card-title"><span>⚡</span> 動態遞補與 Compact Array JSON 工程</div>
+          <div class="highlight-card-desc">基本面季報／月營收與社群情緒採各股獨立動態遞補最新非空值並保留真實公告時間戳，搭配單行 Compact Array JSON 壓縮，在有限視窗中極大化資訊密度。</div>
         </div>
         <div class="glass-card highlight-card">
-          <div class="highlight-card-title"><span>💎</span> 實戰級全端監控與自動發布</div>
-          <div class="highlight-card-desc">整合玉山行情 SDK、FIFO 分批買進成本與損益追蹤、19 項 LiteLLM 用量成本監控，並支援每日一鍵更新與 Cloudflare Pages 自動部署。</div>
+          <div class="highlight-card-title"><span>🎯</span> 三階段動態股票池篩選引擎</div>
+          <div class="highlight-card-desc">每日自法定上市櫃母體出發，結合量化相對動能初篩、高階 LLM 依籌碼與同業估值補撈遺珠，並強制聯集帳上現有持股，兼顧盤面輪動靈敏度與部位連續性。</div>
+        </div>
+        <div class="glass-card highlight-card">
+          <div class="highlight-card-title"><span>🔐</span> 全自動多源認證與訪客憑證萃取</div>
+          <div class="highlight-card-desc">透過 OAuth2 SSO 自動增量同步競賽後台歷史與 DataPack（內建盤後結算就緒守護），並自 CMoney SSR 原始碼自動萃取訪客 JWT 搭配 401 自動重取重試，實現零人工介入。</div>
+        </div>
+        <div class="glass-card highlight-card">
+          <div class="highlight-card-title"><span>🚦</span> 官方線上預檢核閘門與無人值守繳交</div>
+          <div class="highlight-card-desc">D-Plan 組裝完成後自動上傳官方 <code>/validate/</code> 端點執行零容忍預檢核（任何異常即中止阻擋），全數通過後才執行正式繳交並驗證官方收據與產出每日回顧報告。</div>
+        </div>
+        <div class="glass-card highlight-card">
+          <div class="highlight-card-title"><span>💎</span> 全鏈路 FinOps 監控與液態玻璃看板</div>
+          <div class="highlight-card-desc">實施全階段無條件 Prompt 存檔、19 項 LiteLLM 原生 Usage 成本監控、玉山行情 SDK 開市日曆自校準、FIFO 批次成本追蹤，並支援一鍵更新與 Cloudflare Pages 自動部署。</div>
         </div>
       </div>
     </div>
