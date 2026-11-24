@@ -1,0 +1,1134 @@
+{
+  "date": "20261125",
+  "generated_at": "2026-11-25T01:21:13+08:00",
+  "datapack_file": "DataPack_275_2026-11-25.json",
+  "data_dates": {
+    "price": "2026-11-24",
+    "chip": "2026-11-20",
+    "margin": "2026-11-24",
+    "pe": "2026-11-24"
+  },
+  "count": 82,
+  "rule1_count": 37,
+  "agent_extra_count": 33,
+  "holding_count": 26,
+  "holding_forced_count": 12,
+  "stock_ids": [
+    "1402",
+    "1519",
+    "1590",
+    "1785",
+    "2059",
+    "2207",
+    "2301",
+    "2303",
+    "2308",
+    "2313",
+    "2317",
+    "2330",
+    "2345",
+    "2347",
+    "2357",
+    "2368",
+    "2376",
+    "2377",
+    "2379",
+    "2382",
+    "2383",
+    "2395",
+    "2404",
+    "2412",
+    "2449",
+    "2451",
+    "2454",
+    "2603",
+    "2609",
+    "2615",
+    "2618",
+    "2812",
+    "2886",
+    "3017",
+    "3034",
+    "3037",
+    "3044",
+    "3131",
+    "3189",
+    "3227",
+    "3231",
+    "3260",
+    "3293",
+    "3324",
+    "3374",
+    "3491",
+    "3533",
+    "3653",
+    "3661",
+    "3665",
+    "3680",
+    "3711",
+    "3718",
+    "4749",
+    "4958",
+    "4966",
+    "5289",
+    "5347",
+    "5483",
+    "5536",
+    "5871",
+    "5903",
+    "6023",
+    "6121",
+    "6139",
+    "6187",
+    "6223",
+    "6239",
+    "6274",
+    "6415",
+    "6515",
+    "6548",
+    "6584",
+    "6669",
+    "6770",
+    "6789",
+    "7828",
+    "8046",
+    "8069",
+    "8210",
+    "8299",
+    "8415"
+  ],
+  "rule1_stock_ids": [
+    "1402",
+    "1785",
+    "2207",
+    "2303",
+    "2330",
+    "2345",
+    "2347",
+    "2377",
+    "2382",
+    "2395",
+    "2404",
+    "2451",
+    "2454",
+    "2603",
+    "2618",
+    "2886",
+    "3044",
+    "3227",
+    "3231",
+    "3260",
+    "3293",
+    "3491",
+    "3661",
+    "3665",
+    "4966",
+    "5347",
+    "5536",
+    "5871",
+    "5903",
+    "6023",
+    "6121",
+    "6139",
+    "6223",
+    "6548",
+    "7828",
+    "8299",
+    "8415"
+  ],
+  "agent_extra_stock_ids": [
+    "1519",
+    "1590",
+    "2301",
+    "2313",
+    "2357",
+    "2376",
+    "2412",
+    "2449",
+    "2609",
+    "2615",
+    "2812",
+    "3037",
+    "3131",
+    "3189",
+    "3324",
+    "3374",
+    "3533",
+    "3653",
+    "3680",
+    "3718",
+    "4749",
+    "4958",
+    "5483",
+    "6187",
+    "6239",
+    "6274",
+    "6415",
+    "6515",
+    "6584",
+    "6770",
+    "6789",
+    "8069",
+    "8210"
+  ],
+  "holding_stock_ids": [
+    "2059",
+    "2308",
+    "2317",
+    "2330",
+    "2345",
+    "2368",
+    "2379",
+    "2382",
+    "2383",
+    "2454",
+    "3017",
+    "3034",
+    "3227",
+    "3260",
+    "3293",
+    "3661",
+    "3665",
+    "3711",
+    "5289",
+    "6139",
+    "6223",
+    "6669",
+    "7828",
+    "8046",
+    "8299",
+    "8415"
+  ],
+  "holding_forced_stock_ids": [
+    "2059",
+    "2308",
+    "2317",
+    "2368",
+    "2379",
+    "2383",
+    "3017",
+    "3034",
+    "3711",
+    "5289",
+    "6669",
+    "8046"
+  ],
+  "stocks": [
+    {
+      "stock_id": "1402",
+      "stock": "遠東新",
+      "market": "twse",
+      "industry": "紡織纖維",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "1519",
+      "stock": "華城",
+      "market": "twse",
+      "industry": "電機機械",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "1590",
+      "stock": "亞德客-KY",
+      "market": "twse",
+      "industry": "電機機械",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "1785",
+      "stock": "光洋科",
+      "market": "otc",
+      "industry": "其他電子業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "2059",
+      "stock": "川湖",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": true,
+      "source": "holding_forced",
+      "sources": [
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "2207",
+      "stock": "和泰車",
+      "market": "twse",
+      "industry": "汽車工業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "2301",
+      "stock": "光寶科",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "2303",
+      "stock": "聯電",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "2308",
+      "stock": "台達電",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": true,
+      "source": "holding_forced",
+      "sources": [
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "2313",
+      "stock": "華通",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "2317",
+      "stock": "鴻海",
+      "market": "twse",
+      "industry": "其他電子業",
+      "is_holding": true,
+      "source": "holding_forced",
+      "sources": [
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "2330",
+      "stock": "台積電",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": true,
+      "source": "rule1",
+      "sources": [
+        "rule1",
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "2345",
+      "stock": "智邦",
+      "market": "twse",
+      "industry": "通信網路業",
+      "is_holding": true,
+      "source": "rule1",
+      "sources": [
+        "rule1",
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "2347",
+      "stock": "聯強",
+      "market": "twse",
+      "industry": "電子通路業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "2357",
+      "stock": "華碩",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "2368",
+      "stock": "金像電",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": true,
+      "source": "holding_forced",
+      "sources": [
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "2376",
+      "stock": "技嘉",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "2377",
+      "stock": "微星",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "2379",
+      "stock": "瑞昱",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": true,
+      "source": "holding_forced",
+      "sources": [
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "2382",
+      "stock": "廣達",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": true,
+      "source": "rule1",
+      "sources": [
+        "rule1",
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "2383",
+      "stock": "台光電",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": true,
+      "source": "holding_forced",
+      "sources": [
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "2395",
+      "stock": "研華",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "2404",
+      "stock": "漢唐",
+      "market": "twse",
+      "industry": "其他電子業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "2412",
+      "stock": "中華電",
+      "market": "twse",
+      "industry": "通信網路業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "2449",
+      "stock": "京元電子",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "2451",
+      "stock": "創見",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "2454",
+      "stock": "聯發科",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": true,
+      "source": "rule1",
+      "sources": [
+        "rule1",
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "2603",
+      "stock": "長榮",
+      "market": "twse",
+      "industry": "航運業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "2609",
+      "stock": "陽明",
+      "market": "twse",
+      "industry": "航運業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "2615",
+      "stock": "萬海",
+      "market": "twse",
+      "industry": "航運業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "2618",
+      "stock": "長榮航",
+      "market": "twse",
+      "industry": "航運業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "2812",
+      "stock": "台中銀",
+      "market": "twse",
+      "industry": "金融保險業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "2886",
+      "stock": "兆豐金",
+      "market": "twse",
+      "industry": "金融保險業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "3017",
+      "stock": "奇鋐",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": true,
+      "source": "holding_forced",
+      "sources": [
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "3034",
+      "stock": "聯詠",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": true,
+      "source": "holding_forced",
+      "sources": [
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "3037",
+      "stock": "欣興",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "3044",
+      "stock": "健鼎",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "3131",
+      "stock": "弘塑",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "3189",
+      "stock": "景碩",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "3227",
+      "stock": "原相",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": true,
+      "source": "rule1",
+      "sources": [
+        "rule1",
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "3231",
+      "stock": "緯創",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "3260",
+      "stock": "威剛",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": true,
+      "source": "rule1",
+      "sources": [
+        "rule1",
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "3293",
+      "stock": "鈊象",
+      "market": "otc",
+      "industry": "文化創意業",
+      "is_holding": true,
+      "source": "rule1",
+      "sources": [
+        "rule1",
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "3324",
+      "stock": "雙鴻",
+      "market": "otc",
+      "industry": "其他電子業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "3374",
+      "stock": "精材",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "3491",
+      "stock": "昇達科",
+      "market": "otc",
+      "industry": "通信網路業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "3533",
+      "stock": "嘉澤",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "3653",
+      "stock": "健策",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "3661",
+      "stock": "世芯-KY",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": true,
+      "source": "rule1",
+      "sources": [
+        "rule1",
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "3665",
+      "stock": "貿聯-KY",
+      "market": "twse",
+      "industry": "其他電子業",
+      "is_holding": true,
+      "source": "rule1",
+      "sources": [
+        "rule1",
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "3680",
+      "stock": "家登",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "3711",
+      "stock": "日月光投控",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": true,
+      "source": "holding_forced",
+      "sources": [
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "3718",
+      "stock": "中光電投控",
+      "market": "otc",
+      "industry": "光電業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "4749",
+      "stock": "新應材",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "4958",
+      "stock": "臻鼎-KY",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "4966",
+      "stock": "譜瑞-KY",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "5289",
+      "stock": "宜鼎",
+      "market": "otc",
+      "industry": "電腦及週邊設備業",
+      "is_holding": true,
+      "source": "holding_forced",
+      "sources": [
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "5347",
+      "stock": "世界",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "5483",
+      "stock": "中美晶",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "5536",
+      "stock": "聖暉",
+      "market": "otc",
+      "industry": "其他電子業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "5871",
+      "stock": "中租-KY",
+      "market": "twse",
+      "industry": "其他",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "5903",
+      "stock": "全家",
+      "market": "otc",
+      "industry": "居家生活",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "6023",
+      "stock": "元大期",
+      "market": "otc",
+      "industry": "金融業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "6121",
+      "stock": "新普",
+      "market": "otc",
+      "industry": "電腦及週邊設備業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "6139",
+      "stock": "亞翔",
+      "market": "twse",
+      "industry": "其他電子業",
+      "is_holding": true,
+      "source": "rule1",
+      "sources": [
+        "rule1",
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "6187",
+      "stock": "萬潤",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "6223",
+      "stock": "旺矽",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": true,
+      "source": "rule1",
+      "sources": [
+        "rule1",
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "6239",
+      "stock": "力成",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "6274",
+      "stock": "台燿",
+      "market": "otc",
+      "industry": "電子零組件業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "6415",
+      "stock": "矽力-KY",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "6515",
+      "stock": "穎崴",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "6548",
+      "stock": "長科",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "source": "rule1",
+      "sources": [
+        "rule1"
+      ]
+    },
+    {
+      "stock_id": "6584",
+      "stock": "南俊國際",
+      "market": "otc",
+      "industry": "電子零組件業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "6669",
+      "stock": "緯穎",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": true,
+      "source": "holding_forced",
+      "sources": [
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "6770",
+      "stock": "力積電",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "6789",
+      "stock": "采鈺",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "7828",
+      "stock": "創新服務",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": true,
+      "source": "rule1",
+      "sources": [
+        "rule1",
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "8046",
+      "stock": "南電",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": true,
+      "source": "holding_forced",
+      "sources": [
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "8069",
+      "stock": "元太",
+      "market": "otc",
+      "industry": "光電業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "8210",
+      "stock": "勤誠",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": false,
+      "source": "agent_supplementary",
+      "sources": [
+        "agent_supplementary"
+      ]
+    },
+    {
+      "stock_id": "8299",
+      "stock": "群聯",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": true,
+      "source": "rule1",
+      "sources": [
+        "rule1",
+        "holding"
+      ]
+    },
+    {
+      "stock_id": "8415",
+      "stock": "大國鋼",
+      "market": "otc",
+      "industry": "鋼鐵工業",
+      "is_holding": true,
+      "source": "rule1",
+      "sources": [
+        "rule1",
+        "holding"
+      ]
+    }
+  ]
+}

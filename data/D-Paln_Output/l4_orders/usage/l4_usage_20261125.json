@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-11-25T01:40:59+08:00",
+  "date": "20261125",
+  "provider": "gemini",
+  "model": "gemini-4-carbon",
+  "model_group": "stage-l4",
+  "stage": "l4",
+  "status": "success",
+  "finish_reason": "stop",
+  "duration_seconds": 74.82,
+  "prompt_tokens": 11991,
+  "completion_tokens": 3125,
+  "total_tokens": 15116,
+  "cached_tokens": 3254,
+  "tool_use_tokens": 6688,
+  "reasoning_tokens": 236,
+  "response_cost": 0.049049,
+  "code_execution_used": true,
+  "code_execution_call_count": 1,
+  "executed_codes": [
+    {
+      "language": "PYTHON",
+      "code": "import math\n\nnav = 866520721\ncash = 83625721\n\nholdings = {\n    \"2059\": 4000, \"2308\": 38000, \"2317\": 153000, \"2330\": 59000, \"2345\": 24000,\n    \"2368\": 28000, \"2379\": 31000, \"2382\": 106000, \"2383\": 9000, \"2454\": 10000,\n    \"3017\": 11000, \"3034\": 38000, \"3227\": 96000, \"3260\": 76000, \"3293\": 22000,\n    \"3661\": 8000, \"3665\": 21000, \"3711\": 43000, \"5289\": 23000, \"6139\": 34000,\n    \"6223\": 4000, \"6669\": 16000, \"7828\": 19000, \"8046\": 26000, \"8299\": 21000,\n    \"8415\": 465000\n}\n\norders = [\n    {\"ticker\": \"2330\", \"side\": \"SELL\", \"shares\": 5000, \"decision_ref\": \"D1\", \"weight\": 0.139, \"price\": 2230},\n    {\"ticker\": \"2308\", \"side\": \"SELL\", \"shares\": 6000, \"decision_ref\": \"D2\", \"weight\": 0.0401, \"price\": 1085},\n    {\"ticker\": \"2383\", \"side\": \"SELL\", \"shares\": 3000, \"decision_ref\": \"D3\", \"weight\": 0.0274, \"price\": 3395},\n    {\"ticker\": \"3711\", \"side\": \"SELL\", \"shares\": 14000, \"decision_ref\": \"D4\", \"weight\": 0.0183, \"price\": 530},\n    {\"ticker\": \"2059\", \"side\": \"SELL\", \"shares\": 3000, \"decision_ref\": \"D5\", \"weight\": 0.0143, \"price\": 6200},\n    {\"ticker\": \"2379\", \"side\": \"SELL\", \"shares\": 31000, \"decision_ref\": \"D6\", \"weight\": 0.0, \"price\": 694},\n    {\"ticker\": \"3034\", \"side\": \"SELL\", \"shares\": 38000, \"decision_ref\": \"D7\", \"weight\": 0.0, \"price\": 435.5},\n    {\"ticker\": \"8046\", \"side\": \"SELL\", \"shares\": 26000, \"decision_ref\": \"D8\", \"weight\": 0.0, \"price\": 737},\n    {\"ticker\": \"2618\", \"side\": \"BUY\", \"shares\": 600000, \"decision_ref\": \"D9\", \"weight\": 0.0337, \"price\": 48.6},\n    {\"ticker\": \"2603\", \"side\": \"BUY\", \"shares\": 83000, \"decision_ref\": \"D10\", \"weight\": 0.0249, \"price\": 257},\n]\n\nbuy_amt = 0\nsell_amt = 0\nfor o in orders:\n    t = o[\"ticker\"]\n    cur = holdings.get(t, 0)\n    target = math.floor(o[\"weight\"] * nav / o[\"price\"] / 1000) * 1000\n    diff = target - cur\n    side = \"BUY\" if diff > 0 else \"SELL\"\n    assert side == o[\"side\"], f\"Side mismatch {t}\"\n    assert abs(diff) == o[\"shares\"], f\"Shares mismatch {t}: {abs(diff)} vs {o['shares']}\"\n    assert o[\"shares\"] % 1000 == 0 and o[\"shares\"] > 0\n    if side == \"SELL\":\n        assert o[\"shares\"] <= cur, f\"Oversell {t}\"\n        sell_amt += o[\"shares\"] * o[\"price\"]\n    else:\n        buy_amt += o[\"shares\"] * o[\"price\"]\n\nnew_cash = cash + sell_amt - buy_amt\ncash_pct = new_cash / nav\nprint(f\"buy_amt={buy_amt:,.0f}, sell_amt={sell_amt:,.0f}, new_cash={new_cash:,.0f}, cash_pct={cash_pct:.4f}\")\nprint(\"Buy covered by initial cash alone?\", buy_amt <= cash)\n"
+    }
+  ]
+}
