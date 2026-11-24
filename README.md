@@ -73,7 +73,7 @@
 
 | 工程維度 | 實務痛點 | 本系統架構解法 |
 | :--- | :--- | :--- |
-| **1. 金融法規與合規零容錯** | 每日必須嚴守 **20～30 檔持股**、一般個股 $\le 10\%$（台積電 $\le 25\%$）、千股整股、Active Share $\ge 15\%$；且盤後現金比若超過 $25.0\%$ 即整批作廢並記警告（累計 3 次失格）。 | 將法規邊界直接內嵌於 **Pydantic 硬驗證 + Python 機械算單 + 22% 主動現金安全線**，並在送出前經官方 `/validate/` 端點執行零容忍閘門檢查。 |
+| **1. 金融法規與合規零容錯** | 每日必須嚴守 **20～30 檔持股**、一般個股 ≤ 10%（台積電 ≤ 25%）、千股整股、Active Share ≥ 15%；且盤後現金比若超過 25.0% 即整批作廢並記警告（累計 3 次失格）。 | 將法規邊界直接內嵌於 **Pydantic 硬驗證 + Python 機械算單 + 22% 主動現金安全線**，並在送出前經官方 `/validate/` 端點執行零容忍閘門檢查。 |
 | **2. LLM 的量化與結構化缺陷** | 純 LLM 進行多檔權重加總、手續費扣減與股數取整極易產生「算術幻覺」；長輸出易引發 JSON 格式截斷或 FSM 狀態爆炸；多階段推論易產生孤兒引用斷鏈。 | 採用 **LiteLLM Multi-Model 路由** + **Gemini 原生 Code Execution 沙盒** + **雙層 Pydantic Schema（`Draft` vs `Final`）** + **三層 JSON 容錯鏈** + **DAG 全圖驗證**。 |
 | **3. 多源異質資料自動化串接** | 每日須整合玉山競賽後台歷史明細、DataPack、FinLab 量化寬表、CMoney 社群討論情緒與同業 ETF 成分股；過去依賴手動複製 Token 與下載檔案極易中斷。 | 實作 **OAuth2 SSO 自動登入**、**CMoney SSR 訪客 JWT 自動萃取與 401 重試**、**資料就緒守護機制**，串聯成一鍵執行的 Step 0～10 無人值守產線。 |
 
@@ -163,9 +163,9 @@ flowchart TD
 | **Step 0**<br>L0 資料收集與動態股票池 | `L0_sources/*.py`<br>*(0c 路由 `stage-l0`)* | **嚴格防漏中斷**：任一模組抓取失敗即拋出 `RuntimeError` 中止產線。<br>依序同步後台歷史 (`0a`) ➔ 下載並驗證 DataPack 就緒、結合後台 4 位小數成交價計算持倉移動停利追蹤 (`0b`) ➔ 執行 150 檔動態股票池篩選 (`0c`) ➔ 依動態池抓取 CMoney 討論情緒 (`0d`)、計算 FinLab 45 項指標 (`0e`) 與同業主動式 ETF 前 15 大持股 (`0f`)。 |
 | **Step 1**<br>L1 客觀事實擷取 | `fact_extractor.py`<br>*(`stage-l1`: `gemini-3.8-flash`)* | **純客觀陳述，嚴禁推論或預測**。<br>讀入 `data/大盤/`、`技術面/`、`基本面/`、`籌碼面/`、`CMoney_Sentiment/` 中嚴格吻合目標日期 `_YYYYMMDD` 的檔案（有 `.json` 優先讀 `.json`），跨資料夾依 4 碼代號整合為 Compact Array JSON 注入 Prompt。產出 1 筆 `tw_market` (`O1`) 與每檔標的恰好 1 筆 `stock_<代碼>` (`O2..On`)，並由程式端以原始數值覆寫 `values` 與 `source_ref`。 |
 | **Step 2**<br>L2M 市場研判鏈 | `market_view_agent.py`<br>*(`stage-l2m` + Code Execution)* | 引用 `O1` 評估八大總體構面：均線乖離與生命線動能、櫃買 OTC vs 加權強弱、法人買賣超分歧、全市場多空排列家數差與融資槓桿、產業 RS 輪動、現有部位風險、賽期進度與主動現金防禦。<br>輸出 `regime` (`risk_on`/`neutral`/`risk_off`)、`stance` (`aggressive`/`neutral`/`defensive`)、`posture`（`target_cash_pct_range` 與 `net_exposure_intent`）及必檢 `counter_evidence`。 |
-| **Step 3**<br>L2 個股推論核心 | `stock_inference_agent.py`<br>*(`stage-l2` + Code Execution)* | 採**兩階段分析架構**：<br>**階段一（個股深入分析）**：交叉比對企業品質 (ROE/營收)、技術結構 (均線/KD/MACD/布林/ADX)、量價籌碼、CMoney 情緒落差，以及既有持股移動停利狀態（若 `peak_pnl_pct >= +10%` 且 `dd_from_peak_pct <= -4%` 主動規劃鎖利）。<br>**階段二（選股與組合決策）**：考量來回約 $0.585\%$ 摩擦成本與賽期剩餘天數，規劃 20～30 檔目標權重並撰寫反面證據（上限 60 筆推論）。 |
-| **Step 4**<br>L3 投資組合決策 | `portfolio_decision_agent.py`<br>*(`stage-l3` + Code Execution)* | 產出 `decisions`（`BUY` / `ADD` / `TRIM` / `SELL_ALL`）與 `no_trade_decisions`（續抱）。<br>強制執行：**昨日持股 100% 互斥覆蓋**、**總持股嚴格落於 20～30 檔**、**個股權重上限**（一般 $\le 10\%$、2330 $\le 25\%$）、**L2M `hold` 2% NAV 淨買賣容差**、**真實資金缺口檢查（`funding_for`）**與 **Active Share $\ge 15\%$**。 |
-| **Step 5**<br>L4 委託單與覆核 | `order_calculator.py`<br>*(`stage-l4` + Code Execution)* | **階段一（Python 機械算單）**：依官方千股整股向下取整公式計算 `target_shares` 與委託股數，自動產出 `derivation_detail` 並精算執行後現金比與 Active Share。<br>**階段二（Gemini 覆核）**：由 LLM + Code Execution 覆核 Active Share $\ge 15\%$、無超賣、現金落於 L2M 區間與格式規範，產出最終 `orders` 與 `review_notes`。 |
+| **Step 3**<br>L2 個股推論核心 | `stock_inference_agent.py`<br>*(`stage-l2` + Code Execution)* | 採**兩階段分析架構**：<br>**階段一（個股深入分析）**：交叉比對企業品質 (ROE/營收)、技術結構 (均線/KD/MACD/布林/ADX)、量價籌碼、CMoney 情緒落差，以及既有持股移動停利狀態（若 `peak_pnl_pct >= +10%` 且 `dd_from_peak_pct <= -4%` 主動規劃鎖利）。<br>**階段二（選股與組合決策）**：考量來回約 0.585% 摩擦成本與賽期剩餘天數，規劃 20～30 檔目標權重並撰寫反面證據（上限 60 筆推論）。 |
+| **Step 4**<br>L3 投資組合決策 | `portfolio_decision_agent.py`<br>*(`stage-l3` + Code Execution)* | 產出 `decisions`（`BUY` / `ADD` / `TRIM` / `SELL_ALL`）與 `no_trade_decisions`（續抱）。<br>強制執行：**昨日持股 100% 互斥覆蓋**、**總持股嚴格落於 20～30 檔**、**個股權重上限**（一般 ≤ 10%、2330 ≤ 25%）、**L2M `hold` 2% NAV 淨買賣容差**、**真實資金缺口檢查（`funding_for`）**與 **Active Share ≥ 15%**。 |
+| **Step 5**<br>L4 委託單與覆核 | `order_calculator.py`<br>*(`stage-l4` + Code Execution)* | **階段一（Python 機械算單）**：依官方千股整股向下取整公式計算 `target_shares` 與委託股數，自動產出 `derivation_detail` 並精算執行後現金比與 Active Share。<br>**階段二（Gemini 覆核）**：由 LLM + Code Execution 覆核 Active Share ≥ 15%、無超賣、現金落於 L2M 區間與格式規範，產出最終 `orders` 與 `review_notes`。 |
 | **Step 6~9**<br>組裝、預檢核、繳交與報告 | `build_dplan.py`<br>`validate_dplan_api.py`<br>`submit_dplan_api.py`<br>`generate_daily_report.py` | **Step 6**：注入 `agent_metadata`（含 Git commit hash）並通過 Pydantic `DPlanDocument` (`extra="forbid"`) 全圖驗證。<br>**Step 7**：上傳官方 `/api/submissions/dplan/validate/`，預設採零容忍模式（任何 `bad > 0` 或 `warn > 0` 立即中止）。<br>**Step 8**：預檢核通過後正式 POST `/api/submissions/dplan/` 並驗證官方收據欄位。<br>**Step 9**：產出含 7 大章節的 Markdown 審視報告（含 L0 動態股票池篩選回顧）。 |
 
 ---
@@ -249,7 +249,7 @@ flowchart TD
 | 構面 | 指標 Key | 定義與篩選角色 |
 | :--- | :--- | :--- |
 | **價格動能（規則一）** | `ret_5d_pct` / `ret_10d_pct` | 個股近 5 日 / 近 10 日收盤報酬率（%）。 |
-| **相對市場報酬（規則一）** | `rel_ret_5d_pp` / `rel_ret_10d_pp` | 個股相對所屬市場指數（上市比 TAIEX、上櫃比櫃買指數，均不含息）近 5/10 日超額報酬（pp）。**兩者皆 $> 0$ 時 `rule1_selected = true` 直接鎖定納入**。 |
+| **相對市場報酬（規則一）** | `rel_ret_5d_pp` / `rel_ret_10d_pp` | 個股相對所屬市場指數（上市比 TAIEX、上櫃比櫃買指數，均不含息）近 5/10 日超額報酬（pp）。**兩者皆 > 0 時 `rule1_selected = true` 直接鎖定納入**。 |
 | **集保持股籌碼（週資料）** | `chip_over_1000_chg_pp` / `chip_under_50_chg_pp` / `chip_holders_chg_pct` | 千張大戶占比近 1 期變化 (pp)、50 張以下散戶占比變化 (pp)、全部持有人數變化率 (%)；供 `stage-l0` 偵測「大戶吸籌、散戶退場」。 |
 | **融資槓桿（日資料）** | `margin_balance_lots` / `margin_chg_5d_pct` / `margin_pct_10d` | 最新融資餘額（張）、近 5 日變化率 (%)、近 10 日升冪百分位 (0～100)；搭配張數判讀籌碼去槓桿程度。 |
 | **同產業估值（日資料）** | `pe_ratio` / `pe_industry_pct` | 最新正值本益比，以及在 150 檔同產業群組內的升冪百分位（0～100，越低代表同業相對越便宜）。 |
@@ -261,19 +261,19 @@ flowchart TD
 | 1 | `taiex_close_latest` | 指數點位 | 加權報酬/價格指數最新收盤點位（點） | 基準指數水位 |
 | 2 | `taiex_return_5d` | 短期動能 | 加權指數近 5 日報酬率（%） | 短期漲跌動能強度 |
 | 3 | `taiex_vs_ma10_pct` | 均線乖離 | 相對 10 日雙週線乖離率（%） | 極短線強弱與過熱/超跌程度 |
-| 4 | `taiex_vs_ma20_pct` | 均線乖離 | 相對 20 日月線乖離率（%） | $>0$ 站穩月線之上、$<0$ 跌破月線 |
-| 5 | `taiex_range_pos_10d` | 區間位置 | 10 日價格區間相對位置（0%～100%） | $>80\%$ 逼近高點、$<20\%$ 瀕臨破底 |
+| 4 | `taiex_vs_ma20_pct` | 均線乖離 | 相對 20 日月線乖離率（%） | `> 0` 站穩月線之上、`< 0` 跌破月線 |
+| 5 | `taiex_range_pos_10d` | 區間位置 | 10 日價格區間相對位置（0%～100%） | `> 80%` 逼近高點、`< 20%` 瀕臨破底 |
 | 6 | `taiex_max_drawdown_5d` | 下行風險 | 近 5 日滾動最大回撤（%，負值） | 評估近期實際波動與下行壓力 |
-| 7 | `otc_vs_taiex_return_5d` | 內資風向 | 櫃買指數 5D 報酬 － 加權 5D 報酬（pp） | $>0$ 中小型題材股強於權值股；$<0$ 內資退潮 |
+| 7 | `otc_vs_taiex_return_5d` | 內資風向 | 櫃買指數 5D 報酬 － 加權 5D 報酬（pp） | `> 0` 中小型題材股強於權值股；`< 0` 內資退潮 |
 | 8 | `market_foreign_net_buy_5d` | 法人資金 | 外資（不含外資自營商）近 5 日上市淨買賣超（元） | 中短線外資資金趨勢方向 |
 | 9 | `market_foreign_net_buy_1d` | 法人資金 | 外資最新單日上市淨買賣超（元） | 最新交易日外資態度 |
 | 10 | `market_trust_net_buy_5d` | 法人資金 | 投信近 5 日上市淨買賣超（元） | 內資法人近一週買盤延續性 |
 | 11 | `market_trust_net_buy_1d` | 法人資金 | 投信最新單日上市淨買賣超（元） | 最新交易日投信動向 |
-| 12 | `market_advance_decline_ratio` | 市場廣度 | 全市場上漲家數 ÷ 下跌家數（倍） | $>1$ 漲多於跌；與指數背離時提示漲勢集中風險 |
+| 12 | `market_advance_decline_ratio` | 市場廣度 | 全市場上漲家數 ÷ 下跌家數（倍） | `> 1` 漲多於跌；與指數背離時提示漲勢集中風險 |
 | 13 | `listed_margin_balance_change_5d` | 槓桿籌碼 | 上市融資交易金額近 5 日變化率（%） | 指數跌破 20MA 且融資續增時警戒多殺多 |
-| 14 | `market_alignment` | 均線結構 | `market_alignment_diff`：$(5\text{MA}\ge10\text{MA}\ge30\text{MA}$ 多頭家數$)$ － $(5\text{MA}<10\text{MA}<30\text{MA}$ 空頭家數$)$（家） | 衡量全市場真實多空排列家數結構（不受 150 檔限制） |
+| 14 | `market_alignment` | 均線結構 | `market_alignment_diff`：(5MA ≥ 10MA ≥ 30MA 多頭家數) − (5MA < 10MA < 30MA 空頭家數)（家） | 衡量全市場真實多空排列家數結構（不受 150 檔限制） |
 | 15 | `market_lifeline` | 生命線動能 | 拆分為 4 項：`index_vs_ma5_pct`、`index_vs_ma20_pct`、`ma5_change_3d_pct`、`ma20_change_5d_pct`（%） | 同時追蹤加權報酬指數乖離與 5MA/20MA 生命線斜率轉折 |
-| 16 | `industry_relative_strength` | 產業輪動 | 針對各上市類股指數產出 5 項：`*_return_1d`、`*_rs_change_1d`、`*_rs_change_3d`、`*_rs_change_5d`、`*_rs_momentum_change`（$\text{RS} = \text{產業指數} \div \text{大盤}$） | 區分實質領漲、相對抗跌與動能加速轉強族群 |
+| 16 | `industry_relative_strength` | 產業輪動 | 針對各上市類股指數產出 5 項：`*_return_1d`、`*_rs_change_1d`、`*_rs_change_3d`、`*_rs_change_5d`、`*_rs_momentum_change`（`RS = 產業指數 ÷ 大盤`） | 區分實質領漲、相對抗跌與動能加速轉強族群 |
 
 ### 6.3 個股多維度指標（29 項，`stock_indicators.py`）
 
@@ -298,51 +298,63 @@ flowchart TD
 
 ### 7.1 被動現金比率飆升防護與 22% 安全天花板
 
-官方規定每日收盤結算後**現金比率不得超過 $25.0\%$**（超過即該批交易作廢並記警告）。然而當股市下跌 $d$ 時，固定現金 $C$ 不變、持股市值 $S$ 縮水，盤後現金比率 $\text{Cash Ratio}'$ 會**被動飆升**：
+官方規定每日收盤結算後**現金比率不得超過 25.0%**（超過即該批交易作廢並記警告）。然而當股市下跌 `d` 時，固定現金 `C` 不變、持股市值 `S` 縮水，盤後現金比率 `Cash Ratio'` 會**被動飆升**：
 
-$$\text{Cash Ratio}' = \frac{C}{C + S \cdot (1 - d)} \le 0.25$$
+$$
+\text{Cash Ratio}' = \frac{C}{C + S \cdot (1 - d)} \le 0.25
+$$
 
-考量每日皆會重新檢視調整，且台股單日最大跌幅上限為 $d = 10\%$（$0.10$），若當日規劃現金目標比率為 $22\%$（$C / \text{NAV} = 0.22$、$S / \text{NAV} = 0.78$），即使當日持股**全數跌停**，盤後結算現金比率為：
+考量每日皆會重新檢視調整，且台股單日最大跌幅上限為 `d = 10%`（`0.10`），若當日規劃現金目標比率為 22%（`C / NAV = 0.22`、`S / NAV = 0.78`），即使當日持股**全數跌停**，盤後結算現金比率為：
 
-$$\text{Cash Ratio}'_{\text{worst}} = \frac{0.22}{0.22 + 0.78 \times (1 - 0.10)} = \frac{0.22}{0.922} \approx 23.86\% < 25.0\%$$
+$$
+\text{Cash Ratio}'_{\text{worst}} = \frac{0.22}{0.22 + 0.78 \times (1 - 0.10)} = \frac{0.22}{0.922} \approx 23.86\% < 25.0\%
+$$
 
 因此系統內建兩道強制防線：
-1. **目標現金上限防線**：將 `target_cash_pct_range` 上限建議控制在 $22\%$（`0.22`）以下，在不犧牲過多現金彈性的前提下徹底免疫單日跌停被動違規。
-2. **強制淨買超觸發**：當 DataPack 顯示現金水位超過 $20\%$（`cash_ratio_tradable > 0.20`）時，L2M 必須強制宣告 `net_exposure_intent = "increase"`，L3 必須執行淨買超，主動拉開與 $25\%$ 天花板的安全距離。
+1. **目標現金上限防線**：將 `target_cash_pct_range` 上限建議控制在 22%（`0.22`）以下，在不犧牲過多現金彈性的前提下徹底免疫單日跌停被動違規。
+2. **強制淨買超觸發**：當 DataPack 顯示現金水位超過 20%（`cash_ratio_tradable > 0.20`）時，L2M 必須強制宣告 `net_exposure_intent = "increase"`，L3 必須執行淨買超，主動拉開與 25% 天花板的安全距離。
 
 ### 7.2 L4 千股整股機械算單（嚴禁人為手調）
 
 台股盤中/委託須以千股（一張）為最小單位，系統於 Python 階段嚴格執行向下取整計算：
 
-$$\text{Target Shares}_i = \left\lfloor \frac{w_i \times \text{NAV}_{\text{tradable}}}{P_i \times 1000} \right\rfloor \times 1000, \qquad \Delta\text{Shares}_i = \text{Target Shares}_i - \text{Current Shares}_i$$
+$$
+\text{Target Shares}_i = \left\lfloor \frac{w_i \times \text{NAV}_{\text{tradable}}}{P_i \times 1000} \right\rfloor \times 1000, \qquad \Delta\text{Shares}_i = \text{Target Shares}_i - \text{Current Shares}_i
+$$
 
-其中 $w_i$ 為 L3 決議目標權重（一般股 $w_i \le 0.10$，台積電 `2330` $w_{\text{2330}} \le 0.25$），$P_i$ 為前日收盤價（L1 缺漏時自動以 DataPack 補齊）。$\Delta\text{Shares}_i > 0$ 為 `BUY`、$< 0$ 為 `SELL`、$= 0$ 不送出委託；並於 `drafts_to_orders()` 驗證賣出股數不可超過庫存持股。
+其中 `w_i` 為 L3 決議目標權重（一般股 `w_i ≤ 0.10`，台積電 `2330` 則為 `w_2330 ≤ 0.25`），`P_i` 為前日收盤價（L1 缺漏時自動以 DataPack 補齊）。`ΔShares_i > 0` 為 `BUY`、`< 0` 為 `SELL`、`= 0` 不送出委託；並於 `drafts_to_orders()` 驗證賣出股數不可超過庫存持股。
 
 ### 7.3 主動投資比率 (Active Share) 門檻檢驗
 
 為避免淪為複製大盤或市售主動式 ETF 的「隱形指數基金」，系統於 L3 規劃與 L4 覆核階段皆比對市場指定主動型 ETF 前 15 大持股權重，強制要求與每一檔標竿 ETF 均須滿足：
 
-$$\text{Active Share} = \frac{1}{2} \sum_{i} \left| w_{\text{port}, i} - w_{\text{ETF}, i} \right| \ge 0.15 \quad (15\%)$$
+$$
+\text{Active Share} = \frac{1}{2} \sum_{i} \left| w_{\text{port}, i} - w_{\text{ETF}, i} \right| \ge 0.15 \quad (15\%)
+$$
 
 ### 7.4 交易摩擦成本與換股門檻
 
 系統以 DataPack 前日收盤價估算成交金額，並從現金部位精算扣除實際手續費與證交稅：
 
-- **買進總支出**：$\text{Amount}_{\text{buy}} \times (1 + 0.001425)$（買進手續費 $0.1425\%$）
-- **賣出淨收入**：$\text{Amount}_{\text{sell}} \times (1 - 0.001425 - 0.003)$（賣出手續費 $0.1425\%$ + 證交稅 $0.3\%$，合計 $0.4425\%$）
-- **雙邊來回摩擦成本**：約 $0.585\%$；因此 L2 / L3 明確要求若換股預期改善無法覆蓋交易摩擦且無明顯結構性惡化，應優先納入 `no_trade_decisions` 避免無效週轉。
+- **買進總支出**：`Amount_buy × (1 + 0.001425)`（買進手續費 0.1425%）
+- **賣出淨收入**：`Amount_sell × (1 - 0.001425 - 0.003)`（賣出手續費 0.1425% + 證交稅 0.3%，合計 0.4425%）
+- **雙邊來回摩擦成本**：約 0.585%；因此 L2 / L3 明確要求若換股預期改善無法覆蓋交易摩擦且無明顯結構性惡化，應優先納入 `no_trade_decisions` 避免無效週轉。
 
 ### 7.5 L2M `hold` 淨曝險 2% NAV 容差檢核
 
-當 L2M 宣告 `net_exposure_intent = "hold"`（維持曝險大致持平）時，L3 透過 Gemini Code Execution 驗證當日總買賣金額差必須落於可交易淨值的 $2\%$ 容差內：
+當 L2M 宣告 `net_exposure_intent = "hold"`（維持曝險大致持平）時，L3 透過 Gemini Code Execution 驗證當日總買賣金額差必須落於可交易淨值的 2% 容差內：
 
-$$\left| \sum \text{Amount}_{\text{buy}} - \sum \text{Amount}_{\text{sell}} \right| \le 0.02 \times \text{NAV}_{\text{tradable}}$$
+$$
+\left| \sum \text{Amount}_{\text{buy}} - \sum \text{Amount}_{\text{sell}} \right| \le 0.02 \times \text{NAV}_{\text{tradable}}
+$$
 
 ### 7.6 L3 昨日持股全覆蓋互斥定理 & `funding_for` 資金缺口條件
 
-- **全覆蓋互斥原則**（非首日適用）：令 $\mathcal{H}_{\text{prev}}$ 為昨日持股集合、$\mathcal{D}$ 為異動決策集合、$\mathcal{N}$ 為續抱集合，`drafts_to_decisions()` 與 `DPlanDocument.validate_reference_chains()` 嚴格強制昨日持股完全覆蓋且兩集合互斥，同時最終非零目標持股檔數嚴格落於 $[20, 30]$ 區間：
+- **全覆蓋互斥原則**（非首日適用）：令 `H_prev` 為昨日持股集合、`D` 為異動決策集合、`N` 為續抱集合，`drafts_to_decisions()` 與 `DPlanDocument.validate_reference_chains()` 嚴格強制昨日持股完全覆蓋且兩集合互斥，同時最終非零目標持股檔數嚴格落於 `[20, 30]` 區間：
 
-$$\mathcal{H}_{\text{prev}} \subseteq (\mathcal{D} \cup \mathcal{N}) \quad \land \quad (\mathcal{D} \cap \mathcal{N} = \emptyset)$$
+$$
+H_{\text{prev}} \subseteq (D \cup N) \quad \land \quad (D \cap N = \emptyset)
+$$
 
 - **`funding_for` 資金調度真實缺口檢查**：僅當「不執行賣出、僅執行買進並計入買進手續費後，預估現金比率低於 `target_cash_pct_range[0]`（真實資金缺口存在）」時，對應之 `TRIM` / `SELL_ALL` 決策才允許填寫 `funding_for` 指向受支應的買進決策 ID；否則一律強制為 `null`。
 

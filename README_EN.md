@@ -12,7 +12,7 @@
 [![FinLab](https://img.shields.io/badge/Quant-FinLab%2045%20Indicators-F59E0B)](https://www.finlab.tw/)
 [![Cloudflare Pages](https://img.shields.io/badge/Dashboard-Cloudflare%20Pages-F38020?logo=cloudflarepages&logoColor=white)](https://esun-ai-cup-2026-team11402-portfolio.pages.dev)
 
-**Team**: `TEAM_11402` ｜ **Competition**: E.SUN AI Cup 2026 — Agent Fund Manager Open Challenge (Open Division) ｜ **Specification**: D-Plan Schema v4.3 ｜ **Initial Capital**: NT\$1,000,000,000
+**Team**: `TEAM_11402` ｜ **Competition**: E.SUN AI Cup 2026 — Agent Fund Manager Open Challenge (Open Division) ｜ **Specification**: D-Plan Schema v4.3 ｜ **Initial Capital**: `NT$1,000,000,000`
 
 🌐 **[Live Portfolio & AI Cost Monitoring Dashboard](https://esun-ai-cup-2026-team11402-portfolio.pages.dev)**
 
@@ -47,7 +47,7 @@
 
 | Evaluation Dimension | Final Performance (To Be Filled Post-Settlement) | Notes |
 | :--- | :--- | :--- |
-| **Cumulative Return (`cum_return_pct`)** | `[TBD, e.g., +XX.XX%]` | Initial tradable NAV: NT\$1,000,000,000 |
+| **Cumulative Return (`cum_return_pct`)** | `[TBD, e.g., +XX.XX%]` | Initial tradable NAV: `NT$1,000,000,000` |
 | **Overall Rank / Open Division Rank** | `[TBD, e.g., #XX / XXX teams (Division #XX)]` | Official E.SUN competition backend settlement |
 | **Maximum Drawdown (`MDD`)** | `[TBD, e.g., -X.XX%]` | Peak-to-trough NAV drawdown across competition |
 | **Compliance Violations / Submission Pass Rate** | `0 Violations / 100% Pre-Validation Pass` | Enforced by Step 7 zero-tolerance validation gate |
@@ -67,13 +67,13 @@
 
 ## 2. Project Background & Core Engineering Challenges
 
-The E.SUN AI Challenge 2026 requires teams to build an autonomous fund-manager agent that ingests Taiwan market data across a statutory **150-stock universe (100 TWSE + 50 OTC)** and generates a daily **D-Plan Schema v4.3** investment plan—covering sources, objective observations, market view, stock inferences, portfolio decisions, and execution orders—managing a simulated **NT\$1,000,000,000** active ETF under strict financial regulations.
+The E.SUN AI Challenge 2026 requires teams to build an autonomous fund-manager agent that ingests Taiwan market data across a statutory **150-stock universe (100 TWSE + 50 OTC)** and generates a daily **D-Plan Schema v4.3** investment plan—covering sources, objective observations, market view, stock inferences, portfolio decisions, and execution orders—managing a simulated **`NT$1,000,000,000`** active ETF under strict financial regulations.
 
 Moving LLMs from chat prototypes into a daily high-stakes quantitative pipeline required solving three core engineering challenges:
 
 | Engineering Pillar | Real-World Pain Point | System Design Solution |
 | :--- | :--- | :--- |
-| **1. Zero-Tolerance Financial Compliance** | Portfolio must hold **20–30 stocks**, single-stock cap $\le 10\%$ (TSMC `2330` $\le 25\%$), 1,000-share round lots, Active Share $\ge 15\%$, and post-close cash ratio $\le 25.0\%$ (any breach voids the entire batch and issues a strike; 3 strikes = disqualification). | Hard constraints baked directly into **Pydantic validators + deterministic Python order sizing + a 22% proactive cash safety ceiling**, gated by the official `/validate/` API before submission. |
+| **1. Zero-Tolerance Financial Compliance** | Portfolio must hold **20–30 stocks**, single-stock cap ≤ 10% (TSMC `2330` ≤ 25%), 1,000-share round lots, Active Share ≥ 15%, and post-close cash ratio ≤ 25.0% (any breach voids the entire batch and issues a strike; 3 strikes = disqualification). | Hard constraints baked directly into **Pydantic validators + deterministic Python order sizing + a 22% proactive cash safety ceiling**, gated by the official `/validate/` API before submission. |
 | **2. Structural & Arithmetic Weaknesses of LLMs** | Pure LLMs hallucinate floating-point sums, fee deductions, and share rounding; long JSON outputs trigger FSM state explosion or truncation; multi-step reasoning drops causal IDs. | **LiteLLM Multi-Model Routing** + **Gemini Native Code Execution Sandbox** + **Two-Tier Pydantic Schemas (`Draft` vs. `Final`)** + **3-Layer JSON Repair** + **Full DAG Citation Validation**. |
 | **3. Unattended Multi-Source Automation** | Daily runs depend on E.SUN backend trade history, official DataPacks, FinLab quant tables, CMoney forum sentiment, and peer ETF holdings—previously fragile due to manual cookie/token copying. | **OAuth2 SSO automation**, **CMoney SSR Guest JWT auto-extraction with 401 refresh**, **DataPack readiness guards**, and an end-to-end Step 0–10 CLI pipeline. |
 
@@ -164,8 +164,8 @@ Registered globally in `code/configs/gemini_client.py` and aggregated into `code
 | **Step 1 (L1)**<br>Fact Extraction | `fact_extractor.py`<br>*(`stage-l1`: `gemini-3.8-flash`)* | **Purely objective statements; zero inference or forecasting**.<br>Strictly matches `_YYYYMMDD` files across `大盤`, `技術面`, `基本面`, `籌碼面`, and `CMoney_Sentiment` (preferring `.json`), merges by 4-digit ticker into Compact Array JSON, produces exactly 1 `tw_market` (`O1`) + 1 `stock_<id>` (`O2..On`) per ticker, and deterministically overwrites `values` & `source_ref`. |
 | **Step 2 (L2M)**<br>Market View | `market_view_agent.py`<br>*(`stage-l2m` + Code Execution)* | Cites `O1` to evaluate 8 macro dimensions: MA bias & lifeline slope, OTC vs. TAIEX relative strength, foreign/trust flow divergence, market-wide MA alignment diff & margin leverage, sector RS rotation, portfolio systemic exposure, competition phase, and proactive cash defense.<br>Outputs `regime` (`risk_on`/`neutral`/`risk_off`), `stance` (`aggressive`/`neutral`/`defensive`), `posture` (`target_cash_pct_range`, `net_exposure_intent`), and mandatory `counter_evidence`. |
 | **Step 3 (L2)**<br>Stock Inferences | `stock_inference_agent.py`<br>*(`stage-l2` + Code Execution)* | **Two-Phase Reasoning Architecture**:<br>**Phase 1 (Deep Stock Analysis)**: Cross-checks fundamentals (ROE/revenue), technicals (MA/KD/MACD/Bollinger/ADX), volume/institutional flow, CMoney sentiment gap, and trailing stop-profit alerts (`peak_pnl_pct >= +10%` & `dd_from_peak_pct <= -4%`).<br>**Phase 2 (Portfolio Selection)**: Weighs ~0.585% round-trip friction and remaining competition days to propose weights across 20–30 holdings (max 60 inferences). |
-| **Step 4 (L3)**<br>Portfolio Decisions | `portfolio_decision_agent.py`<br>*(`stage-l3` + Code Execution)* | Outputs `decisions` (`BUY` / `ADD` / `TRIM` / `SELL_ALL`) and `no_trade_decisions`.<br>Enforces: **100% mutually exclusive coverage of prior holdings**, **20–30 active positions**, **weight caps** ($\le 10\%$ standard, $\le 25\%$ for `2330`), **2% NAV tolerance on `hold`**, **real funding-gap check (`funding_for`)**, and **Active Share $\ge 15\%$**. |
-| **Step 5 (L4)**<br>Order Execution | `order_calculator.py`<br>*(`stage-l4` + Code Execution)* | **Phase 1 (Deterministic Python)**: Computes floor round-lot shares, auto-generates `derivation_detail`, and calculates post-trade cash & Active Share.<br>**Phase 2 (Gemini Audit)**: Verifies Active Share $\ge 15\%$, zero overselling, cash-band compliance, and formula formatting. |
+| **Step 4 (L3)**<br>Portfolio Decisions | `portfolio_decision_agent.py`<br>*(`stage-l3` + Code Execution)* | Outputs `decisions` (`BUY` / `ADD` / `TRIM` / `SELL_ALL`) and `no_trade_decisions`.<br>Enforces: **100% mutually exclusive coverage of prior holdings**, **20–30 active positions**, **weight caps** (≤ 10% standard, ≤ 25% for `2330`), **2% NAV tolerance on `hold`**, **real funding-gap check (`funding_for`)**, and **Active Share ≥ 15%**. |
+| **Step 5 (L4)**<br>Order Execution | `order_calculator.py`<br>*(`stage-l4` + Code Execution)* | **Phase 1 (Deterministic Python)**: Computes floor round-lot shares, auto-generates `derivation_detail`, and calculates post-trade cash & Active Share.<br>**Phase 2 (Gemini Audit)**: Verifies Active Share ≥ 15%, zero overselling, cash-band compliance, and formula formatting. |
 | **Step 6–9**<br>Build, Gate, Submit & Report | `build_dplan.py`<br>`validate_dplan_api.py`<br>`submit_dplan_api.py`<br>`generate_daily_report.py` | **Step 6**: Injects `agent_metadata` (incl. git commit hash) and validates `DPlanDocument` (`extra="forbid"`).<br>**Step 7**: Uploads to `/api/submissions/dplan/validate/` and aborts on any `bad > 0` or `warn > 0`.<br>**Step 8**: Submits to `/api/submissions/dplan/` and verifies receipt fields.<br>**Step 9**: Renders a 7-section human audit Markdown report (including L0 stock pool review). |
 
 ---
@@ -244,13 +244,13 @@ The pipeline computes **45 core quantitative indicators** daily via `finlab_mark
 
 ### 6.1 L0 Dynamic Stock Pool Screening Metrics (12 Features, `stock_pool_screener.py`)
 
-Computed across the 150-stock universe over a 35-calendar-day lookback (covering $\ge 11$ common trading days and $\ge 2$ weekly depository releases):
+Computed across the 150-stock universe over a 35-calendar-day lookback (covering ≥ 11 common trading days and ≥ 2 weekly depository releases):
 
 | Dimension | Metric Keys | Definition & Role |
 | :--- | :--- | :--- |
 | **Price Momentum (Rule 1)** | `ret_5d_pct` / `ret_10d_pct` | 5-day and 10-day close-to-close returns (%). |
-| **Relative Return (Rule 1)** | `rel_ret_5d_pp` / `rel_ret_10d_pp` | Stock excess return vs. its market index (TAIEX for TWSE, TPEx Index for OTC, ex-dividend) in percentage points. **Both $> 0$ locks `rule1_selected = true`**. |
-| **Depository Chips (Weekly)** | `chip_over_1000_chg_pp` / `chip_under_50_chg_pp` / `chip_holders_chg_pct` | 1-period change in $>1000$-lot whale share (pp), $<50$-lot retail share (pp), and total shareholder count (%). Used by `stage-l0` to spot institutional accumulation. |
+| **Relative Return (Rule 1)** | `rel_ret_5d_pp` / `rel_ret_10d_pp` | Stock excess return vs. its market index (TAIEX for TWSE, TPEx Index for OTC, ex-dividend) in percentage points. **Both > 0 locks `rule1_selected = true`**. |
+| **Depository Chips (Weekly)** | `chip_over_1000_chg_pp` / `chip_under_50_chg_pp` / `chip_holders_chg_pct` | 1-period change in `> 1000`-lot whale share (pp), `< 50`-lot retail share (pp), and total shareholder count (%). Used by `stage-l0` to spot institutional accumulation. |
 | **Margin Leverage (Daily)** | `margin_balance_lots` / `margin_chg_5d_pct` / `margin_pct_10d` | Latest margin balance (lots), 5D % change, and 10D ascending percentile rank (0–100) to measure retail leverage washout. |
 | **Sector Valuation (Daily)** | `pe_ratio` / `pe_industry_pct` | Positive trailing P/E ratio and ascending percentile rank (0–100) within the same industry across all 150 stocks (lower = cheaper relative to peers). |
 
@@ -261,19 +261,19 @@ Computed across the 150-stock universe over a 35-calendar-day lookback (covering
 | 1 | `taiex_close_latest` | Index Level | Latest TAIEX total/price index close (pts) | Benchmark price anchor |
 | 2 | `taiex_return_5d` | Momentum | 5-day TAIEX return (%) | Short-term index momentum |
 | 3 | `taiex_vs_ma10_pct` | MA Bias | Bias vs. 10-day MA (%) | Short-term overbought/oversold stretch |
-| 4 | `taiex_vs_ma20_pct` | MA Bias | Bias vs. 20-day MA (%) | $>0$ above monthly trend; $<0$ below support |
-| 5 | `taiex_range_pos_10d` | Range Position | Position within 10D high–low range (0%–100%) | $>80\%$ near highs; $<20\%$ near lows |
+| 4 | `taiex_vs_ma20_pct` | MA Bias | Bias vs. 20-day MA (%) | `> 0` above monthly trend; `< 0` below support |
+| 5 | `taiex_range_pos_10d` | Range Position | Position within 10D high–low range (0%–100%) | `> 80%` near highs; `< 20%` near lows |
 | 6 | `taiex_max_drawdown_5d` | Downside Risk | Rolling 5-day max drawdown (%, negative) | Measures recent realized downside shock |
-| 7 | `otc_vs_taiex_return_5d` | Domestic Flow | OTC 5D return minus TAIEX 5D return (pp) | $>0$ small/mid-cap leadership; $<0$ domestic risk-off |
+| 7 | `otc_vs_taiex_return_5d` | Domestic Flow | OTC 5D return minus TAIEX 5D return (pp) | `> 0` small/mid-cap leadership; `< 0` domestic risk-off |
 | 8 | `market_foreign_net_buy_5d` | Institutional | Foreign investors (ex-prop) 5D TWSE net flow (TWD) | Medium-term foreign capital direction |
 | 9 | `market_foreign_net_buy_1d` | Institutional | Latest 1D foreign TWSE net flow (TWD) | Immediate foreign flow stance |
 | 10 | `market_trust_net_buy_5d` | Institutional | Investment Trust 5D TWSE net flow (TWD) | Domestic institutional buying persistence |
 | 11 | `market_trust_net_buy_1d` | Institutional | Latest 1D Investment Trust TWSE net flow (TWD) | Immediate domestic fund positioning |
-| 12 | `market_advance_decline_ratio` | Breadth | Market-wide advancing stocks ÷ declining stocks (x) | $>1$ broad rally; divergence flags narrow leadership |
+| 12 | `market_advance_decline_ratio` | Breadth | Market-wide advancing stocks ÷ declining stocks (x) | `> 1` broad rally; divergence flags narrow leadership |
 | 13 | `listed_margin_balance_change_5d` | Leverage | TWSE margin balance 5D % change (%) | Flags forced liquidation risk when falling below 20MA |
-| 14 | `market_alignment` | MA Structure | `market_alignment_diff`: $(\text{stocks with } 5\text{MA}\ge10\text{MA}\ge30\text{MA}) - (\text{stocks with } 5\text{MA}<10\text{MA}<30\text{MA})$ | Full-market bullish vs. bearish alignment spread |
+| 14 | `market_alignment` | MA Structure | `market_alignment_diff`: (stocks with 5MA ≥ 10MA ≥ 30MA) − (stocks with 5MA < 10MA < 30MA) | Full-market bullish vs. bearish alignment spread |
 | 15 | `market_lifeline` | Lifeline Slope | Outputs 4 keys: `index_vs_ma5_pct`, `index_vs_ma20_pct`, `ma5_change_3d_pct`, `ma20_change_5d_pct` (%) | Tracks TAIEX total return index bias and 5MA/20MA slope inflection |
-| 16 | `industry_relative_strength` | Sector Rotation | Per-TWSE sector outputs 5 keys: `*_return_1d`, `*_rs_change_1d`, `*_rs_change_3d`, `*_rs_change_5d`, `*_rs_momentum_change` ($\text{RS} = \text{Sector} \div \text{TAIEX}$) | Separates true sector leaders, defensive outperformers, and accelerating turnarounds |
+| 16 | `industry_relative_strength` | Sector Rotation | Per-TWSE sector outputs 5 keys: `*_return_1d`, `*_rs_change_1d`, `*_rs_change_3d`, `*_rs_change_5d`, `*_rs_momentum_change` (`RS = Sector ÷ TAIEX`) | Separates true sector leaders, defensive outperformers, and accelerating turnarounds |
 
 ### 6.3 Individual Stock Indicators (29 Indicators, `stock_indicators.py`)
 
@@ -282,7 +282,7 @@ Computed across the 150-stock universe over a 35-calendar-day lookback (covering
 | **Fundamentals (3)** | 1–3 | `roe_latest`, `revenue_yoy_latest`, `revenue_mom_latest` | Latest quarterly after-tax ROE (%), monthly revenue YoY (%), and MoM (%). Uses **per-stock dynamic non-NaN backfill** to preserve each company's true latest filing date. |
 | **Price & Volume (9)** | 4–12 | `close_latest`, `return_1d`, `return_5d`, `return_20d`, `excess_return_5d`, `volume_ratio_1d`, `volume_ratio_3d`, `volume_ma5_to_ma20`, `amount_ma5` | Latest close, 1D/5D/20D adjusted returns (%), 5D excess return vs. TAIEX total return index (pp), 1D volume ratio (vs. prior 10D avg), 3D volume ratio, 5D/20D volume MA ratio, and 5D average turnover (TWD) for liquidity. |
 | **Volatility & MA Position (9)** | 13–21 | `volatility_10d`, `ma10_change_3d`, `price_vs_ma5`, `price_vs_ma20`, `price_range_pos_10d`, `price_dist_to_high_10d`, `price_dist_to_low_10d`, `price_vs_min_close_10d`, `rsi_7` | 10D return std dev (%), 10MA 3D slope (%), 5MA/20MA biases (%), 10D range position (%), distance to 10D high/low & prior 10D min close support (%), and 7D adjusted RSI. |
-| **Composite Technicals (4)** | 22–25 | `kd_latest`, `macd_latest`, `bollinger_latest`, `adx_latest` | • **KD (5,3,3)**: `k_5`, `d_5`, `k_change_3d`, `kd_above_d_days`, `kd_below_d_days`, `kd_cross_days_ago_20d`<br>• **MACD (6,13,5)**: `macd_dif`, `macd_hist`, `macd_hist_change_3d`, `macd_hist_increasing_days`, `macd_hist_decreasing_days`, `macd_cross_days_ago_20d`<br>• **Bollinger (10D, 1.9$\sigma$)**: `bollinger_position_pct`, `bollinger_bandwidth_pct`, `bollinger_bandwidth_change_3d_pp`, `bollinger_contraction_days`, `bollinger_expansion_days`, `bollinger_bandwidth_percentile_60d`<br>• **ADX (7D)**: `plus_di`, `minus_di`, `di_diff`, `adx`, `adx_change_3d` |
+| **Composite Technicals (4)** | 22–25 | `kd_latest`, `macd_latest`, `bollinger_latest`, `adx_latest` | • **KD (5,3,3)**: `k_5`, `d_5`, `k_change_3d`, `kd_above_d_days`, `kd_below_d_days`, `kd_cross_days_ago_20d`<br>• **MACD (6,13,5)**: `macd_dif`, `macd_hist`, `macd_hist_change_3d`, `macd_hist_increasing_days`, `macd_hist_decreasing_days`, `macd_cross_days_ago_20d`<br>• **Bollinger (10D, 1.9σ)**: `bollinger_position_pct`, `bollinger_bandwidth_pct`, `bollinger_bandwidth_change_3d_pp`, `bollinger_contraction_days`, `bollinger_expansion_days`, `bollinger_bandwidth_percentile_60d`<br>• **ADX (7D)**: `plus_di`, `minus_di`, `di_diff`, `adx`, `adx_change_3d` |
 | **Institutional Chips (4)** | 26–29 | `foreign_net_buy_intensity_5d`, `foreign_net_buy_1d`, `trust_net_buy_intensity_5d`, `trust_net_buy_1d` | Foreign and Investment Trust 5D net buy/sell shares ÷ 5D total volume (%), plus latest 1D net flow as % of daily volume. |
 
 ### 6.4 Sentiment & Account Trajectory Features
@@ -298,51 +298,63 @@ To keep AI-generated portfolios strictly compliant under extreme market stress, 
 
 ### 7.1 Passive Cash Ratio Breach Defense & 22% Safety Ceiling
 
-Competition rules enforce a post-settlement **maximum cash ratio of $25.0\%$** (breaching it voids the day's entire batch and issues a strike). During a market drawdown $d$, fixed cash $C$ stays constant while equity value $S$ shrinks, causing the post-close cash ratio $\text{Cash Ratio}'$ to **spike passively**:
+Competition rules enforce a post-settlement **maximum cash ratio of 25.0%** (breaching it voids the day's entire batch and issues a strike). During a market drawdown `d`, fixed cash `C` stays constant while equity value `S` shrinks, causing the post-close cash ratio `Cash Ratio'` to **spike passively**:
 
-$$\text{Cash Ratio}' = \frac{C}{C + S \cdot (1 - d)} \le 0.25$$
+$$
+\text{Cash Ratio}' = \frac{C}{C + S \cdot (1 - d)} \le 0.25
+$$
 
-Since the portfolio rebalances daily and Taiwan equities have a daily limit-down cap of $d = 10\%$ ($0.10$), targeting a maximum cash ratio of $22\%$ ($C / \text{NAV} = 0.22$, $S / \text{NAV} = 0.78$) guarantees that even if **every single holding hits limit-down simultaneously**, the settled cash ratio remains:
+Since the portfolio rebalances daily and Taiwan equities have a daily limit-down cap of `d = 10%` (`0.10`), targeting a maximum cash ratio of 22% (`C / NAV = 0.22`, `S / NAV = 0.78`) guarantees that even if **every single holding hits limit-down simultaneously**, the settled cash ratio remains:
 
-$$\text{Cash Ratio}'_{\text{worst}} = \frac{0.22}{0.22 + 0.78 \times (1 - 0.10)} = \frac{0.22}{0.922} \approx 23.86\% < 25.0\%$$
+$$
+\text{Cash Ratio}'_{\text{worst}} = \frac{0.22}{0.22 + 0.78 \times (1 - 0.10)} = \frac{0.22}{0.922} \approx 23.86\% < 25.0\%
+$$
 
 Accordingly, the system enforces two guardrails:
-1. **22% Target Ceiling**: `target_cash_pct_range` upper bound is capped at $22\%$ (`0.22`), ensuring immunity to single-day limit-down passive breaches without over-compressing liquidity.
+1. **22% Target Ceiling**: `target_cash_pct_range` upper bound is capped at 22% (`0.22`), ensuring immunity to single-day limit-down passive breaches without over-compressing liquidity.
 2. **Mandatory Net-Buy Trigger**: Whenever DataPack reports `cash_ratio_tradable > 0.20`, L2M must output `net_exposure_intent = "increase"` and L3 must execute net purchases.
 
 ### 7.2 L4 Deterministic Round-Lot Sizing
 
 Taiwan equity orders must be multiples of 1,000 shares (1 board lot). L4 Python sizing computes:
 
-$$\text{Target Shares}_i = \left\lfloor \frac{w_i \times \text{NAV}_{\text{tradable}}}{P_i \times 1000} \right\rfloor \times 1000, \qquad \Delta\text{Shares}_i = \text{Target Shares}_i - \text{Current Shares}_i$$
+$$
+\text{Target Shares}_i = \left\lfloor \frac{w_i \times \text{NAV}_{\text{tradable}}}{P_i \times 1000} \right\rfloor \times 1000, \qquad \Delta\text{Shares}_i = \text{Target Shares}_i - \text{Current Shares}_i
+$$
 
-where $w_i$ is the L3 target weight ($w_i \le 0.10$ generally; $w_{\text{2330}} \le 0.25$) and $P_i$ is the prior close (backfilled from DataPack if missing in L1). $\Delta\text{Shares}_i > 0$ emits `BUY`, $< 0$ emits `SELL`, and `drafts_to_orders()` strictly blocks any sell quantity exceeding current inventory.
+where `w_i` is the L3 target weight (`w_i ≤ 0.10` generally; `w_2330 ≤ 0.25`) and `P_i` is the prior close (backfilled from DataPack if missing in L1). `ΔShares_i > 0` emits `BUY`, `< 0` emits `SELL`, and `drafts_to_orders()` strictly blocks any sell quantity exceeding current inventory.
 
 ### 7.3 Active Share Compliance Gate
 
 To prevent closet indexing against commercial active ETFs, L3 and L4 evaluate top-15 weight divergence against every peer active ETF benchmark:
 
-$$\text{Active Share} = \frac{1}{2} \sum_{i} \left| w_{\text{port}, i} - w_{\text{ETF}, i} \right| \ge 0.15 \quad (15\%)$$
+$$
+\text{Active Share} = \frac{1}{2} \sum_{i} \left| w_{\text{port}, i} - w_{\text{ETF}, i} \right| \ge 0.15 \quad (15\%)
+$$
 
 ### 7.4 Transaction Cost Friction
 
 Order notional is estimated via prior close prices and deducted from cash:
 
-- **Buy Total Outflow**: $\text{Amount}_{\text{buy}} \times (1 + 0.001425)$ ($0.1425\%$ broker fee)
-- **Sell Net Proceeds**: $\text{Amount}_{\text{sell}} \times (1 - 0.001425 - 0.003)$ ($0.1425\%$ fee + $0.3\%$ securities transaction tax = $0.4425\%$)
-- **Round-Trip Friction**: $\approx 0.585\%$. L2/L3 avoid churn unless expected alpha or risk reduction clearly outweighs friction.
+- **Buy Total Outflow**: `Amount_buy × (1 + 0.001425)` (0.1425% broker fee)
+- **Sell Net Proceeds**: `Amount_sell × (1 - 0.001425 - 0.003)` (0.1425% fee + 0.3% securities transaction tax = 0.4425%)
+- **Round-Trip Friction**: ~0.585%. L2/L3 avoid churn unless expected alpha or risk reduction clearly outweighs friction.
 
 ### 7.5 L2M `hold` 2% NAV Tolerance
 
-When L2M declares `net_exposure_intent = "hold"`, L3 verifies via Gemini Code Execution that net daily dollar turnover stays within $2\%$ of tradable NAV:
+When L2M declares `net_exposure_intent = "hold"`, L3 verifies via Gemini Code Execution that net daily dollar turnover stays within 2% of tradable NAV:
 
-$$\left| \sum \text{Amount}_{\text{buy}} - \sum \text{Amount}_{\text{sell}} \right| \le 0.02 \times \text{NAV}_{\text{tradable}}$$
+$$
+\left| \sum \text{Amount}_{\text{buy}} - \sum \text{Amount}_{\text{sell}} \right| \le 0.02 \times \text{NAV}_{\text{tradable}}
+$$
 
 ### 7.6 L3 Mutually Exclusive Holding Coverage & `funding_for` Precondition
 
-- **Complete Mutually Exclusive Cover** (post-Day 1): Given prior holdings $\mathcal{H}_{\text{prev}}$, trade decisions $\mathcal{D}$, and no-trade holds $\mathcal{N}$, `drafts_to_decisions()` and `DPlanDocument.validate_reference_chains()` enforce complete coverage and mutual exclusivity while keeping active non-zero positions within $[20, 30]$:
+- **Complete Mutually Exclusive Cover** (post-Day 1): Given prior holdings `H_prev`, trade decisions `D`, and no-trade holds `N`, `drafts_to_decisions()` and `DPlanDocument.validate_reference_chains()` enforce complete coverage and mutual exclusivity while keeping active non-zero positions within `[20, 30]`:
 
-$$\mathcal{H}_{\text{prev}} \subseteq (\mathcal{D} \cup \mathcal{N}) \quad \land \quad (\mathcal{D} \cap \mathcal{N} = \emptyset)$$
+$$
+H_{\text{prev}} \subseteq (D \cup N) \quad \land \quad (D \cap N = \emptyset)
+$$
 
 - **`funding_for` Gap Precondition**: A `TRIM` / `SELL_ALL` decision may reference target buy IDs in `funding_for` **only if** executing the planned buys alone (including buy fees) would push estimated cash below `target_cash_pct_range[0]`; otherwise `funding_for` must be `null`.
 
