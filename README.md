@@ -340,10 +340,11 @@ $$\left| \sum \text{Amount}_{\text{buy}} - \sum \text{Amount}_{\text{sell}} \rig
 
 ### 7.6 L3 昨日持股全覆蓋互斥定理 & `funding_for` 資金缺口條件
 
-- **全覆蓋互斥原則**（非首日適用）：令 $\mathcal{H}_{\text{prev}}$ 為昨日持股集合、$\mathcal{D}$ 為異動決策集合、$\mathcal{N}$ 為續抱集合，Pydantic `DPlanDocument.validate_reference_chains()` 嚴格強制：
-  $$\mathcal{H}_{\text{prev}} \subseteq (\mathcal{D} \cup \mathcal{N}) \quad \land \quad (\mathcal{D} \cap \mathcal{N} = \emptyset)$$
-  且最終非零目標持股檔數嚴格落於 $[20, 30]$ 區間。
-- **`funding_for` 資金調度真實缺口檢查**：僅當「不執行賣出、僅執行買進並計入買進手續費後，預估現金比率 $< \text{target\_cash\_pct\_range}[0]$（真實資金缺口存在）」時，對應之 `TRIM` / `SELL_ALL` 決策才允許填寫 `funding_for` 指向受支應的買進決策 ID；否則一律強制為 `null`。
+- **全覆蓋互斥原則**（非首日適用）：令 $\mathcal{H}_{\text{prev}}$ 為昨日持股集合、$\mathcal{D}$ 為異動決策集合、$\mathcal{N}$ 為續抱集合，`drafts_to_decisions()` 與 `DPlanDocument.validate_reference_chains()` 嚴格強制昨日持股完全覆蓋且兩集合互斥，同時最終非零目標持股檔數嚴格落於 $[20, 30]$ 區間：
+
+$$\mathcal{H}_{\text{prev}} \subseteq (\mathcal{D} \cup \mathcal{N}) \quad \land \quad (\mathcal{D} \cap \mathcal{N} = \emptyset)$$
+
+- **`funding_for` 資金調度真實缺口檢查**：僅當「不執行賣出、僅執行買進並計入買進手續費後，預估現金比率低於 `target_cash_pct_range[0]`（真實資金缺口存在）」時，對應之 `TRIM` / `SELL_ALL` 決策才允許填寫 `funding_for` 指向受支應的買進決策 ID；否則一律強制為 `null`。
 
 ---
 

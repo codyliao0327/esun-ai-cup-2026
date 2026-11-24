@@ -340,9 +340,10 @@ $$\left| \sum \text{Amount}_{\text{buy}} - \sum \text{Amount}_{\text{sell}} \rig
 
 ### 7.6 L3 Mutually Exclusive Holding Coverage & `funding_for` Precondition
 
-- **Complete Mutually Exclusive Cover** (post-Day 1): Given prior holdings $\mathcal{H}_{\text{prev}}$, trade decisions $\mathcal{D}$, and no-trade holds $\mathcal{N}$, `DPlanDocument.validate_reference_chains()` enforces:
-  $$\mathcal{H}_{\text{prev}} \subseteq (\mathcal{D} \cup \mathcal{N}) \quad \land \quad (\mathcal{D} \cap \mathcal{N} = \emptyset)$$
-  while active non-zero positions stay strictly within $[20, 30]$.
+- **Complete Mutually Exclusive Cover** (post-Day 1): Given prior holdings $\mathcal{H}_{\text{prev}}$, trade decisions $\mathcal{D}$, and no-trade holds $\mathcal{N}$, `drafts_to_decisions()` and `DPlanDocument.validate_reference_chains()` enforce complete coverage and mutual exclusivity while keeping active non-zero positions within $[20, 30]$:
+
+$$\mathcal{H}_{\text{prev}} \subseteq (\mathcal{D} \cup \mathcal{N}) \quad \land \quad (\mathcal{D} \cap \mathcal{N} = \emptyset)$$
+
 - **`funding_for` Gap Precondition**: A `TRIM` / `SELL_ALL` decision may reference target buy IDs in `funding_for` **only if** executing the planned buys alone (including buy fees) would push estimated cash below `target_cash_pct_range[0]`; otherwise `funding_for` must be `null`.
 
 ---
