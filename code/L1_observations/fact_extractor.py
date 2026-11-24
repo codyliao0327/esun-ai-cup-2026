@@ -120,11 +120,12 @@ PROMPT_TEMPLATE = """\
   - `<產業指數>_rs_change_1d` / `<產業指數>_rs_change_3d` / `<產業指數>_rs_change_5d`：該產業近 1 日 / 近 3 日 / 近 5 日 RS 相對大盤強弱變化率 (%)。正值代表該期間表現強於大盤、負值代表弱於大盤。
   - `<產業指數>_rs_momentum_change`：該產業近 3 日 RS 變化率較昨日增減 (百分點 pp ＝ 今日近 3 日 RS 變化率 － 昨日近 3 日 RS 變化率)。正值代表相對強弱動能加速轉強、負值代表動能轉弱。
 
-- **美股與台指期夜盤補充行情 (盤中紀錄，尚未收盤，觀察時間標註於各指標日期欄)**：
-  - `sox_intraday_latest` / `sox_intraday_change_pct` / `sox_intraday_high`：費城半導體指數盤中最新點位 (點) / 畫面漲跌幅 (%) / 盤中最高點 (點)。
-  - `nasdaq_intraday_latest` / `nasdaq_intraday_change_pct` / `nasdaq_intraday_high`：那斯達克綜合指數盤中最新點位 (點) / 畫面漲跌幅 (%) / 盤中最高點 (點)。
-  - `nq_futures_intraday_latest` / `nq_futures_intraday_change_pct` / `nq_futures_intraday_high`：小那斯達克期貨盤中最新點位 (點) / 畫面漲跌幅 (%) / 盤中最高點 (點)。
-  - `tx_night_intraday_latest` / `tx_night_intraday_change_pct` / `tx_night_at_limit_up`：台指期夜盤最新點位 (點) / 畫面漲跌幅 (%) / 是否位於漲停價 (1＝最新價位於漲停價，0＝否)。
+- **美股與台指期夜盤補充行情 (盤中紀錄，尚未收盤，觀察時間與盤勢備註標註於各指標日期欄；商品前綴：`sox`＝費城半導體指數、`nasdaq`＝那斯達克綜合指數、`nq_futures`＝小那斯達克期貨、`tx_night`＝台指期夜盤)**：
+  - `<商品>_intraday_latest` / `<商品>_intraday_change_pct`：最新晚間盤中觀察點位 (點) / 畫面漲跌幅 (%)。
+  - `<商品>_prev_intraday_latest` / `<商品>_prev_intraday_change_pct`：前一日晚間盤中觀察點位 (點) / 畫面漲跌幅 (%)。
+  - `<商品>_intraday_change_pp_vs_prev`：最新盤中漲跌幅相較前一日盤中漲跌幅之變化 (百分點 pp，負值代表由漲轉跌或漲幅大幅收斂)。
+  - `<商品>_intraday_point_change_pct_vs_prev`：兩次盤中觀察點位之間的變化率 (%)。
+  - `<商品>_intraday_high` / `tx_night_at_limit_up`（若有提供）：盤中最高點 (點) / 台指期夜盤是否位於漲停價 (1＝最新價位於漲停價，0＝否)。
 
 ### 2. 個股技術面指標
 - **KD (5, 3, 3)**：

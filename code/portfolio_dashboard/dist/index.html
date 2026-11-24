@@ -1875,14 +1875,262 @@
       color: var(--text-dim);
     }
 
-    .highlights-grid {
+    /* 端到端全產線架構圖 (Tab 5 左到右寬螢幕 16:9 簡報友善版) */
+    .arch-pipeline-wrap {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 24px;
+      grid-template-columns: minmax(0, 1fr) 26px minmax(0, 1.32fr) 26px minmax(0, 1fr) 26px minmax(0, 0.96fr);
+      align-items: stretch;
+      gap: 6px;
+      margin-top: 16px;
     }
 
-    @media (max-width: 960px) {
+    .arch-phase {
+      padding: 13px 12px;
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.24);
+      border: 1px solid var(--glass-border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    html.theme-light .arch-phase {
+      background: rgba(255, 255, 255, 0.36);
+    }
+
+    .arch-phase-header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--glass-border-subtle);
+    }
+
+    .arch-phase-title-group {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .arch-phase-badge {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 2px 9px;
+      border-radius: 999px;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.34);
+    }
+
+    html.theme-light .arch-phase-badge {
+      color: #0369a1;
+      background: rgba(2, 132, 199, 0.10);
+      border-color: rgba(2, 132, 199, 0.28);
+    }
+
+    .arch-phase-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.3;
+    }
+
+    .arch-phase-meta {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--text-dim);
+      line-height: 1.35;
+    }
+
+    .arch-phase-nodes {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    .arch-node {
+      padding: 10px 11px;
+      border-radius: 13px;
+      gap: 4px;
+      flex: 1;
+      justify-content: space-between;
+      min-width: 0;
+    }
+
+    .arch-node .pipeline-step-tag {
+      font-size: 10.5px;
+    }
+
+    .arch-node .pipeline-step-title {
+      font-size: 12.5px;
+      line-height: 1.3;
+    }
+
+    .arch-node .pipeline-step-desc {
+      font-size: 11.5px;
+      line-height: 1.45;
+    }
+
+    .arch-node-top {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .arch-node-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .arch-node-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .arch-node-badges .model-badge,
+    .arch-node-badges .code-exec-badge {
+      font-size: 9.5px;
+      padding: 2px 6px;
+    }
+
+    .arch-ref-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: rgba(148, 163, 184, 0.14);
+      border: 1px solid var(--glass-border-subtle);
+      white-space: nowrap;
+    }
+
+    html.theme-light .arch-ref-tag {
+      background: rgba(15, 23, 42, 0.05);
+    }
+
+    .arch-h-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .arch-h-arrow-badge {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      color: #7dd3fc;
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.34);
+    }
+
+    html.theme-light .arch-h-arrow-badge {
+      color: #0369a1;
+      background: rgba(2, 132, 199, 0.10);
+      border-color: rgba(2, 132, 199, 0.28);
+    }
+
+    .arch-handoff-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--glass-border-subtle);
+    }
+
+    .arch-handoff-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4px 11px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: #7dd3fc;
+      background: rgba(56, 189, 248, 0.10);
+      border: 1px solid rgba(56, 189, 248, 0.26);
+      max-width: 100%;
+    }
+
+    html.theme-light .arch-handoff-pill {
+      color: #0369a1;
+      background: rgba(2, 132, 199, 0.08);
+      border-color: rgba(2, 132, 199, 0.22);
+    }
+
+    @media (max-width: 1120px) {
+      .arch-pipeline-wrap {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .arch-h-arrow {
+        display: none;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .arch-pipeline-wrap {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 6px;
+      }
+      .arch-h-arrow {
+        display: flex;
+        padding: 2px 0;
+      }
+      .arch-h-arrow-badge {
+        transform: rotate(90deg);
+      }
+      .arch-phase {
+        padding: 13px;
+      }
+    }
+
+    .highlights-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 26px;
+      margin-bottom: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .highlights-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 0;
+    }
+
+    @media (max-width: 1180px) {
       .highlights-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -1895,14 +2143,14 @@
     }
 
     .highlight-card {
-      padding: 20px 22px;
+      padding: 16px 18px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .highlight-card-title {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 800;
       color: var(--text-main);
       display: flex;
@@ -1910,10 +2158,67 @@
       gap: 8px;
     }
 
-    .highlight-card-desc {
-      font-size: 13px;
-      line-height: 1.7;
+    .highlight-pain-box {
+      background: rgba(244, 63, 94, 0.08);
+      border: 1px solid rgba(244, 63, 94, 0.24);
+      border-radius: 14px;
+      padding: 9px 11px;
+      font-size: 12px;
+      line-height: 1.55;
       color: var(--text-muted);
+    }
+
+    .highlight-sol-box {
+      flex: 1;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.24);
+      border-radius: 14px;
+      padding: 9px 11px;
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--text-main);
+    }
+
+    .highlight-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-bottom: 5px;
+    }
+
+    .highlight-label.pain {
+      background: rgba(244, 63, 94, 0.16);
+      color: #fda4af;
+    }
+
+    .highlight-label.sol {
+      background: rgba(16, 185, 129, 0.16);
+      color: #6ee7b7;
+    }
+
+    html.theme-light .highlight-pain-box {
+      background: rgba(225, 29, 72, 0.05);
+      border-color: rgba(225, 29, 72, 0.22);
+    }
+
+    html.theme-light .highlight-sol-box {
+      background: rgba(5, 150, 105, 0.05);
+      border-color: rgba(5, 150, 105, 0.22);
+    }
+
+    html.theme-light .highlight-label.pain {
+      background: rgba(225, 29, 72, 0.12);
+      color: #be123c;
+    }
+
+    html.theme-light .highlight-label.sol {
+      background: rgba(5, 150, 105, 0.12);
+      color: #047857;
     }
 
     .footer-link {
@@ -2476,6 +2781,37 @@
       </div>
 
       <div class="glass-card" style="margin-bottom: 24px;">
+        <div class="chart-title" style="margin-bottom: 10px;">
+          <span>📌</span> 專案背景與競賽任務
+        </div>
+        <div style="font-size: 13.5px; line-height: 1.75; color: var(--text-muted);">
+          本專案為參加 <strong style="color: var(--text-main);">2026 玉山人工智慧公開挑戰賽「Agent 基金經理人公開挑戰賽」</strong> 所設計。競賽期間（<code style="font-family:var(--font-mono);">2026-10-27 ~ 2026-11-27</code>）需打造完全自主運作的 AI 投資決策代理人，每日於開盤前整合台股多源數據、完成選股與部位調整推論，並繳交符合官方 <strong style="color: var(--text-main);">D-Plan Schema v4.3</strong> 規範的投資計畫書，由官方依當日實際市場成交均價與手續費／證交稅進行實盤模擬結算。
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:12px; margin-top:16px;">
+          <div class="pipeline-step">
+            <span class="pipeline-step-tag">01 · 模擬實盤規模</span>
+            <span class="pipeline-step-title">新台幣 10 億元主動式 ETF</span>
+            <span class="pipeline-step-desc">起始可交易淨值 NT$1,000,000,000，採真實台股交易成本（買進手續費 0.1425%、賣出手續費與證交稅 0.4425%）每日結算損益與排名。</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="pipeline-step-tag">02 · 投資標的與配置</span>
+            <span class="pipeline-step-title">150 檔母體精選 20～30 檔</span>
+            <span class="pipeline-step-desc">從官方指定 150 檔上市櫃成分股中自主篩選與輪動配置，嚴守持股檔數 20～30 檔與單一標的權重上限（一般 ≤ 10%、權值龍頭 ≤ 25%）。</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="pipeline-step-tag">03 · 法規與主動性合規</span>
+            <span class="pipeline-step-title">千股整股、現金與 Active Share</span>
+            <span class="pipeline-step-desc">委託須為 1,000 股整倍數、盤後現金比率不得高於 25%，且須維持 Active Share ≥ 15% 以確保主動投資風格不流於指數複製。</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="pipeline-step-tag">04 · 決策可解釋性</span>
+            <span class="pipeline-step-title">D-Plan v4.3 因果決策書</span>
+            <span class="pipeline-step-desc">每筆買賣與續抱委託都必須嚴格追溯至上游事實觀察與推論依據，確保 AI 投資決策具備完整金融審計可追溯性。</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card" style="margin-bottom: 24px;">
         <div class="chart-title" style="margin-bottom: 12px; display:flex; align-items:center; flex-wrap:wrap; gap:10px;">
           <span>🎯</span>
           <span>ETF 投資策略</span>
@@ -2491,79 +2827,338 @@
 
       <div class="glass-card">
         <div class="chart-title" style="margin-bottom: 4px;">
-          <span>🧭</span> 分層因果推論決策架構（L0 ➔ L4 Pipeline）
+          <span>🧭</span> 端到端全自動決策與看板產線架構（Step 0 ➔ Step 10 Pipeline）
         </div>
-        <div style="font-size:12.5px; color:var(--text-dim);">嚴格遵循單向因果引用鏈與官方 D-Plan Schema v4.3 規範，確保每一筆委託皆具備完整可追溯推論依據</div>
-        <div class="pipeline-flow">
-          <div class="pipeline-step">
-            <span class="pipeline-step-tag">L0 · Pool & Sources</span>
-            <span class="pipeline-step-title">動態選股與多源數據</span>
-            <span class="pipeline-step-desc">透過 OAuth2 SSO 與 SSR 憑證自動萃取整合多源數據，並結合量化初篩與 LLM 補撈建構動態觀察池。</span>
+        <div style="font-size:12.5px; color:var(--text-dim);">完整串接資料收集、多 Agent 因果推論、雙層 Pydantic 驗證、官方預檢核繳交與即時視覺化看板；嚴格遵循單向無循環引用鏈 (D-Plan Schema v4.3)</div>
+
+        <div class="arch-pipeline-wrap">
+          <!-- Column 1: Phase 1 (Step 0 L0 Ingestion & Dynamic Screening) -->
+          <div class="arch-phase">
+            <div class="arch-phase-header">
+              <div class="arch-phase-title-group">
+                <span class="arch-phase-badge">PHASE 1 · STEP 0</span>
+                <span class="arch-phase-title">L0 資料收集與選股</span>
+              </div>
+              <span class="arch-phase-meta">Fail-Fast 防漏阻斷機制</span>
+            </div>
+            <div class="arch-phase-nodes">
+              <div class="pipeline-step arch-node">
+                <div class="arch-node-top">
+                  <span class="pipeline-step-tag">Step 0a · Backend SSO</span>
+                  <span class="pipeline-step-title">競賽後台歷史同步</span>
+                  <span class="pipeline-step-desc">OAuth2 SSO 增量同步每日排名、淨值與 4 位小數成交明細。</span>
+                </div>
+              </div>
+              <div class="pipeline-step arch-node">
+                <div class="arch-node-top">
+                  <span class="pipeline-step-tag">Step 0b · DataPack</span>
+                  <span class="pipeline-step-title">官方帳戶快照與追蹤</span>
+                  <span class="pipeline-step-desc">檢核盤後結算就緒狀態，計算淨值演變與移動停利追蹤。</span>
+                </div>
+              </div>
+              <div class="pipeline-step arch-node">
+                <div class="arch-node-top">
+                  <span class="pipeline-step-tag">Step 0c · Dynamic Pool</span>
+                  <span class="pipeline-step-title">150 檔動態股票池</span>
+                  <span class="pipeline-step-desc">量化動能初篩＋LLM 補撈遺珠，並強制聯集帳上持股。</span>
+                </div>
+                <div class="arch-node-meta-row">
+                  <div class="arch-node-badges">
+                    <span class="model-badge carbon">gemini-4-carbon</span>
+                    <span class="code-exec-badge">🐍 Code Exec</span>
+                  </div>
+                </div>
+              </div>
+              <div class="pipeline-step arch-node">
+                <div class="arch-node-top">
+                  <span class="pipeline-step-tag">Step 0d–0f · Features</span>
+                  <span class="pipeline-step-title">多源量化與輿情特徵</span>
+                  <span class="pipeline-step-desc">CMoney SSR 訪客 JWT 情緒、FinLab 45 指標與同業 ETF 標竿。</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="pipeline-step">
-            <span class="pipeline-step-tag">L1 · Observations</span>
-            <span class="pipeline-step-title">客觀事實與數值校準</span>
-            <span class="pipeline-step-desc">壓縮為高密度 Compact Array JSON 降低 Token 消耗，並以原始數值程式覆寫防範數值失真。</span>
+
+          <div class="arch-h-arrow" aria-hidden="true">
+            <span class="arch-h-arrow-badge">➔</span>
           </div>
-          <div class="pipeline-step">
-            <span class="pipeline-step-tag">L2M · Market View</span>
-            <span class="pipeline-step-title">市場走向研判</span>
-            <span class="pipeline-step-desc">分析宏觀盤勢 Regime、資金水位與整體多空風險立場。</span>
+
+          <!-- Column 2: Phase 2 (Step 1 ~ 5 L1 -> L4 Causal Reasoning) -->
+          <div class="arch-phase">
+            <div class="arch-phase-header">
+              <div class="arch-phase-title-group">
+                <span class="arch-phase-badge">PHASE 2 · STEP 1~5</span>
+                <span class="arch-phase-title">L1 ➔ L4 因果推論核心</span>
+              </div>
+              <span class="arch-phase-meta">LiteLLM Router + Fallback 備援</span>
+            </div>
+            <div class="arch-phase-nodes">
+              <div class="pipeline-step arch-node">
+                <div class="arch-node-top">
+                  <span class="pipeline-step-tag">Step 1 · L1 Observations</span>
+                  <span class="pipeline-step-title">客觀事實與數值校準</span>
+                  <span class="pipeline-step-desc">產出大盤 (O1) 與個股陳述，程式端 100% 原始數值覆寫防幻覺。</span>
+                </div>
+                <div class="arch-node-meta-row">
+                  <div class="arch-node-badges">
+                    <span class="model-badge flash">gemini-3.8-flash</span>
+                  </div>
+                  <span class="arch-ref-tag">source_ref ➔ S1..Sn</span>
+                </div>
+              </div>
+
+              <div class="pipeline-step arch-node">
+                <div class="arch-node-top">
+                  <span class="pipeline-step-tag">Step 2 · L2M Market View</span>
+                  <span class="pipeline-step-title">市場走向與現金承諾</span>
+                  <span class="pipeline-step-desc">研判宏觀 Regime、操作 Stance、目標現金區間與淨曝險意圖。</span>
+                </div>
+                <div class="arch-node-meta-row">
+                  <div class="arch-node-badges">
+                    <span class="model-badge carbon">gemini-4-carbon</span>
+                    <span class="code-exec-badge">🐍 Code Exec</span>
+                  </div>
+                  <span class="arch-ref-tag">basis_refs ➔ O1</span>
+                </div>
+              </div>
+
+              <div class="pipeline-step arch-node">
+                <div class="arch-node-top">
+                  <span class="pipeline-step-tag">Step 3 · L2 Inferences</span>
+                  <span class="pipeline-step-title">個股兩階段深度推論</span>
+                  <span class="pipeline-step-desc">整合基本面、動能、籌碼、情緒與移動停利，強制揭露反面證據。</span>
+                </div>
+                <div class="arch-node-meta-row">
+                  <div class="arch-node-badges">
+                    <span class="model-badge carbon">gemini-4-carbon</span>
+                    <span class="code-exec-badge">🐍 Code Exec</span>
+                  </div>
+                  <span class="arch-ref-tag">premise_refs ➔ O1..On</span>
+                </div>
+              </div>
+
+              <div class="pipeline-step arch-node">
+                <div class="arch-node-top">
+                  <span class="pipeline-step-tag">Step 4 · L3 Decisions</span>
+                  <span class="pipeline-step-title">投組決策與權重平衡</span>
+                  <span class="pipeline-step-desc">昨日持股 100% 互斥覆蓋、20～30 檔配置與真實資金缺口檢查。</span>
+                </div>
+                <div class="arch-node-meta-row">
+                  <div class="arch-node-badges">
+                    <span class="model-badge carbon">gemini-4-carbon</span>
+                    <span class="code-exec-badge">🐍 Code Exec</span>
+                  </div>
+                  <span class="arch-ref-tag">inference_refs ➔ I1..In</span>
+                </div>
+              </div>
+
+              <div class="pipeline-step arch-node">
+                <div class="arch-node-top">
+                  <span class="pipeline-step-tag">Step 5 · L4 Orders</span>
+                  <span class="pipeline-step-title">千股算單與智能覆核</span>
+                  <span class="pipeline-step-desc">Python 機械向下取整千股＋沙盒覆核 Active Share ≥ 15%。</span>
+                </div>
+                <div class="arch-node-meta-row">
+                  <div class="arch-node-badges">
+                    <span class="model-badge carbon">gemini-4-carbon</span>
+                    <span class="code-exec-badge">🐍 Code Exec</span>
+                  </div>
+                  <span class="arch-ref-tag">decision_ref ➔ D1..Dn</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="pipeline-step">
-            <span class="pipeline-step-tag">L2 · Inferences</span>
-            <span class="pipeline-step-title">個股深度推論</span>
-            <span class="pipeline-step-desc">針對精選候選池進行基本面、動能與風險因子因果推論，並強制揭露反面證據。</span>
+
+          <div class="arch-h-arrow" aria-hidden="true">
+            <span class="arch-h-arrow-badge">➔</span>
           </div>
-          <div class="pipeline-step">
-            <span class="pipeline-step-tag">L3 · Decisions</span>
-            <span class="pipeline-step-title">投組權重決策</span>
-            <span class="pipeline-step-desc">控管持股檔數、移動停利追蹤與整體部位風險平衡配置。</span>
+
+          <!-- Column 3: Phase 3 (Step 6 ~ 9 Build, Validate Gate, Submit & Report) -->
+          <div class="arch-phase">
+            <div class="arch-phase-header">
+              <div class="arch-phase-title-group">
+                <span class="arch-phase-badge">PHASE 3 · STEP 6~9</span>
+                <span class="arch-phase-title">驗證閘門與自動繳交</span>
+              </div>
+              <span class="arch-phase-meta">零容忍阻斷 · 完整審計留存</span>
+            </div>
+            <div class="arch-phase-nodes">
+              <div class="pipeline-step arch-node">
+                <div class="arch-node-top">
+                  <span class="pipeline-step-tag">Step 6 · build_dplan.py</span>
+                  <span class="pipeline-step-title">D-Plan 總組裝與驗證</span>
+                  <span class="pipeline-step-desc">注入 Git commit hash，執行 Pydantic extra="forbid" 全圖 DAG 驗證。</span>
+                </div>
+              </div>
+              <div class="pipeline-step arch-node">
+                <div class="arch-node-top">
+                  <span class="pipeline-step-tag">Step 7 · validate_dplan_api.py</span>
+                  <span class="pipeline-step-title">官方線上預檢核閘門</span>
+                  <span class="pipeline-step-desc">上傳官方 /validate/ 端點，出現任何 bad 或 warn 即立刻中止。</span>
+                </div>
+              </div>
+              <div class="pipeline-step arch-node">
+                <div class="arch-node-top">
+                  <span class="pipeline-step-tag">Step 8 · submit_dplan_api.py</span>
+                  <span class="pipeline-step-title">官方正式自動繳交</span>
+                  <span class="pipeline-step-desc">預檢全數通過後自動送出 /dplan/，並嚴格驗證 HTTP 2xx 與收據。</span>
+                </div>
+              </div>
+              <div class="pipeline-step arch-node">
+                <div class="arch-node-top">
+                  <span class="pipeline-step-tag">Step 9 · generate_daily_report.py</span>
+                  <span class="pipeline-step-title">每日決策回顧報告</span>
+                  <span class="pipeline-step-desc">產出帳戶現況、部位增減理由、財務試算與動態選股稽核報告。</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="pipeline-step">
-            <span class="pipeline-step-tag">L4 · Orders & UI</span>
-            <span class="pipeline-step-title">委託算單與預檢繳交</span>
-            <span class="pipeline-step-desc">千股整股算單與 Active Share 覆核後通過官方預檢閘門繳交，產出稽核報告並同步更新本看板。</span>
+
+          <div class="arch-h-arrow" aria-hidden="true">
+            <span class="arch-h-arrow-badge">➔</span>
+          </div>
+
+          <!-- Column 4: Phase 4 (Step 10 Core 2 Portfolio Dashboard & CI/CD) -->
+          <div class="arch-phase">
+            <div class="arch-phase-header">
+              <div class="arch-phase-title-group">
+                <span class="arch-phase-badge">PHASE 4 · STEP 10</span>
+                <span class="arch-phase-title">即時看板與自動發布</span>
+              </div>
+              <span class="arch-phase-meta">Core 2 · 零後端 SPA 雙向同步</span>
+            </div>
+            <div class="arch-phase-nodes">
+              <div class="pipeline-step arch-node">
+                <div class="arch-node-top">
+                  <span class="pipeline-step-tag">market_api.py</span>
+                  <span class="pipeline-step-title">玉山行情 SDK</span>
+                  <span class="pipeline-step-desc">2330 開市日曆自校準與 150 檔日線報價更新。</span>
+                </div>
+              </div>
+              <div class="pipeline-step arch-node">
+                <div class="arch-node-top">
+                  <span class="pipeline-step-tag">tracker.py</span>
+                  <span class="pipeline-step-title">FIFO 損益與排名引擎</span>
+                  <span class="pipeline-step-desc">計算分批買進成本、持有天數、競賽排名與淨值曲線。</span>
+                </div>
+              </div>
+              <div class="pipeline-step arch-node">
+                <div class="arch-node-top">
+                  <span class="pipeline-step-tag">usage_history.json</span>
+                  <span class="pipeline-step-title">FinOps 與報告彙整</span>
+                  <span class="pipeline-step-desc">結算 19 項 AI 用量成本明細與當日 Markdown 決策報告。</span>
+                </div>
+              </div>
+              <div class="pipeline-step arch-node">
+                <div class="arch-node-top">
+                  <span class="pipeline-step-tag">builder.py ➔ Git CI/CD</span>
+                  <span class="pipeline-step-title">Cloudflare Pages 部署</span>
+                  <span class="pipeline-step-desc">編譯 6 分頁液態玻璃 SPA 並自動推送至線上展示網址。</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
+        <div class="arch-handoff-bar">
+          <span class="arch-handoff-pill">① L0 ➔ L1：Compact Array JSON ([value, date]) + 來源清單</span>
+          <span class="arch-handoff-pill">② L1~L4 ➔ Step 6：Draft ➔ Final 雙層 Pydantic DAG 驗證</span>
+          <span class="arch-handoff-pill">③ Step 9 ➔ Step 10：19 項 Usage FinOps 結算與看板連動</span>
+        </div>
+      </div>
+
+      <div class="highlights-section-header">
+        <span>⚡ 核心技術亮點與工程痛點對照（Problem ➔ Solution）</span>
       </div>
 
       <div class="highlights-grid">
         <div class="glass-card highlight-card">
           <div class="highlight-card-title"><span>🧠</span> 因果引用鏈與雙層 Pydantic Schema</div>
-          <div class="highlight-card-desc">落實 L0 ➔ L4 單向無循環 DAG 引用驗證，並分離輕量 <code>Draft</code>（避免結構化輸出 FSM 狀態爆炸）與嚴格 <code>Final</code>（<code>extra='forbid'</code>）模型，杜絕孤兒節點與格式偏差。</div>
+          <div class="highlight-pain-box">
+            <div class="highlight-label pain">⚠️ 工程痛點</div>
+            <div>深層巢狀 <code>extra='forbid'</code> Schema 易觸發 Structured Output FSM 狀態爆炸而生成失敗；跨層推論也常出現無根據的孤兒結論。</div>
+          </div>
+          <div class="highlight-sol-box">
+            <div class="highlight-label sol">✅ 系統解法</div>
+            <div>採輕量 <code>Draft</code>（供 LLM 生成）與嚴格 <code>Final</code> 雙層 Pydantic 模型，並強制驗證 L0 ➔ L4 單向無循環 DAG 引用鏈，杜絕孤兒節點與格式偏差。</div>
+          </div>
         </div>
         <div class="glass-card highlight-card">
           <div class="highlight-card-title"><span>🐍</span> 原生 Python 沙盒與底層原始碼稽核</div>
-          <div class="highlight-card-desc">於 L0、L2M、L2、L3、L4 核心階段全面啟用 Gemini 原生 Code Execution 沙盒消除算術幻覺，並透過底層 Hook 攔截串流與非串流 <code>executable_code</code> 留存稽核。</div>
+          <div class="highlight-pain-box">
+            <div class="highlight-label pain">⚠️ 工程痛點</div>
+            <div>LLM 缺乏原生算術能力，直接推算殖利率、報酬率、張數整數化與權重配比極易產生數值幻覺與邏輯跳躍。</div>
+          </div>
+          <div class="highlight-sol-box">
+            <div class="highlight-label sol">✅ 系統解法</div>
+            <div>於 L0、L2M、L2、L3、L4 全面啟用 Gemini 原生 Code Execution 沙盒執行真實運算，並透過底層 Hook 攔截串流／非串流 <code>executable_code</code> 留存稽核。</div>
+          </div>
         </div>
         <div class="glass-card highlight-card">
           <div class="highlight-card-title"><span>🧭</span> LiteLLM Multi-Model 動態路由與備援</div>
-          <div class="highlight-card-desc">透過 <code>litellm.Router</code> 依任務複雜度分流 <code>gemini-3.8-flash</code>（海量事實擷取）與 <code>gemini-4-carbon</code>（深度推理決策），並配置自動重試與異常降級備援（Fallback）。</div>
-        </div>
-        <div class="glass-card highlight-card">
-          <div class="highlight-card-title"><span>🛡️</span> 三層 JSON 容錯與 L1 原始數值覆寫</div>
-          <div class="highlight-card-desc">結合串流模式結構化輸出與 <code>json-repair</code> 三層容錯解析鏈，並於 L1 後處理以程式端原始數據 100% 覆寫 <code>values</code> 與 <code>source_ref</code>，徹底杜絕浮點數幻覺與缺漏。</div>
+          <div class="highlight-pain-box">
+            <div class="highlight-label pain">⚠️ 工程痛點</div>
+            <div>全程綁定旗艦模型造成高昂成本與延遲，且盤後自動化若遇單一模型限流（429）或服務異常即可能整條管線中斷。</div>
+          </div>
+          <div class="highlight-sol-box">
+            <div class="highlight-label sol">✅ 系統解法</div>
+            <div>透過 <code>litellm.Router</code> 依任務複雜度分流 <code>gemini-3.8-flash</code>（事實擷取）與 <code>gemini-4-carbon</code>（深度推理），並內建自動重試與異常降級備援。</div>
+          </div>
         </div>
         <div class="glass-card highlight-card">
           <div class="highlight-card-title"><span>⚡</span> 動態遞補與 Compact Array JSON 工程</div>
-          <div class="highlight-card-desc">基本面季報／月營收與社群情緒採各股獨立動態遞補最新非空值並保留真實公告時間戳，搭配單行 Compact Array JSON 壓縮，在有限視窗中極大化資訊密度。</div>
+          <div class="highlight-pain-box">
+            <div class="highlight-label pain">⚠️ 工程痛點</div>
+            <div>季報、月營收與社群情緒存在公布時差與空值（<code>NaN</code>），傳統 Key-Value JSON 亦會浪費大量重複鍵名 Token 擠壓推理視窗。</div>
+          </div>
+          <div class="highlight-sol-box">
+            <div class="highlight-label sol">✅ 系統解法</div>
+            <div>各股獨立動態回溯遞補最新非空數據並保留真實公告時間戳，結合單行 Compact Array JSON <code>[value, date]</code> 壓縮，在有限視窗中極大化資訊密度。</div>
+          </div>
         </div>
         <div class="glass-card highlight-card">
           <div class="highlight-card-title"><span>🎯</span> 三階段動態股票池篩選引擎</div>
-          <div class="highlight-card-desc">每日自法定上市櫃母體出發，結合量化相對動能初篩、高階 LLM 依籌碼與同業估值補撈遺珠，並強制聯集帳上現有持股，兼顧盤面輪動靈敏度與部位連續性。</div>
+          <div class="highlight-pain-box">
+            <div class="highlight-label pain">⚠️ 工程痛點</div>
+            <div>台股兩千餘檔標的無法全數塞入推論視窗；純量化篩選易錯失題材拐點，過度汰換又會破壞現有持股的決策連續性。</div>
+          </div>
+          <div class="highlight-sol-box">
+            <div class="highlight-label sol">✅ 系統解法</div>
+            <div>每日自法定上市櫃母體出發，結合量化動能初篩與高階 LLM 依籌碼及同業估值補撈遺珠，並強制聯集帳上現有持股，兼顧輪動靈敏度與部位連續性。</div>
+          </div>
         </div>
         <div class="glass-card highlight-card">
           <div class="highlight-card-title"><span>🔐</span> 全自動多源認證與訪客憑證萃取</div>
-          <div class="highlight-card-desc">透過 OAuth2 SSO 自動增量同步競賽後台歷史與 DataPack（內建盤後結算就緒守護），並自 CMoney SSR 原始碼自動萃取訪客 JWT 搭配 401 自動重取重試，實現零人工介入。</div>
+          <div class="highlight-pain-box">
+            <div class="highlight-label pain">⚠️ 工程痛點</div>
+            <div>競賽後台歷史與外部社群輿情受 SSO 登入態與動態 Token 保護，每日手動下載報表或複製貼上既耗時又無法自動化排程。</div>
+          </div>
+          <div class="highlight-sol-box">
+            <div class="highlight-label sol">✅ 系統解法</div>
+            <div>透過 OAuth2 SSO 自動增量同步後台 DataPack（內建盤後結算就緒守護），並自 CMoney SSR 原始碼自動萃取訪客 JWT 搭配 401 重取重試，實現零人工介入。</div>
+          </div>
         </div>
         <div class="glass-card highlight-card">
           <div class="highlight-card-title"><span>🚦</span> 官方線上預檢核閘門與無人值守繳交</div>
-          <div class="highlight-card-desc">D-Plan 組裝完成後自動上傳官方 <code>/validate/</code> 端點執行零容忍預檢核（任何異常即中止阻擋），全數通過後才執行正式繳交並驗證官方收據與產出每日回顧報告。</div>
+          <div class="highlight-pain-box">
+            <div class="highlight-label pain">⚠️ 工程痛點</div>
+            <div>無人值守自動送單若發生買賣張數單位誤算、資金溢位或持股超賣，將直接觸發競賽規則違規或無效委託風險。</div>
+          </div>
+          <div class="highlight-sol-box">
+            <div class="highlight-label sol">✅ 系統解法</div>
+            <div>D-Plan 組裝完成後先上傳官方 <code>/validate/</code> 端點執行零容忍預檢核（任何異常即中止阻擋），全數通過後才執行正式繳交並留存官方收據。</div>
+          </div>
         </div>
         <div class="glass-card highlight-card">
           <div class="highlight-card-title"><span>💎</span> 全鏈路 FinOps 監控與液態玻璃看板</div>
-          <div class="highlight-card-desc">實施全階段無條件 Prompt 存檔、19 項 LiteLLM 原生 Usage 成本監控、玉山行情 SDK 開市日曆自校準、FIFO 批次成本追蹤，並支援一鍵更新與 Cloudflare Pages 自動部署。</div>
+          <div class="highlight-pain-box">
+            <div class="highlight-label pain">⚠️ 工程痛點</div>
+            <div>Multi-Agent 系統橫跨多階段呼叫與多源資料，缺乏完整稽核與可視化會導致推論成本黑箱與績效歸因困難。</div>
+          </div>
+          <div class="highlight-sol-box">
+            <div class="highlight-label sol">✅ 系統解法</div>
+            <div>落實全階段 Prompt 存檔與 19 項 LiteLLM 原生 Usage 成本結算，整合玉山行情 SDK 開市日曆自校準與 FIFO 批次追蹤，一鍵部署互動式液態玻璃看板。</div>
+          </div>
         </div>
       </div>
     </div>
