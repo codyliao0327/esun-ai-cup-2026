@@ -1,0 +1,42 @@
+{
+  "_format": "[value, date]",
+  "_note": "2026-11-23 至 2026-11-25 台灣時間晚間交易時段盤中補充行情紀錄與對比（皆非最終收盤數據；各觀察時間及漲跌幅基準不同，點位變化率並非正式收盤報酬率）",
+  "tw_market": {
+    "sox_intraday_latest": [8161.13, "2026-11-25 晚間盤中(未收盤)｜大漲後連續兩個交易時段大幅下跌，半導體賣壓延續，接近最新盤中低點"],
+    "sox_intraday_change_pct": [-7.6, "2026-11-25 晚間盤中(未收盤)"],
+    "sox_prev_intraday_latest": [8927.75, "2026-11-24 晚間盤中(未收盤)"],
+    "sox_prev_intraday_change_pct": [-6.89, "2026-11-24 晚間盤中(未收盤)"],
+    "sox_prev2_intraday_latest": [9714.68, "2026-11-23 晚間盤中(未收盤)"],
+    "sox_prev2_intraday_change_pct": [15.53, "2026-11-23 晚間盤中(未收盤)"],
+    "sox_intraday_point_change_pct_vs_prev": [-8.59, "2026-11-25 vs 2026-11-24 (近兩次點位變化率，非收盤報酬率)"],
+    "sox_intraday_point_change_pct_vs_prev2": [-15.99, "2026-11-25 vs 2026-11-23 (首末觀察點位變化率，非收盤報酬率)"],
+
+    "nasdaq_intraday_latest": [22766.65, "2026-11-25 晚間盤中(未收盤)｜大漲後連續走弱，最新跌幅明顯擴大"],
+    "nasdaq_intraday_change_pct": [-4.07, "2026-11-25 晚間盤中(未收盤)"],
+    "nasdaq_prev_intraday_latest": [23759.74, "2026-11-24 晚間盤中(未收盤)"],
+    "nasdaq_prev_intraday_change_pct": [-1.37, "2026-11-24 晚間盤中(未收盤)"],
+    "nasdaq_prev2_intraday_latest": [24271.47, "2026-11-23 晚間盤中(未收盤)"],
+    "nasdaq_prev2_intraday_change_pct": [7.31, "2026-11-23 晚間盤中(未收盤)"],
+    "nasdaq_intraday_point_change_pct_vs_prev": [-4.18, "2026-11-25 vs 2026-11-24 (近兩次點位變化率，非收盤報酬率)"],
+    "nasdaq_intraday_point_change_pct_vs_prev2": [-6.2, "2026-11-25 vs 2026-11-23 (首末觀察點位變化率，非收盤報酬率)"],
+
+    "nq_futures_intraday_latest": [25274.5, "2026-11-25 晚間盤中(未收盤)｜連續走弱，最新交易時段下跌伴隨成交量放大，低點後小幅反彈"],
+    "nq_futures_intraday_change_pct": [-3.81, "2026-11-25 晚間盤中(未收盤)"],
+    "nq_futures_prev_intraday_latest": [26160.5, "2026-11-24 晚間盤中(未收盤)"],
+    "nq_futures_prev_intraday_change_pct": [-2.42, "2026-11-24 晚間盤中(未收盤)"],
+    "nq_futures_prev2_intraday_latest": [26880, "2026-11-23 晚間盤中(未收盤)"],
+    "nq_futures_prev2_intraday_change_pct": [6.98, "2026-11-23 晚間盤中(未收盤)"],
+    "nq_futures_intraday_point_change_pct_vs_prev": [-3.39, "2026-11-25 vs 2026-11-24 (近兩次點位變化率，非收盤報酬率)"],
+    "nq_futures_intraday_point_change_pct_vs_prev2": [-5.97, "2026-11-25 vs 2026-11-23 (首末觀察點位變化率，非收盤報酬率)"],
+
+    "tx_night_intraday_latest": [36290, "2026-11-25 晚間盤中(未收盤)｜漲停後連續兩個夜盤大幅下跌，低點持續下移，最新低點為35,933點"],
+    "tx_night_intraday_change_pct": [-4.81, "2026-11-25 晚間盤中(未收盤)"],
+    "tx_night_intraday_low": [35933, "2026-11-25 晚間盤中(未收盤)"],
+    "tx_night_prev_intraday_latest": [38471, "2026-11-24 晚間盤中(未收盤)"],
+    "tx_night_prev_intraday_change_pct": [-4.6, "2026-11-24 晚間盤中(未收盤)"],
+    "tx_night_prev2_intraday_latest": [40324, "2026-11-23 晚間盤中(未收盤)"],
+    "tx_night_prev2_intraday_change_pct": [10.0, "2026-11-23 晚間盤中(未收盤)"],
+    "tx_night_intraday_point_change_pct_vs_prev": [-5.67, "2026-11-25 vs 2026-11-24 (近兩次點位變化率，非收盤報酬率)"],
+    "tx_night_intraday_point_change_pct_vs_prev2": [-10.0, "2026-11-25 vs 2026-11-23 (首末觀察點位變化率，非收盤報酬率)"]
+  }
+}

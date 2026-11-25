@@ -3579,7 +3579,7 @@
     "date": "2026-11-24",
     "ranking": {
       "rank": 122,
-      "total_teams": 362,
+      "total_teams": 360,
       "group_rank": 24,
       "group_total": 81
     },
@@ -4112,6 +4112,176 @@
         "amount": 11605923.0,
         "fee": 16538.44,
         "tax": 34817.77,
+        "outcome": "filled"
+      }
+    ]
+  },
+  {
+    "day": 22,
+    "date": "2026-11-25",
+    "ranking": {
+      "rank": 113,
+      "total_teams": 360,
+      "group_rank": 22,
+      "group_total": 81
+    },
+    "portfolio": {
+      "aum": 831352578.51,
+      "day_return": -4.0585,
+      "cum_return": -16.8647,
+      "stock_ratio": 82.7601,
+      "cash_ratio": 17.2399,
+      "holdings_count": 25,
+      "top10_weight": 48.5017,
+      "aum_breakdown": {
+        "cash": 143324328.51,
+        "holdings_value": 688028250.0,
+        "receivable_shares_value": 0.0,
+        "receivable_cash": 0.0,
+        "upcoming_receivable_cash": 0.0,
+        "residual": 0.0
+      },
+      "corporate_actions": {
+        "cash": 0.0,
+        "shares": 0,
+        "count": 0
+      },
+      "carry": {
+        "is_carried_forward": false,
+        "reason": "",
+        "reason_text": ""
+      }
+    },
+    "trade_summary": {
+      "buy_count": 2,
+      "buy_shares": 683000,
+      "buy_amount": 48367448.3,
+      "sell_count": 8,
+      "sell_shares": 126000,
+      "sell_amount": 108615603.8,
+      "fee": 223700.84,
+      "tax": 325846.83,
+      "voided_count": 0
+    },
+    "trades": [
+      {
+        "id": 90036,
+        "side": "sell",
+        "code": "2059",
+        "name": "川湖",
+        "shares": 3000,
+        "price": 6414.7841,
+        "amount": 19244352.3,
+        "fee": 27423.2,
+        "tax": 57733.06,
+        "outcome": "filled"
+      },
+      {
+        "id": 90037,
+        "side": "sell",
+        "code": "2308",
+        "name": "台達電",
+        "shares": 6000,
+        "price": 1060.3782,
+        "amount": 6362269.2,
+        "fee": 9066.23,
+        "tax": 19086.81,
+        "outcome": "filled"
+      },
+      {
+        "id": 90038,
+        "side": "sell",
+        "code": "2330",
+        "name": "台積電",
+        "shares": 5000,
+        "price": 2113.8111,
+        "amount": 10569055.5,
+        "fee": 15060.9,
+        "tax": 31707.17,
+        "outcome": "filled"
+      },
+      {
+        "id": 90039,
+        "side": "sell",
+        "code": "2379",
+        "name": "瑞昱",
+        "shares": 31000,
+        "price": 688.4321,
+        "amount": 21341395.1,
+        "fee": 30411.49,
+        "tax": 64024.19,
+        "outcome": "filled"
+      },
+      {
+        "id": 90040,
+        "side": "sell",
+        "code": "2383",
+        "name": "台光電",
+        "shares": 3000,
+        "price": 3359.6667,
+        "amount": 10079000.1,
+        "fee": 14362.58,
+        "tax": 30237.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 90041,
+        "side": "buy",
+        "code": "2603",
+        "name": "長榮",
+        "shares": 83000,
+        "price": 251.5201,
+        "amount": 20876168.3,
+        "fee": 29748.54,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 90042,
+        "side": "buy",
+        "code": "2618",
+        "name": "長榮航",
+        "shares": 600000,
+        "price": 45.8188,
+        "amount": 27491280.0,
+        "fee": 39175.07,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 90043,
+        "side": "sell",
+        "code": "3034",
+        "name": "聯詠",
+        "shares": 38000,
+        "price": 421.3374,
+        "amount": 16010821.2,
+        "fee": 22815.42,
+        "tax": 48032.46,
+        "outcome": "filled"
+      },
+      {
+        "id": 90044,
+        "side": "sell",
+        "code": "3711",
+        "name": "日月光投控",
+        "shares": 14000,
+        "price": 494.4999,
+        "amount": 6922998.6,
+        "fee": 9865.27,
+        "tax": 20769.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 90045,
+        "side": "sell",
+        "code": "8046",
+        "name": "南電",
+        "shares": 26000,
+        "price": 695.6043,
+        "amount": 18085711.8,
+        "fee": 25772.14,
+        "tax": 54257.14,
         "outcome": "filled"
       }
     ]
