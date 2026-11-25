@@ -1,0 +1,46 @@
+{
+  "timestamp": "2026-11-26T01:48:31+08:00",
+  "date": "20261126",
+  "provider": "gemini",
+  "model": "gemini-4-carbon",
+  "model_group": "stage-l2m",
+  "stage": "l2m",
+  "status": "success",
+  "finish_reason": "stop",
+  "duration_seconds": 160.84,
+  "prompt_tokens": 167739,
+  "completion_tokens": 12591,
+  "total_tokens": 180330,
+  "cached_tokens": 127932,
+  "tool_use_tokens": 149418,
+  "reasoning_tokens": 7368,
+  "response_cost": 0.218317,
+  "code_execution_used": true,
+  "code_execution_call_count": 6,
+  "executed_codes": [
+    {
+      "language": "PYTHON",
+      "code": "cash = 143324328.51\nnav = 831352578.51\ncash_ratio = cash / nav\nprint(f\"Current cash ratio: {cash_ratio:.6f}\")\n\n# Suppose holdings drop 10% today (worst case limit down) and we hold (no net cash change):\nholdings_val = nav - cash\nnew_holdings_val = holdings_val * 0.90\nnew_nav_hold = cash + new_holdings_val\npassive_cash_ratio_hold = cash / new_nav_hold\nprint(f\"If hold & -10% drop, cash ratio becomes: {passive_cash_ratio_hold:.6f}\")\n\n# Suppose we reduce slightly to target say 18%~20% cash before market drop, e.g. 19% cash:\n# Wait! If we set net_exposure_intent = \"hold\" or \"reduce\":\n# Wait: current cash_ratio is 17.24% (0.172399 <= 0.20).\n# Let's check what happens if we reduce by say 2.5% of NAV -> cash ratio ~19.74%, if holdings drop 8% -> 0.1974 / (0.1974 + 0.8026*0.92) = 0.2109 (< 0.25).\nfor pre_cash_pct in [0.1724, 0.18, 0.19, 0.20, 0.21, 0.22]:\n    post_10pct_drop = pre_cash_pct / (pre_cash_pct + (1 - pre_cash_pct) * 0.90)\n    print(f\"Pre cash {pre_cash_pct:.4f} -> after -10% drop: {post_10pct_drop:.4f}\")\n"
+    },
+    {
+      "language": "PYTHON",
+      "code": "holdings = {\n  \"2059\": 0.007825, \"2308\": 0.040609, \"2317\": 0.038004, \"2330\": 0.139652,\n  \"2345\": 0.042581, \"2368\": 0.03048, \"2382\": 0.033278, \"2383\": 0.024214,\n  \"2454\": 0.043844, \"2603\": 0.025209, \"2618\": 0.032982, \"3017\": 0.033674,\n  \"3227\": 0.020554, \"3260\": 0.022306, \"3293\": 0.020509, \"3661\": 0.03469,\n  \"3665\": 0.041174, \"3711\": 0.017023, \"5289\": 0.021247, \"6139\": 0.022698,\n  \"6223\": 0.018139, \"6669\": 0.027521, \"7828\": 0.029139, \"8299\": 0.037511,\n  \"8415\": 0.022737\n}\nprint(\"Total equity weight:\", sum(holdings.values()))\nnon_tech = holdings[\"2603\"] + holdings[\"2618\"] + holdings[\"8415\"]\nprint(\"Non-tech weight (shipping + 8415):\", non_tech)\nprint(\"Tech/Semi/Hardware weight:\", sum(holdings.values()) - non_tech)\n"
+    },
+    {
+      "language": "PYTHON",
+      "code": "# Current as_of 2026-11-25 close:\ncash_0 = 143324328.51\nholdings_0 = 831352578.51 - cash_0 # 688,028,250.00\nnav_0 = 831352578.51\n\n# Suppose today (2026-11-26) our tech-heavy portfolio (74.7% tech/semi, SOX -7.6%, TX night -4.81%) drops by 5% to 8% on average!\n# Case A: Suppose we declare `reduce`, say net sell > 2% of NAV_0 (or today's NAV), e.g., net sell 25M (~3% of NAV_0):\nfor drop in [0.05, 0.06, 0.07, 0.08, 0.10]:\n    # If net sell = 20M (about 2.4% of NAV_0):\n    net_sell = 20_000_000\n    # Wait: if we sell 20M at today's lower prices, remaining holdings value at close = holdings_0 * (1 - drop) - net_sell (approx, assuming sell at VWAP ~ close)\n    cash_1 = cash_0 + net_sell\n    nav_1 = cash_0 + holdings_0 * (1 - drop)\n    cr_reduce = cash_1 / nav_1\n    \n    # Case B: `hold` (net buy/sell within +-2% of NAV, e.g., net sell 10M or 0, or net buy 5M):\n    cr_hold_0 = cash_0 / nav_1\n    cr_hold_sell10M = (cash_0 + 10_000_000) / nav_1\n    print(f\"Drop -{drop*100:.0f}%: nav_1={nav_1/1e8:.3f}億 | hold(0) CR={cr_hold_0:.4f} | hold(+10M cash) CR={cr_hold_sell10M:.4f} | reduce(+20M cash) CR={cr_reduce:.4f}\")\n"
+    },
+    {
+      "language": "PYTHON",
+      "code": "cash_0 = 143324328.51\nnav_0 = 831352578.51\nholdings_0 = nav_0 - cash_0\n\nfor net_cash_delta_pct in [-0.02, -0.01, 0.0, 0.01, 0.015, 0.02]:\n    delta_cash = net_cash_delta_pct * nav_0\n    cash_new = cash_0 + delta_cash\n    cr_flat = cash_new / nav_0\n    # Suppose holdings drop 6% today:\n    nav_drop6 = cash_0 + holdings_0 * 0.94\n    cr_drop6 = cash_new / nav_drop6\n    # Suppose holdings drop 10% today (all limit down):\n    nav_drop10 = cash_0 + holdings_0 * 0.90\n    cr_drop10 = cash_new / nav_drop10\n    print(f\"delta_cash={net_cash_delta_pct:+.3f} NAV -> flat CR={cr_flat:.4f}, -6% drop CR={cr_drop6:.4f}, -10% drop CR={cr_drop10:.4f}\")\n"
+    },
+    {
+      "language": "PYTHON",
+      "code": "import json\n\nlogic_text = (\n    \"依據 O1，加權指數收 38195.43 點，近5日跌 -4.97%、最大回撤 -6.23%，處10日區間低位(28.29%)；\"\n    \"對10MA與20MA負乖離達 -3.96% 與 -8.0%，雖報酬指數對5MA微幅正乖離(+0.73%)，但5MA(-3.16%)與20MA(-4.9%)斜率皆下彎，\"\n    \"且櫃買較加權近5日弱 -5.29 個百分點，中小型股殺盤沉重。尤須警戒費半盤中重挫 -7.6%(8161.13點，較11/23累跌 -15.99%)、\"\n    \"那指跌 -4.07%，拖累台指期夜盤大跌 -4.81% 至 36290 點(低點35933點)，跳空破底風險極高。\"\n    \"資金與籌碼面，外資單日大賣 1236.55 億元(近5日賣超 2368.15 億元)，雖投信單日買超 550.35 億元(近5日買超 576.86 億元)，\"\n    \"仍難敵外資提款；全市場多空排列家數差 -1941 家、漲跌比僅 0.04，結構極弱，惟融資近5日大減 -14.54% 正劇烈去槓桿。\"\n    \"產業僅油電燃氣(+0.2%, 1日RS +5.25%)、食品(+0.07%, 1日RS +5.11%)收紅，航運(-1.95%, 1日RS +3.0%)、\"\n    \"通信網路(5日RS +2.87%)與電子零組件(3日RS +6.25%, 動能 +4.94)相對抗跌；半導體(-4.71%, 動能轉負 -0.34)、\"\n    \"電腦週邊(-5.82%)、其他電子(-6.91%)與金融(-6.31%)偏弱，且夜盤費半暴跌直擊科技股。\"\n    \"檢視帳戶，賽期剩2日處最後衝刺期(sprint)，累計報酬 -16.86%、MDD -18.23%，昨日淨值跌 -4.06%(近3日 -0.75%，連虧1日)；\"\n    \"現有25檔持股約74.7%集中於半導體與電子硬體(如2330佔13.97%，3260、2454、5289、6223虧損近10%)，系統性風險高，\"\n    \"故定調 risk_off 與 defensive 保守姿態。考量目前現金比已達 17.24%，若淨賣超加計今日跳空下跌恐使現金比被動突破20%警戒線\"\n    \"甚至逼近25%違規上限，現有現金緩衝已足，故宣告 hold，將淨買賣金額差距控制在 NAV 2% 容差內，\"\n    \"NAV = (Σ 各持股張數 × 1,000 × 當日收盤價) + 現金部位，目標現金區間設為 [0.14, 0.20]，\"\n    \"於合規安全下汰弱換強並避免新建倉純低波動防禦股。\"\n)\n\ncounter_text = (\n    \"根據 O1 與穩市政策資訊，主要反向訊號有三：第一，法人土洋嚴重分歧，外資大舉賣超之際，投信單日逆勢大買 550.35 億元\"\n    \"（近5日買超 576.86 億元），內資法人低接護盤力道強勁；第二，上市融資餘額近5日驟減 -14.54% 大幅清洗浮額，\"\n    \"搭配平盤下限空令、借券賣出上限降至1%及信用維持率門檻降至120%不處分擔保品等政策，有助減緩多殺多斷頭賣壓；\"\n    \"第三，大盤對20MA負乖離已深達 -8.0%（加權報酬指數仍站上5MA +0.73%），且電子零組件近3日RS逆勢走強 +6.25%\"\n    \"（動能增 +4.94 個百分點），急跌後具技術性跌深反彈與局部強勢股抗跌契機。惟在費半與台指期夜盤重挫未止穩前，\"\n    \"上述訊號僅提供下檔緩衝與換股線索，尚不足以扭轉整體偏空研判。\"\n)\n\nprint(\"logic length:\", len(logic_text))\nprint(\"counter_evidence length:\", len(counter_text))\n\nresp = {\n    \"market_view\": {\n        \"basis_refs\": [\"O1\"],\n        \"logic\": logic_text,\n        \"regime\": \"risk_off\",\n        \"stance\": \"defensive\",\n        \"posture\": {\n            \"net_exposure_intent\": \"hold\",\n            \"target_cash_pct_range\": [0.14, 0.20]\n        },\n        \"counter_evidence\": counter_text,\n        \"confidence\": 0.85\n    }\n}\nprint(json.dumps(resp, ensure_ascii=False, indent=2))\n"
+    },
+    {
+      "language": "PYTHON",
+      "code": "logic_text = (\n    \"依據 O1，加權指數收 38195.43 點，近5日跌 -4.97%、最大回撤 -6.23%，處10日區間低位(28.29%)；\"\n    \"對10MA與20MA負乖離 -3.96%、-8.0%，雖報酬指數對5MA微幅正乖離(+0.73%)，但5MA(-3.16%)與20MA(-4.9%)斜率皆下彎，\"\n    \"且櫃買較加權近5日弱 -5.29 個百分點，中小型股殺盤重。尤須警戒費半盤中重挫 -7.6%(8161.13點，較11/23累跌 -15.99%)、\"\n    \"那指跌 -4.07%，拖累台指期夜盤大跌 -4.81% 至 36290 點(低點35933點)，跳空破底風險極高。\"\n    \"資金與籌碼面，外資單日大賣 1236.55 億元(近5日賣超 2368.15 億元)，雖投信買超 550.35 億元(近5日 576.86 億元)，\"\n    \"難敵外資提款；多空排列家數差 -1941 家、漲跌比 0.04 結構極弱，惟融資近5日減 -14.54% 劇烈去槓桿。\"\n    \"產業僅油電燃氣(+0.2%, 1日RS +5.25%)、食品(+0.07%, 1日RS +5.11%)收紅，航運(-1.95%, 1日RS +3.0%)、\"\n    \"通信網路(5日RS +2.87%)與電子零組件(3日RS +6.25%, 動能 +4.94)相對抗跌；半導體(-4.71%, 動能 -0.34)、\"\n    \"電腦週邊(-5.82%)、其他電子(-6.91%)與金融(-6.31%)偏弱，夜盤費半暴跌直擊科技股。\"\n    \"帳戶剩2日處衝刺期(sprint)，累計報酬 -16.86%、MDD -18.23%，昨日淨值跌 -4.06%(近3日 -0.75%，連虧1日)；\"\n    \"25檔持股約74.7%集中半導體與電子硬體(2330佔13.97%，3260、2454等虧近10%)，共同風險高，定調 risk_off 與 defensive。\"\n    \"因現金比已達 17.24%，若淨賣超加計今日跳空下跌恐使現金比被動破20%甚至逼近25%違規紅線，現有緩衝已足，故宣告 hold，\"\n    \"淨買賣金額差距控制在 NAV 2% 容差內，NAV = (Σ 各持股張數 × 1,000 × 當日收盤價) + 現金部位，\"\n    \"目標現金區間設為 [0.14, 0.20]，兼顧合規安全與汰弱換強(避開純低波動防禦股)。\"\n)\nprint(\"New logic length:\", len(logic_text))\n"
+    }
+  ]
+}

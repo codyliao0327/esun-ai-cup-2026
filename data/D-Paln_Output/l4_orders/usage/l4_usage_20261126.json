@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-11-26T02:07:04+08:00",
+  "date": "20261126",
+  "provider": "gemini",
+  "model": "gemini-4-carbon",
+  "model_group": "stage-l4",
+  "stage": "l4",
+  "status": "success",
+  "finish_reason": "stop",
+  "duration_seconds": 46.45,
+  "prompt_tokens": 15589,
+  "completion_tokens": 4756,
+  "total_tokens": 20345,
+  "cached_tokens": 4794,
+  "tool_use_tokens": 8741,
+  "reasoning_tokens": 173,
+  "response_cost": 0.069629,
+  "code_execution_used": true,
+  "code_execution_call_count": 1,
+  "executed_codes": [
+    {
+      "language": "PYTHON",
+      "code": "import math\n\nnav = 831352579\ncash_init = 143324329\n\nholdings = {\n    \"2059\": 1000, \"2308\": 32000, \"2317\": 153000, \"2330\": 54000, \"2345\": 24000,\n    \"2368\": 28000, \"2382\": 106000, \"2383\": 6000, \"2454\": 10000, \"2603\": 83000,\n    \"2618\": 600000, \"3017\": 11000, \"3227\": 96000, \"3260\": 76000, \"3293\": 22000,\n    \"3661\": 8000, \"3665\": 21000, \"3711\": 29000, \"5289\": 23000, \"6139\": 34000,\n    \"6223\": 4000, \"6669\": 16000, \"7828\": 19000, \"8299\": 21000, \"8415\": 465000\n}\n\norders = [\n  {\"ticker\": \"5871\", \"side\": \"BUY\", \"shares\": 342000, \"decision_ref\": \"D1\", \"w\": 0.042, \"p\": 102},\n  {\"ticker\": \"2379\", \"side\": \"BUY\", \"shares\": 38000, \"decision_ref\": \"D2\", \"w\": 0.032, \"p\": 699},\n  {\"ticker\": \"2610\", \"side\": \"BUY\", \"shares\": 1133000, \"decision_ref\": \"D3\", \"w\": 0.03, \"p\": 22},\n  {\"ticker\": \"2615\", \"side\": \"BUY\", \"shares\": 190000, \"decision_ref\": \"D4\", \"w\": 0.023, \"p\": 100.5},\n  {\"ticker\": \"2207\", \"side\": \"BUY\", \"shares\": 32000, \"decision_ref\": \"D5\", \"w\": 0.0201, \"p\": 520},\n  {\"ticker\": \"3665\", \"side\": \"BUY\", \"shares\": 7000, \"decision_ref\": \"D6\", \"w\": 0.055, \"p\": 1630},\n  {\"ticker\": \"2345\", \"side\": \"BUY\", \"shares\": 7000, \"decision_ref\": \"D7\", \"w\": 0.0551, \"p\": 1475},\n  {\"ticker\": \"2368\", \"side\": \"BUY\", \"shares\": 13000, \"decision_ref\": \"D8\", \"w\": 0.045, \"p\": 905},\n  {\"ticker\": \"2603\", \"side\": \"BUY\", \"shares\": 32000, \"decision_ref\": \"D9\", \"w\": 0.035, \"p\": 252.5},\n  {\"ticker\": \"2059\", \"side\": \"BUY\", \"shares\": 2000, \"decision_ref\": \"D10\", \"w\": 0.0235, \"p\": 6505},\n  {\"ticker\": \"2330\", \"side\": \"SELL\", \"shares\": 8000, \"decision_ref\": \"D11\", \"w\": 0.12, \"p\": 2150},\n  {\"ticker\": \"2382\", \"side\": \"SELL\", \"shares\": 24000, \"decision_ref\": \"D12\", \"w\": 0.026, \"p\": 261},\n  {\"ticker\": \"3661\", \"side\": \"SELL\", \"shares\": 2000, \"decision_ref\": \"D13\", \"w\": 0.0261, \"p\": 3605},\n  {\"ticker\": \"7828\", \"side\": \"SELL\", \"shares\": 9000, \"decision_ref\": \"D14\", \"w\": 0.0154, \"p\": 1275},\n  {\"ticker\": \"2454\", \"side\": \"SELL\", \"shares\": 10000, \"decision_ref\": \"D15\", \"w\": 0.0, \"p\": 3645},\n  {\"ticker\": \"2317\", \"side\": \"SELL\", \"shares\": 153000, \"decision_ref\": \"D16\", \"w\": 0.0, \"p\": 206.5},\n  {\"ticker\": \"3260\", \"side\": \"SELL\", \"shares\": 76000, \"decision_ref\": \"D17\", \"w\": 0.0, \"p\": 244},\n  {\"ticker\": \"3711\", \"side\": \"SELL\", \"shares\": 29000, \"decision_ref\": \"D18\", \"w\": 0.0, \"p\": 488},\n  {\"ticker\": \"5289\", \"side\": \"SELL\", \"shares\": 23000, \"decision_ref\": \"D19\", \"w\": 0.0, \"p\": 768},\n  {\"ticker\": \"6223\", \"side\": \"SELL\", \"shares\": 4000, \"decision_ref\": \"D20\", \"w\": 0.0, \"p\": 3770},\n]\n\nbuy_val = 0\nsell_val = 0\nfor o in orders:\n    cur = holdings.get(o[\"ticker\"], 0)\n    target = math.floor(o[\"w\"] * nav / o[\"p\"] / 1000) * 1000\n    diff = target - cur\n    expected_side = \"BUY\" if diff > 0 else \"SELL\"\n    assert expected_side == o[\"side\"], f\"Side mismatch {o}\"\n    assert abs(diff) == o[\"shares\"], f\"Shares mismatch {o}: expected {abs(diff)}\"\n    assert o[\"shares\"] % 1000 == 0 and o[\"shares\"] > 0\n    if o[\"side\"] == \"SELL\":\n        assert o[\"shares\"] <= cur, f\"Oversell {o}\"\n        sell_val += o[\"shares\"] * o[\"p\"]\n    else:\n        buy_val += o[\"shares\"] * o[\"p\"]\n\ncash_after = cash_init + sell_val - buy_val\ncash_pct = cash_after / nav\nprint(f\"Buy val: {buy_val:,}, Sell val: {sell_val:,}\")\nprint(f\"Cash after: {cash_after:,}, Cash pct: {cash_pct:.4%}\")\n"
+    }
+  ]
+}

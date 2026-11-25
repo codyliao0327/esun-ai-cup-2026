@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-11-26T01:38:11+08:00",
+  "date": "20261126",
+  "provider": "gemini",
+  "model": "gemini-3.8-flash",
+  "model_group": "stage-l1",
+  "stage": "l1",
+  "status": "success",
+  "finish_reason": "stop",
+  "duration_seconds": 169.94,
+  "prompt_tokens": 145137,
+  "completion_tokens": 28112,
+  "total_tokens": 173249,
+  "cached_tokens": 0,
+  "tool_use_tokens": 0,
+  "reasoning_tokens": 6868,
+  "response_cost": 0.214273,
+  "code_execution_used": false,
+  "code_execution_call_count": 0,
+  "executed_codes": []
+}
