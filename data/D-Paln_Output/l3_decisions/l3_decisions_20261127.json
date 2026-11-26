@@ -1,0 +1,322 @@
+{
+  "decisions": [
+    {
+      "decision_id": "D1",
+      "ticker": "2345",
+      "action": "ADD",
+      "target_weight": 0.073,
+      "inference_refs": [
+        "I1"
+      ],
+      "risk_check": "加碼AI網通核心至7.3%<=10%上限；調整後總持股24檔∈[20,30]，預估剩餘現金約6.4%落於[2%,12%]目標區間且遠低於22%安全線。"
+    },
+    {
+      "decision_id": "D2",
+      "ticker": "3665",
+      "action": "ADD",
+      "target_weight": 0.072,
+      "inference_refs": [
+        "I2"
+      ],
+      "risk_check": "加碼高速連接線強勢股至7.2%<=10%上限；總持股維持24檔∈[20,30]，預估現金比約6.4%合規且安全避開25%被動違規天花板。"
+    },
+    {
+      "decision_id": "D3",
+      "ticker": "2368",
+      "action": "ADD",
+      "target_weight": 0.068,
+      "inference_refs": [
+        "I3"
+      ],
+      "risk_check": "加碼AI PCB龍頭至6.8%<=10%上限；整體組合24檔∈[20,30]，計入買賣稅費後現金比約6.4%位於[2%,12%]區間且低於22%安全線。"
+    },
+    {
+      "decision_id": "D4",
+      "ticker": "8299",
+      "action": "ADD",
+      "target_weight": 0.06,
+      "inference_refs": [
+        "I5"
+      ],
+      "risk_check": "加碼高ROE記憶體控制IC龍頭至6.0%<=10%上限；整體持股24檔∈[20,30]，預估現金比約6.4%符合L2M區間並遠離25%上限。"
+    },
+    {
+      "decision_id": "D5",
+      "ticker": "3017",
+      "action": "ADD",
+      "target_weight": 0.052,
+      "inference_refs": [
+        "I6"
+      ],
+      "risk_check": "加碼AI液冷散熱龍頭至5.2%<=10%上限；總持股24檔∈[20,30]，預留現金約6.4%落於[2%,12%]且低於22%安全水位。"
+    },
+    {
+      "decision_id": "D6",
+      "ticker": "2308",
+      "action": "ADD",
+      "target_weight": 0.048,
+      "inference_refs": [
+        "I7"
+      ],
+      "risk_check": "加碼高流動性AI電源權值股至4.8%<=10%上限；組合持股24檔∈[20,30]，預估現金比約6.4%合規且低於22%防禦線。"
+    },
+    {
+      "decision_id": "D7",
+      "ticker": "6669",
+      "action": "ADD",
+      "target_weight": 0.047,
+      "inference_refs": [
+        "I8"
+      ],
+      "risk_check": "加碼高純度AI伺服器指標股至4.7%<=10%上限；整體持股24檔∈[20,30]，預留現金約6.4%符合[2%,12%]規範且低於22%。"
+    },
+    {
+      "decision_id": "D8",
+      "ticker": "2383",
+      "action": "ADD",
+      "target_weight": 0.042,
+      "inference_refs": [
+        "I9"
+      ],
+      "risk_check": "加碼AI銅箔基板龍頭至4.2%<=10%上限；組合24檔∈[20,30]，預估現金比約6.4%落於[2%,12%]目標區間並遠低於25%天花板。"
+    },
+    {
+      "decision_id": "D9",
+      "ticker": "2059",
+      "action": "ADD",
+      "target_weight": 0.041,
+      "inference_refs": [
+        "I10"
+      ],
+      "risk_check": "加碼AI伺服器導軌龍頭至4.1%<=10%上限；高價股整張調整後交割充裕，總持股24檔∈[20,30]，預估現金約6.4%<22%安全線。"
+    },
+    {
+      "decision_id": "D10",
+      "ticker": "2382",
+      "action": "ADD",
+      "target_weight": 0.033,
+      "inference_refs": [
+        "I11"
+      ],
+      "risk_check": "加碼AI伺服器代工核心至3.3%<=10%上限；總持股24檔∈[20,30]，預估剩餘現金約6.4%落於[2%,12%]區間且低於22%。"
+    },
+    {
+      "decision_id": "D11",
+      "ticker": "6139",
+      "action": "ADD",
+      "target_weight": 0.028,
+      "inference_refs": [
+        "I12"
+      ],
+      "risk_check": "加碼半導體廠務績優股至2.8%<=10%上限，適度分散AI硬體集中度；總持股24檔∈[20,30]，預估現金約6.4%<22%安全線。"
+    },
+    {
+      "decision_id": "D12",
+      "ticker": "6223",
+      "action": "BUY",
+      "target_weight": 0.033,
+      "inference_refs": [
+        "I18"
+      ],
+      "risk_check": "新建倉AI探針卡龍頭3.3%<=10%上限；汰弱換強後總持股24檔∈[20,30]，預估現金比約6.4%符合[2%,12%]且低於22%安全線。"
+    },
+    {
+      "decision_id": "D13",
+      "ticker": "3044",
+      "action": "BUY",
+      "target_weight": 0.032,
+      "inference_refs": [
+        "I19"
+      ],
+      "risk_check": "新建倉站穩月線之伺服器PCB股3.2%<=10%上限；整體持股24檔∈[20,30]，預估剩餘現金約6.4%合規且無突破25%風險。"
+    },
+    {
+      "decision_id": "D14",
+      "ticker": "3231",
+      "action": "BUY",
+      "target_weight": 0.028,
+      "inference_refs": [
+        "I20"
+      ],
+      "risk_check": "新建倉放量突破月線AI伺服器股2.8%<=10%上限；組合共24檔∈[20,30]，預估現金比約6.4%落於[2%,12%]且低於22%。"
+    },
+    {
+      "decision_id": "D15",
+      "ticker": "6515",
+      "action": "BUY",
+      "target_weight": 0.023,
+      "inference_refs": [
+        "I21"
+      ],
+      "risk_check": "新建倉高階測試座龍頭2.3%<=10%上限；整股買進張數明確，總持股24檔∈[20,30]，預估現金比約6.4%低於22%安全線。"
+    },
+    {
+      "decision_id": "D16",
+      "ticker": "2395",
+      "action": "BUY",
+      "target_weight": 0.021,
+      "inference_refs": [
+        "I22"
+      ],
+      "risk_check": "新建倉邊緣AI工業電腦龍頭2.1%<=10%上限；總持股24檔∈[20,30]，預留現金約6.4%位於[2%,12%]區間並遠離25%上限。"
+    },
+    {
+      "decision_id": "D17",
+      "ticker": "2301",
+      "action": "BUY",
+      "target_weight": 0.02,
+      "inference_refs": [
+        "I23"
+      ],
+      "risk_check": "新建倉帶量轉強AI電源股2.0%<=10%上限；整體持股24檔∈[20,30]，預估現金比約6.4%落於[2%,12%]且低於22%安全水位。"
+    },
+    {
+      "decision_id": "D18",
+      "ticker": "3260",
+      "action": "BUY",
+      "target_weight": 0.018,
+      "inference_refs": [
+        "I24"
+      ],
+      "risk_check": "新建倉高ROE記憶體模組股1.8%<=10%上限，平衡內外資籌碼因子；總持股24檔∈[20,30]，預估現金約6.4%<22%安全線。"
+    },
+    {
+      "decision_id": "D19",
+      "ticker": "2330",
+      "action": "TRIM",
+      "target_weight": 0.074,
+      "inference_refs": [
+        "I4"
+      ],
+      "risk_check": "減碼外資提款權值核心至7.4%<=25%上限並支應高Alpha標的資金缺口；總持股24檔∈[20,30]，預估現金約6.4%<22%。",
+      "funding_for": [
+        "D12",
+        "D10"
+      ]
+    },
+    {
+      "decision_id": "D20",
+      "ticker": "2603",
+      "action": "SELL_ALL",
+      "target_weight": 0.0,
+      "inference_refs": [
+        "I25"
+      ],
+      "risk_check": "出清投信重砍之航運落後股至0.0%，釋出資金支應AI PCB新建倉；換股後總持股24檔∈[20,30]，預估現金約6.4%<22%。",
+      "funding_for": [
+        "D13"
+      ]
+    },
+    {
+      "decision_id": "D21",
+      "ticker": "2618",
+      "action": "SELL_ALL",
+      "target_weight": 0.0,
+      "inference_refs": [
+        "I26"
+      ],
+      "risk_check": "出清低波動且遭投信調節之航空股至0.0%，轉配AI伺服器強勢股；總持股24檔∈[20,30]，預估現金約6.4%落於[2%,12%]。",
+      "funding_for": [
+        "D14"
+      ]
+    },
+    {
+      "decision_id": "D22",
+      "ticker": "2610",
+      "action": "SELL_ALL",
+      "target_weight": 0.0,
+      "inference_refs": [
+        "I27"
+      ],
+      "risk_check": "出清逆勢收跌且法人同賣之弱勢股至0.0%，支應半導體測試與廠務標的；總持股24檔∈[20,30]，預估現金約6.4%<22%。",
+      "funding_for": [
+        "D15",
+        "D11"
+      ]
+    },
+    {
+      "decision_id": "D23",
+      "ticker": "2615",
+      "action": "SELL_ALL",
+      "target_weight": 0.0,
+      "inference_refs": [
+        "I28"
+      ],
+      "risk_check": "策略性出清深處月線下且外資大賣之弱勢航運股至0.0%；調整後總持股24檔∈[20,30]，預估現金比約6.4%低於22%安全線。"
+    },
+    {
+      "decision_id": "D24",
+      "ticker": "5871",
+      "action": "SELL_ALL",
+      "target_weight": 0.0,
+      "inference_refs": [
+        "I29"
+      ],
+      "risk_check": "出清低ROE且遭投信爆量結帳之租賃股至0.0%，籌資支應邊緣AI與電源股建倉；總持股24檔∈[20,30]，現金約6.4%<22%。",
+      "funding_for": [
+        "D16",
+        "D17"
+      ]
+    },
+    {
+      "decision_id": "D25",
+      "ticker": "2207",
+      "action": "SELL_ALL",
+      "target_weight": 0.0,
+      "inference_refs": [
+        "I30"
+      ],
+      "risk_check": "出清土洋同賣之低波動防禦汽車股至0.0%，釋放資金支應高ROE記憶體股；總持股24檔∈[20,30]，預估現金約6.4%<22%。",
+      "funding_for": [
+        "D18"
+      ]
+    },
+    {
+      "decision_id": "D26",
+      "ticker": "7828",
+      "action": "SELL_ALL",
+      "target_weight": 0.0,
+      "inference_refs": [
+        "I31"
+      ],
+      "risk_check": "自高點回落9.19%且KD死叉觸發移動停損，策略性出清至0.0%；調整後總持股24檔∈[20,30]，預估現金約6.4%<22%安全線。"
+    }
+  ],
+  "no_trade_decisions": [
+    {
+      "ticker": "2379",
+      "reason_refs": [
+        "I13"
+      ],
+      "reason": "今日MACD黃金交叉且外資單日大買21.69%支撐股價挑戰月線，惟投信反向調節，續抱維持約3.20%權重可免除0.4425%賣出摩擦成本。"
+    },
+    {
+      "ticker": "3661",
+      "reason_refs": [
+        "I14"
+      ],
+      "reason": "穩居月線之上(+7.23%)且營收年增逾5倍、投信持續買超，保留約2.59%既有部位以節省賣出稅費並參與尾盤作帳彈性。"
+    },
+    {
+      "ticker": "8415",
+      "reason_refs": [
+        "I15"
+      ],
+      "reason": "股價創10日新高且今日KD與MACD雙金叉、營收雙成長，浮盈5.64%零回撤，續抱約2.29%部位避免無效換股成本。"
+    },
+    {
+      "ticker": "3227",
+      "reason_refs": [
+        "I16"
+      ],
+      "reason": "土洋法人單日同步買超且創10日新高站穩月線，惟成交值較小不宜追買，續抱約2.08%部位參與穩健收高並省去交易稅費。"
+    },
+    {
+      "ticker": "3293",
+      "reason_refs": [
+        "I17"
+      ],
+      "reason": "ROE達20.79%搭配今日MACD黃金交叉與外資買超12.28%提供下檔支撐，續抱約1.99%部位免除0.4425%賣出摩擦成本。"
+    }
+  ]
+}

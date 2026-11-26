@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-11-27T02:07:23+08:00",
+  "date": "20261127",
+  "provider": "gemini",
+  "model": "gemini-4-carbon",
+  "model_group": "stage-l0",
+  "stage": "l0",
+  "status": "success",
+  "finish_reason": "stop",
+  "duration_seconds": 228.86,
+  "prompt_tokens": 169762,
+  "completion_tokens": 23500,
+  "total_tokens": 193262,
+  "cached_tokens": 106703,
+  "tool_use_tokens": 117663,
+  "reasoning_tokens": 15093,
+  "response_cost": 0.371788,
+  "code_execution_used": true,
+  "code_execution_call_count": 2,
+  "executed_codes": [
+    {
+      "language": "PYTHON",
+      "code": "nvidia = [\"2059\", \"2301\", \"2308\", \"2313\", \"2317\", \"2330\", \"2357\", \"2368\", \"2376\", \"2377\", \"2382\", \"2383\", \"2449\", \"3017\", \"3037\", \"3131\", \"3189\", \"3231\", \"3324\", \"3374\", \"3533\", \"3653\", \"3665\", \"3680\", \"3711\", \"4958\", \"6187\", \"6239\", \"6274\", \"6415\", \"6515\", \"6584\", \"6669\", \"8046\", \"8210\"]\nholdings = {\"2059\", \"2207\", \"2308\", \"2330\", \"2345\", \"2368\", \"2379\", \"2382\", \"2383\", \"2603\", \"2610\", \"2615\", \"2618\", \"3017\", \"3227\", \"3293\", \"3661\", \"3665\", \"5871\", \"6139\", \"6669\", \"7828\", \"8299\", \"8415\"}\nrule1_true = {\"2330\", \"2345\", \"2382\", \"6669\", \"3017\", \"6505\", \"3231\", \"3044\", \"6139\", \"2395\", \"2603\", \"2368\", \"3665\", \"3034\", \"3661\", \"6770\", \"4938\", \"2376\", \"2451\", \"2377\", \"6223\", \"8299\", \"5347\", \"3260\", \"5483\", \"3131\", \"6121\", \"1785\", \"7828\", \"4966\", \"3680\", \"6023\", \"6584\", \"3227\"}\n\nprint(\"len rule1_true:\", len(rule1_true))\nnv_must = [s for s in nvidia if s not in holdings and s not in rule1_true]\nprint(\"NVIDIA must pick count:\", len(nv_must))\nprint(\"NVIDIA must pick:\", nv_must)\n"
+    },
+    {
+      "language": "PYTHON",
+      "code": "picks_order = [\n    \"3533\", \"3491\", \"1519\", \"2301\", \"5289\", \"1590\", \"6789\", \"6274\",\n    \"2344\", \"6239\", \"2882\", \"2404\", \"2609\", \"3324\", \"4749\", \"3718\",\n    \"8210\", \"2449\", \"2412\", \"2357\", \"2317\", \"3711\", \"3653\", \"6515\",\n    \"8046\", \"4958\", \"3037\", \"2313\", \"6187\", \"6415\", \"3189\", \"3374\"\n]\n\nassert len(picks_order) == len(set(picks_order)), \"Duplicates found!\"\nassert set(nv_must).issubset(set(picks_order)), f\"Missing NV: {set(nv_must) - set(picks_order)}\"\nassert not (set(picks_order) & holdings), f\"Overlap with holdings: {set(picks_order) & holdings}\"\nassert not (set(picks_order) & rule1_true), f\"Overlap with rule1: {set(picks_order) & rule1_true}\"\nprint(\"All 32 picks validated successfully!\")\n"
+    }
+  ]
+}

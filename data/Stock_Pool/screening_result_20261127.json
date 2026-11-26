@@ -1,0 +1,1342 @@
+{
+  "date": "20261127",
+  "generated_at": "2026-11-27T02:07:26+08:00",
+  "datapack_file": "DataPack_275_2026-11-27.json",
+  "data_dates": {
+    "price": "2026-11-26",
+    "chip": "2026-11-20",
+    "margin": "2026-11-26",
+    "pe": "2026-11-26"
+  },
+  "market_returns": {
+    "twse": {
+      "ret_5d_pct": [1.89, "2026-11-26"],
+      "ret_10d_pct": [-9.14, "2026-11-26"]
+    },
+    "otc": {
+      "ret_5d_pct": [1.58, "2026-11-26"],
+      "ret_10d_pct": [-13.67, "2026-11-26"]
+    }
+  },
+  "summary": {
+    "universe_count": 150,
+    "rule1_count": 34,
+    "agent_extra_count": 32,
+    "holding_count": 24,
+    "holding_forced_count": 11,
+    "final_pool_count": 77
+  },
+  "market_context_summary": "截至2026-11-26，台股經歷前波急跌後呈現短線止穩反彈格局：上市大盤（TAIEX）近10日下跌9.14%、近5日反彈1.89%；上櫃指數（OTC）波動更劇，近10日重挫13.67%、近5日反彈1.58%。150檔母體中已有34檔憑藉近5日與近10日相對報酬雙正通過規則一鎖定入選，另有24檔帳上持股由系統強制保留。檢視116檔未入選候選池（2026-11-20集保與2026-11-26融資/估值），大盤急跌促使多數電子與權值股融資顯著去槓桿（近10日融資百分位普遍落於10~40低水位），部分標的呈現「近10日顯著抗跌但近5日微幅落後反彈大盤」或「近5日強勁轉強但受前波跌幅拖累未過規則一」之結構錯位，且出現千張大戶逆勢吸籌或同業低本益比安全邊際。本次除依規將20檔未入選且非帳上持股之NVIDIA概念股全數強制納入外，另從籌碼集中、臨門一腳轉強、健康融資減肥與同業低估值面向精選12檔高潛力遺珠，合計補撈32檔進入L1/L2深入研究池。",
+  "final_stock_ids": [
+    "1519",
+    "1590",
+    "1785",
+    "2059",
+    "2207",
+    "2301",
+    "2308",
+    "2313",
+    "2317",
+    "2330",
+    "2344",
+    "2345",
+    "2357",
+    "2368",
+    "2376",
+    "2377",
+    "2379",
+    "2382",
+    "2383",
+    "2395",
+    "2404",
+    "2412",
+    "2449",
+    "2451",
+    "2603",
+    "2609",
+    "2610",
+    "2615",
+    "2618",
+    "2882",
+    "3017",
+    "3034",
+    "3037",
+    "3044",
+    "3131",
+    "3189",
+    "3227",
+    "3231",
+    "3260",
+    "3293",
+    "3324",
+    "3374",
+    "3491",
+    "3533",
+    "3653",
+    "3661",
+    "3665",
+    "3680",
+    "3711",
+    "3718",
+    "4749",
+    "4938",
+    "4958",
+    "4966",
+    "5289",
+    "5347",
+    "5483",
+    "5871",
+    "6023",
+    "6121",
+    "6139",
+    "6187",
+    "6223",
+    "6239",
+    "6274",
+    "6415",
+    "6505",
+    "6515",
+    "6584",
+    "6669",
+    "6770",
+    "6789",
+    "7828",
+    "8046",
+    "8210",
+    "8299",
+    "8415"
+  ],
+  "rule1_stocks": [
+    {
+      "stock_id": "2368",
+      "stock": "金像電",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": true,
+      "rel_ret_5d_pp": 24.06,
+      "rel_ret_10d_pp": 11.19
+    },
+    {
+      "stock_id": "3665",
+      "stock": "貿聯-KY",
+      "market": "twse",
+      "industry": "其他電子業",
+      "is_holding": true,
+      "rel_ret_5d_pp": 22.42,
+      "rel_ret_10d_pp": 27.3
+    },
+    {
+      "stock_id": "2345",
+      "stock": "智邦",
+      "market": "twse",
+      "industry": "通信網路業",
+      "is_holding": true,
+      "rel_ret_5d_pp": 18.11,
+      "rel_ret_10d_pp": 15.37
+    },
+    {
+      "stock_id": "6584",
+      "stock": "南俊國際",
+      "market": "otc",
+      "industry": "電子零組件業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 16.22,
+      "rel_ret_10d_pp": 10.7
+    },
+    {
+      "stock_id": "3044",
+      "stock": "健鼎",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 12.76,
+      "rel_ret_10d_pp": 2.21
+    },
+    {
+      "stock_id": "3017",
+      "stock": "奇鋐",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": true,
+      "rel_ret_5d_pp": 12.43,
+      "rel_ret_10d_pp": 9.86
+    },
+    {
+      "stock_id": "8299",
+      "stock": "群聯",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": true,
+      "rel_ret_5d_pp": 10.45,
+      "rel_ret_10d_pp": 13.36
+    },
+    {
+      "stock_id": "2451",
+      "stock": "創見",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 10.44,
+      "rel_ret_10d_pp": 11.74
+    },
+    {
+      "stock_id": "6669",
+      "stock": "緯穎",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": true,
+      "rel_ret_5d_pp": 9.46,
+      "rel_ret_10d_pp": 9.14
+    },
+    {
+      "stock_id": "5483",
+      "stock": "中美晶",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 9.23,
+      "rel_ret_10d_pp": 2.8
+    },
+    {
+      "stock_id": "7828",
+      "stock": "創新服務",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": true,
+      "rel_ret_5d_pp": 7.32,
+      "rel_ret_10d_pp": 3.53
+    },
+    {
+      "stock_id": "6139",
+      "stock": "亞翔",
+      "market": "twse",
+      "industry": "其他電子業",
+      "is_holding": true,
+      "rel_ret_5d_pp": 7.04,
+      "rel_ret_10d_pp": 7.99
+    },
+    {
+      "stock_id": "3680",
+      "stock": "家登",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 5.91,
+      "rel_ret_10d_pp": 2.54
+    },
+    {
+      "stock_id": "1785",
+      "stock": "光洋科",
+      "market": "otc",
+      "industry": "其他電子業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 5.22,
+      "rel_ret_10d_pp": 3.97
+    },
+    {
+      "stock_id": "2382",
+      "stock": "廣達",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": true,
+      "rel_ret_5d_pp": 5.16,
+      "rel_ret_10d_pp": 10.04
+    },
+    {
+      "stock_id": "3231",
+      "stock": "緯創",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 5.16,
+      "rel_ret_10d_pp": 7.38
+    },
+    {
+      "stock_id": "2395",
+      "stock": "研華",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 4.43,
+      "rel_ret_10d_pp": 6.82
+    },
+    {
+      "stock_id": "3227",
+      "stock": "原相",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": true,
+      "rel_ret_5d_pp": 3.74,
+      "rel_ret_10d_pp": 22.65
+    },
+    {
+      "stock_id": "4966",
+      "stock": "譜瑞-KY",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 3.7,
+      "rel_ret_10d_pp": 13.03
+    },
+    {
+      "stock_id": "6770",
+      "stock": "力積電",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 3.43,
+      "rel_ret_10d_pp": 0.94
+    },
+    {
+      "stock_id": "2376",
+      "stock": "技嘉",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 3.31,
+      "rel_ret_10d_pp": 3.62
+    },
+    {
+      "stock_id": "6223",
+      "stock": "旺矽",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 2.46,
+      "rel_ret_10d_pp": 2.07
+    },
+    {
+      "stock_id": "4938",
+      "stock": "和碩",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 2.02,
+      "rel_ret_10d_pp": 1.44
+    },
+    {
+      "stock_id": "3260",
+      "stock": "威剛",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 1.96,
+      "rel_ret_10d_pp": 3.28
+    },
+    {
+      "stock_id": "3661",
+      "stock": "世芯-KY",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": true,
+      "rel_ret_5d_pp": 1.86,
+      "rel_ret_10d_pp": 10.78
+    },
+    {
+      "stock_id": "6023",
+      "stock": "元大期",
+      "market": "otc",
+      "industry": "金融業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 1.71,
+      "rel_ret_10d_pp": 15.67
+    },
+    {
+      "stock_id": "3131",
+      "stock": "弘塑",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 1.5,
+      "rel_ret_10d_pp": 2.2
+    },
+    {
+      "stock_id": "2377",
+      "stock": "微星",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 1.33,
+      "rel_ret_10d_pp": 0.28
+    },
+    {
+      "stock_id": "6121",
+      "stock": "新普",
+      "market": "otc",
+      "industry": "電腦及週邊設備業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 1.11,
+      "rel_ret_10d_pp": 7.3
+    },
+    {
+      "stock_id": "5347",
+      "stock": "世界",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 0.99,
+      "rel_ret_10d_pp": 3.86
+    },
+    {
+      "stock_id": "2603",
+      "stock": "長榮",
+      "market": "twse",
+      "industry": "航運業",
+      "is_holding": true,
+      "rel_ret_5d_pp": 0.95,
+      "rel_ret_10d_pp": 10.14
+    },
+    {
+      "stock_id": "3034",
+      "stock": "聯詠",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 0.29,
+      "rel_ret_10d_pp": 5.68
+    },
+    {
+      "stock_id": "2330",
+      "stock": "台積電",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": true,
+      "rel_ret_5d_pp": 0.26,
+      "rel_ret_10d_pp": 0.81
+    },
+    {
+      "stock_id": "6505",
+      "stock": "台塑化",
+      "market": "twse",
+      "industry": "油電燃氣業",
+      "is_holding": false,
+      "rel_ret_5d_pp": 0.01,
+      "rel_ret_10d_pp": 4.38
+    }
+  ],
+  "supplementary_picks": [
+    {
+      "priority_rank": 1,
+      "stock_id": "3533",
+      "stock": "嘉澤",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入",
+        "集保籌碼集中",
+        "融資減肥",
+        "同業低估值"
+      ],
+      "reason": "NVIDIA相關個股強制納入；同時具備極佳量化結構：2026-11-20千張大戶占比+0.15 pp、50張以下散戶大減-0.71 pp、總股東人數驟減-4.58%，籌碼高度集中；2026-11-26融資餘額889張（近5日-9.75%、近10日百分位20），近10日相對報酬僅微幅落後-0.34 pp（近5日-3.14 pp），本益比20.07倍居電子零組件同業低位（百分位18.75）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [-3.14, "2026-11-26"],
+        "rel_ret_10d_pp": [-0.34, "2026-11-26"],
+        "chip_over_1000_chg_pp": [0.15, "2026-11-20"],
+        "chip_under_50_chg_pp": [-0.71, "2026-11-20"],
+        "chip_holders_chg_pct": [-4.58, "2026-11-20"],
+        "margin_balance_lots": [889, "2026-11-26"],
+        "margin_chg_5d_pct": [-9.75, "2026-11-26"],
+        "margin_pct_10d": [20, "2026-11-26"],
+        "pe_ratio": [20.07, "2026-11-26"],
+        "pe_industry_pct": [18.75, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 2,
+      "stock_id": "3491",
+      "stock": "昇達科",
+      "market": "otc",
+      "industry": "通信網路業",
+      "is_holding": false,
+      "primary_angles": [
+        "相對報酬逼近翻正",
+        "集保籌碼集中",
+        "融資減肥"
+      ],
+      "reason": "2026-11-26近10日相對櫃買指數超額報酬高達+8.51 pp，近5日相對報酬僅-0.11 pp，距規則一門檻僅一步之遙；2026-11-20集保千張大戶明顯加碼+0.95 pp、散戶占比-0.20 pp、股東人數-0.24%，搭配融資餘額2,588張近5日縮減-6.71%（近10日百分位40），籌碼與動能結構雙強。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [-0.11, "2026-11-26"],
+        "rel_ret_10d_pp": [8.51, "2026-11-26"],
+        "chip_over_1000_chg_pp": [0.95, "2026-11-20"],
+        "chip_under_50_chg_pp": [-0.2, "2026-11-20"],
+        "chip_holders_chg_pct": [-0.24, "2026-11-20"],
+        "margin_balance_lots": [2588, "2026-11-26"],
+        "margin_chg_5d_pct": [-6.71, "2026-11-26"],
+        "margin_pct_10d": [40, "2026-11-26"],
+        "pe_ratio": [92.43, "2026-11-26"],
+        "pe_industry_pct": [85.71, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 3,
+      "stock_id": "1519",
+      "stock": "華城",
+      "market": "twse",
+      "industry": "電機機械",
+      "is_holding": false,
+      "primary_angles": [
+        "相對報酬逼近翻正",
+        "集保籌碼集中",
+        "融資減肥"
+      ],
+      "reason": "2026-11-26近10日相對大盤強勢領先+8.52 pp，近5日相對報酬僅微差-0.18 pp即翻正；2026-11-20千張大戶+0.11 pp、散戶-0.09 pp、股東人數減少-0.79%，且融資餘額2,640張近5日減肥-10.20%（近10日百分位20），去槓桿健康、抗跌力道突出。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [-0.18, "2026-11-26"],
+        "rel_ret_10d_pp": [8.52, "2026-11-26"],
+        "chip_over_1000_chg_pp": [0.11, "2026-11-20"],
+        "chip_under_50_chg_pp": [-0.09, "2026-11-20"],
+        "chip_holders_chg_pct": [-0.79, "2026-11-20"],
+        "margin_balance_lots": [2640, "2026-11-26"],
+        "margin_chg_5d_pct": [-10.2, "2026-11-26"],
+        "margin_pct_10d": [20, "2026-11-26"],
+        "pe_ratio": [31.09, "2026-11-26"],
+        "pe_industry_pct": [100, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 4,
+      "stock_id": "2301",
+      "stock": "光寶科",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入",
+        "集保籌碼集中",
+        "融資減肥",
+        "短線動能轉強"
+      ],
+      "reason": "NVIDIA相關個股強制納入；2026-11-26近5日相對報酬已翻正至+0.70 pp（近10日-3.80 pp），2026-11-20集保千張大戶增持+0.25 pp、散戶-0.03 pp、股東人數-0.44%，融資餘額9,134張近5日顯著減肥-10.40%（近10日百分位30），本益比20.30倍（同業百分位80），籌碼與短線動能同步轉佳。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [0.7, "2026-11-26"],
+        "rel_ret_10d_pp": [-3.8, "2026-11-26"],
+        "chip_over_1000_chg_pp": [0.25, "2026-11-20"],
+        "chip_under_50_chg_pp": [-0.03, "2026-11-20"],
+        "chip_holders_chg_pct": [-0.44, "2026-11-20"],
+        "margin_balance_lots": [9134, "2026-11-26"],
+        "margin_chg_5d_pct": [-10.4, "2026-11-26"],
+        "margin_pct_10d": [30, "2026-11-26"],
+        "pe_ratio": [20.3, "2026-11-26"],
+        "pe_industry_pct": [80, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 5,
+      "stock_id": "5289",
+      "stock": "宜鼎",
+      "market": "otc",
+      "industry": "電腦及週邊設備業",
+      "is_holding": false,
+      "primary_angles": [
+        "同業低估值",
+        "短線動能轉強",
+        "集保籌碼集中",
+        "融資減肥"
+      ],
+      "reason": "2026-11-26本益比僅3.04倍，位居電腦及週邊設備同業最低估值（百分位0）；近5日相對櫃買轉強+1.40 pp（近10日-2.82 pp），2026-11-20千張大戶+0.06 pp、散戶退場-0.36 pp、股東人數-0.28%，且融資餘額3,346張近5日清洗-11.34%（近10日百分位50），下檔保護與轉強訊號兼具。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [1.4, "2026-11-26"],
+        "rel_ret_10d_pp": [-2.82, "2026-11-26"],
+        "chip_over_1000_chg_pp": [0.06, "2026-11-20"],
+        "chip_under_50_chg_pp": [-0.36, "2026-11-20"],
+        "chip_holders_chg_pct": [-0.28, "2026-11-20"],
+        "margin_balance_lots": [3346, "2026-11-26"],
+        "margin_chg_5d_pct": [-11.34, "2026-11-26"],
+        "margin_pct_10d": [50, "2026-11-26"],
+        "pe_ratio": [3.04, "2026-11-26"],
+        "pe_industry_pct": [0, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 6,
+      "stock_id": "1590",
+      "stock": "亞德客-KY",
+      "market": "twse",
+      "industry": "電機機械",
+      "is_holding": false,
+      "primary_angles": [
+        "集保籌碼集中",
+        "同業低估值",
+        "中期相對抗跌"
+      ],
+      "reason": "2026-11-20集保千張大戶占比單週大增+1.79 pp（全池頂尖增幅），伴隨散戶-0.15 pp及股東人數下降-1.40%，大戶逢低吸籌訊號明確；2026-11-26近10日相對報酬+2.57 pp（近5日-4.27 pp），融資僅318張（近5日-14.29%、百分位30），本益比17.59倍處電機機械同業偏低區間（百分位33.33）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [-4.27, "2026-11-26"],
+        "rel_ret_10d_pp": [2.57, "2026-11-26"],
+        "chip_over_1000_chg_pp": [1.79, "2026-11-20"],
+        "chip_under_50_chg_pp": [-0.15, "2026-11-20"],
+        "chip_holders_chg_pct": [-1.4, "2026-11-20"],
+        "margin_balance_lots": [318, "2026-11-26"],
+        "margin_chg_5d_pct": [-14.29, "2026-11-26"],
+        "margin_pct_10d": [30, "2026-11-26"],
+        "pe_ratio": [17.59, "2026-11-26"],
+        "pe_industry_pct": [33.33, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 7,
+      "stock_id": "6789",
+      "stock": "采鈺",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "primary_angles": [
+        "集保籌碼集中",
+        "融資減肥",
+        "短線動能轉強"
+      ],
+      "reason": "2026-11-26近5日相對大盤轉正+0.91 pp（近10日-3.98 pp），2026-11-20千張大戶明顯吸籌+0.63 pp、散戶-0.09 pp、股東人數-0.67%；融資餘額3,155張近5日減肥-10.29%，落於近10日最低水位（百分位10），籌碼清洗乾淨。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [0.91, "2026-11-26"],
+        "rel_ret_10d_pp": [-3.98, "2026-11-26"],
+        "chip_over_1000_chg_pp": [0.63, "2026-11-20"],
+        "chip_under_50_chg_pp": [-0.09, "2026-11-20"],
+        "chip_holders_chg_pct": [-0.67, "2026-11-20"],
+        "margin_balance_lots": [3155, "2026-11-26"],
+        "margin_chg_5d_pct": [-10.29, "2026-11-26"],
+        "margin_pct_10d": [10, "2026-11-26"],
+        "pe_ratio": [54.98, "2026-11-26"],
+        "pe_industry_pct": [79.55, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 8,
+      "stock_id": "6274",
+      "stock": "台燿",
+      "market": "otc",
+      "industry": "電子零組件業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入",
+        "短線動能轉強",
+        "集保大戶增持"
+      ],
+      "reason": "NVIDIA相關個股強制納入；2026-11-26近5日強彈14.74%、相對櫃買超額報酬達+13.16 pp（近10日僅落後-3.28 pp），短線強勢反攻；2026-11-20千張大戶增持+0.37 pp（散戶+0.57 pp），融資餘額11,486張（近5日+2.02%、百分位60），本益比27.84倍居同業中位數（百分位50）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [13.16, "2026-11-26"],
+        "rel_ret_10d_pp": [-3.28, "2026-11-26"],
+        "chip_over_1000_chg_pp": [0.37, "2026-11-20"],
+        "chip_under_50_chg_pp": [0.57, "2026-11-20"],
+        "chip_holders_chg_pct": [1.31, "2026-11-20"],
+        "margin_balance_lots": [11486, "2026-11-26"],
+        "margin_chg_5d_pct": [2.02, "2026-11-26"],
+        "margin_pct_10d": [60, "2026-11-26"],
+        "pe_ratio": [27.84, "2026-11-26"],
+        "pe_industry_pct": [50, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 9,
+      "stock_id": "2344",
+      "stock": "華邦電",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "primary_angles": [
+        "同業低估值",
+        "融資減肥",
+        "短線動能轉強"
+      ],
+      "reason": "2026-11-26本益比僅6.67倍，處半導體同業極低估值（百分位11.36）；近5日反彈5.61%、相對大盤+3.73 pp（近10日-9.68 pp），且高達74,740張之融資餘額近5日大幅減肥-11.10%至近10日最低水位（百分位10），2026-11-20千張大戶持平（0 pp）、股東人數微減-0.19%，浮額有效沉澱。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [3.73, "2026-11-26"],
+        "rel_ret_10d_pp": [-9.68, "2026-11-26"],
+        "chip_over_1000_chg_pp": [0, "2026-11-20"],
+        "chip_under_50_chg_pp": [0.23, "2026-11-20"],
+        "chip_holders_chg_pct": [-0.19, "2026-11-20"],
+        "margin_balance_lots": [74740, "2026-11-26"],
+        "margin_chg_5d_pct": [-11.1, "2026-11-26"],
+        "margin_pct_10d": [10, "2026-11-26"],
+        "pe_ratio": [6.67, "2026-11-26"],
+        "pe_industry_pct": [11.36, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 10,
+      "stock_id": "6239",
+      "stock": "力成",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入",
+        "同業低估值",
+        "融資減肥",
+        "短線動能轉強"
+      ],
+      "reason": "NVIDIA相關個股強制納入；2026-11-26本益比17.62倍位居半導體同業前30%低估值區（百分位29.55），近5日相對報酬轉正+0.59 pp（近10日-4.99 pp），融資餘額14,594張近5日大減-13.89%至近10日最低水位（百分位10），2026-11-20股東人數減少-0.28%（千張大戶-0.54 pp）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [0.59, "2026-11-26"],
+        "rel_ret_10d_pp": [-4.99, "2026-11-26"],
+        "chip_over_1000_chg_pp": [-0.54, "2026-11-20"],
+        "chip_under_50_chg_pp": [0.18, "2026-11-20"],
+        "chip_holders_chg_pct": [-0.28, "2026-11-20"],
+        "margin_balance_lots": [14594, "2026-11-26"],
+        "margin_chg_5d_pct": [-13.89, "2026-11-26"],
+        "margin_pct_10d": [10, "2026-11-26"],
+        "pe_ratio": [17.62, "2026-11-26"],
+        "pe_industry_pct": [29.55, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 11,
+      "stock_id": "2882",
+      "stock": "國泰金",
+      "market": "twse",
+      "industry": "金融保險業",
+      "is_holding": false,
+      "primary_angles": [
+        "同業低估值",
+        "融資減肥",
+        "相對報酬逼近翻正"
+      ],
+      "reason": "2026-11-26近10日相對大盤+2.45 pp、近5日僅微幅落後-0.92 pp；本益比12.32倍處金融保險同業低估值區（百分位26.67），融資餘額3,993張近5日顯著減肥-13.44%（近10日百分位40），2026-11-20千張大戶微增+0.04 pp，兼具防禦韌性與估值優勢。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [-0.92, "2026-11-26"],
+        "rel_ret_10d_pp": [2.45, "2026-11-26"],
+        "chip_over_1000_chg_pp": [0.04, "2026-11-20"],
+        "chip_under_50_chg_pp": [0, "2026-11-20"],
+        "chip_holders_chg_pct": [0, "2026-11-20"],
+        "margin_balance_lots": [3993, "2026-11-26"],
+        "margin_chg_5d_pct": [-13.44, "2026-11-26"],
+        "margin_pct_10d": [40, "2026-11-26"],
+        "pe_ratio": [12.32, "2026-11-26"],
+        "pe_industry_pct": [26.67, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 12,
+      "stock_id": "2404",
+      "stock": "漢唐",
+      "market": "twse",
+      "industry": "其他電子業",
+      "is_holding": false,
+      "primary_angles": [
+        "相對報酬逼近翻正",
+        "同業低估值",
+        "融資減肥"
+      ],
+      "reason": "2026-11-26近10日相對大盤+2.96 pp，近5日相對報酬僅-0.44 pp，臨門一腳即可翻正；本益比12.23倍居其他電子同業前30%低位（百分位28.57），融資餘額1,570張近5日減少-8.88%（百分位50），2026-11-20股東人數減少-0.30%。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [-0.44, "2026-11-26"],
+        "rel_ret_10d_pp": [2.96, "2026-11-26"],
+        "chip_over_1000_chg_pp": [-0.21, "2026-11-20"],
+        "chip_under_50_chg_pp": [0.03, "2026-11-20"],
+        "chip_holders_chg_pct": [-0.3, "2026-11-20"],
+        "margin_balance_lots": [1570, "2026-11-26"],
+        "margin_chg_5d_pct": [-8.88, "2026-11-26"],
+        "margin_pct_10d": [50, "2026-11-26"],
+        "pe_ratio": [12.23, "2026-11-26"],
+        "pe_industry_pct": [28.57, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 13,
+      "stock_id": "2609",
+      "stock": "陽明",
+      "market": "twse",
+      "industry": "航運業",
+      "is_holding": false,
+      "primary_angles": [
+        "集保籌碼集中",
+        "中期相對抗跌",
+        "低本益比支撐"
+      ],
+      "reason": "2026-11-20集保千張大戶增加+0.50 pp、散戶退場-0.34 pp、股東人數減少-0.95%，籌碼流向大戶；2026-11-26近10日相對大盤強勢+5.88 pp（近5日-3.63 pp），融資餘額21,118張（近5日-1.66%、近10日百分位30），本益比僅7.02倍（同業百分位50），具備低估值與籌碼支撐。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [-3.63, "2026-11-26"],
+        "rel_ret_10d_pp": [5.88, "2026-11-26"],
+        "chip_over_1000_chg_pp": [0.5, "2026-11-20"],
+        "chip_under_50_chg_pp": [-0.34, "2026-11-20"],
+        "chip_holders_chg_pct": [-0.95, "2026-11-20"],
+        "margin_balance_lots": [21118, "2026-11-26"],
+        "margin_chg_5d_pct": [-1.66, "2026-11-26"],
+        "margin_pct_10d": [30, "2026-11-26"],
+        "pe_ratio": [7.02, "2026-11-26"],
+        "pe_industry_pct": [50, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 14,
+      "stock_id": "3324",
+      "stock": "雙鴻",
+      "market": "otc",
+      "industry": "其他電子業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入",
+        "集保大戶增持",
+        "融資減肥"
+      ],
+      "reason": "NVIDIA相關個股強制納入；雖2026-11-26近5日與近10日相對報酬分別為-4.30 pp與-13.00 pp，但2026-11-20千張大戶逆勢大幅吸籌+1.64 pp，且融資餘額4,272張近5日減肥-7.29%至低水位（近10日百分位20），本益比19.28倍（同業百分位71.43），具主力逢低承接跡象。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [-4.3, "2026-11-26"],
+        "rel_ret_10d_pp": [-13, "2026-11-26"],
+        "chip_over_1000_chg_pp": [1.64, "2026-11-20"],
+        "chip_under_50_chg_pp": [0.14, "2026-11-20"],
+        "chip_holders_chg_pct": [1.57, "2026-11-20"],
+        "margin_balance_lots": [4272, "2026-11-26"],
+        "margin_chg_5d_pct": [-7.29, "2026-11-26"],
+        "margin_pct_10d": [20, "2026-11-26"],
+        "pe_ratio": [19.28, "2026-11-26"],
+        "pe_industry_pct": [71.43, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 15,
+      "stock_id": "4749",
+      "stock": "新應材",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "primary_angles": [
+        "集保籌碼集中",
+        "融資減肥"
+      ],
+      "reason": "2026-11-20集保千張大戶顯著加碼+1.15 pp、50張以下散戶大減-0.78 pp、股東人數下降-1.09%，大戶吸籌結構清晰；2026-11-26融資餘額2,661張近5日縮減-5.87%並降至近10日最低百分位10，近10日相對櫃買僅小幅落後-0.83 pp（近5日回檔-12.42 pp），本益比37.97倍（同業百分位65.91）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [-12.42, "2026-11-26"],
+        "rel_ret_10d_pp": [-0.83, "2026-11-26"],
+        "chip_over_1000_chg_pp": [1.15, "2026-11-20"],
+        "chip_under_50_chg_pp": [-0.78, "2026-11-20"],
+        "chip_holders_chg_pct": [-1.09, "2026-11-20"],
+        "margin_balance_lots": [2661, "2026-11-26"],
+        "margin_chg_5d_pct": [-5.87, "2026-11-26"],
+        "margin_pct_10d": [10, "2026-11-26"],
+        "pe_ratio": [37.97, "2026-11-26"],
+        "pe_industry_pct": [65.91, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 16,
+      "stock_id": "3718",
+      "stock": "中光電投控",
+      "market": "otc",
+      "industry": "光電業",
+      "is_holding": false,
+      "primary_angles": [
+        "集保籌碼集中",
+        "融資減肥",
+        "相對報酬逼近翻正"
+      ],
+      "reason": "2026-11-26近5日相對櫃買僅差-0.18 pp翻正（近10日-2.38 pp），2026-11-20千張大戶增加+0.36 pp、散戶減少-0.15 pp、股東人數-0.48%；同時融資餘額8,859張近5日大幅減肥-11.38%（近10日百分位20），籌碼沉澱與短線止穩訊號明確。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [-0.18, "2026-11-26"],
+        "rel_ret_10d_pp": [-2.38, "2026-11-26"],
+        "chip_over_1000_chg_pp": [0.36, "2026-11-20"],
+        "chip_under_50_chg_pp": [-0.15, "2026-11-20"],
+        "chip_holders_chg_pct": [-0.48, "2026-11-20"],
+        "margin_balance_lots": [8859, "2026-11-26"],
+        "margin_chg_5d_pct": [-11.38, "2026-11-26"],
+        "margin_pct_10d": [20, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 17,
+      "stock_id": "8210",
+      "stock": "勤誠",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入",
+        "融資減肥",
+        "短線動能轉強"
+      ],
+      "reason": "NVIDIA相關個股強制納入；2026-11-26近5日相對報酬轉正+0.56 pp（近10日-10.57 pp），融資餘額3,800張近5日大減-15.72%（近10日百分位20），2026-11-20股東人數減少-0.59%（千張大戶-0.20 pp），本益比12.65倍居電腦週邊同業中段偏低（百分位46.67）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [0.56, "2026-11-26"],
+        "rel_ret_10d_pp": [-10.57, "2026-11-26"],
+        "chip_over_1000_chg_pp": [-0.2, "2026-11-20"],
+        "chip_under_50_chg_pp": [0.16, "2026-11-20"],
+        "chip_holders_chg_pct": [-0.59, "2026-11-20"],
+        "margin_balance_lots": [3800, "2026-11-26"],
+        "margin_chg_5d_pct": [-15.72, "2026-11-26"],
+        "margin_pct_10d": [20, "2026-11-26"],
+        "pe_ratio": [12.65, "2026-11-26"],
+        "pe_industry_pct": [46.67, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 18,
+      "stock_id": "2449",
+      "stock": "京元電子",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入",
+        "短線動能轉強",
+        "融資減肥"
+      ],
+      "reason": "NVIDIA相關個股強制納入；2026-11-26近5日強彈7.43%、相對大盤超額報酬+5.54 pp（近10日-3.01 pp），融資餘額20,981張近5日減肥-8.81%（近10日百分位40），2026-11-20千張大戶-0.75 pp，本益比24.97倍（半導體同業百分位43.18）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [5.54, "2026-11-26"],
+        "rel_ret_10d_pp": [-3.01, "2026-11-26"],
+        "chip_over_1000_chg_pp": [-0.75, "2026-11-20"],
+        "chip_under_50_chg_pp": [1.18, "2026-11-20"],
+        "chip_holders_chg_pct": [1.55, "2026-11-20"],
+        "margin_balance_lots": [20981, "2026-11-26"],
+        "margin_chg_5d_pct": [-8.81, "2026-11-26"],
+        "margin_pct_10d": [40, "2026-11-26"],
+        "pe_ratio": [24.97, "2026-11-26"],
+        "pe_industry_pct": [43.18, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 19,
+      "stock_id": "2412",
+      "stock": "中華電",
+      "market": "twse",
+      "industry": "通信網路業",
+      "is_holding": false,
+      "primary_angles": [
+        "集保籌碼集中",
+        "融資減肥",
+        "中期相對抗跌"
+      ],
+      "reason": "2026-11-26近10日正報酬2.78%、相對大盤大幅領先+11.92 pp（近5日僅因大盤反彈落後-1.59 pp）；2026-11-20千張大戶+0.15 pp、散戶-0.10 pp、股東人數-0.31%，融資餘額1,126張近5日大減-56.36%（近10日百分位20），本益比30.55倍（同業百分位42.86）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [-1.59, "2026-11-26"],
+        "rel_ret_10d_pp": [11.92, "2026-11-26"],
+        "chip_over_1000_chg_pp": [0.15, "2026-11-20"],
+        "chip_under_50_chg_pp": [-0.1, "2026-11-20"],
+        "chip_holders_chg_pct": [-0.31, "2026-11-20"],
+        "margin_balance_lots": [1126, "2026-11-26"],
+        "margin_chg_5d_pct": [-56.36, "2026-11-26"],
+        "margin_pct_10d": [20, "2026-11-26"],
+        "pe_ratio": [30.55, "2026-11-26"],
+        "pe_industry_pct": [42.86, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 20,
+      "stock_id": "2357",
+      "stock": "華碩",
+      "market": "twse",
+      "industry": "電腦及週邊設備業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入",
+        "同業低估值"
+      ],
+      "reason": "NVIDIA相關個股強制納入；2026-11-26本益比僅9.59倍，處電腦及週邊設備同業低估值區（百分位26.67），近5日與近10日相對報酬分別為-2.01 pp與-1.08 pp，2026-11-20千張大戶-0.58 pp，融資餘額1,300張（近5日-1.07%、百分位70）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [-2.01, "2026-11-26"],
+        "rel_ret_10d_pp": [-1.08, "2026-11-26"],
+        "chip_over_1000_chg_pp": [-0.58, "2026-11-20"],
+        "chip_under_50_chg_pp": [0.09, "2026-11-20"],
+        "chip_holders_chg_pct": [0.44, "2026-11-20"],
+        "margin_balance_lots": [1300, "2026-11-26"],
+        "margin_chg_5d_pct": [-1.07, "2026-11-26"],
+        "margin_pct_10d": [70, "2026-11-26"],
+        "pe_ratio": [9.59, "2026-11-26"],
+        "pe_industry_pct": [26.67, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 21,
+      "stock_id": "2317",
+      "stock": "鴻海",
+      "market": "twse",
+      "industry": "其他電子業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入",
+        "融資減肥"
+      ],
+      "reason": "NVIDIA相關個股強制納入；2026-11-26融資餘額48,360張（近5日-3.79%），處近10日最低水位（百分位10），近10日相對報酬僅微落後-0.65 pp（近5日-3.70 pp），2026-11-20千張大戶-0.11 pp，本益比13.10倍（同業百分位42.86）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [-3.7, "2026-11-26"],
+        "rel_ret_10d_pp": [-0.65, "2026-11-26"],
+        "chip_over_1000_chg_pp": [-0.11, "2026-11-20"],
+        "chip_under_50_chg_pp": [0.1, "2026-11-20"],
+        "chip_holders_chg_pct": [0.35, "2026-11-20"],
+        "margin_balance_lots": [48360, "2026-11-26"],
+        "margin_chg_5d_pct": [-3.79, "2026-11-26"],
+        "margin_pct_10d": [10, "2026-11-26"],
+        "pe_ratio": [13.1, "2026-11-26"],
+        "pe_industry_pct": [42.86, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 22,
+      "stock_id": "3711",
+      "stock": "日月光投控",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入",
+        "相對報酬逼近翻正"
+      ],
+      "reason": "NVIDIA相關個股強制納入；2026-11-26近5日相對報酬-0.50 pp接近翻正（近10日-3.66 pp），融資餘額10,695張近5日減少-3.60%（近10日百分位40），2026-11-20千張大戶-0.13 pp，本益比29.33倍（同業百分位56.82）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [-0.5, "2026-11-26"],
+        "rel_ret_10d_pp": [-3.66, "2026-11-26"],
+        "chip_over_1000_chg_pp": [-0.13, "2026-11-20"],
+        "chip_under_50_chg_pp": [0.13, "2026-11-20"],
+        "chip_holders_chg_pct": [1.45, "2026-11-20"],
+        "margin_balance_lots": [10695, "2026-11-26"],
+        "margin_chg_5d_pct": [-3.6, "2026-11-26"],
+        "margin_pct_10d": [40, "2026-11-26"],
+        "pe_ratio": [29.33, "2026-11-26"],
+        "pe_industry_pct": [56.82, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 23,
+      "stock_id": "3653",
+      "stock": "健策",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入",
+        "短線動能轉強",
+        "融資減肥"
+      ],
+      "reason": "NVIDIA相關個股強制納入；2026-11-26近5日強彈11.42%、相對大盤+9.54 pp（近10日-9.05 pp），融資餘額2,260張近5日減少-6.57%（百分位50），2026-11-20千張大戶-0.52 pp、散戶-0.18 pp，本益比83.99倍（同業百分位100）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [9.54, "2026-11-26"],
+        "rel_ret_10d_pp": [-9.05, "2026-11-26"],
+        "chip_over_1000_chg_pp": [-0.52, "2026-11-20"],
+        "chip_under_50_chg_pp": [-0.18, "2026-11-20"],
+        "chip_holders_chg_pct": [6.97, "2026-11-20"],
+        "margin_balance_lots": [2260, "2026-11-26"],
+        "margin_chg_5d_pct": [-6.57, "2026-11-26"],
+        "margin_pct_10d": [50, "2026-11-26"],
+        "pe_ratio": [83.99, "2026-11-26"],
+        "pe_industry_pct": [100, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 24,
+      "stock_id": "6515",
+      "stock": "穎崴",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入",
+        "短線動能轉強"
+      ],
+      "reason": "NVIDIA相關個股強制納入；2026-11-26近5日相對報酬+1.55 pp（近10日-7.46 pp），2026-11-20股東人數減少-0.57%（千張大戶-0.14 pp），融資餘額743張近5日-4.62%（百分位40），本益比41.87倍（同業百分位70.45）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [1.55, "2026-11-26"],
+        "rel_ret_10d_pp": [-7.46, "2026-11-26"],
+        "chip_over_1000_chg_pp": [-0.14, "2026-11-20"],
+        "chip_under_50_chg_pp": [0.06, "2026-11-20"],
+        "chip_holders_chg_pct": [-0.57, "2026-11-20"],
+        "margin_balance_lots": [743, "2026-11-26"],
+        "margin_chg_5d_pct": [-4.62, "2026-11-26"],
+        "margin_pct_10d": [40, "2026-11-26"],
+        "pe_ratio": [41.87, "2026-11-26"],
+        "pe_industry_pct": [70.45, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 25,
+      "stock_id": "8046",
+      "stock": "南電",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入",
+        "短線動能轉強",
+        "集保大戶增持"
+      ],
+      "reason": "NVIDIA相關個股強制納入；2026-11-26近5日相對報酬+2.84 pp（近10日-15.65 pp），2026-11-20千張大戶增持+0.58 pp（股東人數+4.72%），融資餘額5,242張（近5日-2.18%、近10日百分位20），本益比58.53倍（同業百分位93.75）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [2.84, "2026-11-26"],
+        "rel_ret_10d_pp": [-15.65, "2026-11-26"],
+        "chip_over_1000_chg_pp": [0.58, "2026-11-20"],
+        "chip_under_50_chg_pp": [0.28, "2026-11-20"],
+        "chip_holders_chg_pct": [4.72, "2026-11-20"],
+        "margin_balance_lots": [5242, "2026-11-26"],
+        "margin_chg_5d_pct": [-2.18, "2026-11-26"],
+        "margin_pct_10d": [20, "2026-11-26"],
+        "pe_ratio": [58.53, "2026-11-26"],
+        "pe_industry_pct": [93.75, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 26,
+      "stock_id": "4958",
+      "stock": "臻鼎-KY",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入",
+        "融資減肥",
+        "短線動能轉強"
+      ],
+      "reason": "NVIDIA相關個股強制納入；2026-11-26近5日相對報酬+1.46 pp（近10日-8.18 pp），融資餘額22,648張近5日顯著減肥-12.05%（近10日百分位20），2026-11-20千張大戶-0.80 pp，本益比35.09倍（同業百分位81.25）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [1.46, "2026-11-26"],
+        "rel_ret_10d_pp": [-8.18, "2026-11-26"],
+        "chip_over_1000_chg_pp": [-0.8, "2026-11-20"],
+        "chip_under_50_chg_pp": [0.48, "2026-11-20"],
+        "chip_holders_chg_pct": [0.79, "2026-11-20"],
+        "margin_balance_lots": [22648, "2026-11-26"],
+        "margin_chg_5d_pct": [-12.05, "2026-11-26"],
+        "margin_pct_10d": [20, "2026-11-26"],
+        "pe_ratio": [35.09, "2026-11-26"],
+        "pe_industry_pct": [81.25, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 27,
+      "stock_id": "3037",
+      "stock": "欣興",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入",
+        "短線動能轉強"
+      ],
+      "reason": "NVIDIA相關個股強制納入；2026-11-26近5日強彈7.89%、相對大盤+6.00 pp（近10日-9.67 pp），2026-11-20千張大戶-0.82 pp、股東人數+5.93%，融資餘額34,058張（近5日-0.68%、百分位50），本益比33.28倍（同業百分位68.75）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [6, "2026-11-26"],
+        "rel_ret_10d_pp": [-9.67, "2026-11-26"],
+        "chip_over_1000_chg_pp": [-0.82, "2026-11-20"],
+        "chip_under_50_chg_pp": [0.96, "2026-11-20"],
+        "chip_holders_chg_pct": [5.93, "2026-11-20"],
+        "margin_balance_lots": [34058, "2026-11-26"],
+        "margin_chg_5d_pct": [-0.68, "2026-11-26"],
+        "margin_pct_10d": [50, "2026-11-26"],
+        "pe_ratio": [33.28, "2026-11-26"],
+        "pe_industry_pct": [68.75, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 28,
+      "stock_id": "2313",
+      "stock": "華通",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入",
+        "融資減肥"
+      ],
+      "reason": "NVIDIA相關個股強制納入；2026-11-26融資餘額26,754張近5日減肥-12.12%（近10日百分位30），近5日與近10日相對報酬為-2.48 pp與-5.14 pp，2026-11-20千張大戶-0.93 pp，本益比27.81倍（同業百分位43.75）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [-2.48, "2026-11-26"],
+        "rel_ret_10d_pp": [-5.14, "2026-11-26"],
+        "chip_over_1000_chg_pp": [-0.93, "2026-11-20"],
+        "chip_under_50_chg_pp": [0.81, "2026-11-20"],
+        "chip_holders_chg_pct": [0.83, "2026-11-20"],
+        "margin_balance_lots": [26754, "2026-11-26"],
+        "margin_chg_5d_pct": [-12.12, "2026-11-26"],
+        "margin_pct_10d": [30, "2026-11-26"],
+        "pe_ratio": [27.81, "2026-11-26"],
+        "pe_industry_pct": [43.75, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 29,
+      "stock_id": "6187",
+      "stock": "萬潤",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入",
+        "短線動能轉強"
+      ],
+      "reason": "NVIDIA相關個股強制納入；2026-11-26近5日相對櫃買轉正+1.45 pp（近10日-11.07 pp），2026-11-20千張大戶-0.54 pp、散戶+0.76 pp，融資餘額1,781張（近5日+2.53%、百分位60），本益比30.56倍（同業百分位61.36）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [1.45, "2026-11-26"],
+        "rel_ret_10d_pp": [-11.07, "2026-11-26"],
+        "chip_over_1000_chg_pp": [-0.54, "2026-11-20"],
+        "chip_under_50_chg_pp": [0.76, "2026-11-20"],
+        "chip_holders_chg_pct": [1.76, "2026-11-20"],
+        "margin_balance_lots": [1781, "2026-11-26"],
+        "margin_chg_5d_pct": [2.53, "2026-11-26"],
+        "margin_pct_10d": [60, "2026-11-26"],
+        "pe_ratio": [30.56, "2026-11-26"],
+        "pe_industry_pct": [61.36, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 30,
+      "stock_id": "6415",
+      "stock": "矽力-KY",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入",
+        "集保大戶增持"
+      ],
+      "reason": "NVIDIA相關個股強制納入；2026-11-26近5日相對報酬+0.87 pp（近10日-18.43 pp），2026-11-20千張大戶+0.35 pp，惟融資餘額7,048張近5日大增+56.45%（百分位80），本益比30.40倍（同業百分位59.09），後續須留意融資籌碼變化。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [0.87, "2026-11-26"],
+        "rel_ret_10d_pp": [-18.43, "2026-11-26"],
+        "chip_over_1000_chg_pp": [0.35, "2026-11-20"],
+        "chip_under_50_chg_pp": [0.37, "2026-11-20"],
+        "chip_holders_chg_pct": [2.14, "2026-11-20"],
+        "margin_balance_lots": [7048, "2026-11-26"],
+        "margin_chg_5d_pct": [56.45, "2026-11-26"],
+        "margin_pct_10d": [80, "2026-11-26"],
+        "pe_ratio": [30.4, "2026-11-26"],
+        "pe_industry_pct": [59.09, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 31,
+      "stock_id": "3189",
+      "stock": "景碩",
+      "market": "twse",
+      "industry": "半導體業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入"
+      ],
+      "reason": "NVIDIA相關個股強制納入；2026-11-26近5日與近10日相對報酬為-0.35 pp與-11.40 pp，2026-11-20千張大戶-0.91 pp、股東人數+7.41%，融資餘額16,252張（近5日+4.06%、百分位100），本益比57.11倍（同業百分位81.82）。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [-0.35, "2026-11-26"],
+        "rel_ret_10d_pp": [-11.4, "2026-11-26"],
+        "chip_over_1000_chg_pp": [-0.91, "2026-11-20"],
+        "chip_under_50_chg_pp": [1.5, "2026-11-20"],
+        "chip_holders_chg_pct": [7.41, "2026-11-20"],
+        "margin_balance_lots": [16252, "2026-11-26"],
+        "margin_chg_5d_pct": [4.06, "2026-11-26"],
+        "margin_pct_10d": [100, "2026-11-26"],
+        "pe_ratio": [57.11, "2026-11-26"],
+        "pe_industry_pct": [81.82, "2026-11-26"]
+      }
+    },
+    {
+      "priority_rank": 32,
+      "stock_id": "3374",
+      "stock": "精材",
+      "market": "otc",
+      "industry": "半導體業",
+      "is_holding": false,
+      "primary_angles": [
+        "NVIDIA概念股強制納入"
+      ],
+      "reason": "NVIDIA相關個股強制納入；2026-11-26近5日與近10日相對報酬為-5.81 pp與-14.30 pp，2026-11-20千張大戶-4.22 pp、股東人數+18.96%，融資餘額19,589張（近5日+2.55%、百分位60），本益比48.43倍（同業百分位77.27），待後續籌碼止穩再行評估。",
+      "key_metrics": {
+        "rel_ret_5d_pp": [-5.81, "2026-11-26"],
+        "rel_ret_10d_pp": [-14.3, "2026-11-26"],
+        "chip_over_1000_chg_pp": [-4.22, "2026-11-20"],
+        "chip_under_50_chg_pp": [4.32, "2026-11-20"],
+        "chip_holders_chg_pct": [18.96, "2026-11-20"],
+        "margin_balance_lots": [19589, "2026-11-26"],
+        "margin_chg_5d_pct": [2.55, "2026-11-26"],
+        "margin_pct_10d": [60, "2026-11-26"],
+        "pe_ratio": [48.43, "2026-11-26"],
+        "pe_industry_pct": [77.27, "2026-11-26"]
+      }
+    }
+  ],
+  "holding_forced_stocks": [
+    {
+      "stock_id": "2059",
+      "stock": "川湖",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "in_universe_150": true,
+      "rel_ret_5d_pp": 18.57,
+      "rel_ret_10d_pp": -3.23
+    },
+    {
+      "stock_id": "2207",
+      "stock": "和泰車",
+      "market": "twse",
+      "industry": "汽車工業",
+      "in_universe_150": true,
+      "rel_ret_5d_pp": -4.63,
+      "rel_ret_10d_pp": 11.06
+    },
+    {
+      "stock_id": "2308",
+      "stock": "台達電",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "in_universe_150": true,
+      "rel_ret_5d_pp": 10.11,
+      "rel_ret_10d_pp": -0.53
+    },
+    {
+      "stock_id": "2379",
+      "stock": "瑞昱",
+      "market": "twse",
+      "industry": "半導體業",
+      "in_universe_150": true,
+      "rel_ret_5d_pp": -1.34,
+      "rel_ret_10d_pp": 7.93
+    },
+    {
+      "stock_id": "2383",
+      "stock": "台光電",
+      "market": "twse",
+      "industry": "電子零組件業",
+      "in_universe_150": true,
+      "rel_ret_5d_pp": 15.42,
+      "rel_ret_10d_pp": -1.7
+    },
+    {
+      "stock_id": "2610",
+      "stock": "華航",
+      "market": "twse",
+      "industry": "航運業",
+      "in_universe_150": true,
+      "rel_ret_5d_pp": -5,
+      "rel_ret_10d_pp": 4.76
+    },
+    {
+      "stock_id": "2615",
+      "stock": "萬海",
+      "market": "twse",
+      "industry": "航運業",
+      "in_universe_150": true,
+      "rel_ret_5d_pp": -5.27,
+      "rel_ret_10d_pp": 2.6
+    },
+    {
+      "stock_id": "2618",
+      "stock": "長榮航",
+      "market": "twse",
+      "industry": "航運業",
+      "in_universe_150": true,
+      "rel_ret_5d_pp": -2.64,
+      "rel_ret_10d_pp": 7.33
+    },
+    {
+      "stock_id": "3293",
+      "stock": "鈊象",
+      "market": "otc",
+      "industry": "文化創意業",
+      "in_universe_150": true,
+      "rel_ret_5d_pp": -2.59,
+      "rel_ret_10d_pp": 16.83
+    },
+    {
+      "stock_id": "5871",
+      "stock": "中租-KY",
+      "market": "twse",
+      "industry": "其他",
+      "in_universe_150": true,
+      "rel_ret_5d_pp": -0.38,
+      "rel_ret_10d_pp": 8.16
+    },
+    {
+      "stock_id": "8415",
+      "stock": "大國鋼",
+      "market": "otc",
+      "industry": "鋼鐵工業",
+      "in_universe_150": true,
+      "rel_ret_5d_pp": -0.63,
+      "rel_ret_10d_pp": 24.75
+    }
+  ],
+  "validation_warnings": []
+}
