@@ -4121,9 +4121,9 @@
     "date": "2026-11-25",
     "ranking": {
       "rank": 113,
-      "total_teams": 360,
+      "total_teams": 353,
       "group_rank": 22,
-      "group_total": 81
+      "group_total": 79
     },
     "portfolio": {
       "aum": 831352578.51,
@@ -4282,6 +4282,296 @@
         "amount": 18085711.8,
         "fee": 25772.14,
         "tax": 54257.14,
+        "outcome": "filled"
+      }
+    ]
+  },
+  {
+    "day": 23,
+    "date": "2026-11-26",
+    "ranking": {
+      "rank": 83,
+      "total_teams": 353,
+      "group_rank": 16,
+      "group_total": 79
+    },
+    "portfolio": {
+      "aum": 866471028.79,
+      "day_return": 4.2243,
+      "cum_return": -13.3529,
+      "stock_ratio": 83.4093,
+      "cash_ratio": 16.5907,
+      "holdings_count": 24,
+      "top10_weight": 49.8703,
+      "aum_breakdown": {
+        "cash": 143753628.79,
+        "holdings_value": 722717400.0,
+        "receivable_shares_value": 0.0,
+        "receivable_cash": 0.0,
+        "upcoming_receivable_cash": 0.0,
+        "residual": 0.0
+      },
+      "corporate_actions": {
+        "cash": 0.0,
+        "shares": 0,
+        "count": 0
+      },
+      "carry": {
+        "is_carried_forward": false,
+        "reason": "",
+        "reason_text": ""
+      }
+    },
+    "trade_summary": {
+      "buy_count": 10,
+      "buy_shares": 1796000,
+      "buy_amount": 181276102.8,
+      "sell_count": 10,
+      "sell_shares": 338000,
+      "sell_amount": 182772489.8,
+      "fee": 518769.26,
+      "tax": 548317.46,
+      "voided_count": 0
+    },
+    "trades": [
+      {
+        "id": 92300,
+        "side": "buy",
+        "code": "2059",
+        "name": "川湖",
+        "shares": 2000,
+        "price": 7012.0485,
+        "amount": 14024097.0,
+        "fee": 19984.34,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 92301,
+        "side": "buy",
+        "code": "2207",
+        "name": "和泰車",
+        "shares": 32000,
+        "price": 530.4274,
+        "amount": 16973676.8,
+        "fee": 24187.49,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 92302,
+        "side": "sell",
+        "code": "2317",
+        "name": "鴻海",
+        "shares": 153000,
+        "price": 214.9912,
+        "amount": 32893653.6,
+        "fee": 46873.46,
+        "tax": 98680.96,
+        "outcome": "filled"
+      },
+      {
+        "id": 92303,
+        "side": "sell",
+        "code": "2330",
+        "name": "台積電",
+        "shares": 8000,
+        "price": 2149.69,
+        "amount": 17197520.0,
+        "fee": 24506.47,
+        "tax": 51592.56,
+        "outcome": "filled"
+      },
+      {
+        "id": 92304,
+        "side": "buy",
+        "code": "2345",
+        "name": "智邦",
+        "shares": 7000,
+        "price": 1605.7786,
+        "amount": 11240450.2,
+        "fee": 16017.64,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 92305,
+        "side": "buy",
+        "code": "2368",
+        "name": "金像電",
+        "shares": 13000,
+        "price": 976.1151,
+        "amount": 12689496.3,
+        "fee": 18082.53,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 92306,
+        "side": "buy",
+        "code": "2379",
+        "name": "瑞昱",
+        "shares": 38000,
+        "price": 722.5899,
+        "amount": 27458416.2,
+        "fee": 39128.24,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 92307,
+        "side": "sell",
+        "code": "2382",
+        "name": "廣達",
+        "shares": 24000,
+        "price": 277.6404,
+        "amount": 6663369.6,
+        "fee": 9495.3,
+        "tax": 19990.11,
+        "outcome": "filled"
+      },
+      {
+        "id": 92308,
+        "side": "sell",
+        "code": "2454",
+        "name": "聯發科",
+        "shares": 10000,
+        "price": 3754.9032,
+        "amount": 37549032.0,
+        "fee": 53507.37,
+        "tax": 112647.1,
+        "outcome": "filled"
+      },
+      {
+        "id": 92309,
+        "side": "buy",
+        "code": "2603",
+        "name": "長榮",
+        "shares": 32000,
+        "price": 253.3481,
+        "amount": 8107139.2,
+        "fee": 11552.67,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 92310,
+        "side": "buy",
+        "code": "2610",
+        "name": "華航",
+        "shares": 1133000,
+        "price": 21.9398,
+        "amount": 24857793.4,
+        "fee": 35422.36,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 92311,
+        "side": "buy",
+        "code": "2615",
+        "name": "萬海",
+        "shares": 190000,
+        "price": 99.9951,
+        "amount": 18999069.0,
+        "fee": 27073.67,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 92312,
+        "side": "sell",
+        "code": "3260",
+        "name": "威剛",
+        "shares": 76000,
+        "price": 259.9622,
+        "amount": 19757127.2,
+        "fee": 28153.91,
+        "tax": 59271.38,
+        "outcome": "filled"
+      },
+      {
+        "id": 92313,
+        "side": "sell",
+        "code": "3661",
+        "name": "世芯-KY",
+        "shares": 2000,
+        "price": 3788.3002,
+        "amount": 7576600.4,
+        "fee": 10796.66,
+        "tax": 22729.8,
+        "outcome": "filled"
+      },
+      {
+        "id": 92314,
+        "side": "buy",
+        "code": "3665",
+        "name": "貿聯-KY",
+        "shares": 7000,
+        "price": 1769.5873,
+        "amount": 12387111.1,
+        "fee": 17651.63,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 92315,
+        "side": "sell",
+        "code": "3711",
+        "name": "日月光投控",
+        "shares": 29000,
+        "price": 505.4867,
+        "amount": 14659114.3,
+        "fee": 20889.24,
+        "tax": 43977.34,
+        "outcome": "filled"
+      },
+      {
+        "id": 92316,
+        "side": "sell",
+        "code": "5289",
+        "name": "宜鼎",
+        "shares": 23000,
+        "price": 800.9599,
+        "amount": 18422077.7,
+        "fee": 26251.46,
+        "tax": 55266.23,
+        "outcome": "filled"
+      },
+      {
+        "id": 92317,
+        "side": "buy",
+        "code": "5871",
+        "name": "中租-KY",
+        "shares": 342000,
+        "price": 100.9908,
+        "amount": 34538853.6,
+        "fee": 49217.87,
+        "tax": 0.0,
+        "outcome": "filled"
+      },
+      {
+        "id": 92318,
+        "side": "sell",
+        "code": "6223",
+        "name": "旺矽",
+        "shares": 4000,
+        "price": 4054.8959,
+        "amount": 16219583.6,
+        "fee": 23112.91,
+        "tax": 48658.75,
+        "outcome": "filled"
+      },
+      {
+        "id": 92319,
+        "side": "sell",
+        "code": "7828",
+        "name": "創新服務",
+        "shares": 9000,
+        "price": 1314.9346,
+        "amount": 11834411.4,
+        "fee": 16864.04,
+        "tax": 35503.23,
         "outcome": "filled"
       }
     ]

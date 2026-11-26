@@ -120,12 +120,12 @@ PROMPT_TEMPLATE = """\
   - `<產業指數>_rs_change_1d` / `<產業指數>_rs_change_3d` / `<產業指數>_rs_change_5d`：該產業近 1 日 / 近 3 日 / 近 5 日 RS 相對大盤強弱變化率 (%)。正值代表該期間表現強於大盤、負值代表弱於大盤。
   - `<產業指數>_rs_momentum_change`：該產業近 3 日 RS 變化率較昨日增減 (百分點 pp ＝ 今日近 3 日 RS 變化率 － 昨日近 3 日 RS 變化率)。正值代表相對強弱動能加速轉強、負值代表動能轉弱。
 
-- **美股與台指期夜盤補充行情 (盤中紀錄，皆非最終收盤數據，觀察時間與盤勢備註標註於各指標日期欄；各觀察時間及漲跌幅基準有所不同，點位變化率並非正式收盤報酬率；商品前綴：`sox`＝費城半導體指數、`nasdaq`＝那斯達克綜合指數、`nq_futures`＝小那斯達克期貨、`tx_night`＝台指期夜盤)**：
-  - `<商品>_intraday_latest` / `<商品>_intraday_change_pct`：最新晚間盤中觀察點位 (點) / 畫面漲跌幅 (%)。
-  - `<商品>_prev_intraday_latest` / `<商品>_prev_intraday_change_pct`：前一日晚間盤中觀察點位 (點) / 畫面漲跌幅 (%)。
-  - `<商品>_prev2_intraday_latest` / `<商品>_prev2_intraday_change_pct`（若有提供）：前二日晚間盤中（首日）觀察點位 (點) / 畫面漲跌幅 (%)。
-  - `<商品>_intraday_point_change_pct_vs_prev` / `<商品>_intraday_point_change_pct_vs_prev2`：近兩次觀察點位變化率 (%) / 首末觀察點位變化率 (%)。
-  - `<商品>_intraday_change_pp_vs_prev` / `<商品>_intraday_high` / `<商品>_intraday_low` / `tx_night_at_limit_up`（若有提供）：漲跌幅變化 (pp) / 盤中最高點 (點) / 盤中最低點 (點) / 台指期夜盤是否位於漲停價 (1＝是，0＝否)。
+- **海外市場與台指期夜盤補充行情 (歷史收盤＋最新盤中紀錄，觀察時間、休市狀態與盤勢備註標註於各指標日期欄；點位變化率＝(最新點位／基準點位－1)×100%；商品前綴：`sox`＝費城半導體指數、`nasdaq`＝那斯達克綜合指數、`nq_futures`＝小那斯達克期貨、`tx_night`＝台指期夜盤)**：
+  - `<商品>_intraday_latest` / `<商品>_intraday_change_pct`（若有提供）：最新晚間盤中點位 (點) / 相較前一日收盤之漲跌幅 (%)；若遇美國休市（如感恩節），美股現貨指數無當日盤中欄位，以最新收盤為準。
+  - `tx_night_intraday_screen_change_pct`（若有提供）：台指期夜盤最新盤中畫面漲跌幅 (%)。
+  - `<商品>_close_latest` / `<商品>_close_change_pct_latest`：最新歷史收盤點位 (點) / 該日收盤漲跌幅 (%)。
+  - `<商品>_close_prev` / `<商品>_close_change_pct_prev` / `<商品>_close_prev2`：前一日收盤點位 (點) / 漲跌幅 (%) 與更前一日（基準日）收盤點位 (點)。
+  - `<商品>_cum_change_pct_1123_to_1125` / `<商品>_cum_change_pct_1123_to_latest`：11/23 至 11/25 收盤累積變化率 (%) / 11/23 至最新點位（休市商品計算至最新收盤）累積變化率 (%)。
 
 ### 2. 個股技術面指標
 - **KD (5, 3, 3)**：
