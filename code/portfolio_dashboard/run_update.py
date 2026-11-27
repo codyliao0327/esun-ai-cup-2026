@@ -58,7 +58,10 @@ def run_update(auto_push: bool = False, fetch_candles: bool = True, rebuild_cand
         from L0_sources.datapack_loader import sync_latest_datapack_raw
 
         sync_backend_history()
-        sync_latest_datapack_raw()
+        try:
+            sync_latest_datapack_raw()
+        except Exception as e:
+            print(f"  ⚠️ 同步最新 DataPack 略過（將沿用本地現有 DataPack 與後台歷史數據）：{e}")
 
     # 1. 解析後台成交資料與 DataPack
     print("\n[Step 1/3] 正在解析後台真實成交明細與每日 DataPack 快照...")
@@ -77,6 +80,10 @@ def run_update(auto_push: bool = False, fetch_candles: bool = True, rebuild_cand
     else:
         print("\n[Step 2/3] 正在登入玉山證券 SDK 並抓取 150 檔標的最新收盤行情...")
         quotes = fetch_all_150_quotes(summary["stocks_150"], fetch_candles=fetch_candles)
+
+    # 若最新一日係由後台數據推算（無次日 DataPack），於最新行情寫入快取後重算持股收盤市值
+    if summary.get("synthesized_from_backend"):
+        summary = get_latest_portfolio_summary()
 
     # 2.5 先結算並合併所有 LiteLLM Usage 紀錄至本地歷史 usage_history.json，確保網頁讀取最新數據
     usage_history_file = CURRENT_DIR / "usage_history.json"

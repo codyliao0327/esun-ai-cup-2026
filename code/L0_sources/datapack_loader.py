@@ -88,6 +88,7 @@ def sync_latest_datapack_raw(
     prev_day_orders.outcome 為 unknown），預設不寫入檔案並回傳 None。
     """
     from L0_sources.backend_history_loader import EsunChallengeClient, _load_env_file
+    import requests
 
     _load_env_file(CODE_DIR / ".env")
     email = os.getenv("ESUN_EMAIL", "").strip()
@@ -99,7 +100,16 @@ def sync_latest_datapack_raw(
 
     client = EsunChallengeClient(email=email, password=password)
     client.login()
-    dp = client._get_json(f"{EsunChallengeClient.BASE_SUB}/api/data-pack/")
+    try:
+        dp = client._get_json(f"{EsunChallengeClient.BASE_SUB}/api/data-pack/")
+    except requests.HTTPError as e:
+        if e.response is not None and e.response.status_code == 409:
+            print(
+                "[datapack_loader] 後台 /api/data-pack/ 回傳 409 Conflict"
+                "（競賽已達最終交易日或無下一交易日可下載 DataPack），略過下載並沿用本地現有 DataPack。"
+            )
+            return None
+        raise
 
     dp_trade_date = str(dp.get("trade_date") or "").strip()
     if not dp_trade_date:

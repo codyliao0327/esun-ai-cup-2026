@@ -415,6 +415,124 @@ def load_datapack_history() -> List[Dict[str, Any]]:
     dedup = {}
     for h in history:
         dedup[h["date"]] = h
+
+    # 若後台 backend_all_history.json 已有比最新 DataPack 更晚的結算日（例如最終交易日無次日 DataPack），
+    # 依後台官方績效、排名與當日成交明細自動補齊最終日快照，避免看板停在前一日
+    if dedup:
+        latest_dp_date = max(dedup.keys())
+        extra_dates = sorted(dt for dt in backend_map.keys() if dt > latest_dp_date)
+        if extra_dates:
+            market_cache_stocks: Dict[str, Any] = {}
+            cache_file = DASHBOARD_DIR / "market_cache.json"
+            if cache_file.is_file():
+                try:
+                    market_cache_stocks = json.loads(cache_file.read_text(encoding="utf-8")).get("stocks", {})
+                except Exception:
+                    market_cache_stocks = {}
+
+            def _lookup_close_price(code: str, target_dt: str, fallback_price: float) -> float:
+                m_item = market_cache_stocks.get(code)
+                if isinstance(m_item, dict):
+                    m_dates = m_item.get("dates") or []
+                    m_trend = m_item.get("trend") or []
+                    if target_dt in m_dates and len(m_dates) == len(m_trend):
+                        try:
+                            return float(m_trend[m_dates.index(target_dt)])
+                        except Exception:
+                            pass
+                    if m_item.get("last_updated") == target_dt and m_item.get("close_price"):
+                        return float(m_item["close_price"])
+                    if m_item.get("close_price"):
+                        return float(m_item["close_price"])
+                return fallback_price
+
+            prev_record = dedup[latest_dp_date]
+            for dt in extra_dates:
+                b_entry = backend_map[dt]
+                b_port = b_entry.get("portfolio") or {}
+                b_break = b_port.get("aum_breakdown") or {}
+                b_rank = b_entry.get("ranking") or {}
+                b_tsum = b_entry.get("trade_summary") or {}
+
+                # 由前一日持股 + 當日已成交委託推算收盤持股
+                shares_map: Dict[str, int] = {}
+                prev_price_map: Dict[str, float] = {}
+                for h_item in prev_record.get("holdings") or []:
+                    c = str(h_item.get("code", "")).strip()
+                    sh = int(h_item.get("shares", 0))
+                    if c and sh > 0:
+                        shares_map[c] = sh
+                        prev_price_map[c] = float(h_item.get("close_price") or 0.0)
+
+                for tr in b_entry.get("trades") or []:
+                    outcome = str(tr.get("outcome", "")).strip().lower()
+                    if outcome and outcome != "filled":
+                        continue
+                    side = _SIDE_MAP.get(str(tr.get("side", "")).strip().lower())
+                    c = str(tr.get("code", "")).strip()
+                    sh = int(tr.get("shares", 0))
+                    if not side or not c or sh <= 0:
+                        continue
+                    if side == "買進":
+                        shares_map[c] = shares_map.get(c, 0) + sh
+                        if c not in prev_price_map:
+                            prev_price_map[c] = float(tr.get("price", 0.0))
+                    elif side == "賣出":
+                        shares_map[c] = max(0, shares_map.get(c, 0) - sh)
+
+                aum = float(b_port.get("aum") or prev_record["aum"])
+                cash = float(b_break.get("cash", prev_record["cash"]))
+                stock_value = float(b_break.get("holdings_value", aum - cash))
+                nav = aum
+
+                synth_holdings = []
+                for c, sh in sorted(shares_map.items()):
+                    if sh <= 0:
+                        continue
+                    cp = _lookup_close_price(c, dt, prev_price_map.get(c, 0.0))
+                    wt = (sh * cp / nav) if (nav > 0 and cp > 0) else 0.0
+                    synth_holdings.append({
+                        "code": c,
+                        "shares": sh,
+                        "receivable_shares": 0,
+                        "close_price": cp,
+                        "tradable_weight": round(wt, 6),
+                    })
+
+                total_teams = int(b_rank.get("total_teams", 0)) if b_rank else 0
+                group_total = int(b_rank.get("group_total", 0)) if b_rank else 0
+                ranking_info = {
+                    "rank": b_rank.get("rank"),
+                    "total_teams": total_teams,
+                    "group_rank": b_rank.get("group_rank"),
+                    "group_total": group_total,
+                    "student_total": max(0, total_teams - group_total),
+                } if b_rank else None
+
+                new_rec = {
+                    "day": b_entry.get("day"),
+                    "date": dt,
+                    "trade_date": dt,
+                    "nav": nav,
+                    "cash": cash,
+                    "aum": aum,
+                    "stock_value": stock_value,
+                    "cash_ratio_pct": float(b_port.get("cash_ratio", 0.0)),
+                    "stock_ratio_pct": float(b_port.get("stock_ratio", 0.0)),
+                    "holdings_count": int(b_port.get("holdings_count", len(synth_holdings))),
+                    "cum_return_pct": float(b_port.get("cum_return", 0.0)),
+                    "day_return_pct": float(b_port.get("day_return", 0.0)),
+                    "top10_weight": float(b_port.get("top10_weight", 0.0)),
+                    "ranking": ranking_info,
+                    "fee": float(b_tsum.get("fee", 0.0)),
+                    "tax": float(b_tsum.get("tax", 0.0)),
+                    "holdings": synth_holdings,
+                    "compliance": prev_record.get("compliance") or {"violations": 0, "notices": 0},
+                    "synthesized_from_backend": True,
+                }
+                dedup[dt] = new_rec
+                prev_record = new_rec
+
     return list(dedup.values())
 
 
@@ -630,6 +748,7 @@ def get_latest_portfolio_summary() -> Dict[str, Any]:
     return {
         "as_of_date": latest_dp["date"],
         "trade_date": latest_dp["trade_date"],
+        "synthesized_from_backend": bool(latest_dp.get("synthesized_from_backend", False)),
         "account": {
             "day": latest_dp.get("day"),
             "nav": round(nav, 0),
