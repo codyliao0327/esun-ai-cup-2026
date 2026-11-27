@@ -20,7 +20,7 @@
 
 ---
 
-> **Reader's Guide for Engineering Leaders & Interviewers**: This document is structured as a system architecture whitepaper. Even **without reading a single line of source code**, you can understand within 3–5 minutes—via dual-core architecture diagrams, engineering pain-point tradeoffs, an L0 ➔ L4 end-to-end JSON trace walkthrough, 45 quantitative indicators, and mathematical risk derivations—how this project productionizes LLMs into a **zero-hallucination, zero-compliance-tolerance, fully unattended financial Multi-Agent system**.
+> **Overview**: This repository integrates an autonomous Multi-Agent quantitative decision pipeline (`L0` ➔ `L4`) with a real-time Portfolio & FinOps Dashboard. Through architecture diagrams, engineering tradeoffs, an end-to-end JSON walkthrough, 45 quantitative indicators, and mathematical risk formulations, this document details how LLMs are engineered into a **zero-hallucination, zero-compliance-tolerance, fully unattended investment decision system**.
 
 ---
 
@@ -41,27 +41,36 @@
 
 ## 1. Competition Results & System Preview
 
-<!-- POST_COMPETITION_RESULTS_START: Update placeholders once the competition (2026-10-27 ~ 2026-11-27) concludes -->
 > [!NOTE]
-> **Post-Competition Results Section** (Competition window: `2026-10-27` to `2026-11-27`. Final settlement metrics and UI screenshots are reserved below for final post-competition update).
+> **Final Post-Competition Settlement** (Competition window: `2026-10-27` to `2026-11-27`, 24 trading days. All metrics below are directly derived from the official E.SUN backend settlement log `backend_all_history.json` and LiteLLM telemetry log `usage_history.json`).
 
-| Evaluation Dimension | Final Performance (To Be Filled Post-Settlement) | Notes |
+| Evaluation Dimension | Final Performance | Notes |
 | :--- | :--- | :--- |
-| **Cumulative Return (`cum_return_pct`)** | `[TBD, e.g., +XX.XX%]` | Initial tradable NAV: `NT$1,000,000,000` |
-| **Overall Rank / Open Division Rank** | `[TBD, e.g., #XX / XXX teams (Division #XX)]` | Official E.SUN competition backend settlement |
-| **Maximum Drawdown (`MDD`)** | `[TBD, e.g., -X.XX%]` | Peak-to-trough NAV drawdown across competition |
-| **Compliance Violations / Submission Pass Rate** | `0 Violations / 100% Pre-Validation Pass` | Enforced by Step 7 zero-tolerance validation gate |
-| **Automated Trading Days Executed** | `[TBD, e.g., 22 trading days]` | Full archive of Prompts, D-Plan JSONs, and audit reports |
-| **Average Daily Pipeline AI Cost** | `[TBD, e.g., $0.XX USD / day]` | Metered via 19 native LiteLLM Usage Callback fields |
+| **Cumulative Return (`cum_return_pct`)** | **`-14.63%`** | Initial NAV `NT$1,000,000,000` ➔ Final NAV `NT$853,659,351` (24 active holdings, `9.17%` cash) |
+| **Overall Rank / Open Division Rank** | **`#97 / 346 teams` (Top 28.0%)**<br>**Open Division `#19 / 77` (Top 24.7%)** | Official backend settlement; peaked at Overall `#63` / Division `#11` on `2026-11-03` |
+| **Maximum Drawdown (`MDD`)** | **`-18.23%`** | Peak NAV on `2026-10-28` (`NT$1,016,667,892`) ➔ trough on `2026-11-25` |
+| **Compliance Violations / Submission Pass Rate** | **`0 Violations / 0 Voided Orders`**<br>(100% Pre-Validation Pass on `23/24` days) | Enforced by Step 7 zero-tolerance validation gate; `2026-11-12` carried forward prior allocation with zero strikes |
+| **Automated Trading Days Executed** | **`24 Trading Days` (312 filled orders)** | 172 buys / 140 sells; full archive of 24 D-Plan JSONs, daily Prompts, and 21 Markdown audit reports |
+| **Average Daily Pipeline AI Cost** | **`$0.97 USD / day`**<br>(**`$22.24 USD`** across 23 metered days) | Metered via 19 native LiteLLM Usage fields (`119` calls, `20.16M` tokens, `298` Code Execution runs) |
 
 ### Live Dashboard & UI Preview
 
 - **Live Demo**: [https://esun-ai-cup-2026-team11402-portfolio.pages.dev](https://esun-ai-cup-2026-team11402-portfolio.pages.dev)
-- **Three Signature Views** (add images under `docs/screenshots/` and uncomment when ready):
-  - **Account Overview & FIFO Lot Drawer**: NAV/Cash curve, cumulative return, ranking trend, holding days, and FIFO lot-level cost tracking `<!-- ![Account Overview](docs/screenshots/dashboard_overview.png) -->`
-  - **Market Watchlist & Sparklines**: Dynamic holdings vs. universe quotes, return sorting, and inline sparkline charts `<!-- ![Market Quotes](docs/screenshots/dashboard_quotes.png) -->`
-  - **AI Cost & Routing Monitor (FinOps)**: 19 LiteLLM Usage metrics, per-stage cost breakdown, Fallback routing topology, and sandbox Code Execution audit `<!-- ![AI Cost Monitor](docs/screenshots/dashboard_ai_usage.png) -->`
-<!-- POST_COMPETITION_RESULTS_END -->
+
+#### 1. Account Overview & FIFO Lot Drawer
+Displays tradable NAV/Cash, cumulative return, Overall & Open Division ranking trajectories, and a sortable holdings PnL table with holding days and expandable FIFO buy-lot cost drawers:
+
+![Account Overview](docs/screenshots/dashboard_overview.jpeg)
+
+#### 2. Daily Decision & Account Audit Report
+Renders the 7-section daily Markdown audit report with historical date switching and auto-generated table of contents, tracing L0 dynamic stock pool screening, L2M macro posture, L2 stock inferences, and L4 order execution:
+
+![Decision Report](docs/screenshots/dashboard_decision_report.jpeg)
+
+#### 3. AI Cost & Routing Monitor (FinOps)
+Visualizes all 19 native LiteLLM Usage telemetry metrics—including daily cost/token dual-axis trends, per-stage cost breakdown, Fallback routing topology, and sandbox Code Execution audit logs:
+
+![AI Cost Monitor](docs/screenshots/dashboard_ai_usage.jpeg)
 
 ---
 
